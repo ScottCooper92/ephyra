@@ -1376,8 +1376,9 @@ class JellyfinViewModelTest {
         assertNull("choosing the tab asks for no code", tab.quickConnectCode)
         assertEquals("no request for a code was made", 0, jellyfin.hits("/QuickConnect/Initiate"))
 
+        // The text comes back in a second update after the tab changes, so the state between them shows the password tab empty.
         vm.actions.selectMethod(quickConnect = false)
-        val back = vm.await<UiState.SignIn> { !it.quickConnectSelected }
+        val back = vm.await<UiState.SignIn> { !it.quickConnectSelected && it.username == "sam" && it.password == "hunter2" }
         assertEquals("sam", back.username)
         assertEquals("hunter2", back.password)
     }

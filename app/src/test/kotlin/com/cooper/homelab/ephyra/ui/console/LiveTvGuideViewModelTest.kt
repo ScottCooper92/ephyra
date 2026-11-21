@@ -3,8 +3,8 @@ package com.cooper.homelab.ephyra.ui.console
 import androidx.lifecycle.ViewModel
 import com.cooper.homelab.ephyra.FakeJellyfin
 import com.cooper.homelab.ephyra.server.Connection
-import com.cooper.homelab.ephyra.server.DiscardLogger
 import com.cooper.homelab.ephyra.server.GuideProviderSummary
+import com.cooper.homelab.ephyra.server.connectionWithSession
 import com.cooper.homelab.ephyra.session
 import com.cooper.homelab.ephyra.testSessionStore
 import com.cooper.homelab.ephyra.ui.ViewModelTeardown
@@ -17,7 +17,6 @@ import kotlinx.coroutines.withTimeout
 import kotlinx.serialization.json.jsonArray
 import kotlinx.serialization.json.jsonObject
 import kotlinx.serialization.json.jsonPrimitive
-import okhttp3.OkHttpClient
 import org.junit.After
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertFalse
@@ -36,10 +35,7 @@ class LiveTvGuideViewModelTest {
     private val jellyfin = FakeJellyfin()
     private val sessions = testSessionStore()
     private val teardown = ViewModelTeardown()
-    private val connection =
-        teardown.made(
-            Connection(OkHttpClient(), sessions, "Jellyfin Companion", "Test", "1.0", Dispatchers.IO, DiscardLogger),
-        )
+    private lateinit var connection: Connection
     private var changed = 0
 
     private fun <T : ViewModel> made(viewModel: T): T = teardown.made(viewModel)
@@ -47,7 +43,7 @@ class LiveTvGuideViewModelTest {
     @Before
     fun main() {
         Dispatchers.setMain(Dispatchers.Unconfined)
-        runBlocking { sessions.save(jellyfin.session()) }
+        connection = teardown.made(runBlocking { connectionWithSession(sessions, jellyfin.session()) })
     }
 
     @After

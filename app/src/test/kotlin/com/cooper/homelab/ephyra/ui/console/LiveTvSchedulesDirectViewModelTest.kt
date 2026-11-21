@@ -3,9 +3,9 @@ package com.cooper.homelab.ephyra.ui.console
 import androidx.lifecycle.ViewModel
 import com.cooper.homelab.ephyra.FakeJellyfin
 import com.cooper.homelab.ephyra.server.Connection
-import com.cooper.homelab.ephyra.server.DiscardLogger
 import com.cooper.homelab.ephyra.server.SdCountry
 import com.cooper.homelab.ephyra.server.SdLineup
+import com.cooper.homelab.ephyra.server.connectionWithSession
 import com.cooper.homelab.ephyra.session
 import com.cooper.homelab.ephyra.testSessionStore
 import com.cooper.homelab.ephyra.ui.ViewModelTeardown
@@ -22,7 +22,6 @@ import kotlinx.serialization.json.JsonObject
 import kotlinx.serialization.json.jsonArray
 import kotlinx.serialization.json.jsonObject
 import kotlinx.serialization.json.jsonPrimitive
-import okhttp3.OkHttpClient
 import org.junit.After
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertFalse
@@ -43,12 +42,7 @@ class LiveTvSchedulesDirectViewModelTest {
     private val sessions = testSessionStore()
     private val teardown = ViewModelTeardown()
 
-    // Built after the session is saved (as the app builds it, with a session already there): the connection's watcher takes the first
-    // session it reads as its baseline, so one built first could read none, then see the saved one as a change and cancel the sign-in
-    // in flight, which never reaches the server (#899).
-    private val connection by lazy {
-        teardown.made(Connection(OkHttpClient(), sessions, "Jellyfin Companion", "Test", "1.0", Dispatchers.IO, DiscardLogger))
-    }
+    private lateinit var connection: Connection
     private var changed = 0
 
     private fun <T : ViewModel> made(viewModel: T): T = teardown.made(viewModel)
@@ -56,8 +50,7 @@ class LiveTvSchedulesDirectViewModelTest {
     @Before
     fun main() {
         Dispatchers.setMain(Dispatchers.Unconfined)
-        runBlocking { sessions.save(jellyfin.session()) }
-        runBlocking { withTimeout(TIMEOUT_MILLIS) { connection.awaitWatching() } }
+        connection = teardown.made(runBlocking { connectionWithSession(sessions, jellyfin.session()) })
     }
 
     @After

@@ -67,8 +67,9 @@ internal class SetupActions(
     }
 
     /**
-     * The tab row's choice. The other method's form starts over, as the connect flow does for any change of mode, so what was typed
-     * for the password comes back with it; a code being waited on is let go on the way, and asking for one is the footer's start.
+     * The tab row's choice. The other method's form starts over, as the connect flow does for any change of mode, and what was typed
+     * for the password comes back with it in the same update, so no state shows the password tab empty; a code being waited on is
+     * let go on the way, and asking for one is the footer's start.
      */
     fun selectMethod(quickConnect: Boolean) {
         val draft = flow.draft.value
@@ -78,8 +79,7 @@ internal class SetupActions(
             setup.typed = draft.form.values
             flow.selectMode(SetupMode.QuickConnect)
         } else {
-            flow.selectMode(SetupMode.Password)
-            flow.editForm { copy(values = setup.typed) }
+            flow.selectMode(SetupMode.Password, setup.typed)
         }
     }
 
@@ -92,8 +92,7 @@ internal class SetupActions(
     fun cancelQuickConnect() {
         setup.links.cancel()
         if (flow.draft.value.form.mode != SetupMode.QuickConnect) return
-        flow.selectMode(SetupMode.Password)
-        flow.editForm { copy(values = setup.typed) }
+        flow.selectMode(SetupMode.Password, setup.typed)
     }
 
     /**

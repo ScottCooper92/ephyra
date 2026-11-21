@@ -26,6 +26,8 @@ import com.cooper.homelab.ephyra.server.SAVED_SERVER
 import com.cooper.homelab.ephyra.session
 import com.cooper.homelab.ephyra.testSessionStore
 import kotlinx.coroutines.CompletableDeferred
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.CoroutineStart
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.Job
@@ -34,6 +36,7 @@ import kotlinx.coroutines.asCoroutineDispatcher
 import kotlinx.coroutines.cancelAndJoin
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.test.setMain
 import kotlinx.coroutines.withTimeout
@@ -1381,6 +1384,35 @@ class JellyfinViewModelTest {
         val back = vm.await<UiState.SignIn> { !it.quickConnectSelected && it.username == "sam" && it.password == "hunter2" }
         assertEquals("sam", back.username)
         assertEquals("hunter2", back.password)
+    }
+
+    @Test
+    fun `no update shows the password tab empty while what was typed is held`() {
+        val vm = viewModel()
+        vm.toSignIn()
+        vm.onUsername("sam")
+        vm.onPassword("hunter2")
+        vm.await<UiState.SignIn> { it.username == "sam" && it.password == "hunter2" }
+
+        // Every update of the connect flow's form, on the thread that makes it, so none can be missed between two reads.
+        val seen = CopyOnWriteArrayList<Pair<String?, Map<String, String>>>()
+        val observer =
+            CoroutineScope(Dispatchers.Unconfined).launch(start = CoroutineStart.UNDISPATCHED) {
+                vm.setup.flow.draft
+                    .collect { seen += it.form.mode?.id to it.form.values }
+            }
+        repeat(50) {
+            vm.actions.selectMethod(quickConnect = true)
+            vm.actions.selectMethod(quickConnect = false)
+            vm.actions.selectMethod(quickConnect = true)
+            vm.cancelQuickConnect()
+        }
+        observer.cancel()
+
+        val emptied = seen.count { (mode, values) -> mode == SetupMode.Password.id && values.isEmpty() }
+        assertEquals("updates that showed the password tab with every field empty", 0, emptied)
+        assertTrue("the form was watched changing tabs", seen.size > 100)
+        assertEquals("sam", (vm.state.value as UiState.SignIn).username)
     }
 
     @Test

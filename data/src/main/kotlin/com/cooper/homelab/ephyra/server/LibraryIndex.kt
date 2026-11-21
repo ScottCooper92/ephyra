@@ -4,6 +4,7 @@ import com.binge.companion.sdk.attempt
 import com.cooper.homelab.ephyra.browse.BoxSetMemberships
 import kotlinx.coroutines.sync.Mutex
 import kotlinx.coroutines.sync.withLock
+import java.util.concurrent.atomic.AtomicInteger
 
 /** The TMDB ids the server holds, as Binge names a title: movie or series, and its id. */
 enum class IndexType { MOVIE, SERIES }
@@ -30,10 +31,14 @@ class LibraryIndex(
     private val lock = Mutex()
     private var owner: String? = null
     private var builtAt = 0L
+    private var builtGeneration = 0
     private var byKey: Map<IndexKey, JellyfinItem> = emptyMap()
     private var byId: Map<String, IndexKey> = emptyMap()
 
     private var lacksIds = false
+
+    /** Counts the library changes the server has announced. Read without the lock, so a change is never held up by a build. */
+    private val generation = AtomicInteger()
 
     /** How many titles the last build found; null before one has run. */
     val size: Int? get() = if (owner == null) null else byKey.size
@@ -76,10 +81,13 @@ class LibraryIndex(
         userId: String,
     ) = ensure(client, userId, maxAge = 0L)
 
-    /** Marks the index stale, so the next lookup rebuilds it: the server said its library changed. */
-    suspend fun invalidate() {
+    /**
+     * Marks the index stale, so the next lookup rebuilds it: the server said its library changed. It never waits on a build, and a
+     * build that is running when it is called is stale on arrival, so the change is not lost.
+     */
+    fun invalidate() {
+        generation.incrementAndGet()
         boxSets.invalidate()
-        lock.withLock { builtAt = 0L }
     }
 
     suspend fun clear() {
@@ -100,7 +108,8 @@ class LibraryIndex(
     ) {
         lock.withLock {
             val owned = "${client.baseUrl}|$userId"
-            if (owner == owned && now() - builtAt < maxAge) return
+            if (owner == owned && builtGeneration == generation.get() && now() - builtAt < maxAge) return
+            val seen = generation.get()
             val items = mutableListOf<JellyfinItem>()
             var start = 0
             while (true) {
@@ -126,6 +135,7 @@ class LibraryIndex(
             byId = keyed.associate { (key, item) -> item.id to key }
             owner = owned
             builtAt = now()
+            builtGeneration = seen
         }
     }
 

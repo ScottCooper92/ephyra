@@ -3,7 +3,9 @@ package com.cooper.homelab.ephyra.server
 import com.cooper.homelab.ephyra.FakeItem
 import com.cooper.homelab.ephyra.FakeJellyfin
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.async
 import kotlinx.coroutines.runBlocking
+import kotlinx.coroutines.withTimeout
 import okhttp3.HttpUrl.Companion.toHttpUrl
 import okhttp3.OkHttpClient
 import org.junit.After
@@ -79,5 +81,23 @@ class LibraryIndexTest {
             val pages = jellyfin.requests.filter { it.url.encodedPath == "/Items" }
             assertTrue(pages.isNotEmpty())
             assertTrue(pages.all { it.url.queryParameter("userId") == "user-1" })
+        }
+
+    @Test
+    fun `a library change during a build does not wait for it and makes the next lookup rebuild`() =
+        runBlocking {
+            jellyfin.items += FakeItem("m1", "Movie", "Movie", tmdbId = 1)
+            val held = jellyfin.hold("/Items", query = "hasTmdbId" to "true")
+            val build = async(Dispatchers.IO) { index.find(client, "user-1", IndexKey(IndexType.MOVIE, 1)) }
+            held.awaitArrival()
+            withTimeout(5_000L) { index.invalidate() }
+            held.release()
+            assertEquals("m1", build.await()?.id)
+            val after = requestsForItems()
+            index.find(client, "user-1", IndexKey(IndexType.MOVIE, 1))
+            assertTrue("the build that was running is stale, so the next lookup reads", requestsForItems() > after)
+            val settled = requestsForItems()
+            index.find(client, "user-1", IndexKey(IndexType.MOVIE, 1))
+            assertEquals(settled, requestsForItems())
         }
 }

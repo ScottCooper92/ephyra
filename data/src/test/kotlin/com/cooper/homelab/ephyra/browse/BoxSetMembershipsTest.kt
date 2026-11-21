@@ -12,6 +12,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.async
 import kotlinx.coroutines.awaitAll
 import kotlinx.coroutines.runBlocking
+import kotlinx.coroutines.withTimeout
 import okhttp3.HttpUrl.Companion.toHttpUrl
 import okhttp3.OkHttpClient
 import org.junit.After
@@ -167,6 +168,26 @@ class BoxSetMembershipsTest {
             refused.refuse()
             assertThrows(Exception::class.java) { runBlocking { collections.collectionsOf("m1") } }
             assertEquals(listOf("box"), collections.collectionsOf("m1").map { it.id })
+        }
+
+    @Test
+    fun `a library change during a read does not wait for it and makes the next page read again`() =
+        runBlocking {
+            library()
+            val index = LibraryIndex()
+            val collections = repository(held = index.boxSets)
+            val held = jellyfin.hold("/Items", query = "includeItemTypes" to "BoxSet")
+            val scan = async(Dispatchers.IO) { collections.collectionsOf("m1") }
+            held.awaitArrival()
+            withTimeout(5_000L) { index.invalidate() }
+            held.release()
+            assertEquals(listOf("box"), scan.await().map { it.id })
+            val after = requests()
+            assertEquals(listOf("box"), collections.collectionsOf("m1").map { it.id })
+            assertTrue("the answer the scan built is stale, so the next page reads", requests() > after)
+            val settled = requests()
+            collections.collectionsOf("m1")
+            assertEquals(settled, requests())
         }
 
     @Test

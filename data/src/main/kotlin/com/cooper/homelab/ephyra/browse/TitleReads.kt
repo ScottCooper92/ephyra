@@ -149,17 +149,19 @@ internal suspend fun JellyfinClient.browseCollectionsOf(
 /** Every box set the user can see, in name order, a page at a time. `parentId` is left out: before 12.0 the server drops it for a lone BoxSet type. */
 private suspend fun JellyfinClient.browseBoxSets(userId: String): List<BrowseItem> {
     val boxes = mutableListOf<BrowseItem>()
+    var asked = 0
     while (true) {
         val query = cardQuery(userId)
         query["includeItemTypes"] = "BoxSet"
         query["recursive"] = "true"
         query["sortBy"] = "SortName"
         query["sortOrder"] = "Ascending"
-        query["startIndex"] = boxes.size.toString()
+        query["startIndex"] = asked.toString()
         query["limit"] = BOX_SET_PAGE.toString()
         query["enableTotalRecordCount"] = "false"
-        val page = decodeAnswer(ItemsWire.serializer(), getObject("Items", query), "Items").items.mapNotNull { it.toBrowseItem() }
-        boxes += page
+        val page = decodeAnswer(ItemsWire.serializer(), getObject("Items", query), "Items").items
+        boxes += page.mapNotNull { it.toBrowseItem() }
+        asked += page.size
         if (page.size < BOX_SET_PAGE) return boxes
     }
 }

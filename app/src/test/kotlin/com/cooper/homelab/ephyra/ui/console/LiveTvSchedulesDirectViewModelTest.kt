@@ -42,10 +42,13 @@ class LiveTvSchedulesDirectViewModelTest {
     private val jellyfin = FakeJellyfin()
     private val sessions = testSessionStore()
     private val teardown = ViewModelTeardown()
-    private val connection =
-        teardown.made(
-            Connection(OkHttpClient(), sessions, "Jellyfin Companion", "Test", "1.0", Dispatchers.IO, DiscardLogger),
-        )
+
+    // Built after the session is saved (as the app builds it, with a session already there): the connection's watcher takes the first
+    // session it reads as its baseline, so one built first could read none, then see the saved one as a change and cancel the sign-in
+    // in flight, which never reaches the server (#899).
+    private val connection by lazy {
+        teardown.made(Connection(OkHttpClient(), sessions, "Jellyfin Companion", "Test", "1.0", Dispatchers.IO, DiscardLogger))
+    }
     private var changed = 0
 
     private fun <T : ViewModel> made(viewModel: T): T = teardown.made(viewModel)
@@ -54,6 +57,7 @@ class LiveTvSchedulesDirectViewModelTest {
     fun main() {
         Dispatchers.setMain(Dispatchers.Unconfined)
         runBlocking { sessions.save(jellyfin.session()) }
+        runBlocking { withTimeout(TIMEOUT_MILLIS) { connection.awaitWatching() } }
     }
 
     @After

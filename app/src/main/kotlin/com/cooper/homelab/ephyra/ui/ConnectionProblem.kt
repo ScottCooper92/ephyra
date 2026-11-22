@@ -5,18 +5,20 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
+import com.cooper.homelab.core.flags.bingePromotion
 import com.cooper.homelab.core.presentation.connection.AutoRetryPolicy
 import com.cooper.homelab.core.presentation.connection.ConnectionProblem
 import com.cooper.homelab.core.uiandroid.connect.AllowLocalNetwork
 import com.cooper.homelab.core.uiandroid.connection.ConnectionAutoRetryEffect
 import com.cooper.homelab.core.uiandroid.connection.ConnectionProblemScreen
+import com.cooper.homelab.core.uiandroid.flags.LocalFlags
 import com.cooper.homelab.ephyra.R
 import com.cooper.homelab.core.uiandroid.R as CoreR
 
 /**
  * The saved server did not answer, answered with something the app could not use, or is on the local network and Android
  * has not let the app reach it: the home gives way to the shared library's problem screen, with its ways out. The words,
- * the retry rule and the spinner are the library's; the sign-out button is this app's, because its confirmation is.
+ * the retry rule and the spinner are the library's; the sign-out button and its confirm are the library's, with this app's words.
  */
 @Composable
 internal fun ConnectionProblem(
@@ -34,8 +36,12 @@ internal fun ConnectionProblem(
         onRetry = actions.onRefresh,
         onAllowLocalNetwork = allow?.run ?: {},
         onEditConnection = actions.onChangeServer,
-        signOutLabel = stringResource(R.string.settings_sign_out),
-        onSignOut = actions.onAskSignOut,
+        signOutConfirmTitle = stringResource(R.string.sign_out_title),
+        signOutConfirmMessage =
+            stringResource(
+                if (LocalFlags.current.bingePromotion) R.string.sign_out_body else R.string.sign_out_body_plain,
+            ),
+        onSignOut = actions.onSignOut,
         modifier = modifier,
     )
 }

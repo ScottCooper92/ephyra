@@ -9,6 +9,7 @@ import androidx.compose.ui.test.hasClickAction
 import androidx.compose.ui.test.onAllNodesWithContentDescription
 import androidx.compose.ui.test.onAllNodesWithText
 import androidx.compose.ui.test.onFirst
+import androidx.compose.ui.test.onLast
 import androidx.compose.ui.test.onNodeWithContentDescription
 import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.performClick
@@ -20,6 +21,7 @@ import com.cooper.homelab.ephyra.theme.EphyraTheme
 import kotlinx.serialization.json.Json
 import kotlinx.serialization.json.jsonObject
 import org.junit.Assert.assertEquals
+import org.junit.Assert.assertFalse
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -72,7 +74,7 @@ class ConnectionProblemTest {
             EphyraTheme {
                 EphyraRoot(
                     state(ConnectionHealth.CertificateRefused),
-                    Actions(onRefresh = { calls += "retry" }, onChangeServer = { calls += "edit" }, onAskSignOut = { calls += "signout" }),
+                    Actions(onRefresh = { calls += "retry" }, onChangeServer = { calls += "edit" }, onSignOut = { calls += "signout" }),
                 )
             }
         }
@@ -80,6 +82,9 @@ class ConnectionProblemTest {
         compose.onAllNodesWithText("Try again").assertCountEquals(0)
         compose.onNodeWithText("Edit connection").performClick()
         compose.onNodeWithText("Sign out").performClick()
+        compose.onNodeWithText("Sign out of Jellyfin?").assertExists()
+        assertFalse("signout" in calls)
+        compose.onAllNodesWithText("Sign out").onLast().performClick()
         assertEquals(listOf("edit", "signout"), calls)
     }
 
@@ -126,13 +131,16 @@ class ConnectionProblemTest {
             EphyraTheme {
                 EphyraRoot(
                     state(ConnectionHealth.Unreachable),
-                    Actions(onRefresh = { calls += "retry" }, onChangeServer = { calls += "edit" }, onAskSignOut = { calls += "signout" }),
+                    Actions(onRefresh = { calls += "retry" }, onChangeServer = { calls += "edit" }, onSignOut = { calls += "signout" }),
                 )
             }
         }
         compose.onNodeWithText("Try again").performClick()
         compose.onNodeWithText("Edit connection").performClick()
         compose.onNodeWithText("Sign out").performClick()
+        compose.onNodeWithText("Sign out of Jellyfin?").assertExists()
+        assertFalse("signout" in calls)
+        compose.onAllNodesWithText("Sign out").onLast().performClick()
         assertEquals(listOf("retry", "edit", "signout"), calls)
     }
 

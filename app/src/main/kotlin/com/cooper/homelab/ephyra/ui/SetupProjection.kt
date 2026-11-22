@@ -138,7 +138,16 @@ internal fun UiState.SignIn.toConnectState(): ConnectState<PublicServerInfo> {
         } else {
             SignInForm(SetupMode.Password, mapOf(USERNAME_FIELD to username, PASSWORD_FIELD to password))
         }
-    return ConnectState.SignIn(probed, form, isConnecting = busy || gettingCode || quickConnectCode != null, error = failure)
+    // Quick Connect shows no fields, so the password page being swiped to is drawn from what the step holds for it.
+    val held =
+        if (quickConnectSelected) {
+            mapOf(
+                SetupMode.Password.id to mapOf(USERNAME_FIELD to username, PASSWORD_FIELD to password),
+            )
+        } else {
+            emptyMap()
+        }
+    return ConnectState.SignIn(probed, form, isConnecting = busy || gettingCode || quickConnectCode != null, error = failure, held = held)
 }
 
 /** The code the screen shows while Quick Connect waits for its approval, or null. */

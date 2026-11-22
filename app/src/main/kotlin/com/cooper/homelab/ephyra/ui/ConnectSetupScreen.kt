@@ -155,7 +155,7 @@ internal fun ConnectSetupScreen(
                     },
                 fieldFocus = mapOf(PASSWORD_FIELD to passwordFocus),
                 notSetUpAction = { SetupWizardEntry(actions) },
-            ).swipingBetweenModes(),
+            ),
     )
 }
 

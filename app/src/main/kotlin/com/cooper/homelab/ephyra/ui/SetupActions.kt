@@ -60,27 +60,19 @@ internal class SetupActions(
         val draft = flow.draft.value
         if (draft.server == null) return
         setup.links.cancel()
-        // What was typed for the password comes back if the user leaves Quick Connect for the form.
-        if (draft.form.mode != SetupMode.QuickConnect) setup.typed = draft.form.values
         flow.selectMode(SetupMode.QuickConnect)
         setup.links.start()
     }
 
     /**
-     * The tab row's choice. The other method's form starts over, as the connect flow does for any change of mode, and what was typed
-     * for the password comes back with it in the same update, so no state shows the password tab empty; a code being waited on is
-     * let go on the way, and asking for one is the footer's start.
+     * The tab row's choice. The connect flow keeps what each form held and gives it back in the same update, so no state shows the
+     * password tab empty; a code being waited on is let go on the way, and asking for one is the footer's start.
      */
     fun selectMethod(quickConnect: Boolean) {
         val draft = flow.draft.value
         if (draft.server == null || (draft.form.mode == SetupMode.QuickConnect) == quickConnect) return
         setup.links.cancel()
-        if (quickConnect) {
-            setup.typed = draft.form.values
-            flow.selectMode(SetupMode.QuickConnect)
-        } else {
-            flow.selectMode(SetupMode.Password, setup.typed)
-        }
+        flow.selectMode(if (quickConnect) SetupMode.QuickConnect else SetupMode.Password)
     }
 
     /** Stops waiting for a code, and its failure with it, and stays on the method the code was asked on. */
@@ -92,7 +84,7 @@ internal class SetupActions(
     fun cancelQuickConnect() {
         setup.links.cancel()
         if (flow.draft.value.form.mode != SetupMode.QuickConnect) return
-        flow.selectMode(SetupMode.Password, setup.typed)
+        flow.selectMode(SetupMode.Password)
     }
 
     /**
@@ -104,7 +96,6 @@ internal class SetupActions(
     fun changeServer(recheck: Boolean) {
         setup.links.cancel()
         setup.firstMode = null
-        setup.typed = emptyMap()
         val saved = signedIn()
         val address =
             saved?.session?.baseUrl

@@ -24,5 +24,5 @@ class ApproveCodeScreenshotTest {
     @EphyraScreenStatePreview
     @EphyraSpanishPreviews
     @Composable
-    fun wrongCode() = ApproveCodeScreen(ApproveUiState(code = "111111", result = ApproveResult.WrongCode), ApproveActions())
+    fun wrongCode() = ApproveCodeScreen(ApproveUiState(code = "111111", wrongCode = true), ApproveActions())
 }

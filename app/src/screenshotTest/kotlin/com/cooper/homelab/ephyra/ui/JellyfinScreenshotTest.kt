@@ -337,6 +337,12 @@ class JellyfinScreenshotTest {
     @EphyraScreenStatePreview
     @EphyraSpanishPreviews
     @Composable
+    fun signedInCertificateRefused() = EphyraRoot(previewSignedInCertificateRefused, Actions())
+
+    @PreviewTest
+    @EphyraScreenStatePreview
+    @EphyraSpanishPreviews
+    @Composable
     fun signedInLocalNetworkDenied() = EphyraRoot(previewSignedInLocalNetworkDenied, Actions(localNetwork = previewAllowLocalNetwork))
 
     @PreviewTest

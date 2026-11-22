@@ -202,6 +202,9 @@ val previewSignedInCouldNotLoad = previewSignedInFailed.copy(health = Connection
 /** The server asks for a client certificate, which the app cannot present. */
 val previewSignedInClientCertificate = previewSignedInFailed.copy(health = ConnectionHealth.ClientCertificateNeeded)
 
+/** The platform refused the server's certificate: only the server's owner, or another address, can fix it. */
+val previewSignedInCertificateRefused = previewSignedInFailed.copy(health = ConnectionHealth.CertificateRefused)
+
 /** The local-network button before the permission has been asked for. */
 val previewAllowLocalNetwork =
     AllowLocalNetwork(CoreR.string.connect_local_network_allow, CoreR.string.connect_local_network_allow_short) {}

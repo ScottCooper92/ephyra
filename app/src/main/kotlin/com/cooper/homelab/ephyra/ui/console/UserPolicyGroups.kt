@@ -4,24 +4,24 @@ import android.text.format.DateFormat
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.outlined.Add
-import androidx.compose.material.icons.outlined.Block
-import androidx.compose.material.icons.outlined.ChildCare
-import androidx.compose.material.icons.outlined.CloudDownload
-import androidx.compose.material.icons.outlined.CollectionsBookmark
-import androidx.compose.material.icons.outlined.Delete
-import androidx.compose.material.icons.outlined.DeleteForever
-import androidx.compose.material.icons.outlined.Devices
-import androidx.compose.material.icons.outlined.EventBusy
-import androidx.compose.material.icons.outlined.LiveTv
-import androidx.compose.material.icons.outlined.Lyrics
-import androidx.compose.material.icons.outlined.PhonelinkSetup
-import androidx.compose.material.icons.outlined.Schedule
-import androidx.compose.material.icons.outlined.Settings
-import androidx.compose.material.icons.outlined.Share
-import androidx.compose.material.icons.outlined.Subtitles
-import androidx.compose.material.icons.outlined.Sync
-import androidx.compose.material.icons.outlined.Tag
+import androidx.compose.material.icons.filled.Add
+import androidx.compose.material.icons.filled.Block
+import androidx.compose.material.icons.filled.ChildCare
+import androidx.compose.material.icons.filled.CloudDownload
+import androidx.compose.material.icons.filled.CollectionsBookmark
+import androidx.compose.material.icons.filled.Delete
+import androidx.compose.material.icons.filled.DeleteForever
+import androidx.compose.material.icons.filled.Devices
+import androidx.compose.material.icons.filled.EventBusy
+import androidx.compose.material.icons.filled.LiveTv
+import androidx.compose.material.icons.filled.Lyrics
+import androidx.compose.material.icons.filled.PhonelinkSetup
+import androidx.compose.material.icons.filled.Schedule
+import androidx.compose.material.icons.filled.Settings
+import androidx.compose.material.icons.filled.Share
+import androidx.compose.material.icons.filled.Subtitles
+import androidx.compose.material.icons.filled.Sync
+import androidx.compose.material.icons.filled.Tag
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -85,19 +85,19 @@ internal fun ContentSection(
         title = null,
         rows =
             listOfNotNull(
-                policy.switchRow(POLICY_DOWNLOADING, Icons.Outlined.CloudDownload, R.string.users_downloading, actions),
-                policy.switchRow(POLICY_CONVERSION, Icons.Outlined.Sync, R.string.users_conversion, actions),
-                policy.switchRow(POLICY_PUBLIC_SHARING, Icons.Outlined.Share, R.string.users_public_sharing, actions),
-                policy.switchRow(POLICY_COLLECTIONS, Icons.Outlined.CollectionsBookmark, R.string.users_collections, actions).takeIf {
+                policy.switchRow(POLICY_DOWNLOADING, Icons.Filled.CloudDownload, R.string.users_downloading, actions),
+                policy.switchRow(POLICY_CONVERSION, Icons.Filled.Sync, R.string.users_conversion, actions),
+                policy.switchRow(POLICY_PUBLIC_SHARING, Icons.Filled.Share, R.string.users_public_sharing, actions),
+                policy.switchRow(POLICY_COLLECTIONS, Icons.Filled.CollectionsBookmark, R.string.users_collections, actions).takeIf {
                     profile.hasContentManagementPermissions
                 },
-                policy.switchRow(POLICY_SUBTITLES, Icons.Outlined.Subtitles, R.string.users_subtitles, actions).takeIf {
+                policy.switchRow(POLICY_SUBTITLES, Icons.Filled.Subtitles, R.string.users_subtitles, actions).takeIf {
                     profile.hasContentManagementPermissions
                 },
                 policy
                     .switchRow(
                         POLICY_LYRICS,
-                        Icons.Outlined.Lyrics,
+                        Icons.Filled.Lyrics,
                         R.string.users_lyrics,
                         actions,
                     ).takeIf { profile.hasContentManagementPermissions },
@@ -111,7 +111,7 @@ internal fun ContentSection(
         rows =
             listOf(
                 ListItem(
-                    icon = Icons.Outlined.DeleteForever,
+                    icon = Icons.Filled.DeleteForever,
                     label = stringResource(R.string.users_deletion_all),
                     toggled = all,
                     onClick = { actions.onPolicy(POLICY_DELETION, kotlinx.serialization.json.JsonPrimitive(!all)) },
@@ -162,7 +162,7 @@ private fun <T> PickList(
                             row(it)
                         }.ifEmpty {
                             listOf(
-                                ListItem(icon = Icons.Outlined.Block, label = stringResource(R.string.users_none_here), clickable = false),
+                                ListItem(icon = Icons.Filled.Block, label = stringResource(R.string.users_none_here), clickable = false),
                             )
                         },
             )
@@ -180,9 +180,9 @@ internal fun LiveTvSection(
         title = null,
         rows =
             listOfNotNull(
-                policy.switchRow(POLICY_LIVE_TV_ACCESS, Icons.Outlined.LiveTv, R.string.users_live_tv_access, actions),
-                policy.switchRow(POLICY_LIVE_TV_MANAGEMENT, Icons.Outlined.Settings, R.string.users_live_tv_management, actions),
-                policy.switchRow(POLICY_ALL_CHANNELS, Icons.Outlined.LiveTv, R.string.users_all_channels, actions),
+                policy.switchRow(POLICY_LIVE_TV_ACCESS, Icons.Filled.LiveTv, R.string.users_live_tv_access, actions),
+                policy.switchRow(POLICY_LIVE_TV_MANAGEMENT, Icons.Filled.Settings, R.string.users_live_tv_management, actions),
+                policy.switchRow(POLICY_ALL_CHANNELS, Icons.Filled.LiveTv, R.string.users_all_channels, actions),
             ),
     )
     if (policy.has(POLICY_ALL_CHANNELS) && !policy.flag(POLICY_ALL_CHANNELS)) {
@@ -190,7 +190,7 @@ internal fun LiveTvSection(
         PickList(choices.channels, section, actions) { channel ->
             val on = channel.id in chosen
             ListItem(
-                icon = Icons.Outlined.LiveTv,
+                icon = Icons.Filled.LiveTv,
                 label = channel.name.ifBlank { channel.id },
                 toggled = on,
                 onClick = { actions.onList(POLICY_CHANNELS, memberChange(channel.id, !on)) },
@@ -208,14 +208,14 @@ internal fun DevicesSection(
 ) {
     ItemGroup(
         title = null,
-        rows = listOfNotNull(policy.switchRow(POLICY_ALL_DEVICES, Icons.Outlined.Devices, R.string.users_all_devices, actions)),
+        rows = listOfNotNull(policy.switchRow(POLICY_ALL_DEVICES, Icons.Filled.Devices, R.string.users_all_devices, actions)),
     )
     if (policy.has(POLICY_ALL_DEVICES) && !policy.flag(POLICY_ALL_DEVICES)) {
         val chosen = policy.strings(POLICY_DEVICES)
         PickList(choices.devices, section, actions) { device ->
             val on = device.id in chosen
             ListItem(
-                icon = Icons.Outlined.PhonelinkSetup,
+                icon = Icons.Filled.PhonelinkSetup,
                 label = device.displayName,
                 detail = device.app.ifBlank { null },
                 toggled = on,
@@ -243,7 +243,7 @@ internal fun ParentalSection(
         rows =
             listOfNotNull(
                 ListItem(
-                    icon = Icons.Outlined.ChildCare,
+                    icon = Icons.Filled.ChildCare,
                     label = stringResource(R.string.users_max_rating),
                     detail =
                         ratings.firstOrNull { it.value == rating }?.name ?: rating?.toString() ?: stringResource(R.string.users_no_limit),
@@ -252,7 +252,7 @@ internal fun ParentalSection(
                     enabled = choices.ratings is Loaded.Ready,
                 ),
                 ListItem(
-                    icon = Icons.Outlined.ChildCare,
+                    icon = Icons.Filled.ChildCare,
                     label = stringResource(R.string.users_max_sub_rating),
                     detail = sub?.toString() ?: stringResource(R.string.users_no_limit),
                     onClick = { onPick(PolicyPicker.SubRating) },
@@ -272,7 +272,7 @@ internal fun ParentalSection(
                 UNRATED_ITEM_TYPES.map { type ->
                     val on = type in blocked
                     ListItem(
-                        icon = Icons.Outlined.Block,
+                        icon = Icons.Filled.Block,
                         label = stringResource(unratedLabel(type)),
                         toggled = on,
                         onClick = { actions.onList(POLICY_BLOCK_UNRATED, memberChange(type, !on)) },
@@ -303,13 +303,13 @@ private fun TagGroup(
         rows =
             policy.strings(key).map { tag ->
                 ListItem(
-                    icon = Icons.Outlined.Tag,
+                    icon = Icons.Filled.Tag,
                     label = tag,
                     clickable = false,
                     trailingContent = {
                         ExpressiveIconButton(
                             onClick = { actions.onList(key, memberChange(tag, false)) },
-                            icon = Icons.Outlined.Delete,
+                            icon = Icons.Filled.Delete,
                             contentDescription = stringResource(R.string.users_remove),
                             tint = MaterialTheme.colorScheme.error,
                         )
@@ -317,7 +317,7 @@ private fun TagGroup(
                 )
             } +
                 ListItem(
-                    icon = Icons.Outlined.Add,
+                    icon = Icons.Filled.Add,
                     label = stringResource(R.string.users_add_tag),
                     destination = ListItemDestination.Action,
                     onClick = onAdd,
@@ -340,7 +340,7 @@ private fun ScheduleGroup(
         rows =
             policy.accessSchedules().map { schedule ->
                 ListItem(
-                    icon = Icons.Outlined.Schedule,
+                    icon = Icons.Filled.Schedule,
                     label =
                         stringResource(
                             R.string.users_schedule_row,
@@ -353,7 +353,7 @@ private fun ScheduleGroup(
                     trailingContent = {
                         ExpressiveIconButton(
                             onClick = { actions.onList(POLICY_SCHEDULES) { list -> list.withoutSchedule(schedule) } },
-                            icon = Icons.Outlined.Delete,
+                            icon = Icons.Filled.Delete,
                             contentDescription = stringResource(R.string.users_remove),
                             tint = MaterialTheme.colorScheme.error,
                         )
@@ -361,7 +361,7 @@ private fun ScheduleGroup(
                 )
             } +
                 ListItem(
-                    icon = Icons.Outlined.EventBusy,
+                    icon = Icons.Filled.EventBusy,
                     label = stringResource(R.string.users_add_schedule),
                     destination = ListItemDestination.Action,
                     onClick = onAdd,

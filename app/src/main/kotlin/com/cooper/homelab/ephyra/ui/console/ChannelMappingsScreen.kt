@@ -10,8 +10,8 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.outlined.LiveTv
-import androidx.compose.material.icons.outlined.Tv
+import androidx.compose.material.icons.filled.LiveTv
+import androidx.compose.material.icons.filled.Tv
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Text
@@ -140,7 +140,7 @@ private fun ProviderChannels(
         state.options.providerChannels.map { channel ->
             val paired = state.options.pairedWith(channel.id)
             ListItem(
-                icon = Icons.Outlined.LiveTv,
+                icon = Icons.Filled.LiveTv,
                 label = channel.name,
                 detail =
                     when {
@@ -161,7 +161,7 @@ private fun ProviderChannels(
             PlainIntro(stringResource(R.string.channel_mappings_body))
         }
         if (rows.isEmpty()) {
-            item(key = "empty") { ConsoleEmptyScreen(stringResource(R.string.channel_mappings_no_channels), Icons.Outlined.Tv) }
+            item(key = "empty") { ConsoleEmptyScreen(stringResource(R.string.channel_mappings_no_channels), Icons.Filled.Tv) }
         }
         rows.chunked(GROUP_ROWS).forEachIndexed { index, group ->
             item(key = "group-$index") {
@@ -188,7 +188,7 @@ private fun TunerChannelSheet(
     val close = { actions.onSelect(null) }
     if (state.options.tunerChannels.isEmpty()) {
         BingeAdaptiveSheet(kind = BingeSheetKind.Task, onDismissRequest = close) { _ ->
-            EmptyScreen(message = stringResource(R.string.channel_mappings_no_tuner_channels), icon = Icons.Outlined.Tv)
+            EmptyScreen(message = stringResource(R.string.channel_mappings_no_tuner_channels), icon = Icons.Filled.Tv)
         }
         return
     }
@@ -224,7 +224,7 @@ internal fun TunerChannelPane(
                 ),
         )
         if (state.options.tunerChannels.isEmpty()) {
-            EmptyScreen(message = stringResource(R.string.channel_mappings_no_tuner_channels), icon = Icons.Outlined.Tv)
+            EmptyScreen(message = stringResource(R.string.channel_mappings_no_tuner_channels), icon = Icons.Filled.Tv)
         } else {
             SingleChoiceList(
                 choices = tunerChoices(state, channel),
@@ -258,7 +258,7 @@ internal fun tunerChoices(
                 value = tuner.id,
                 label = tuner.name,
                 supportingText = pairedWith?.let { stringResource(R.string.channel_mappings_paired_with, it) },
-                icon = Icons.Outlined.Tv,
+                icon = Icons.Filled.Tv,
             )
         },
     )

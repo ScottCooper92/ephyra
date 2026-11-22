@@ -5,10 +5,10 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.outlined.Extension
-import androidx.compose.material.icons.outlined.Image
-import androidx.compose.material.icons.outlined.PowerSettingsNew
-import androidx.compose.material.icons.outlined.Tune
+import androidx.compose.material.icons.filled.Extension
+import androidx.compose.material.icons.filled.Image
+import androidx.compose.material.icons.filled.PowerSettingsNew
+import androidx.compose.material.icons.filled.Tune
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -166,7 +166,7 @@ internal fun MetadataDefaultsPlaceholder() {
     EmptyScreen(
         message = stringResource(R.string.metadata_select),
         title = stringResource(R.string.metadata_select_title),
-        icon = Icons.Outlined.Tune,
+        icon = Icons.Filled.Tune,
     )
 }
 
@@ -185,7 +185,7 @@ private fun TypeList(
                 state.types().map { type ->
                     val off = FetcherKind.entries.sumOf { kind -> state.fetchers(type, kind).count { !it.enabled } }
                     ListItem(
-                        icon = Icons.Outlined.Tune,
+                        icon = Icons.Filled.Tune,
                         label = itemTypeName(type),
                         detail =
                             if (off == 0) {
@@ -220,7 +220,7 @@ private fun TypePage(
                     rows =
                         providers.map { provider ->
                             ListItem(
-                                icon = if (kind == FetcherKind.Metadata) Icons.Outlined.Extension else Icons.Outlined.Image,
+                                icon = if (kind == FetcherKind.Metadata) Icons.Filled.Extension else Icons.Filled.Image,
                                 label = provider.name,
                                 detail =
                                     stringResource(
@@ -251,7 +251,7 @@ private fun FetcherPage(
         switches =
             listOf(
                 ListItem(
-                    icon = Icons.Outlined.PowerSettingsNew,
+                    icon = Icons.Filled.PowerSettingsNew,
                     label = stringResource(R.string.library_provider_use),
                     toggled = fetcher.enabled,
                     onClick = { actions.onSet(type, open.kind, fetcher.name, !fetcher.enabled) },

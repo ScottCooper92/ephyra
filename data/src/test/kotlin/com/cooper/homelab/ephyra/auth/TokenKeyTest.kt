@@ -1,7 +1,7 @@
 package com.cooper.homelab.ephyra.auth
 
 import android.util.Base64
-import com.binge.companion.kit.KeystoreSecretCipher
+import com.cooper.homelab.core.server.connection.KeystoreSecretCipher
 import org.junit.After
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertNull
@@ -14,8 +14,8 @@ import javax.crypto.Cipher
 import javax.crypto.spec.GCMParameterSpec
 
 /**
- * The access token is encrypted by the kit's cipher under the alias this app has always used, so a session saved before the move
- * still reads. [oldEncrypt] and [oldDecrypt] are the app's own cipher as it was before: its algorithm, its blob format.
+ * The access token is encrypted by homelab-core's Keystore cipher (which writes the blob the binge-companions kit wrote) under the alias this
+ * app has always used, so a session saved before the move still reads. [oldEncrypt] and [oldDecrypt] are the app's own cipher as it was before: its algorithm, its blob format.
  */
 @RunWith(RobolectricTestRunner::class)
 class TokenKeyTest {

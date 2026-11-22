@@ -9,15 +9,15 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.automirrored.outlined.Logout
-import androidx.compose.material.icons.outlined.AdminPanelSettings
-import androidx.compose.material.icons.outlined.Delete
-import androidx.compose.material.icons.outlined.Info
-import androidx.compose.material.icons.outlined.Password
-import androidx.compose.material.icons.outlined.Person
-import androidx.compose.material.icons.outlined.PersonAdd
-import androidx.compose.material.icons.outlined.PersonOff
-import androidx.compose.material.icons.outlined.VideoLibrary
+import androidx.compose.material.icons.automirrored.filled.Logout
+import androidx.compose.material.icons.filled.AdminPanelSettings
+import androidx.compose.material.icons.filled.Delete
+import androidx.compose.material.icons.filled.Info
+import androidx.compose.material.icons.filled.Password
+import androidx.compose.material.icons.filled.Person
+import androidx.compose.material.icons.filled.PersonAdd
+import androidx.compose.material.icons.filled.PersonOff
+import androidx.compose.material.icons.filled.VideoLibrary
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -102,7 +102,7 @@ fun UsersScreen(
         bottomBar = {
             CreateFooter(
                 label = stringResource(R.string.users_add),
-                icon = Icons.Outlined.PersonAdd,
+                icon = Icons.Filled.PersonAdd,
                 onClick = { actions.onShow(UserDialog.Create) },
                 visible = state !is UsersUiState.Failed,
                 enabled = ready != null,
@@ -231,7 +231,7 @@ internal fun UserPlaceholder() {
     EmptyScreen(
         message = stringResource(R.string.users_select),
         title = stringResource(R.string.users_select_title),
-        icon = Icons.Outlined.Person,
+        icon = Icons.Filled.Person,
     )
 }
 
@@ -280,9 +280,9 @@ private fun ServerUser.row(
     return ListItem(
         icon =
             when {
-                disabled -> Icons.Outlined.PersonOff
-                administrator -> Icons.Outlined.AdminPanelSettings
-                else -> Icons.Outlined.Person
+                disabled -> Icons.Filled.PersonOff
+                administrator -> Icons.Filled.AdminPanelSettings
+                else -> Icons.Filled.Person
             },
         leadingContent = { avatar(this) },
         label = if (id == me) stringResource(R.string.users_you, name) else name,
@@ -314,22 +314,22 @@ private fun UserPage(
                     if (mine) {
                         listOf(
                             ListItem(
-                                icon = Icons.Outlined.AdminPanelSettings,
+                                icon = Icons.Filled.AdminPanelSettings,
                                 label = stringResource(R.string.users_administrator),
-                                note = ListItemNote(stringResource(R.string.users_mine), icon = Icons.Outlined.Info),
+                                note = ListItemNote(stringResource(R.string.users_mine), icon = Icons.Filled.Info),
                                 clickable = false,
                             ),
                         )
                     } else {
                         listOf(
                             ListItem(
-                                icon = Icons.AutoMirrored.Outlined.Logout,
+                                icon = Icons.AutoMirrored.Filled.Logout,
                                 label = stringResource(R.string.users_can_sign_in),
                                 toggled = !user.disabled,
                                 onClick = { actions.onCanSignIn(user.disabled) },
                             ),
                             ListItem(
-                                icon = Icons.Outlined.AdminPanelSettings,
+                                icon = Icons.Filled.AdminPanelSettings,
                                 label = stringResource(R.string.users_administrator),
                                 detail = stringResource(R.string.users_administrator_detail),
                                 toggled = user.administrator,
@@ -348,7 +348,7 @@ private fun UserPage(
                     rows =
                         listOf(
                             ListItem(
-                                icon = Icons.Outlined.Password,
+                                icon = Icons.Filled.Password,
                                 label = stringResource(R.string.users_set_password),
                                 detail = stringResource(if (user.hasPassword) R.string.users_has_password else R.string.users_no_password),
                                 loading = state.busy,
@@ -363,7 +363,7 @@ private fun UserPage(
                 BingeTextButton(
                     label = stringResource(R.string.users_delete),
                     onClick = { actions.onShow(UserDialog.Delete) },
-                    leadingIcon = Icons.Outlined.Delete,
+                    leadingIcon = Icons.Filled.Delete,
                     destructive = true,
                     modifier = Modifier.fillMaxWidth(),
                 )
@@ -381,7 +381,7 @@ private fun LibraryAccess(
 ) {
     val all =
         ListItem(
-            icon = Icons.Outlined.VideoLibrary,
+            icon = Icons.Filled.VideoLibrary,
             label = stringResource(R.string.users_all_libraries),
             toggled = user.allLibraries,
             onClick = { actions.onPolicy(ENABLE_ALL_FOLDERS, JsonPrimitive(!user.allLibraries)) },

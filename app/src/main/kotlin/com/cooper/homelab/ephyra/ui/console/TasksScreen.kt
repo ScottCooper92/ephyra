@@ -8,18 +8,18 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.outlined.Add
-import androidx.compose.material.icons.outlined.CleaningServices
-import androidx.compose.material.icons.outlined.Extension
-import androidx.compose.material.icons.outlined.GraphicEq
-import androidx.compose.material.icons.outlined.Image
-import androidx.compose.material.icons.outlined.LiveTv
-import androidx.compose.material.icons.outlined.Lyrics
-import androidx.compose.material.icons.outlined.People
-import androidx.compose.material.icons.outlined.Schedule
-import androidx.compose.material.icons.outlined.Storage
-import androidx.compose.material.icons.outlined.Subtitles
-import androidx.compose.material.icons.outlined.VideoLibrary
+import androidx.compose.material.icons.filled.Add
+import androidx.compose.material.icons.filled.CleaningServices
+import androidx.compose.material.icons.filled.Extension
+import androidx.compose.material.icons.filled.GraphicEq
+import androidx.compose.material.icons.filled.Image
+import androidx.compose.material.icons.filled.LiveTv
+import androidx.compose.material.icons.filled.Lyrics
+import androidx.compose.material.icons.filled.People
+import androidx.compose.material.icons.filled.Schedule
+import androidx.compose.material.icons.filled.Storage
+import androidx.compose.material.icons.filled.Subtitles
+import androidx.compose.material.icons.filled.VideoLibrary
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -133,7 +133,7 @@ fun TaskScreen(
             // A task's triggers page creates triggers.
             CreateFooter(
                 label = stringResource(R.string.tasks_trigger_add),
-                icon = Icons.Outlined.Add,
+                icon = Icons.Filled.Add,
                 onClick = { actions.onAskAdd(true) },
                 visible = ready != null && task != null,
                 loading = ready?.saving == true,
@@ -158,7 +158,7 @@ internal fun TaskPlaceholder() {
     EmptyScreen(
         message = stringResource(R.string.tasks_select),
         title = stringResource(R.string.tasks_select_title),
-        icon = Icons.Outlined.Schedule,
+        icon = Icons.Filled.Schedule,
     )
 }
 
@@ -179,7 +179,7 @@ private fun Tasks(
         verticalArrangement = Arrangement.spacedBy(dimensionResource(DesR.dimen.padding_l)),
     ) {
         if (board.tasks.isEmpty()) {
-            item { ConsoleEmptyScreen(stringResource(R.string.tasks_empty), Icons.Outlined.Schedule) }
+            item { ConsoleEmptyScreen(stringResource(R.string.tasks_empty), Icons.Filled.Schedule) }
         } else {
             item { PageIntro(stringResource(R.string.tasks_intro)) }
         }
@@ -231,17 +231,17 @@ private fun ServerTask.row(
 /** A task's icon, from its key; a clock for a task this app doesn't know. */
 internal fun taskIcon(key: String): ImageVector =
     when {
-        key == "RefreshLibrary" -> Icons.Outlined.VideoLibrary
-        key.contains("Audio") -> Icons.Outlined.GraphicEq
-        key.contains("Subtitle") -> Icons.Outlined.Subtitles
-        key.contains("Lyric") -> Icons.Outlined.Lyrics
-        key.contains("People") -> Icons.Outlined.People
-        key.contains("Chapter") || key.contains("Trickplay") || key.contains("Image") -> Icons.Outlined.Image
-        key.contains("Clean") || key.contains("Delete") -> Icons.Outlined.CleaningServices
-        key.contains("Plugin") -> Icons.Outlined.Extension
-        key.contains("Guide") || key.contains("Channel") -> Icons.Outlined.LiveTv
-        key.contains("Database") || key.contains("Optimi") -> Icons.Outlined.Storage
-        else -> Icons.Outlined.Schedule
+        key == "RefreshLibrary" -> Icons.Filled.VideoLibrary
+        key.contains("Audio") -> Icons.Filled.GraphicEq
+        key.contains("Subtitle") -> Icons.Filled.Subtitles
+        key.contains("Lyric") -> Icons.Filled.Lyrics
+        key.contains("People") -> Icons.Filled.People
+        key.contains("Chapter") || key.contains("Trickplay") || key.contains("Image") -> Icons.Filled.Image
+        key.contains("Clean") || key.contains("Delete") -> Icons.Filled.CleaningServices
+        key.contains("Plugin") -> Icons.Filled.Extension
+        key.contains("Guide") || key.contains("Channel") -> Icons.Filled.LiveTv
+        key.contains("Database") || key.contains("Optimi") -> Icons.Filled.Storage
+        else -> Icons.Filled.Schedule
     }
 
 private const val LOADING_ROWS = 8

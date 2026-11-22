@@ -9,8 +9,8 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.outlined.Language
-import androidx.compose.material.icons.outlined.Subscriptions
+import androidx.compose.material.icons.filled.Language
+import androidx.compose.material.icons.filled.Subscriptions
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Text
@@ -155,7 +155,7 @@ private fun LocationStep(
             rows =
                 listOf(
                     ListItem(
-                        icon = Icons.Outlined.Language,
+                        icon = Icons.Filled.Language,
                         label = stringResource(R.string.live_tv_sd_country),
                         detail =
                             when {
@@ -195,7 +195,7 @@ private fun CountryList(
                 rows =
                     step.countries.orEmpty().map { country ->
                         ListItem(
-                            icon = Icons.Outlined.Language,
+                            icon = Icons.Filled.Language,
                             label = country.name,
                             detail = country.region,
                             selected = country == step.country,
@@ -244,7 +244,7 @@ private fun LineupsStep(
                         rows =
                             step.lineups.map { lineup ->
                                 ListItem(
-                                    icon = Icons.Outlined.Subscriptions,
+                                    icon = Icons.Filled.Subscriptions,
                                     label = lineup.name,
                                     supportingMaxLines = 2,
                                     onClick = { actions.onAddLineup(lineup) },

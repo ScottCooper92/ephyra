@@ -136,6 +136,8 @@ android {
         debug {
             // A package of its own, so a debug build installs beside a release one instead of over it.
             applicationIdSuffix = ".debug"
+            // en-XA and ar-XB: a string that is hard-coded or cut off shows in a debug build, with no translation needed to see it.
+            isPseudoLocalesEnabled = true
             // Opt-in (`-PminifyDebug`) minified debug build: the one the device lane runs, so a keep
             // rule that goes stale fails there rather than on a user. BuildConfig.DEBUG stays true, which
             // is what lets the smoke test bind as a caller. Off by default: it would slow the dev loop.
@@ -295,6 +297,17 @@ dependencies {
 
 // detekt is binge-ci's gate: production `src/main` only, with type resolution against the debug
 // compilation, against the root detekt.yml. There is no baseline: the gate is zero findings.
+// detekt 2.0 alpha crashes when its modules run in parallel (the same setting binge-seerr and homelab-core carry for it), so the gate runs
+// one module at a time.
+detektGate {
+    parallel = false
+}
+
+// The coroutines test API is experimental, and nearly every test of this module uses it: opted in once for the test compilations, so a new
+// test does not need its own annotation. Production code is not opted in.
+tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile>().configureEach {
+    if (name.contains("UnitTest")) compilerOptions.optIn.add("kotlinx.coroutines.ExperimentalCoroutinesApi")
+}
 
 // The exception on a failed test, into the console and so into CI's own log. Gradle's default
 // prints the exception's class and not its message.
@@ -323,8 +336,9 @@ tasks.withType<Test>().configureEach {
 
 // The screenshot plugin does not wire itself into `check`, so without this `./gradlew build` would
 // carry the frames and never compare them.
+// The instrumentation test is built by nothing else in `check`: without this it could stop compiling and the first sign would be the device lane.
 tasks.named("check") {
-    dependsOn("validateDebugScreenshotTest")
+    dependsOn("validateDebugScreenshotTest", "compileDebugAndroidTestKotlin")
 }
 
 // The gate measures logic. What is excluded is an Android entry point with nothing a JVM test can

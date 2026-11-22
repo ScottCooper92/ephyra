@@ -8,14 +8,14 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.outlined.Add
-import androidx.compose.material.icons.outlined.Book
-import androidx.compose.material.icons.outlined.Folder
-import androidx.compose.material.icons.outlined.LibraryMusic
-import androidx.compose.material.icons.outlined.Movie
-import androidx.compose.material.icons.outlined.Photo
-import androidx.compose.material.icons.outlined.Tv
-import androidx.compose.material.icons.outlined.VideoLibrary
+import androidx.compose.material.icons.filled.Add
+import androidx.compose.material.icons.filled.Book
+import androidx.compose.material.icons.filled.Folder
+import androidx.compose.material.icons.filled.LibraryMusic
+import androidx.compose.material.icons.filled.Movie
+import androidx.compose.material.icons.filled.Photo
+import androidx.compose.material.icons.filled.Tv
+import androidx.compose.material.icons.filled.VideoLibrary
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
@@ -81,7 +81,7 @@ fun LibrariesScreen(
         bottomBar = {
             CreateFooter(
                 label = stringResource(R.string.libraries_add),
-                icon = Icons.Outlined.Add,
+                icon = Icons.Filled.Add,
                 onClick = { actions.onAskAdd(true) },
                 visible = state !is LibrariesUiState.Failed,
                 enabled = state is LibrariesUiState.Ready,
@@ -153,7 +153,7 @@ private fun Libraries(
             item {
                 val row =
                     JobRow(
-                        icon = Icons.Outlined.VideoLibrary,
+                        icon = Icons.Filled.VideoLibrary,
                         label = stringResource(R.string.libraries_scan_all),
                         idleDetail = lastRun(task.lastRun?.endedMillis, now),
                         running = state.board.running(task),
@@ -218,12 +218,12 @@ internal fun lastRun(
 /** A library's icon, from its `CollectionType`; a folder for mixed content or a type this app doesn't know. */
 internal fun typeIcon(type: String): ImageVector =
     when (type) {
-        "movies" -> Icons.Outlined.Movie
-        "tvshows" -> Icons.Outlined.Tv
-        "music" -> Icons.Outlined.LibraryMusic
-        "books" -> Icons.Outlined.Book
-        "homevideos", "photos" -> Icons.Outlined.Photo
-        else -> Icons.Outlined.Folder
+        "movies" -> Icons.Filled.Movie
+        "tvshows" -> Icons.Filled.Tv
+        "music" -> Icons.Filled.LibraryMusic
+        "books" -> Icons.Filled.Book
+        "homevideos", "photos" -> Icons.Filled.Photo
+        else -> Icons.Filled.Folder
     }
 
 /** The empty right-hand pane when no library is open. */
@@ -232,6 +232,6 @@ internal fun LibrariesPlaceholder() {
     EmptyScreen(
         message = stringResource(R.string.libraries_select),
         title = stringResource(R.string.libraries_select_title),
-        icon = Icons.Outlined.VideoLibrary,
+        icon = Icons.Filled.VideoLibrary,
     )
 }

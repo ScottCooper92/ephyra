@@ -9,9 +9,9 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.outlined.ContentCopy
-import androidx.compose.material.icons.outlined.Delete
-import androidx.compose.material.icons.outlined.Key
+import androidx.compose.material.icons.filled.ContentCopy
+import androidx.compose.material.icons.filled.Delete
+import androidx.compose.material.icons.filled.Key
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Text
@@ -79,7 +79,7 @@ fun ApiKeysScreen(
         bottomBar = {
             CreateFooter(
                 label = stringResource(R.string.api_keys_new),
-                icon = Icons.Outlined.Key,
+                icon = Icons.Filled.Key,
                 onClick = { actions.onAskCreate(true) },
                 visible = state !is ApiKeysUiState.Failed,
                 enabled = ready != null,
@@ -128,7 +128,7 @@ private fun Keys(
     ) {
         item { PageIntro(stringResource(R.string.api_keys_body)) }
         if (state.keys.isEmpty()) {
-            item { ConsoleEmptyScreen(stringResource(R.string.api_keys_empty), Icons.Outlined.Key) }
+            item { ConsoleEmptyScreen(stringResource(R.string.api_keys_empty), Icons.Filled.Key) }
         } else {
             item {
                 ItemGroup(
@@ -161,7 +161,7 @@ private fun ApiKey.row(
 ): ListItem {
     val made = formatRelativeOrAbsolute(createdMillis, now)?.let { stringResource(R.string.api_keys_created, it) }
     return ListItem(
-        icon = Icons.Outlined.Key,
+        icon = Icons.Filled.Key,
         label = app.ifBlank { stringResource(R.string.api_keys_unnamed) },
         detail = listOfNotNull(stringResource(R.string.api_keys_ends_in, lastFour), made).joinToString("\n"),
         // Two lines, either of which wraps at a large font: the key's ending, then the date.
@@ -173,7 +173,7 @@ private fun ApiKey.row(
                 {
                     ExpressiveIconButton(
                         onClick = { actions.onAskRemove(this) },
-                        icon = Icons.Outlined.Delete,
+                        icon = Icons.Filled.Delete,
                         contentDescription = stringResource(R.string.api_keys_revoke),
                         tint = MaterialTheme.colorScheme.error,
                     )
@@ -248,7 +248,7 @@ internal fun CreatedKeyDialog(
                 Text(key.key, style = MaterialTheme.typography.bodyMedium, fontFamily = FontFamily.Monospace)
                 BingeTextButton(
                     label = stringResource(R.string.api_keys_copy),
-                    leadingIcon = Icons.Outlined.ContentCopy,
+                    leadingIcon = Icons.Filled.ContentCopy,
                     onClick = { actions.onCopy(key.key) },
                 )
             }

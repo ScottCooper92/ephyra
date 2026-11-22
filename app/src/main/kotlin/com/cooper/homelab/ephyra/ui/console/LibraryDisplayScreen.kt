@@ -5,18 +5,18 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.outlined.CollectionsBookmark
-import androidx.compose.material.icons.outlined.Explore
-import androidx.compose.material.icons.outlined.Folder
-import androidx.compose.material.icons.outlined.FolderOpen
-import androidx.compose.material.icons.outlined.HighQuality
-import androidx.compose.material.icons.outlined.Image
-import androidx.compose.material.icons.outlined.SortByAlpha
-import androidx.compose.material.icons.outlined.SwapHoriz
-import androidx.compose.material.icons.outlined.Timer
-import androidx.compose.material.icons.outlined.Translate
-import androidx.compose.material.icons.outlined.Tv
-import androidx.compose.material.icons.outlined.VisibilityOff
+import androidx.compose.material.icons.filled.CollectionsBookmark
+import androidx.compose.material.icons.filled.Explore
+import androidx.compose.material.icons.filled.Folder
+import androidx.compose.material.icons.filled.FolderOpen
+import androidx.compose.material.icons.filled.HighQuality
+import androidx.compose.material.icons.filled.Image
+import androidx.compose.material.icons.filled.SortByAlpha
+import androidx.compose.material.icons.filled.SwapHoriz
+import androidx.compose.material.icons.filled.Timer
+import androidx.compose.material.icons.filled.Translate
+import androidx.compose.material.icons.filled.Tv
+import androidx.compose.material.icons.filled.VisibilityOff
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -161,7 +161,7 @@ internal fun LibraryDisplayPlaceholder() {
     EmptyScreen(
         message = stringResource(R.string.display_select),
         title = stringResource(R.string.display_select_title),
-        icon = Icons.Outlined.SortByAlpha,
+        icon = Icons.Filled.SortByAlpha,
     )
 }
 
@@ -234,14 +234,14 @@ private fun displayRows(
                 switchRow(
                     state,
                     DISPLAY_COLLECTIONS_MOVIES,
-                    Icons.Outlined.CollectionsBookmark,
+                    Icons.Filled.CollectionsBookmark,
                     R.string.display_collections_movies,
                     actions,
                 ),
                 switchRow(
                     state,
                     DISPLAY_COLLECTIONS_SHOWS,
-                    Icons.Outlined.CollectionsBookmark,
+                    Icons.Filled.CollectionsBookmark,
                     R.string.display_collections_shows,
                     actions,
                 ),
@@ -251,7 +251,7 @@ private fun displayRows(
                 switchRow(
                     state,
                     DISPLAY_COLLECTIONS,
-                    Icons.Outlined.CollectionsBookmark,
+                    Icons.Filled.CollectionsBookmark,
                     R.string.display_collections,
                     actions,
                     R.string.display_collections_detail,
@@ -260,7 +260,7 @@ private fun displayRows(
         }
     return listOf(
         ListItem(
-            icon = Icons.Outlined.Translate,
+            icon = Icons.Filled.Translate,
             label = stringResource(R.string.display_language),
             detail = state.languages.firstOrNull { it.value.equals(culture, true) }?.name ?: culture,
             clickable = state.languages.isNotEmpty(),
@@ -269,7 +269,7 @@ private fun displayRows(
         switchRow(
             state,
             DISPLAY_FOLDER_VIEW,
-            Icons.Outlined.FolderOpen,
+            Icons.Filled.FolderOpen,
             R.string.display_folder_view,
             actions,
             R.string.display_folder_view_detail,
@@ -277,7 +277,7 @@ private fun displayRows(
         switchRow(
             state,
             DISPLAY_SPECIALS_IN_SEASONS,
-            Icons.Outlined.Tv,
+            Icons.Filled.Tv,
             R.string.display_specials,
             actions,
             R.string.display_specials_detail,
@@ -285,7 +285,7 @@ private fun displayRows(
         switchRow(
             state,
             DISPLAY_EXTERNAL_SUGGESTIONS,
-            Icons.Outlined.Explore,
+            Icons.Filled.Explore,
             R.string.display_external,
             actions,
             R.string.display_external_detail,
@@ -303,27 +303,27 @@ private fun metadataRows(
     val config = state.configuration
     val seconds = config.int(METADATA_DUMMY_CHAPTER) ?: 0
     return listOfNotNull(
-        switchRow(state, METADATA_HIDDEN, Icons.Outlined.VisibilityOff, R.string.display_hidden, actions, R.string.display_hidden_detail),
+        switchRow(state, METADATA_HIDDEN, Icons.Filled.VisibilityOff, R.string.display_hidden, actions, R.string.display_hidden_detail),
         ListItem(
-            icon = Icons.Outlined.Image,
+            icon = Icons.Filled.Image,
             label = stringResource(R.string.display_convention),
             detail = conventionLabel(config.string(METADATA_CONVENTION) ?: IMAGE_SAVING_CONVENTIONS.first()),
             onClick = { onPick(DisplayPicker.Convention) },
         ),
         ListItem(
-            icon = Icons.Outlined.Folder,
+            icon = Icons.Filled.Folder,
             label = stringResource(R.string.display_path),
             detail = config.string(METADATA_PATH)?.ifBlank { null } ?: stringResource(R.string.display_path_default),
             onClick = { actions.onSheet(DisplaySheet.MetadataPath) },
         ),
         ListItem(
-            icon = Icons.Outlined.HighQuality,
+            icon = Icons.Filled.HighQuality,
             label = stringResource(R.string.display_chapter_resolution),
             detail = resolutionLabel(config.string(METADATA_CHAPTER_RESOLUTION) ?: CHAPTER_RESOLUTIONS.first()),
             onClick = { onPick(DisplayPicker.Resolution) },
         ).takeIf { profile.hasChapterImageSettings },
         ListItem(
-            icon = Icons.Outlined.Timer,
+            icon = Icons.Filled.Timer,
             label = stringResource(R.string.display_dummy_chapters),
             detail =
                 if (seconds == 0) {
@@ -346,7 +346,7 @@ private fun listRows(
     lists.map { list ->
         val entries = state.configuration.entries(list)
         ListItem(
-            icon = if (list.pairs) Icons.Outlined.SwapHoriz else Icons.Outlined.SortByAlpha,
+            icon = if (list.pairs) Icons.Filled.SwapHoriz else Icons.Filled.SortByAlpha,
             label = stringResource(list.title()),
             detail =
                 if (entries.isEmpty()) {

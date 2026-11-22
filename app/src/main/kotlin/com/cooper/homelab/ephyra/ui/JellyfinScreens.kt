@@ -10,11 +10,11 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.outlined.LiveTv
-import androidx.compose.material.icons.outlined.Person
-import androidx.compose.material.icons.outlined.PlayCircle
-import androidx.compose.material.icons.outlined.Refresh
-import androidx.compose.material.icons.outlined.VideoLibrary
+import androidx.compose.material.icons.filled.LiveTv
+import androidx.compose.material.icons.filled.Person
+import androidx.compose.material.icons.filled.PlayCircle
+import androidx.compose.material.icons.filled.Refresh
+import androidx.compose.material.icons.filled.VideoLibrary
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -186,7 +186,7 @@ internal fun ServerGroup(
         rows =
             listOfNotNull(
                 ListItem(
-                    icon = Icons.Outlined.Person,
+                    icon = Icons.Filled.Person,
                     // Their picture where they have one; the person icon where they have none.
                     leadingContent = picture?.let { bitmap -> { UserAvatar(state.session.userName, bitmap) } },
                     label = state.session.userName,
@@ -197,13 +197,13 @@ internal fun ServerGroup(
                     clickable = false,
                 ),
                 ListItem(
-                    icon = Icons.Outlined.PlayCircle,
+                    icon = Icons.Filled.PlayCircle,
                     label = stringResource(R.string.now_playing_title),
                     selected = actions.isOpenBeside(ConsolePage.NowPlaying),
                     onClick = { actions.onOpenPage(ConsolePage.NowPlaying) },
                 ).takeIf { ConsolePage.NowPlaying.available(state.profile, state.account) },
                 ListItem(
-                    icon = Icons.Outlined.LiveTv,
+                    icon = Icons.Filled.LiveTv,
                     label = stringResource(R.string.live_tv_title),
                     detail = stringResource(R.string.console_live_tv_detail),
                     selected = actions.isOpenBeside(ConsolePage.LiveTv),
@@ -223,7 +223,7 @@ internal fun LibraryGroup(
         rows =
             listOf(
                 ListItem(
-                    icon = Icons.Outlined.VideoLibrary,
+                    icon = Icons.Filled.VideoLibrary,
                     label = stringResource(R.string.settings_titles),
                     detail =
                         when {
@@ -236,7 +236,7 @@ internal fun LibraryGroup(
                     clickable = false,
                 ),
                 ListItem(
-                    icon = Icons.Outlined.Refresh,
+                    icon = Icons.Filled.Refresh,
                     label = stringResource(R.string.settings_refresh),
                     trailingContent = if (state.refreshing) ({ BingeLoadingIndicator() }) else null,
                     onClick = actions.onRefresh,

@@ -3,16 +3,16 @@ package com.cooper.homelab.ephyra.ui.search
 import android.content.res.Resources
 import androidx.annotation.StringRes
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.outlined.Architecture
-import androidx.compose.material.icons.outlined.AudioFile
-import androidx.compose.material.icons.outlined.FontDownload
-import androidx.compose.material.icons.outlined.Layers
-import androidx.compose.material.icons.outlined.Memory
-import androidx.compose.material.icons.outlined.Palette
-import androidx.compose.material.icons.outlined.Pause
-import androidx.compose.material.icons.outlined.Speed
-import androidx.compose.material.icons.outlined.Subtitles
-import androidx.compose.material.icons.outlined.Videocam
+import androidx.compose.material.icons.filled.Architecture
+import androidx.compose.material.icons.filled.AudioFile
+import androidx.compose.material.icons.filled.FontDownload
+import androidx.compose.material.icons.filled.Layers
+import androidx.compose.material.icons.filled.Memory
+import androidx.compose.material.icons.filled.Palette
+import androidx.compose.material.icons.filled.Pause
+import androidx.compose.material.icons.filled.Speed
+import androidx.compose.material.icons.filled.Subtitles
+import androidx.compose.material.icons.filled.Videocam
 import androidx.compose.ui.graphics.vector.ImageVector
 import com.cooper.homelab.core.presentation.search.SettingEntry
 import com.cooper.homelab.ephyra.R
@@ -60,32 +60,32 @@ private fun Resources.transcodingSwitch(
  */
 internal fun Resources.indexEncodingSwitches(): List<SettingEntry<SearchTarget>> =
     listOf(
-        transcodingSwitch(R.string.transcoding_decode_hevc_10, Icons.Outlined.Videocam, ENCODING_DECODE_HEVC_10),
-        transcodingSwitch(R.string.transcoding_decode_vp9_10, Icons.Outlined.Videocam, ENCODING_DECODE_VP9_10),
-        transcodingSwitch(R.string.transcoding_decode_rext_10, Icons.Outlined.Videocam, ENCODING_DECODE_HEVC_REXT_10) { profile, _ ->
+        transcodingSwitch(R.string.transcoding_decode_hevc_10, Icons.Filled.Videocam, ENCODING_DECODE_HEVC_10),
+        transcodingSwitch(R.string.transcoding_decode_vp9_10, Icons.Filled.Videocam, ENCODING_DECODE_VP9_10),
+        transcodingSwitch(R.string.transcoding_decode_rext_10, Icons.Filled.Videocam, ENCODING_DECODE_HEVC_REXT_10) { profile, _ ->
             profile.hasHevcRext
         },
-        transcodingSwitch(R.string.transcoding_decode_rext_12, Icons.Outlined.Videocam, ENCODING_DECODE_HEVC_REXT_12) { profile, _ ->
+        transcodingSwitch(R.string.transcoding_decode_rext_12, Icons.Filled.Videocam, ENCODING_DECODE_HEVC_REXT_12) { profile, _ ->
             profile.hasHevcRext
         },
-        transcodingSwitch(R.string.transcoding_hardware_encoding, Icons.Outlined.Memory, ENCODING_HARDWARE_ENCODING),
-        transcodingSwitch(R.string.transcoding_low_power, Icons.Outlined.Speed, ENCODING_INTEL_LOW_POWER_HEVC),
-        transcodingSwitch(R.string.transcoding_low_power_h264, Icons.Outlined.Speed, ENCODING_INTEL_LOW_POWER_H264),
-        transcodingSwitch(R.string.transcoding_nvdec, Icons.Outlined.Architecture, ENCODING_ENHANCED_NVDEC),
-        transcodingSwitch(R.string.transcoding_native, Icons.Outlined.Memory, ENCODING_SYSTEM_NATIVE),
-        transcodingSwitch(R.string.transcoding_tonemapping_enable, Icons.Outlined.Palette, ENCODING_TONEMAPPING),
-        transcodingSwitch(R.string.transcoding_vpp, Icons.Outlined.Palette, ENCODING_VPP_TONEMAPPING),
-        transcodingSwitch(R.string.transcoding_toolbox, Icons.Outlined.Palette, ENCODING_VIDEO_TOOLBOX_TONEMAPPING) { profile, _ ->
+        transcodingSwitch(R.string.transcoding_hardware_encoding, Icons.Filled.Memory, ENCODING_HARDWARE_ENCODING),
+        transcodingSwitch(R.string.transcoding_low_power, Icons.Filled.Speed, ENCODING_INTEL_LOW_POWER_HEVC),
+        transcodingSwitch(R.string.transcoding_low_power_h264, Icons.Filled.Speed, ENCODING_INTEL_LOW_POWER_H264),
+        transcodingSwitch(R.string.transcoding_nvdec, Icons.Filled.Architecture, ENCODING_ENHANCED_NVDEC),
+        transcodingSwitch(R.string.transcoding_native, Icons.Filled.Memory, ENCODING_SYSTEM_NATIVE),
+        transcodingSwitch(R.string.transcoding_tonemapping_enable, Icons.Filled.Palette, ENCODING_TONEMAPPING),
+        transcodingSwitch(R.string.transcoding_vpp, Icons.Filled.Palette, ENCODING_VPP_TONEMAPPING),
+        transcodingSwitch(R.string.transcoding_toolbox, Icons.Filled.Palette, ENCODING_VIDEO_TOOLBOX_TONEMAPPING) { profile, _ ->
             profile.hasAdvancedEncoding
         },
-        transcodingSwitch(R.string.transcoding_double_rate, Icons.Outlined.Speed, ENCODING_DEINTERLACE_DOUBLE_RATE),
-        transcodingSwitch(R.string.transcoding_vbr, Icons.Outlined.AudioFile, ENCODING_AUDIO_VBR) { profile, _ ->
+        transcodingSwitch(R.string.transcoding_double_rate, Icons.Filled.Speed, ENCODING_DEINTERLACE_DOUBLE_RATE),
+        transcodingSwitch(R.string.transcoding_vbr, Icons.Filled.AudioFile, ENCODING_AUDIO_VBR) { profile, _ ->
             profile.hasAdvancedEncoding
         },
-        transcodingSwitch(R.string.transcoding_throttle, Icons.Outlined.Pause, ENCODING_THROTTLING),
-        transcodingSwitch(R.string.transcoding_segment_deletion, Icons.Outlined.Layers, ENCODING_SEGMENT_DELETION) { profile, _ ->
+        transcodingSwitch(R.string.transcoding_throttle, Icons.Filled.Pause, ENCODING_THROTTLING),
+        transcodingSwitch(R.string.transcoding_segment_deletion, Icons.Filled.Layers, ENCODING_SEGMENT_DELETION) { profile, _ ->
             profile.hasAdvancedEncoding
         },
-        transcodingSwitch(R.string.transcoding_extraction, Icons.Outlined.Subtitles, ENCODING_SUBTITLE_EXTRACTION),
-        transcodingSwitch(R.string.transcoding_fallback_font, Icons.Outlined.FontDownload, ENCODING_FALLBACK_FONT),
+        transcodingSwitch(R.string.transcoding_extraction, Icons.Filled.Subtitles, ENCODING_SUBTITLE_EXTRACTION),
+        transcodingSwitch(R.string.transcoding_fallback_font, Icons.Filled.FontDownload, ENCODING_FALLBACK_FONT),
     )

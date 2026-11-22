@@ -5,10 +5,10 @@ import android.net.Uri
 import android.provider.Settings
 import androidx.annotation.StringRes
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.outlined.BatteryAlert
-import androidx.compose.material.icons.outlined.Notifications
-import androidx.compose.material.icons.outlined.NotificationsOff
-import androidx.compose.material.icons.outlined.Timer
+import androidx.compose.material.icons.filled.BatteryAlert
+import androidx.compose.material.icons.filled.Notifications
+import androidx.compose.material.icons.filled.NotificationsOff
+import androidx.compose.material.icons.filled.Timer
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -60,7 +60,7 @@ internal fun NotificationsGroup(
         rows =
             listOfNotNull(
                 ListItem(
-                    icon = Icons.Outlined.Notifications,
+                    icon = Icons.Filled.Notifications,
                     label = stringResource(R.string.notifications_switch),
                     detail = stringResource(R.string.notifications_switch_caption),
                     supportingMaxLines = 3,
@@ -69,7 +69,7 @@ internal fun NotificationsGroup(
                     key = SettingRows.THIS_APP_NOTIFICATIONS,
                 ),
                 ListItem(
-                    icon = Icons.Outlined.NotificationsOff,
+                    icon = Icons.Filled.NotificationsOff,
                     iconTint = BingeSentiment.Negative.fill(),
                     label = stringResource(R.string.notifications_blocked),
                     detail = stringResource(R.string.notifications_blocked_caption),
@@ -83,13 +83,13 @@ internal fun NotificationsGroup(
                     },
                 ).takeIf { settings.enabled && settings.blocked },
                 ListItem(
-                    icon = Icons.Outlined.Timer,
+                    icon = Icons.Filled.Timer,
                     label = stringResource(R.string.notifications_interval),
                     detail = stringResource(settings.intervalMinutes.intervalLabelRes()),
                     onClick = { picking = true },
                 ).takeIf { settings.enabled },
                 ListItem(
-                    icon = Icons.Outlined.BatteryAlert,
+                    icon = Icons.Filled.BatteryAlert,
                     iconTint = BingeSentiment.Caution.fill(),
                     label = stringResource(R.string.notifications_battery),
                     detail = stringResource(R.string.notifications_battery_caption),
@@ -117,7 +117,7 @@ internal fun IntervalChoices(
 ) {
     val choices =
         POLL_INTERVAL_CHOICES.map { minutes ->
-            BingeChoice(minutes, stringResource(minutes.intervalLabelRes()), icon = Icons.Outlined.Timer)
+            BingeChoice(minutes, stringResource(minutes.intervalLabelRes()), icon = Icons.Filled.Timer)
         }
     BingeChoiceSheetContent(
         title = stringResource(R.string.notifications_interval),

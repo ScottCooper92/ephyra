@@ -4,22 +4,22 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.outlined.Analytics
-import androidx.compose.material.icons.outlined.BugReport
-import androidx.compose.material.icons.outlined.Cast
-import androidx.compose.material.icons.outlined.History
-import androidx.compose.material.icons.outlined.HourglassEmpty
-import androidx.compose.material.icons.outlined.Image
-import androidx.compose.material.icons.outlined.Lock
-import androidx.compose.material.icons.outlined.Memory
-import androidx.compose.material.icons.outlined.Public
-import androidx.compose.material.icons.outlined.RestartAlt
-import androidx.compose.material.icons.outlined.Schedule
-import androidx.compose.material.icons.outlined.Speed
-import androidx.compose.material.icons.outlined.Storage
-import androidx.compose.material.icons.outlined.Sync
-import androidx.compose.material.icons.outlined.Timer
-import androidx.compose.material.icons.outlined.Warning
+import androidx.compose.material.icons.filled.Analytics
+import androidx.compose.material.icons.filled.BugReport
+import androidx.compose.material.icons.filled.Cast
+import androidx.compose.material.icons.filled.History
+import androidx.compose.material.icons.filled.HourglassEmpty
+import androidx.compose.material.icons.filled.Image
+import androidx.compose.material.icons.filled.Lock
+import androidx.compose.material.icons.filled.Memory
+import androidx.compose.material.icons.filled.Public
+import androidx.compose.material.icons.filled.RestartAlt
+import androidx.compose.material.icons.filled.Schedule
+import androidx.compose.material.icons.filled.Speed
+import androidx.compose.material.icons.filled.Storage
+import androidx.compose.material.icons.filled.Sync
+import androidx.compose.material.icons.filled.Timer
+import androidx.compose.material.icons.filled.Warning
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -150,7 +150,7 @@ private fun AdvancedBody(
                 rows =
                     listOf(
                         ListItem(
-                            icon = Icons.Outlined.RestartAlt,
+                            icon = Icons.Filled.RestartAlt,
                             label = stringResource(R.string.advanced_restart),
                             detail = stringResource(R.string.advanced_restart_detail),
                             supportingMaxLines = DETAIL_LINES,
@@ -185,9 +185,9 @@ private fun scanningRows(
     actions: AdvancedActions,
 ): List<ListItem> =
     listOfNotNull(
-        numberRow(settings, AdvancedNumber.MonitorDelay, LIBRARY_MONITOR_DELAY, Icons.Outlined.Timer, actions),
-        numberRow(settings, AdvancedNumber.UpdateDuration, LIBRARY_UPDATE_DURATION, Icons.Outlined.Schedule, actions),
-        numberRow(settings, AdvancedNumber.ScanConcurrency, LIBRARY_SCAN_CONCURRENCY, Icons.Outlined.Sync, actions),
+        numberRow(settings, AdvancedNumber.MonitorDelay, LIBRARY_MONITOR_DELAY, Icons.Filled.Timer, actions),
+        numberRow(settings, AdvancedNumber.UpdateDuration, LIBRARY_UPDATE_DURATION, Icons.Filled.Schedule, actions),
+        numberRow(settings, AdvancedNumber.ScanConcurrency, LIBRARY_SCAN_CONCURRENCY, Icons.Filled.Sync, actions),
     )
 
 @Composable
@@ -196,9 +196,9 @@ private fun imageRows(
     actions: AdvancedActions,
 ): List<ListItem> =
     listOfNotNull(
-        numberRow(settings, AdvancedNumber.ImageEncodingLimit, PARALLEL_IMAGE_ENCODING_LIMIT, Icons.Outlined.Image, actions),
-        numberRow(settings, AdvancedNumber.ExtractionTimeout, IMAGE_EXTRACTION_TIMEOUT_MS, Icons.Outlined.HourglassEmpty, actions),
-        numberRow(settings, AdvancedNumber.CacheSize, CACHE_SIZE, Icons.Outlined.Memory, actions),
+        numberRow(settings, AdvancedNumber.ImageEncodingLimit, PARALLEL_IMAGE_ENCODING_LIMIT, Icons.Filled.Image, actions),
+        numberRow(settings, AdvancedNumber.ExtractionTimeout, IMAGE_EXTRACTION_TIMEOUT_MS, Icons.Filled.HourglassEmpty, actions),
+        numberRow(settings, AdvancedNumber.CacheSize, CACHE_SIZE, Icons.Filled.Memory, actions),
     )
 
 @Composable
@@ -207,21 +207,21 @@ private fun sessionRows(
     actions: AdvancedActions,
 ): List<ListItem> =
     listOfNotNull(
-        numberRow(settings, AdvancedNumber.RetentionDays, ACTIVITY_LOG_RETENTION_DAYS, Icons.Outlined.History, actions),
-        numberRow(settings, AdvancedNumber.InactiveThreshold, INACTIVE_SESSION_THRESHOLD, Icons.Outlined.Storage, actions),
+        numberRow(settings, AdvancedNumber.RetentionDays, ACTIVITY_LOG_RETENTION_DAYS, Icons.Filled.History, actions),
+        numberRow(settings, AdvancedNumber.InactiveThreshold, INACTIVE_SESSION_THRESHOLD, Icons.Filled.Storage, actions),
         switchRow(
             settings.has(ENABLE_SLOW_RESPONSE_WARNING),
-            Icons.Outlined.Warning,
+            Icons.Filled.Warning,
             R.string.advanced_slow_warning,
             R.string.advanced_slow_warning_detail,
             settings.slowResponseWarning,
             SettingRows.ADVANCED_SLOW_WARNING,
             actions.onSlowResponseWarning,
         ),
-        numberRow(settings, AdvancedNumber.SlowThreshold, SLOW_RESPONSE_THRESHOLD_MS, Icons.Outlined.Speed, actions),
+        numberRow(settings, AdvancedNumber.SlowThreshold, SLOW_RESPONSE_THRESHOLD_MS, Icons.Filled.Speed, actions),
         switchRow(
             settings.has(ALLOW_CLIENT_LOG_UPLOAD),
-            Icons.Outlined.BugReport,
+            Icons.Filled.BugReport,
             R.string.advanced_client_logs,
             R.string.advanced_client_logs_detail,
             settings.allowClientLogUpload,
@@ -230,7 +230,7 @@ private fun sessionRows(
         ),
         switchRow(
             settings.has(ENABLE_METRICS),
-            Icons.Outlined.Analytics,
+            Icons.Filled.Analytics,
             R.string.advanced_metrics,
             R.string.advanced_metrics_detail,
             settings.metrics,
@@ -246,20 +246,20 @@ private fun clientRows(
 ): List<ListItem> =
     listOfNotNull(
         ListItem(
-            icon = Icons.Outlined.Public,
+            icon = Icons.Filled.Public,
             label = stringResource(R.string.advanced_cors),
             detail = hostsLabel(settings.corsHosts),
             onClick = { actions.onEditList(AdvancedList.CorsHosts) },
         ).takeIf { settings.has(CORS_HOSTS) },
         ListItem(
-            icon = Icons.Outlined.Cast,
+            icon = Icons.Filled.Cast,
             label = stringResource(R.string.advanced_cast),
             detail = pluralStringResource(R.plurals.advanced_cast_count, settings.castReceivers.size, settings.castReceivers.size),
             onClick = { actions.onEditList(AdvancedList.CastReceivers) },
         ).takeIf { settings.has(CAST_RECEIVER_APPLICATIONS) },
         switchRow(
             settings.has(ENABLE_LEGACY_AUTHORIZATION),
-            Icons.Outlined.Lock,
+            Icons.Filled.Lock,
             R.string.advanced_legacy_auth,
             R.string.advanced_legacy_auth_detail,
             settings.legacyAuthorization,

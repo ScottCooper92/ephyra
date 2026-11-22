@@ -6,10 +6,10 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.outlined.Category
-import androidx.compose.material.icons.outlined.Event
-import androidx.compose.material.icons.outlined.Person
-import androidx.compose.material.icons.outlined.PriorityHigh
+import androidx.compose.material.icons.filled.Category
+import androidx.compose.material.icons.filled.Event
+import androidx.compose.material.icons.filled.Person
+import androidx.compose.material.icons.filled.PriorityHigh
 import androidx.compose.material3.DateRangePicker
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
@@ -106,25 +106,25 @@ internal fun MainPage(
             rows =
                 listOfNotNull(
                     ListItem(
-                        icon = Icons.Outlined.Event,
+                        icon = Icons.Filled.Event,
                         label = stringResource(R.string.activity_filter_time),
                         detail = timeSummary(draft),
                         onClick = { push(TIME_PAGE) },
                     ),
                     ListItem(
-                        icon = Icons.Outlined.Person,
+                        icon = Icons.Filled.Person,
                         label = stringResource(R.string.activity_filter_who),
                         detail = whoSummary(draft),
                         onClick = { push(WHO_PAGE) },
                     ),
                     ListItem(
-                        icon = Icons.Outlined.PriorityHigh,
+                        icon = Icons.Filled.PriorityHigh,
                         label = stringResource(R.string.activity_filter_severity),
                         detail = severitySummary(draft.severity),
                         onClick = { push(SEVERITY_PAGE) },
                     ).takeIf { extended },
                     ListItem(
-                        icon = Icons.Outlined.Category,
+                        icon = Icons.Filled.Category,
                         label = stringResource(R.string.activity_filter_type),
                         detail = typeSummary(draft.type),
                         onClick = { push(TYPE_PAGE) },
@@ -163,11 +163,11 @@ internal fun TimePage(
 ) {
     val choices =
         listOfNotNull(
-            BingeChoice(ANY_CHOICE, stringResource(R.string.activity_time_any), icon = Icons.Outlined.Event),
-            BingeChoice(ActivityTimePreset.Today.name, stringResource(R.string.activity_time_today), icon = Icons.Outlined.Event),
-            BingeChoice(ActivityTimePreset.Last7Days.name, stringResource(R.string.activity_time_7), icon = Icons.Outlined.Event),
-            BingeChoice(ActivityTimePreset.Last30Days.name, stringResource(R.string.activity_time_30), icon = Icons.Outlined.Event),
-            BingeChoice(CUSTOM_CHOICE, stringResource(R.string.activity_time_custom), icon = Icons.Outlined.Event).takeIf { extended },
+            BingeChoice(ANY_CHOICE, stringResource(R.string.activity_time_any), icon = Icons.Filled.Event),
+            BingeChoice(ActivityTimePreset.Today.name, stringResource(R.string.activity_time_today), icon = Icons.Filled.Event),
+            BingeChoice(ActivityTimePreset.Last7Days.name, stringResource(R.string.activity_time_7), icon = Icons.Filled.Event),
+            BingeChoice(ActivityTimePreset.Last30Days.name, stringResource(R.string.activity_time_30), icon = Icons.Filled.Event),
+            BingeChoice(CUSTOM_CHOICE, stringResource(R.string.activity_time_custom), icon = Icons.Filled.Event).takeIf { extended },
         )
     val preset = draft.preset
     val selected =
@@ -248,15 +248,15 @@ internal fun WhoPage(
     LaunchedEffect(extended) { if (extended) actions.onLoadUsers() }
     val base =
         listOf(
-            BingeChoice(ANY_CHOICE, stringResource(R.string.activity_who_any), icon = Icons.Outlined.Person),
-            BingeChoice(SYSTEM_CHOICE, stringResource(R.string.activity_who_system), icon = Icons.Outlined.Person),
-            BingeChoice(USERS_CHOICE, stringResource(R.string.activity_who_users), icon = Icons.Outlined.Person),
+            BingeChoice(ANY_CHOICE, stringResource(R.string.activity_who_any), icon = Icons.Filled.Person),
+            BingeChoice(SYSTEM_CHOICE, stringResource(R.string.activity_who_system), icon = Icons.Filled.Person),
+            BingeChoice(USERS_CHOICE, stringResource(R.string.activity_who_users), icon = Icons.Filled.Person),
         )
     val choices: BingeChoiceList<String> =
         when {
             !extended -> BingeChoiceList.Ready(base)
             users is ActivityUsers.Ready ->
-                BingeChoiceList.Ready(base + users.names.map { BingeChoice(USER_PREFIX + it, it, icon = Icons.Outlined.Person) })
+                BingeChoiceList.Ready(base + users.names.map { BingeChoice(USER_PREFIX + it, it, icon = Icons.Filled.Person) })
             users is ActivityUsers.Failed ->
                 BingeChoiceList.Failed(
                     message = stringResource(R.string.activity_who_users_failed),
@@ -298,13 +298,13 @@ internal fun SeverityPage(
 ) {
     val choices =
         listOf(
-            BingeChoice(ANY_CHOICE, stringResource(R.string.activity_severity_any), icon = Icons.Outlined.PriorityHigh),
-            BingeChoice(Severity.Error.name, stringResource(R.string.activity_severity_error), icon = Icons.Outlined.PriorityHigh),
-            BingeChoice(Severity.Warning.name, stringResource(R.string.activity_severity_warning), icon = Icons.Outlined.PriorityHigh),
+            BingeChoice(ANY_CHOICE, stringResource(R.string.activity_severity_any), icon = Icons.Filled.PriorityHigh),
+            BingeChoice(Severity.Error.name, stringResource(R.string.activity_severity_error), icon = Icons.Filled.PriorityHigh),
+            BingeChoice(Severity.Warning.name, stringResource(R.string.activity_severity_warning), icon = Icons.Filled.PriorityHigh),
             BingeChoice(
                 Severity.Information.name,
                 stringResource(R.string.activity_severity_information),
-                icon = Icons.Outlined.PriorityHigh,
+                icon = Icons.Filled.PriorityHigh,
             ),
         )
     BingeChoiceSheetContent(
@@ -348,7 +348,7 @@ internal fun TypePage(
     actions: ActivityFilterActions,
 ) {
     val choices =
-        listOf(BingeChoice(ANY_CHOICE, stringResource(R.string.activity_type_any), icon = Icons.Outlined.Category)) +
+        listOf(BingeChoice(ANY_CHOICE, stringResource(R.string.activity_type_any), icon = Icons.Filled.Category)) +
             ACTIVITY_TYPES.map { BingeChoice(it, activityTypeLabel(it), icon = activityIcon(it)) }
     BingeChoiceSheetContent(
         title = stringResource(R.string.activity_filter_type),

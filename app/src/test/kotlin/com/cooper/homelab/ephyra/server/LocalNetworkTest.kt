@@ -1,15 +1,21 @@
 package com.cooper.homelab.ephyra.server
 
+import com.cooper.homelab.core.server.network.LocalNetworkDeniedException
 import com.cooper.homelab.core.server.network.LocalNetworkPermission
 import com.cooper.homelab.core.server.network.isLocalNetworkHost
 import com.cooper.homelab.ephyra.ui.ConnectionHealth
-import com.cooper.homelab.ephyra.ui.unreachableHealth
+import com.cooper.homelab.ephyra.ui.SetupError
+import com.cooper.homelab.ephyra.ui.monitoredUnreachable
+import com.cooper.homelab.ephyra.ui.refreshHealth
+import com.cooper.homelab.ephyra.ui.unreachableSetup
+import kotlinx.coroutines.runBlocking
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertFalse
 import org.junit.Assert.assertNotNull
 import org.junit.Assert.assertNull
 import org.junit.Assert.assertTrue
 import org.junit.Test
+import java.io.IOException
 
 /** Which servers need the local-network permission, and what a failed connection to each says about it. */
 class LocalNetworkTest {
@@ -67,14 +73,28 @@ class LocalNetworkTest {
 
     @Test
     fun `a local server that did not answer, without the permission, is the permission's fault`() {
-        assertEquals(ConnectionHealth.LocalNetworkDenied, unreachableHealth("http://192.168.1.2:8096", denied))
-        assertEquals(ConnectionHealth.LocalNetworkDenied, unreachableHealth("http://nas.local:8096", denied))
+        assertEquals(ConnectionHealth.LocalNetworkDenied, monitoredUnreachable("http://192.168.1.2:8096", denied))
+        assertEquals(ConnectionHealth.LocalNetworkDenied, monitoredUnreachable("http://nas.local:8096", denied))
     }
 
     @Test
     fun `with the permission, or for a server it does not cover, a silent server is just unreachable`() {
-        assertEquals(ConnectionHealth.Unreachable, unreachableHealth("http://192.168.1.2:8096", granted))
-        assertEquals(ConnectionHealth.Unreachable, unreachableHealth("https://jellyfin.example.com", denied))
-        assertEquals(ConnectionHealth.Unreachable, unreachableHealth("http://100.101.102.103:8096", denied))
+        assertEquals(ConnectionHealth.Unreachable, monitoredUnreachable("http://192.168.1.2:8096", granted))
+        assertEquals(ConnectionHealth.Unreachable, monitoredUnreachable("https://jellyfin.example.com", denied))
+        assertEquals(ConnectionHealth.Unreachable, monitoredUnreachable("http://100.101.102.103:8096", denied))
     }
+
+    @Test
+    fun `a refresh that failed names the local network only when the interceptor did`() =
+        runBlocking {
+            assertEquals(ConnectionHealth.LocalNetworkDenied, LocalNetworkDeniedException("192.168.1.2").refreshHealth())
+            assertEquals(ConnectionHealth.Unreachable, IOException("connection reset").refreshHealth())
+        }
+
+    @Test
+    fun `a setup call that failed names the local network only when the interceptor did`() =
+        runBlocking {
+            assertEquals(SetupError.LocalNetworkDenied, LocalNetworkDeniedException("192.168.1.2").unreachableSetup())
+            assertEquals(SetupError.Unreachable, IOException("connection reset").unreachableSetup())
+        }
 }

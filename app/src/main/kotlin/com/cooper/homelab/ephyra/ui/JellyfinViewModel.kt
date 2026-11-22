@@ -5,6 +5,7 @@ import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.binge.companion.sdk.attempt
+import com.cooper.homelab.core.foundation.ServerFailure
 import com.cooper.homelab.core.presentation.connect.LinkStash
 import com.cooper.homelab.core.server.connection.SecretCipher
 import com.cooper.homelab.core.server.network.CleartextConsent
@@ -24,6 +25,7 @@ import com.cooper.homelab.ephyra.server.SignedIn
 import com.cooper.homelab.ephyra.server.localNetworkHostOrNull
 import com.cooper.homelab.ephyra.server.noted
 import com.cooper.homelab.ephyra.server.publicUsers
+import com.cooper.homelab.ephyra.server.serverFailure
 import com.cooper.homelab.ephyra.server.userThumbnail
 import com.cooper.homelab.ephyra.telemetry.AnalyticsEvents
 import com.cooper.homelab.ephyra.telemetry.SignInReports
@@ -93,32 +95,33 @@ enum class ConnectionHealth {
 }
 
 /**
- * Why a server did not answer. The platform's refusal of the local network is a bare connection failure, so it is told
- * apart by who is being asked: a server on the local network, while the app does not hold the permission for it.
+ * Why a read of the signed-in server failed: the failure says it itself, since the local-network permission's refusal is
+ * named by the interceptor that raised it, and a request for a client certificate is told apart from silence.
  */
-internal fun unreachableHealth(
-    baseUrl: String,
-    localNetwork: LocalNetworkPermission,
-    cause: IOException? = null,
-): ConnectionHealth =
+internal suspend fun IOException.refreshHealth(): ConnectionHealth =
     when {
-        cause != null && asksForClientCertificate(listOf(cause)) -> ConnectionHealth.ClientCertificateNeeded
-        baseUrl.localNetworkHostOrNull() != null && !localNetwork.isGranted() -> ConnectionHealth.LocalNetworkDenied
+        asksForClientCertificate(listOf(this)) -> ConnectionHealth.ClientCertificateNeeded
+        serverFailure() == ServerFailure.LocalNetworkDenied -> ConnectionHealth.LocalNetworkDenied
         else -> ConnectionHealth.Unreachable
     }
 
-/** Why a connection to [baseUrl] failed while setting up: the permission for the local network, or the server itself. */
-internal fun unreachableSetup(
+/**
+ * Why the live calls went unanswered. The monitor learns only that calls failed, not why, so this one still tells a refusal of the
+ * local network by who is being asked: a server on the local network, while the app does not hold the permission for it.
+ */
+internal fun monitoredUnreachable(
     baseUrl: String,
     localNetwork: LocalNetworkPermission,
-): SetupError =
-    if (unreachableHealth(baseUrl, localNetwork) ==
+): ConnectionHealth =
+    if (baseUrl.localNetworkHostOrNull() != null && !localNetwork.isGranted()) {
         ConnectionHealth.LocalNetworkDenied
-    ) {
-        SetupError.LocalNetworkDenied
     } else {
-        SetupError.Unreachable
+        ConnectionHealth.Unreachable
     }
+
+/** Why a call made while setting up failed: the local network's refusal names itself, and anything else is the server not answering. */
+internal suspend fun Throwable.unreachableSetup(): SetupError =
+    if (setupFailure() == ServerFailure.LocalNetworkDenied) SetupError.LocalNetworkDenied else SetupError.Unreachable
 
 /** Picks a server found on the network: connects to it as if its address had been typed. */
 fun JellyfinViewModel.chooseServer(server: DiscoveredServer) {
@@ -213,7 +216,7 @@ internal fun UiState.SignedIn.afterReach(
     val signedIn = this
     return when {
         reach == CoreConnectionHealth.Unreachable && signedIn.health == ConnectionHealth.Healthy ->
-            signedIn.copy(health = unreachableHealth(signedIn.session.baseUrl, localNetwork), refreshFailed = true)
+            signedIn.copy(health = monitoredUnreachable(signedIn.session.baseUrl, localNetwork), refreshFailed = true)
         reach == CoreConnectionHealth.Healthy && signedIn.health == ConnectionHealth.Unreachable ->
             signedIn.copy(health = ConnectionHealth.Healthy, refreshFailed = false)
         else -> signedIn
@@ -398,7 +401,6 @@ class JellyfinViewModel(
             connection,
             _state,
             viewModelScope,
-            localNetwork,
             onBack = setup::showSignInAgain,
             signInByHand = setup::signInByHand,
         ) { url, server, signedIn -> setup.finish(url, server, signedIn, AnalyticsEvents.METHOD_PASSWORD) }

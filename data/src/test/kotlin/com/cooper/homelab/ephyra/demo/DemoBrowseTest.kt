@@ -1,6 +1,7 @@
 package com.cooper.homelab.ephyra.demo
 
 import com.cooper.homelab.core.foundation.ServerVersion
+import com.cooper.homelab.core.testing.DiscardLogger
 import com.cooper.homelab.ephyra.browse.ItemFilters
 import com.cooper.homelab.ephyra.browse.ItemKind
 import com.cooper.homelab.ephyra.browse.ItemSort
@@ -20,7 +21,6 @@ import com.cooper.homelab.ephyra.browse.PersonKind
 import com.cooper.homelab.ephyra.browse.SortField
 import com.cooper.homelab.ephyra.browse.TitleLinkKind
 import com.cooper.homelab.ephyra.server.ClientIdentity
-import com.cooper.homelab.ephyra.server.DiscardLogger
 import com.cooper.homelab.ephyra.server.JellyfinClient
 import com.cooper.homelab.ephyra.server.JellyfinServerProfile
 import com.cooper.homelab.ephyra.server.SegmentKind

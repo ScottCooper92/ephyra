@@ -23,14 +23,14 @@ import androidx.lifecycle.viewModelScope
 import androidx.navigation3.runtime.rememberNavBackStack
 import androidx.test.core.app.ApplicationProvider
 import com.cooper.homelab.core.presentation.connect.LinkStash
+import com.cooper.homelab.core.testing.DiscardLogger
+import com.cooper.homelab.core.testing.PlainCipher
 import com.cooper.homelab.ephyra.AppGraph
 import com.cooper.homelab.ephyra.ConsoleHost
 import com.cooper.homelab.ephyra.FakeJellyfin
-import com.cooper.homelab.ephyra.PlainCipher
 import com.cooper.homelab.ephyra.auth.SessionStore
 import com.cooper.homelab.ephyra.flags.LocalClientEnabled
 import com.cooper.homelab.ephyra.server.Connection
-import com.cooper.homelab.ephyra.server.DiscardLogger
 import com.cooper.homelab.ephyra.server.LibraryIndex
 import com.cooper.homelab.ephyra.session
 import com.cooper.homelab.ephyra.testSessionStore

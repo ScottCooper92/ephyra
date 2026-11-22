@@ -2,12 +2,13 @@ package com.cooper.homelab.ephyra.client.title
 
 import com.cooper.homelab.core.foundation.ServerFailure
 import com.cooper.homelab.core.foundation.ServerVersion
+import com.cooper.homelab.core.testing.DiscardLogger
+import com.cooper.homelab.core.testing.awaitEvent
 import com.cooper.homelab.ephyra.FakeJellyfin
 import com.cooper.homelab.ephyra.FakeTitle
 import com.cooper.homelab.ephyra.browse.JellyfinTitleRepository
 import com.cooper.homelab.ephyra.browse.JellyfinUserDataRepository
 import com.cooper.homelab.ephyra.server.ClientIdentity
-import com.cooper.homelab.ephyra.server.DiscardLogger
 import com.cooper.homelab.ephyra.server.JellyfinClient
 import com.cooper.homelab.ephyra.server.JellyfinServerProfile
 import com.cooper.homelab.ephyra.server.UserDataChange
@@ -15,7 +16,6 @@ import com.cooper.homelab.ephyra.server.serverFailure
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
-import kotlinx.coroutines.async
 import kotlinx.coroutines.cancel
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.first
@@ -238,10 +238,9 @@ class SeriesViewModelTest {
             val model = viewModel().also { it.start("series") }
             model.ready()
             jellyfin.status["/UserPlayedItems/series"] = 500
-            val event = scope.async { withTimeout(TIMEOUT) { model.events.first() } }
-            Thread.sleep(SETTLE_MILLIS)
+            val event = scope.awaitEvent(model.events)
             model.toggleWatched()
-            assertEquals(TitleEvent.WriteFailed(ServerFailure.ServerError), event.await())
+            assertEquals(TitleEvent.WriteFailed(ServerFailure.ServerError), withTimeout(TIMEOUT) { event.await() })
             assertEquals(false, (model.state.value as SeriesUiState.Ready).series.watched)
         }
 

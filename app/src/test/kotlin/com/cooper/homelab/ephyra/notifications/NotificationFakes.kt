@@ -8,10 +8,7 @@ import androidx.datastore.preferences.core.stringPreferencesKey
 import com.cooper.homelab.core.foundation.ServerId
 import com.cooper.homelab.core.notifications.DataStoreFeedCursorStore
 import com.cooper.homelab.core.notifications.FeedCursorStore
-import com.cooper.homelab.core.notifications.PollScheduler
 import com.cooper.homelab.core.testing.InMemoryDataStore
-import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.flowOf
 
 /** An [ActivityNotifier] that records what it was asked to post. */
 class FakeNotifier(
@@ -39,21 +36,6 @@ class FakeNotifier(
     override suspend fun cancelNotices(server: ServerId) {
         activityCancels++
     }
-}
-
-/** A [PollScheduler] that records its calls. */
-class FakeScheduler : PollScheduler {
-    val calls = mutableListOf<String>()
-
-    override fun scheduleNoSoonerThan(minutes: Int) {
-        calls += "schedule $minutes"
-    }
-
-    override fun cancel() {
-        calls += "cancel"
-    }
-
-    override fun nextRunMillis(): Flow<Long?> = flowOf(null)
 }
 
 /** The cursor store the app uses, over a DataStore that lives in memory. */

@@ -1,6 +1,7 @@
 package com.cooper.homelab.ephyra.ui.client
 
 import com.cooper.homelab.core.presentation.paging.GridState
+import com.cooper.homelab.core.testing.DiscardLogger
 import com.cooper.homelab.ephyra.FakeJellyfin
 import com.cooper.homelab.ephyra.FakeTitle
 import com.cooper.homelab.ephyra.browse.BrowseItem
@@ -9,7 +10,6 @@ import com.cooper.homelab.ephyra.browse.ItemKind
 import com.cooper.homelab.ephyra.client.libraries.LibraryFilterDraft
 import com.cooper.homelab.ephyra.client.libraries.LibraryGridUiState
 import com.cooper.homelab.ephyra.server.Connection
-import com.cooper.homelab.ephyra.server.DiscardLogger
 import com.cooper.homelab.ephyra.server.JellyfinServerProfile
 import com.cooper.homelab.ephyra.session
 import com.cooper.homelab.ephyra.testSessionStore

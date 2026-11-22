@@ -9,7 +9,7 @@ import com.cooper.homelab.core.foundation.Logger
 import com.cooper.homelab.core.server.connection.DeviceIdentity
 import com.cooper.homelab.core.server.connection.SecretCipher
 import com.cooper.homelab.core.server.connection.ServerRegistry
-import com.cooper.homelab.ephyra.PlainCipher
+import com.cooper.homelab.core.testing.PlainCipher
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job

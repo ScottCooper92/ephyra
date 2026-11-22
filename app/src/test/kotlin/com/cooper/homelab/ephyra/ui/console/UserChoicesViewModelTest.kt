@@ -1,9 +1,9 @@
 package com.cooper.homelab.ephyra.ui.console
 
 import androidx.lifecycle.ViewModel
+import com.cooper.homelab.core.testing.DiscardLogger
 import com.cooper.homelab.ephyra.FakeJellyfin
 import com.cooper.homelab.ephyra.server.Connection
-import com.cooper.homelab.ephyra.server.DiscardLogger
 import com.cooper.homelab.ephyra.server.LiveChannel
 import com.cooper.homelab.ephyra.server.ParentalRating
 import com.cooper.homelab.ephyra.session

@@ -8,11 +8,11 @@ import com.binge.companion.contracts.library.v1.LibraryServiceGrpcKt
 import com.binge.companion.contracts.library.v1.ListContinueWatchingRequest
 import com.binge.companion.contracts.v1.MediaId
 import com.binge.companion.contracts.v1.MediaType
+import com.cooper.homelab.core.testing.DiscardLogger
 import com.cooper.homelab.ephyra.FakeItem
 import com.cooper.homelab.ephyra.FakeJellyfin
 import com.cooper.homelab.ephyra.auth.SessionStore
 import com.cooper.homelab.ephyra.server.Connection
-import com.cooper.homelab.ephyra.server.DiscardLogger
 import com.cooper.homelab.ephyra.server.LibraryIndex
 import com.cooper.homelab.ephyra.server.ServerEvent
 import com.cooper.homelab.ephyra.session

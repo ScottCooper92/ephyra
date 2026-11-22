@@ -1,7 +1,7 @@
 package com.cooper.homelab.ephyra.demo
 
+import com.cooper.homelab.core.testing.DiscardLogger
 import com.cooper.homelab.ephyra.server.ClientIdentity
-import com.cooper.homelab.ephyra.server.DiscardLogger
 import com.cooper.homelab.ephyra.server.JellyfinClient
 import com.cooper.homelab.ephyra.server.nowPlayingFeed
 import com.cooper.homelab.ephyra.server.runTask

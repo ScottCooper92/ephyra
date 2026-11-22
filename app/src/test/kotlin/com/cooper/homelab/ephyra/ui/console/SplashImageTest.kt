@@ -2,9 +2,9 @@ package com.cooper.homelab.ephyra.ui.console
 
 import android.graphics.Bitmap
 import androidx.lifecycle.ViewModel
+import com.cooper.homelab.core.testing.DiscardLogger
 import com.cooper.homelab.ephyra.FakeJellyfin
 import com.cooper.homelab.ephyra.server.Connection
-import com.cooper.homelab.ephyra.server.DiscardLogger
 import com.cooper.homelab.ephyra.session
 import com.cooper.homelab.ephyra.testSessionStore
 import com.cooper.homelab.ephyra.ui.MainLooperDispatcher

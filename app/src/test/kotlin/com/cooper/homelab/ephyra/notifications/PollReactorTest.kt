@@ -4,6 +4,7 @@ import com.cooper.homelab.core.foundation.ServerId
 import com.cooper.homelab.core.notifications.CheckResult
 import com.cooper.homelab.core.notifications.PollOutcome
 import com.cooper.homelab.core.testing.InMemoryDataStore
+import com.cooper.homelab.core.testing.RecordingScheduler
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.runBlocking
 import org.junit.Assert.assertEquals
@@ -13,7 +14,7 @@ import org.junit.Test
 
 class PollReactorTest {
     private val notifier = FakeNotifier()
-    private val scheduler = FakeScheduler()
+    private val scheduler = RecordingScheduler()
     private val prefs = NotificationPrefs(InMemoryDataStore())
     private val reactor = pollReactor(notifier, scheduler, prefs) { false }
 

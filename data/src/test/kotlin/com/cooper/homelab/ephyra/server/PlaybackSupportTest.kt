@@ -1,5 +1,6 @@
 package com.cooper.homelab.ephyra.server
 
+import com.cooper.homelab.core.testing.DiscardLogger
 import kotlinx.coroutines.Dispatchers
 import kotlinx.serialization.json.Json
 import kotlinx.serialization.json.jsonObject

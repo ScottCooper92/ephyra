@@ -2,6 +2,7 @@ package com.cooper.homelab.ephyra
 
 import androidx.datastore.preferences.core.PreferenceDataStoreFactory
 import com.cooper.homelab.core.server.connection.SecretCipher
+import com.cooper.homelab.core.testing.PlainCipher
 import com.cooper.homelab.ephyra.auth.JellyfinSession
 import com.cooper.homelab.ephyra.auth.LegacySessionStore
 import com.cooper.homelab.ephyra.auth.SessionStore
@@ -1608,13 +1609,6 @@ class FakeJellyfin : Dispatcher() {
             """{"PlaySessionId":"play-2","MediaSources":[{"Id":"source-2","Container":"mkv","SupportsDirectPlay":false,""" +
                 """"SupportsDirectStream":false,"TranscodingUrl":"/videos/x/master.m3u8?MediaSourceId=source-2&ApiKey=token-1","MediaStreams":[]}]}"""
     }
-}
-
-/** Stores the plaintext as the "ciphertext": the Keystore is not there on a JVM. */
-object PlainCipher : SecretCipher {
-    override fun encrypt(plaintext: String): String = "enc:$plaintext"
-
-    override fun decrypt(ciphertext: String): String? = ciphertext.removePrefix("enc:").takeIf { ciphertext.startsWith("enc:") }
 }
 
 /** A [SessionStore] on a file of its own, in a directory that is deleted with the JVM. */

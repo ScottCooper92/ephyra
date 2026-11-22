@@ -25,6 +25,7 @@ import com.cooper.homelab.ephyra.server.saveBranding
 import com.cooper.homelab.ephyra.server.saveServerConfiguration
 import com.cooper.homelab.ephyra.server.serverConfiguration
 import com.cooper.homelab.ephyra.server.serverSettings
+import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.async
 import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -77,6 +78,8 @@ sealed interface ServerSettingsUiState {
  */
 class ServerSettingsViewModel(
     private val connection: Connection,
+    private val work: CoroutineDispatcher,
+    private val io: CoroutineDispatcher,
 ) : ViewModel() {
     private val _state = MutableStateFlow<ServerSettingsUiState>(ServerSettingsUiState.Loading)
     val state: StateFlow<ServerSettingsUiState> = _state.asStateFlow()
@@ -119,6 +122,8 @@ class ServerSettingsViewModel(
                 brand.adoptKey(SPLASHSCREEN_LOCATION, json[SPLASHSCREEN_LOCATION])
                 update { copy(branding = brand.shown.branding()) }
             },
+            work = work,
+            io = io,
         )
 
     init {

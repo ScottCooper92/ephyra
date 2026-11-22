@@ -124,6 +124,8 @@ class AppGraph(
     context: Context,
     /** Where every server call runs. */
     private val io: CoroutineDispatcher = Dispatchers.IO,
+    /** Where work on the device's own CPU runs, such as fitting a picture before it is sent. */
+    private val work: CoroutineDispatcher = Dispatchers.Default,
     /** The session store, for a test that signs in without the platform's keystore, which a unit test has none of. The app passes none. */
     private val sessionsForTest: SessionStore? = null,
 ) {
@@ -409,6 +411,9 @@ class AppGraph(
 
     /** The dispatcher this graph's reads and writes run on. */
     val ioDispatcher: CoroutineDispatcher get() = io
+
+    /** The dispatcher this graph's work on the device's own CPU runs on. */
+    val workDispatcher: CoroutineDispatcher get() = work
 
     private val playerDispatchers by lazy { PlayerDispatchers(main = Dispatchers.Main, io = io, default = io) }
 

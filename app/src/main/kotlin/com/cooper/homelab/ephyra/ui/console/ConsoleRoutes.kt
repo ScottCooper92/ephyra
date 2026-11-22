@@ -186,7 +186,18 @@ internal fun ProfilePictureRoute(
     val picture: ProfilePictureViewModel =
         viewModel(
             key = "profile-picture:${userId.orEmpty()}",
-            factory = viewModelFactory { initializer { ProfilePictureViewModel(graph.connection, newRoute, userId) } },
+            factory =
+                viewModelFactory {
+                    initializer {
+                        ProfilePictureViewModel(
+                            graph.connection,
+                            newRoute,
+                            userId,
+                            work = graph.workDispatcher,
+                            io = graph.ioDispatcher,
+                        )
+                    }
+                },
         )
     val state by picture.state.collectAsStateWithLifecycle()
     val resolver = LocalContext.current.applicationContext.contentResolver
@@ -328,7 +339,12 @@ private fun ServerSettingsRoute(
     onBack: () -> Unit,
 ) {
     val settings: ServerSettingsViewModel =
-        viewModel(factory = viewModelFactory { initializer { ServerSettingsViewModel(graph.connection) } })
+        viewModel(
+            factory =
+                viewModelFactory {
+                    initializer { ServerSettingsViewModel(graph.connection, graph.workDispatcher, graph.ioDispatcher) }
+                },
+        )
     val state by settings.state.collectAsStateWithLifecycle()
     val splash by settings.splashImage.state.collectAsStateWithLifecycle()
     val resolver = LocalContext.current.contentResolver

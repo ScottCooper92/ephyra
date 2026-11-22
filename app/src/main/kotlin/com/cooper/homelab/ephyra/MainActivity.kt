@@ -291,7 +291,7 @@ internal fun ConsoleHost(
     // The client's shell shows while the gate is on. Until the gate is read, the flag alone decides, right for anyone who has not opted out.
     val tabs = rememberEphyraTabs()
     val clientOn = clientResolved ?: graph.clientGate.fallback
-    // Turning the client off or on keeps the page the user is on, and the Server tab, where the toggle is, shows under it.
+    // Turning the client off or on no longer sends the user to the start tab: the Server tab, where the toggle is, shows. A page open above the root still closes (see settleHome).
     KeepPlaceOnGateChange(clientResolved, tabs, offTab = EphyraTab.Server)
     // A session that ends takes what the Server tab parked with it, so the next account does not find it.
     RestartOnSessionEnd(state.connected(), tabs, backStack)

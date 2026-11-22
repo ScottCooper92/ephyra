@@ -5,7 +5,7 @@ import com.cooper.homelab.ephyra.server.JellyfinServerProfile
 
 /**
  * The signed-in user's libraries. A failed read throws what the transport throws (`JellyfinHttpException`,
- * `JellyfinUnreadableAnswer`, an `IOException`); the view model decides how to show it.
+ * `UnreadableAnswerException`, an `IOException`); the view model decides how to show it.
  */
 interface LibraryRepository {
     /** The libraries the user can see, in their home's order. */

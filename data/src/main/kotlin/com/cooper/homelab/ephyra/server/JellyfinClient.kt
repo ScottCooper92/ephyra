@@ -2,6 +2,7 @@ package com.cooper.homelab.ephyra.server
 
 import com.binge.companion.sdk.attempt
 import com.cooper.homelab.core.foundation.Logger
+import com.cooper.homelab.core.server.network.UnreadableAnswerException
 import com.cooper.homelab.ephyra.demo.DemoTransport
 import com.cooper.homelab.ephyra.demo.isDemo
 import kotlinx.coroutines.CoroutineDispatcher
@@ -40,16 +41,6 @@ class JellyfinHttpException(
     path: String,
     val reason: String? = null,
 ) : IOException("Jellyfin answered $code for $path")
-
-/**
- * A 2xx answer that is not the JSON the call needs: not JSON at all (a captive portal's HTML login page,
- * a proxy's error page), or JSON of the wrong shape. An [IOException], so every caller that already
- * treats a failed call as "the server could not be reached" treats this one the same way.
- */
-class JellyfinUnreadableAnswer(
-    path: String,
-    cause: Throwable? = null,
-) : IOException("Jellyfin's answer for $path is not the JSON it should be", cause)
 
 /** Who this app is to the server: the `Authorization: MediaBrowser …` header's fields. */
 data class ClientIdentity(
@@ -223,7 +214,7 @@ class JellyfinClient(
                 try {
                     if (text.isBlank()) JsonNull else PARSER.parseToJsonElement(text)
                 } catch (e: SerializationException) {
-                    throw JellyfinUnreadableAnswer(path, e)
+                    throw UnreadableAnswerException(e)
                 }
             }
         return json to from
@@ -303,7 +294,7 @@ private const val REASON_MAX_CHARS = 300
 /** Percent-encoded as a URI component: `%20` for a space, not the form encoding's `+`. */
 private fun String.encoded(): String = URLEncoder.encode(this, "UTF-8").replace("+", "%20")
 
-private fun JsonElement.asObject(path: String): JsonObject = this as? JsonObject ?: throw JellyfinUnreadableAnswer(path)
+private fun JsonElement.asObject(path: String): JsonObject = this as? JsonObject ?: throw UnreadableAnswerException()
 
 /** This client with a longer wait for an answer, for the one call the server answers only when its work is done. */
 fun JellyfinClient.withReadTimeout(millis: Long): JellyfinClient =

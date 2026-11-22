@@ -1,5 +1,6 @@
 package com.cooper.homelab.ephyra.server
 
+import com.cooper.homelab.core.server.network.UnreadableAnswerException
 import kotlinx.serialization.json.JsonArray
 import kotlinx.serialization.json.JsonElement
 import kotlinx.serialization.json.JsonObject
@@ -106,7 +107,7 @@ private fun folders(
     answer: JsonElement,
     label: String,
 ): List<ServerFolder> {
-    val entries = answer as? JsonArray ?: throw JellyfinUnreadableAnswer(label)
+    val entries = answer as? JsonArray ?: throw UnreadableAnswerException()
     return entries.mapNotNull { element ->
         val json = element as? JsonObject ?: return@mapNotNull null
         val path = json.string("Path")?.takeIf { it.isNotBlank() } ?: return@mapNotNull null

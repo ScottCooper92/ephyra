@@ -1,5 +1,6 @@
 package com.cooper.homelab.ephyra.browse
 
+import com.cooper.homelab.core.server.network.UnreadableAnswerException
 import com.cooper.homelab.ephyra.FakeJellyfin
 import com.cooper.homelab.ephyra.FakeTitle
 import com.cooper.homelab.ephyra.server.ClientIdentity
@@ -7,7 +8,6 @@ import com.cooper.homelab.ephyra.server.DiscardLogger
 import com.cooper.homelab.ephyra.server.JellyfinClient
 import com.cooper.homelab.ephyra.server.JellyfinHttpException
 import com.cooper.homelab.ephyra.server.JellyfinServerProfile
-import com.cooper.homelab.ephyra.server.JellyfinUnreadableAnswer
 import com.cooper.homelab.ephyra.server.JellyfinVersion
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.runBlocking
@@ -343,7 +343,7 @@ class BrowseReadsTest {
         assertEquals(500, assertThrows(JellyfinHttpException::class.java) { runBlocking { items.items(movies) } }.code)
         jellyfin.status.clear()
         jellyfin.notJson += "/Items"
-        assertThrows(JellyfinUnreadableAnswer::class.java) { runBlocking { items.items(movies) } }
+        assertThrows(UnreadableAnswerException::class.java) { runBlocking { items.items(movies) } }
         jellyfin.status["/UserViews"] = 401
         assertEquals(401, assertThrows(JellyfinHttpException::class.java) { runBlocking { libraries.views() } }.code)
     }

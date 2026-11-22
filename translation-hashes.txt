@@ -211,16 +211,6 @@ app:client_play_http_message  a0db1483d1b0
 app:client_play_http_title  61ada6aebad5
 app:companion_label  8e03b3c29d2b
 app:companion_locale  3d968247019d
-app:connection_client_certificate_body  5bd1aacc29da
-app:connection_client_certificate_headline  512bbe7f06d2
-app:connection_couldnt_load_body  99d029d36d24
-app:connection_couldnt_load_headline  1360a3cc2434
-app:connection_edit_server  2e73abd54f5a
-app:connection_local_network_body  5ff0424fd4c8
-app:connection_local_network_headline  63035dd30475
-app:connection_retry  d8b8392e2c54
-app:connection_unreachable_body  729e4c4edc93
-app:connection_unreachable_headline  4da010bad62f
 app:console_account_title  dbb5f6371b6a
 app:console_activity_detail  3487307bf3ea
 app:console_advanced_detail  07995bcf80d8

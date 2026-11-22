@@ -62,21 +62,24 @@ import com.binge.designsystem.tv.template.TvTwoPaneStyle
 import com.binge.designsystem.tv.theme.TvButtonStyle
 import com.cooper.homelab.core.flags.bingePromotion
 import com.cooper.homelab.core.foundation.ServerVersion
+import com.cooper.homelab.core.uiandroid.connection.ConnectionAutoRetryEffect
 import com.cooper.homelab.core.uiandroid.flags.LocalFlags
 import com.cooper.homelab.ephyra.R
 import com.cooper.homelab.ephyra.feedback.installBugReportUrl
 import com.cooper.homelab.ephyra.server.ForgotPasswordAction
 import com.cooper.homelab.ephyra.server.knownRelease
 import com.cooper.homelab.ephyra.ui.Actions
-import com.cooper.homelab.ephyra.ui.ConnectionAutoRetry
 import com.cooper.homelab.ephyra.ui.ConnectionHealth
 import com.cooper.homelab.ephyra.ui.ForgotPasswordStep
 import com.cooper.homelab.ephyra.ui.UiState
 import com.cooper.homelab.ephyra.ui.connectionBody
 import com.cooper.homelab.ephyra.ui.connectionHeadline
 import com.cooper.homelab.ephyra.ui.errorText
+import com.cooper.homelab.ephyra.ui.problem
+import com.cooper.homelab.ephyra.ui.rememberRetryPolicy
 import com.binge.designsystem.R as DesR
 import com.binge.designsystem.tv.R as TvR
+import com.cooper.homelab.core.uiandroid.R as CoreR
 
 /** Lines a status under a TV form always takes, so a longer message never moves what is above it. */
 private const val STATUS_LINES = 2
@@ -519,7 +522,7 @@ private fun TvSignedInPage(
     // answered yet offers neither its settings nor a refresh, only the way out, so a start off the network does not look usable.
     val problem = state.health.isProblem
     val settled = state.health == ConnectionHealth.Healthy
-    if (problem) ConnectionAutoRetry(state.health, state.refreshing, actions.onRefresh)
+    if (problem) ConnectionAutoRetryEffect(state.health.problem(), state.refreshing, actions.onRefresh, rememberRetryPolicy())
     val accountRows =
         serverRows(state, actions) +
             listOfNotNull(
@@ -642,9 +645,9 @@ private fun connectionRows(
         if (state.health == ConnectionHealth.LocalNetworkDenied && allow != null) {
             tvActionRow(RETRY_KEY, stringResource(allow.shortLabel), Icons.Filled.Router, allow.run)
         } else {
-            tvActionRow(RETRY_KEY, stringResource(R.string.connection_retry), Icons.Filled.Refresh, actions.onRefresh, state.refreshing)
+            tvActionRow(RETRY_KEY, stringResource(CoreR.string.connection_retry), Icons.Filled.Refresh, actions.onRefresh, state.refreshing)
         },
-        tvActionRow(EDIT_SERVER_KEY, stringResource(R.string.connection_edit_server), Icons.Filled.Dns, actions.onChangeServer),
+        tvActionRow(EDIT_SERVER_KEY, stringResource(CoreR.string.connection_edit_connection), Icons.Filled.Dns, actions.onChangeServer),
     )
 }
 

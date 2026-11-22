@@ -4,7 +4,7 @@ import android.graphics.Bitmap
 import androidx.activity.ComponentActivity
 import androidx.compose.foundation.layout.Box
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.outlined.Person
+import androidx.compose.material.icons.filled.Person
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
@@ -37,7 +37,7 @@ class UserAvatarTest {
                         title = null,
                         rows =
                             listOf(
-                                ListItem(icon = Icons.Outlined.Person, label = "Ana", leadingContent = { UserAvatar("Ana", picture) }),
+                                ListItem(icon = Icons.Filled.Person, label = "Ana", leadingContent = { UserAvatar("Ana", picture) }),
                             ),
                     )
                 }

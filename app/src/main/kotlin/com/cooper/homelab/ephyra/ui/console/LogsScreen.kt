@@ -16,9 +16,9 @@ import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.text.selection.SelectionContainer
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.outlined.DeleteSweep
-import androidx.compose.material.icons.outlined.Description
-import androidx.compose.material.icons.outlined.Share
+import androidx.compose.material.icons.filled.DeleteSweep
+import androidx.compose.material.icons.filled.Description
+import androidx.compose.material.icons.filled.Share
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.PlainTooltip
@@ -181,7 +181,7 @@ internal fun LogPlaceholder() {
     EmptyScreen(
         message = stringResource(R.string.logs_select),
         title = stringResource(R.string.logs_select_title),
-        icon = Icons.Outlined.Description,
+        icon = Icons.Filled.Description,
     )
 }
 
@@ -236,7 +236,7 @@ private fun FilesList(
     ) {
         state.retention?.let { days -> item { RetentionRow(days, state.save.failed, actions) } }
         if (files.isEmpty()) {
-            item { ConsoleEmptyScreen(stringResource(R.string.logs_empty), Icons.Outlined.Description) }
+            item { ConsoleEmptyScreen(stringResource(R.string.logs_empty), Icons.Filled.Description) }
         } else {
             item {
                 ItemGroup(
@@ -245,7 +245,7 @@ private fun FilesList(
                     rows =
                         files.map { file ->
                             ListItem(
-                                icon = Icons.Outlined.Description,
+                                icon = Icons.Filled.Description,
                                 label = file.name,
                                 detail =
                                     listOfNotNull(
@@ -275,7 +275,7 @@ private fun RetentionRow(
         rows =
             listOf(
                 ListItem(
-                    icon = Icons.Outlined.DeleteSweep,
+                    icon = Icons.Filled.DeleteSweep,
                     label = stringResource(R.string.logs_retention_title),
                     detail =
                         if (unsent) {
@@ -379,7 +379,7 @@ private fun ShareAction(
     ) {
         ExpressiveIconButton(
             onClick = { onShare(open.name, open.visible.joinToString("\n") { it.text }) },
-            icon = Icons.Outlined.Share,
+            icon = Icons.Filled.Share,
             contentDescription = stringResource(R.string.logs_share_action),
             enabled = open.content is LogContent.Ready,
         )

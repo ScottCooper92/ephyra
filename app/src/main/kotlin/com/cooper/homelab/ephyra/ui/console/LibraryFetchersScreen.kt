@@ -3,9 +3,9 @@ package com.cooper.homelab.ephyra.ui.console
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.outlined.Extension
-import androidx.compose.material.icons.outlined.PhotoSizeSelectLarge
-import androidx.compose.material.icons.outlined.PowerSettingsNew
+import androidx.compose.material.icons.filled.Extension
+import androidx.compose.material.icons.filled.PhotoSizeSelectLarge
+import androidx.compose.material.icons.filled.PowerSettingsNew
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.dimensionResource
@@ -71,7 +71,7 @@ internal fun FetchersPage(
                     rows =
                         all.map { fetcher ->
                             ListItem(
-                                icon = Icons.Outlined.Extension,
+                                icon = Icons.Filled.Extension,
                                 label = fetcher.name,
                                 detail =
                                     stringResource(
@@ -101,7 +101,7 @@ private fun ImageOptionsGroup(
             rows =
                 slots.map { slot ->
                     ListItem(
-                        icon = Icons.Outlined.PhotoSizeSelectLarge,
+                        icon = Icons.Filled.PhotoSizeSelectLarge,
                         label = slot.type,
                         detail = slot.detail(),
                         onClick = { actions.onAsk(LibraryDialog.ImageOptions(type.type, slot.type)) },
@@ -184,7 +184,7 @@ internal fun FetcherPage(
             switches =
                 listOf(
                     ListItem(
-                        icon = Icons.Outlined.PowerSettingsNew,
+                        icon = Icons.Filled.PowerSettingsNew,
                         label = stringResource(R.string.library_provider_use),
                         toggled = fetcher.enabled,
                         onClick = { actions.onFetcher(page.kind, page.type, fetcher.name, !fetcher.enabled) },

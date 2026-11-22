@@ -11,12 +11,12 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.outlined.ArrowUpward
-import androidx.compose.material.icons.outlined.Check
-import androidx.compose.material.icons.outlined.Edit
-import androidx.compose.material.icons.outlined.Folder
-import androidx.compose.material.icons.outlined.FolderOff
-import androidx.compose.material.icons.outlined.Storage
+import androidx.compose.material.icons.filled.ArrowUpward
+import androidx.compose.material.icons.filled.Check
+import androidx.compose.material.icons.filled.Edit
+import androidx.compose.material.icons.filled.Folder
+import androidx.compose.material.icons.filled.FolderOff
+import androidx.compose.material.icons.filled.Storage
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -121,7 +121,7 @@ internal fun FolderPicker(
             BingeFilledButton(
                 label = stringResource(R.string.library_folder_choose),
                 onClick = { current?.let { onChoose(it.path) } },
-                leadingIcon = Icons.Outlined.Check,
+                leadingIcon = Icons.Filled.Check,
                 enabled = current != null && !busy,
                 loading = busy,
                 modifier = Modifier.fillMaxWidth(),
@@ -129,7 +129,7 @@ internal fun FolderPicker(
             BingeOutlinedButton(
                 label = stringResource(R.string.library_folder_type),
                 onClick = onType,
-                leadingIcon = Icons.Outlined.Edit,
+                leadingIcon = Icons.Filled.Edit,
                 enabled = !busy,
                 modifier = Modifier.fillMaxWidth(),
             )
@@ -147,7 +147,7 @@ private fun FolderList(
     val rows =
         listOfNotNull(
             ListItem(
-                icon = Icons.Outlined.ArrowUpward,
+                icon = Icons.Filled.ArrowUpward,
                 label = stringResource(R.string.library_folder_up),
                 destination = ListItemDestination.Action,
                 onClick = actions.onUp,
@@ -156,13 +156,13 @@ private fun FolderList(
             state.folders
                 .map { folder ->
                     ListItem(
-                        icon = if (state.trail.isEmpty()) Icons.Outlined.Storage else Icons.Outlined.Folder,
+                        icon = if (state.trail.isEmpty()) Icons.Filled.Storage else Icons.Filled.Folder,
                         label = folder.name,
                         onClick = { actions.onEnter(folder) },
                     )
                 }.ifEmpty {
                     listOf(
-                        ListItem(icon = Icons.Outlined.FolderOff, label = stringResource(R.string.library_folder_empty), clickable = false),
+                        ListItem(icon = Icons.Filled.FolderOff, label = stringResource(R.string.library_folder_empty), clickable = false),
                     )
                 }
     // The list scrolls itself, and the sheet sees it: a swipe up grows a part-way sheet before the rows move.

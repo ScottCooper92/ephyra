@@ -8,9 +8,9 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.outlined.Extension
-import androidx.compose.material.icons.outlined.Info
-import androidx.compose.material.icons.outlined.OpenInBrowser
+import androidx.compose.material.icons.filled.Extension
+import androidx.compose.material.icons.filled.Info
+import androidx.compose.material.icons.filled.OpenInBrowser
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Text
@@ -98,7 +98,7 @@ internal fun PluginPage(
                 rows =
                     listOfNotNull(
                         ListItem(
-                            icon = Icons.Outlined.Extension,
+                            icon = Icons.Filled.Extension,
                             label = stringResource(R.string.plugins_enabled),
                             detail = listOf(plugin.version, statusLabel(plugin.status)).joinToString(" · "),
                             toggled = state.isEnabled(plugin),
@@ -107,13 +107,13 @@ internal fun PluginPage(
                         ).takeIf { plugin.status.canToggle },
                         // One that can't be switched still says where it stands, and why it can't.
                         ListItem(
-                            icon = Icons.Outlined.Info,
+                            icon = Icons.Filled.Info,
                             label = statusLabel(plugin.status),
                             detail = plugin.version,
                             clickable = false,
                         ).takeIf { !plugin.status.canToggle },
                         ListItem(
-                            icon = Icons.Outlined.OpenInBrowser,
+                            icon = Icons.Filled.OpenInBrowser,
                             label = stringResource(R.string.plugins_settings),
                             detail = stringResource(R.string.plugins_settings_detail),
                             supportingMaxLines = 3,

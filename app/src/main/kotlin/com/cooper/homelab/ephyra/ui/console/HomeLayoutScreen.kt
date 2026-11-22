@@ -4,22 +4,22 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.automirrored.outlined.PlaylistPlay
-import androidx.compose.material.icons.outlined.AutoStories
-import androidx.compose.material.icons.outlined.CollectionsBookmark
-import androidx.compose.material.icons.outlined.Folder
-import androidx.compose.material.icons.outlined.FormatListNumbered
-import androidx.compose.material.icons.outlined.GridView
-import androidx.compose.material.icons.outlined.HideSource
-import androidx.compose.material.icons.outlined.LiveTv
-import androidx.compose.material.icons.outlined.Movie
-import androidx.compose.material.icons.outlined.MusicNote
-import androidx.compose.material.icons.outlined.NewReleases
-import androidx.compose.material.icons.outlined.PhotoLibrary
-import androidx.compose.material.icons.outlined.Tv
-import androidx.compose.material.icons.outlined.VideoLibrary
-import androidx.compose.material.icons.outlined.ViewModule
-import androidx.compose.material.icons.outlined.Workspaces
+import androidx.compose.material.icons.automirrored.filled.PlaylistPlay
+import androidx.compose.material.icons.filled.AutoStories
+import androidx.compose.material.icons.filled.CollectionsBookmark
+import androidx.compose.material.icons.filled.Folder
+import androidx.compose.material.icons.filled.FormatListNumbered
+import androidx.compose.material.icons.filled.GridView
+import androidx.compose.material.icons.filled.HideSource
+import androidx.compose.material.icons.filled.LiveTv
+import androidx.compose.material.icons.filled.Movie
+import androidx.compose.material.icons.filled.MusicNote
+import androidx.compose.material.icons.filled.NewReleases
+import androidx.compose.material.icons.filled.PhotoLibrary
+import androidx.compose.material.icons.filled.Tv
+import androidx.compose.material.icons.filled.VideoLibrary
+import androidx.compose.material.icons.filled.ViewModule
+import androidx.compose.material.icons.filled.Workspaces
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -149,7 +149,7 @@ internal fun HomeLayoutPlaceholder() {
     EmptyScreen(
         message = stringResource(R.string.home_layout_select),
         title = stringResource(R.string.home_layout_select_title),
-        icon = Icons.Outlined.VideoLibrary,
+        icon = Icons.Filled.VideoLibrary,
     )
 }
 
@@ -180,7 +180,7 @@ private fun HomeLayoutBody(
                     }.ifEmpty {
                         listOf(
                             ListItem(
-                                icon = Icons.Outlined.VideoLibrary,
+                                icon = Icons.Filled.VideoLibrary,
                                 label = stringResource(R.string.home_layout_no_libraries),
                                 clickable = false,
                             ),
@@ -194,7 +194,7 @@ private fun HomeLayoutBody(
                     state.groupable.map { option ->
                         val grouped = option.id in layout.grouped
                         ListItem(
-                            icon = Icons.Outlined.Workspaces,
+                            icon = Icons.Filled.Workspaces,
                             label = option.name,
                             detail = stringResource(R.string.home_layout_grouped_detail),
                             supportingMaxLines = HOME_DETAIL_LINES,
@@ -209,14 +209,14 @@ private fun HomeLayoutBody(
             rows =
                 listOf(
                     ListItem(
-                        icon = Icons.Outlined.NewReleases,
+                        icon = Icons.Filled.NewReleases,
                         label = stringResource(R.string.home_layout_hide_played),
                         toggled = layout.hidePlayedInLatest,
                         onClick = { actions.onHidePlayedInLatest(!layout.hidePlayedInLatest) },
                         key = SettingRows.HOME_HIDE_PLAYED,
                     ),
                     ListItem(
-                        icon = Icons.Outlined.HideSource,
+                        icon = Icons.Filled.HideSource,
                         label = stringResource(R.string.home_layout_missing),
                         detail = stringResource(R.string.home_layout_missing_detail),
                         supportingMaxLines = HOME_DETAIL_LINES,
@@ -225,7 +225,7 @@ private fun HomeLayoutBody(
                         key = SettingRows.HOME_MISSING_EPISODES,
                     ),
                     ListItem(
-                        icon = Icons.Outlined.CollectionsBookmark,
+                        icon = Icons.Filled.CollectionsBookmark,
                         label = stringResource(R.string.home_layout_collections),
                         detail = stringResource(R.string.home_layout_collections_detail),
                         supportingMaxLines = HOME_DETAIL_LINES,
@@ -255,13 +255,13 @@ private fun LibraryPage(
         switches =
             listOf(
                 ListItem(
-                    icon = Icons.Outlined.ViewModule,
+                    icon = Icons.Filled.ViewModule,
                     label = stringResource(R.string.home_layout_in_my_media),
                     toggled = inMyMedia,
                     onClick = { actions.onInMyMedia(library.id, !inMyMedia) },
                 ),
                 ListItem(
-                    icon = Icons.Outlined.NewReleases,
+                    icon = Icons.Filled.NewReleases,
                     label = stringResource(R.string.home_layout_in_latest),
                     toggled = inLatest,
                     onClick = { actions.onInLatest(library.id, !inLatest) },
@@ -272,7 +272,7 @@ private fun LibraryPage(
         onMove = { actions.onMove(library.id, it) },
         position =
             ListItem(
-                icon = Icons.Outlined.FormatListNumbered,
+                icon = Icons.Filled.FormatListNumbered,
                 label = stringResource(R.string.home_layout_position, place + 1, state.libraries.size),
                 detail = stringResource(R.string.home_layout_order_detail),
                 supportingMaxLines = ORDER_DETAIL_LINES,
@@ -319,16 +319,16 @@ private fun UserView.whereShown(state: HomeLayoutUiState.Ready): Int {
 /** The icon for a library's kind, as its collection type names it. */
 internal fun UserView.icon(): ImageVector =
     when (collectionType) {
-        "movies" -> Icons.Outlined.Movie
-        "tvshows" -> Icons.Outlined.Tv
-        "music", "musicvideos" -> Icons.Outlined.MusicNote
-        "books" -> Icons.Outlined.AutoStories
-        "photos", "homevideos" -> Icons.Outlined.PhotoLibrary
-        "boxsets" -> Icons.Outlined.CollectionsBookmark
-        "playlists" -> Icons.AutoMirrored.Outlined.PlaylistPlay
-        "livetv" -> Icons.Outlined.LiveTv
-        "folders" -> Icons.Outlined.Folder
-        else -> Icons.Outlined.GridView
+        "movies" -> Icons.Filled.Movie
+        "tvshows" -> Icons.Filled.Tv
+        "music", "musicvideos" -> Icons.Filled.MusicNote
+        "books" -> Icons.Filled.AutoStories
+        "photos", "homevideos" -> Icons.Filled.PhotoLibrary
+        "boxsets" -> Icons.Filled.CollectionsBookmark
+        "playlists" -> Icons.AutoMirrored.Filled.PlaylistPlay
+        "livetv" -> Icons.Filled.LiveTv
+        "folders" -> Icons.Filled.Folder
+        else -> Icons.Filled.GridView
     }
 
 private const val LOADING_ROWS = 10

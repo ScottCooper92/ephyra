@@ -8,8 +8,8 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.outlined.Backup
-import androidx.compose.material.icons.outlined.CheckCircle
+import androidx.compose.material.icons.filled.Backup
+import androidx.compose.material.icons.filled.CheckCircle
 import androidx.compose.material3.SnackbarDuration
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.runtime.Composable
@@ -77,7 +77,7 @@ fun BackupsScreen(
         bottomBar = {
             CreateFooter(
                 label = stringResource(R.string.backups_new),
-                icon = Icons.Outlined.Backup,
+                icon = Icons.Filled.Backup,
                 onClick = { actions.onAskCreate(true) },
                 visible = state !is BackupsUiState.Failed,
                 enabled = ready != null && ready.restore != Restore.Restoring,
@@ -138,7 +138,7 @@ private fun Backups(
             }
         }
         if (state.backups.isEmpty()) {
-            item { ConsoleEmptyScreen(stringResource(R.string.backups_empty), Icons.Outlined.Backup) }
+            item { ConsoleEmptyScreen(stringResource(R.string.backups_empty), Icons.Filled.Backup) }
         } else {
             item {
                 ItemGroup(
@@ -163,7 +163,7 @@ private fun statusRows(
                 BackupCreation.Idle -> null
                 BackupCreation.Creating ->
                     ListItem(
-                        icon = Icons.Outlined.Backup,
+                        icon = Icons.Filled.Backup,
                         label = stringResource(R.string.backups_creating),
                         detail = stringResource(R.string.backups_creating_detail),
                         supportingMaxLines = STATUS_LINES,
@@ -175,7 +175,7 @@ private fun statusRows(
             when (state.restore) {
                 Restore.Restoring ->
                     ListItem(
-                        icon = Icons.Outlined.Backup,
+                        icon = Icons.Filled.Backup,
                         label = stringResource(R.string.backups_restoring),
                         detail = stringResource(R.string.backups_restoring_detail),
                         supportingMaxLines = STATUS_LINES,
@@ -184,7 +184,7 @@ private fun statusRows(
                     )
                 Restore.Restored ->
                     ListItem(
-                        icon = Icons.Outlined.CheckCircle,
+                        icon = Icons.Filled.CheckCircle,
                         label = stringResource(R.string.backups_restored),
                         detail = stringResource(R.string.backups_restored_detail),
                         supportingMaxLines = STATUS_LINES,
@@ -237,7 +237,7 @@ private fun ServerBackup.row(
     now: Long,
 ): ListItem =
     ListItem(
-        icon = Icons.Outlined.Backup,
+        icon = Icons.Filled.Backup,
         label = formatRelativeOrAbsolute(createdMillis, now) ?: stringResource(R.string.backups_date_unknown),
         detail = stringResource(R.string.backups_detail, serverVersion, options.summary()),
         supportingMaxLines = STATUS_LINES,

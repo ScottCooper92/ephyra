@@ -5,16 +5,16 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyListScope
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.automirrored.outlined.Article
-import androidx.compose.material.icons.outlined.BarChart
-import androidx.compose.material.icons.outlined.BugReport
-import androidx.compose.material.icons.outlined.Coffee
-import androidx.compose.material.icons.outlined.Description
-import androidx.compose.material.icons.outlined.Healing
-import androidx.compose.material.icons.outlined.Info
-import androidx.compose.material.icons.outlined.Science
-import androidx.compose.material.icons.outlined.Tune
-import androidx.compose.material.icons.outlined.VideoLibrary
+import androidx.compose.material.icons.automirrored.filled.Article
+import androidx.compose.material.icons.filled.BarChart
+import androidx.compose.material.icons.filled.BugReport
+import androidx.compose.material.icons.filled.Coffee
+import androidx.compose.material.icons.filled.Description
+import androidx.compose.material.icons.filled.Healing
+import androidx.compose.material.icons.filled.Info
+import androidx.compose.material.icons.filled.Science
+import androidx.compose.material.icons.filled.Tune
+import androidx.compose.material.icons.filled.VideoLibrary
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -85,7 +85,7 @@ internal fun AppGroup(
         rows =
             listOfNotNull(
                 ListItem(
-                    icon = Icons.Outlined.BugReport,
+                    icon = Icons.Filled.BugReport,
                     label = stringResource(R.string.settings_report_bug),
                     detail = stringResource(R.string.settings_report_bug_caption),
                     supportingMaxLines = CAPTION_LINES,
@@ -95,7 +95,7 @@ internal fun AppGroup(
                 // Only while the remote flag offers the client, which settings search cannot know, so the row has no search entry.
                 settings.client?.let { on ->
                     ListItem(
-                        icon = Icons.Outlined.VideoLibrary,
+                        icon = Icons.Filled.VideoLibrary,
                         label = stringResource(R.string.settings_client),
                         detail = stringResource(R.string.settings_client_caption),
                         supportingMaxLines = CAPTION_LINES,
@@ -104,7 +104,7 @@ internal fun AppGroup(
                     )
                 },
                 ListItem(
-                    icon = Icons.Outlined.BarChart,
+                    icon = Icons.Filled.BarChart,
                     label = stringResource(R.string.settings_share_usage_data),
                     detail = stringResource(R.string.settings_share_usage_data_caption),
                     supportingMaxLines = CAPTION_LINES,
@@ -113,7 +113,7 @@ internal fun AppGroup(
                     key = SettingRows.THIS_APP_USAGE_DATA,
                 ),
                 ListItem(
-                    icon = Icons.Outlined.Healing,
+                    icon = Icons.Filled.Healing,
                     label = stringResource(R.string.settings_send_crash_reports),
                     detail = stringResource(R.string.settings_send_crash_reports_caption),
                     supportingMaxLines = CAPTION_LINES,
@@ -124,7 +124,7 @@ internal fun AppGroup(
                 // The tip jar's row: only once Play has priced every step (see `TipState.Ready`).
                 onOpenTip?.let {
                     ListItem(
-                        icon = Icons.Outlined.Coffee,
+                        icon = Icons.Filled.Coffee,
                         label = stringResource(R.string.tip_row),
                         onClick = it,
                     )
@@ -145,32 +145,32 @@ internal fun AboutGroup(actions: Actions) {
         rows =
             listOf(
                 ListItem(
-                    icon = Icons.Outlined.Info,
+                    icon = Icons.Filled.Info,
                     label = stringResource(R.string.about_app_version),
                     detail = stringResource(R.string.about_version_format, BuildConfig.VERSION_NAME),
                     destination = ListItemDestination.External,
                     onClick = context::openPlayStoreListing,
                 ),
                 ListItem(
-                    icon = Icons.AutoMirrored.Outlined.Article,
+                    icon = Icons.AutoMirrored.Filled.Article,
                     label = stringResource(R.string.about_privacy_policy),
                     destination = ListItemDestination.External,
                     onClick = { context.openInBrowser(PRIVACY_POLICY_URL) },
                 ),
                 ListItem(
-                    icon = Icons.Outlined.Description,
+                    icon = Icons.Filled.Description,
                     label = stringResource(R.string.licences_title),
                     selected = actions.isOpenBeside(ConsolePage.Licences),
                     onClick = { actions.onOpenPage(ConsolePage.Licences) },
                 ),
                 ListItem(
-                    icon = Icons.Outlined.BugReport,
+                    icon = Icons.Filled.BugReport,
                     label = stringResource(CoreR.string.diagnostics_title),
                     selected = actions.isOpenBeside(ConsolePage.Diagnostics),
                     onClick = { actions.onOpenPage(ConsolePage.Diagnostics) },
                 ),
                 ListItem(
-                    icon = Icons.Outlined.Science,
+                    icon = Icons.Filled.Science,
                     label = stringResource(R.string.about_join_beta),
                     destination = ListItemDestination.External,
                     onClick = context::openTestingOptIn,
@@ -251,7 +251,7 @@ internal fun LazyListScope.thisAppRow(actions: Actions) {
             rows =
                 listOf(
                     ListItem(
-                        icon = Icons.Outlined.Tune,
+                        icon = Icons.Filled.Tune,
                         label = stringResource(R.string.settings_group_app),
                         detail = stringResource(R.string.this_app_detail),
                         selected = actions.isOpenBeside(ConsolePage.ThisApp),

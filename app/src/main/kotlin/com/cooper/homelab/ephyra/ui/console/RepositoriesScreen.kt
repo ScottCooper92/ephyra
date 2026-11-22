@@ -7,8 +7,8 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.outlined.CloudQueue
-import androidx.compose.material.icons.outlined.Delete
+import androidx.compose.material.icons.filled.CloudQueue
+import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -108,7 +108,7 @@ private fun PluginRepository.row(
     actions: RepositoriesActions,
 ): ListItem =
     ListItem(
-        icon = Icons.Outlined.CloudQueue,
+        icon = Icons.Filled.CloudQueue,
         label = name.ifBlank { url },
         detail = url.takeIf { name.isNotBlank() },
         clickable = false,
@@ -119,7 +119,7 @@ private fun PluginRepository.row(
                 {
                     ExpressiveIconButton(
                         onClick = { actions.onAskRemove(this) },
-                        icon = Icons.Outlined.Delete,
+                        icon = Icons.Filled.Delete,
                         contentDescription = stringResource(R.string.repositories_remove),
                         tint = MaterialTheme.colorScheme.error,
                     )

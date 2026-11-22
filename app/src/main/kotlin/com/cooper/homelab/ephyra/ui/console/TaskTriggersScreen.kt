@@ -13,12 +13,12 @@ import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.outlined.DateRange
-import androidx.compose.material.icons.outlined.Delete
-import androidx.compose.material.icons.outlined.PowerSettingsNew
-import androidx.compose.material.icons.outlined.Repeat
-import androidx.compose.material.icons.outlined.Schedule
-import androidx.compose.material.icons.outlined.Today
+import androidx.compose.material.icons.filled.DateRange
+import androidx.compose.material.icons.filled.Delete
+import androidx.compose.material.icons.filled.PowerSettingsNew
+import androidx.compose.material.icons.filled.Repeat
+import androidx.compose.material.icons.filled.Schedule
+import androidx.compose.material.icons.filled.Today
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -97,7 +97,7 @@ internal fun TaskTriggers(
             EmptyScreen(
                 message = stringResource(R.string.tasks_triggers_empty),
                 title = stringResource(R.string.tasks_triggers_empty_title),
-                icon = Icons.Outlined.Schedule,
+                icon = Icons.Filled.Schedule,
             )
         }
         if (state.adding) AddTriggerSheet(actions)
@@ -139,7 +139,7 @@ private fun TaskTrigger.row(
                 {
                     ExpressiveIconButton(
                         onClick = { actions.onRemoveTrigger(index) },
-                        icon = Icons.Outlined.Delete,
+                        icon = Icons.Filled.Delete,
                         contentDescription = stringResource(R.string.tasks_trigger_remove),
                         tint = MaterialTheme.colorScheme.error,
                     )
@@ -149,11 +149,11 @@ private fun TaskTrigger.row(
 
 private fun TaskTrigger.icon(): ImageVector =
     when (kind) {
-        TriggerKind.Daily -> Icons.Outlined.Today
-        TriggerKind.Weekly -> Icons.Outlined.DateRange
-        TriggerKind.Interval -> Icons.Outlined.Repeat
-        TriggerKind.Startup -> Icons.Outlined.PowerSettingsNew
-        null -> Icons.Outlined.Schedule
+        TriggerKind.Daily -> Icons.Filled.Today
+        TriggerKind.Weekly -> Icons.Filled.DateRange
+        TriggerKind.Interval -> Icons.Filled.Repeat
+        TriggerKind.Startup -> Icons.Filled.PowerSettingsNew
+        null -> Icons.Filled.Schedule
     }
 
 /** The trigger in words: "Every day at 03:00", "Every Monday at 03:00", "Every 6 hours", "At startup". */

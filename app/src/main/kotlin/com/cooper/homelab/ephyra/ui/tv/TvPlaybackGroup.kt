@@ -1,11 +1,11 @@
 package com.cooper.homelab.ephyra.ui.tv
 
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.outlined.ClosedCaption
-import androidx.compose.material.icons.outlined.Language
-import androidx.compose.material.icons.outlined.SkipNext
-import androidx.compose.material.icons.outlined.Translate
-import androidx.compose.material.icons.outlined.VolumeUp
+import androidx.compose.material.icons.filled.ClosedCaption
+import androidx.compose.material.icons.filled.Language
+import androidx.compose.material.icons.filled.SkipNext
+import androidx.compose.material.icons.filled.Translate
+import androidx.compose.material.icons.filled.VolumeUp
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -102,7 +102,7 @@ private fun readyRows(
     ) = TvPaneRow(
         key = key,
         label = label,
-        icon = Icons.Outlined.Language,
+        icon = Icons.Filled.Language,
         detail = if (current == ANY) any else state.cultures.find(current)?.label(locale) ?: current,
         options =
             languageOptions(state.cultures, suggested, current, any, locale) { value ->
@@ -152,7 +152,7 @@ private fun readyRows(
                 stringResource(R.string.playback_default_audio),
                 stringResource(R.string.playback_default_audio_detail),
                 prefs.playDefaultAudioTrack,
-                Icons.Outlined.VolumeUp,
+                Icons.Filled.VolumeUp,
                 actions.onPlayDefaultAudioTrack,
             ),
             switch(
@@ -160,7 +160,7 @@ private fun readyRows(
                 stringResource(R.string.playback_remember_audio),
                 stringResource(R.string.playback_remember_detail),
                 prefs.rememberAudio,
-                Icons.Outlined.VolumeUp,
+                Icons.Filled.VolumeUp,
                 actions.onRememberAudio,
             ),
             switch(
@@ -168,7 +168,7 @@ private fun readyRows(
                 stringResource(R.string.playback_remember_subtitles),
                 stringResource(R.string.playback_remember_detail),
                 prefs.rememberSubtitles,
-                Icons.Outlined.ClosedCaption,
+                Icons.Filled.ClosedCaption,
                 actions.onRememberSubtitles,
             ),
             switch(
@@ -176,7 +176,7 @@ private fun readyRows(
                 stringResource(R.string.playback_autoplay),
                 "",
                 prefs.autoplayNextEpisode,
-                Icons.Outlined.SkipNext,
+                Icons.Filled.SkipNext,
                 actions.onAutoplayNextEpisode,
             ),
         )
@@ -193,7 +193,7 @@ private fun subtitleModeRow(
     TvPaneRow(
         key = SUBTITLE_MODE_KEY,
         label = stringResource(R.string.languages_subtitle_mode),
-        icon = Icons.Outlined.Translate,
+        icon = Icons.Filled.Translate,
         detail = stringResource(prefs.subtitleMode.subtitleModeLabel),
         options =
             SubtitleMode.entries.map { mode ->

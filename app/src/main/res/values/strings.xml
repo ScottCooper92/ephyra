@@ -116,6 +116,8 @@
     <string name="error_cleartext_refused">Plain HTTP to a public address needs your agreement first. Use https:// if the server supports it.</string>
     <string name="error_generic">Something went wrong. Try again.</string>
     <string name="error_signed_out">Sign in to Jellyfin to see your library</string>
+    <!-- The language tag of the sentences above, as the host reads it: the language this file is in, not the device's. Each locale's file gives its own. -->
+    <string name="companion_locale">en-GB</string>
     <string name="tv_sign_in_to">Sign in to %1$s</string>
     <string name="tv_change_server">Change server</string>
     <string name="tv_quick_connect_getting">Getting a code…</string>

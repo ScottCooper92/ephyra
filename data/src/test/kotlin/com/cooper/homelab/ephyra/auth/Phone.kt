@@ -3,11 +3,11 @@ package com.cooper.homelab.ephyra.auth
 import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.PreferenceDataStoreFactory
 import androidx.datastore.preferences.core.Preferences
-import com.binge.companion.kit.SecretCipher
 import com.cooper.homelab.core.foundation.LogField
 import com.cooper.homelab.core.foundation.LogLevel
 import com.cooper.homelab.core.foundation.Logger
 import com.cooper.homelab.core.server.connection.DeviceIdentity
+import com.cooper.homelab.core.server.connection.SecretCipher
 import com.cooper.homelab.core.server.connection.ServerRegistry
 import com.cooper.homelab.ephyra.PlainCipher
 import kotlinx.coroutines.CoroutineScope
@@ -65,7 +65,7 @@ class Phone(
     val released = LegacySessionStore(legacyFile, cipher, io)
     val serverIdentity = ServerIdentity(identityFile)
     val registry = ServerRegistry(registryFile, "registry", { UUID.randomUUID().toString() }, logger)
-    val logins = LoginStore(loginsFile, JellyfinLoginCodec, cipher.forLibrary(), logger)
+    val logins = LoginStore(loginsFile, JellyfinLoginCodec, cipher, logger)
     val device = DeviceIdentity(registryFile, "device_id") { UUID.randomUUID().toString() }
     val importer = LegacySessionImport(legacyFile, registry, logins, device, registryFile, serverIdentity, logger)
     val store = RegistrySessionStore(registry, logins, importer, serverIdentity, device, io)

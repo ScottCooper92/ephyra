@@ -74,6 +74,18 @@ dependencies {
     debugImplementation(libs.compose.ui.test.manifest)
 }
 
+// detekt 2.0 alpha crashes when its modules run in parallel (the same setting binge-seerr and homelab-core carry for it), so the gate runs
+// one module at a time.
+detektGate {
+    parallel = false
+}
+
+// The coroutines test API is experimental, and nearly every test of this module uses it: opted in once for the test compilations, so a new
+// test does not need its own annotation. Production code is not opted in.
+tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile>().configureEach {
+    if (name.contains("UnitTest")) compilerOptions.optIn.add("kotlinx.coroutines.ExperimentalCoroutinesApi")
+}
+
 tasks.withType<Test>().configureEach {
     testLogging {
         exceptionFormat = org.gradle.api.tasks.testing.logging.TestExceptionFormat.FULL

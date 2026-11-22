@@ -3,7 +3,6 @@ package com.cooper.homelab.ephyra.ui
 import android.graphics.Bitmap
 import com.cooper.homelab.ephyra.FakeJellyfin
 import com.cooper.homelab.ephyra.PlainCipher
-import com.cooper.homelab.ephyra.auth.forLibrary
 import com.cooper.homelab.ephyra.server.Connection
 import com.cooper.homelab.ephyra.server.DiscardLogger
 import com.cooper.homelab.ephyra.server.LibraryIndex
@@ -62,7 +61,7 @@ class PublicUserPicturesTest {
                     connection,
                     LibraryIndex(),
                     dispatcher = Dispatchers.IO,
-                    cipher = PlainCipher.forLibrary(),
+                    cipher = PlainCipher,
                     discover = { emptyList() },
                 ),
             )

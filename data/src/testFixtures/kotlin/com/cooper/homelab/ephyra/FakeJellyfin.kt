@@ -1,7 +1,7 @@
 package com.cooper.homelab.ephyra
 
 import androidx.datastore.preferences.core.PreferenceDataStoreFactory
-import com.binge.companion.kit.SecretCipher
+import com.cooper.homelab.core.server.connection.SecretCipher
 import com.cooper.homelab.ephyra.auth.JellyfinSession
 import com.cooper.homelab.ephyra.auth.LegacySessionStore
 import com.cooper.homelab.ephyra.auth.SessionStore

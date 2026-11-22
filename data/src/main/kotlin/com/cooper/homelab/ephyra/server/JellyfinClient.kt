@@ -270,6 +270,9 @@ class JellyfinClient(
 /**
  * The server's reason in an error answer: a problem document's `detail` or `title`, or a short plain-text body. Null
  * when there is none, or the body is HTML or too long to be a sentence.
+ *
+ * This peeks the body itself rather than using the shared library's `bodyPeek`: that one is read through a suspend `text()`, and
+ * both callers run inside an OkHttp callback, where only `runBlocking` could call it.
  */
 internal fun Response.reasonGiven(): String? {
     val text = attempt { peekBody(REASON_PEEK_BYTES).string().trim() }.getOrNull()?.takeIf { it.isNotEmpty() } ?: return null

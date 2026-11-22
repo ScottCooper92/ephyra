@@ -30,7 +30,7 @@ import com.cooper.homelab.ephyra.ui.console.ConsolePage
 
 /**
  * The search route: the shared search page over the entries the user may open, with the ones they last opened from it kept on this
- * device ([LocalRecentSearches]). Opening a result remembers it before the page opens, and [open] gets the page and the row to scroll to.
+ * device ([ServerRecentSearches]). Opening a result remembers it before the page opens, and [open] gets the page and the row to scroll to.
  * The page has already read the profile and the account, so what the user may open is known at once. Behind a debug switch
  * ([AppGraph.searchTogglesEnabled]) a result for an on/off setting carries its switch, through [actions], the page's own.
  */

@@ -1,6 +1,6 @@
 package com.cooper.homelab.ephyra.auth
 
-import com.binge.companion.kit.SecretCipher
+import com.cooper.homelab.core.server.connection.SecretCipher
 import com.cooper.homelab.ephyra.FakeJellyfin
 import com.cooper.homelab.ephyra.PlainCipher
 import com.cooper.homelab.ephyra.session

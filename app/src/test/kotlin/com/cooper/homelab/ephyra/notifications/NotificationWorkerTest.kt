@@ -1,9 +1,12 @@
 package com.cooper.homelab.ephyra.notifications
 
 import android.content.Context
+import androidx.datastore.core.DataStore
+import androidx.datastore.preferences.core.Preferences
 import androidx.test.core.app.ApplicationProvider
 import androidx.work.ListenableWorker
 import androidx.work.testing.TestListenableWorkerBuilder
+import com.cooper.homelab.core.foundation.Logger
 import com.cooper.homelab.core.testing.InMemoryDataStore
 import com.cooper.homelab.ephyra.FakeJellyfin
 import com.cooper.homelab.ephyra.auth.ServerIdentity
@@ -12,10 +15,13 @@ import com.cooper.homelab.ephyra.server.DiscardLogger
 import com.cooper.homelab.ephyra.session
 import com.cooper.homelab.ephyra.testSessionStore
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.runBlocking
 import okhttp3.OkHttpClient
 import org.junit.After
 import org.junit.Assert.assertEquals
+import org.junit.Assert.assertTrue
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.robolectric.RobolectricTestRunner
@@ -44,10 +50,13 @@ class NotificationWorkerTest {
         jellyfin.close()
     }
 
-    private fun run(): ListenableWorker.Result =
+    private fun run(
+        poll: PollRunner = runner,
+        logger: Logger = DiscardLogger,
+    ): ListenableWorker.Result =
         runBlocking {
             TestListenableWorkerBuilder<NotificationWorker>(context)
-                .setWorkerFactory(NotificationWorkerFactory { runner })
+                .setWorkerFactory(NotificationWorkerFactory({ poll }, { logger }))
                 .build()
                 .doWork()
         }
@@ -75,5 +84,27 @@ class NotificationWorkerTest {
         jellyfin.status["/Users/Me"] = 401
         assertEquals(ListenableWorker.Result.success(), run())
         assertEquals(1, notifier.connectionProblems)
+    }
+
+    @Test
+    fun `a poll that throws past the checker's guards is retried and the throw reaches the logger`() {
+        val unreadable =
+            object : DataStore<Preferences> {
+                override val data: Flow<Preferences> = flow { throw IllegalStateException("secret-message") }
+
+                override suspend fun updateData(transform: suspend (Preferences) -> Preferences): Preferences =
+                    throw IllegalStateException("secret-message")
+            }
+        val identity = ServerIdentity(unreadable)
+        val poll =
+            PollRunner(
+                ActivityChecker(connection, testFeedCursors(), LegacyActivityCursor(prefs), identity, notifier, DiscardLogger),
+                pollReactor(notifier, scheduler, prefs) { false },
+                identity,
+            )
+        val thrown = mutableListOf<Throwable?>()
+        val logger = Logger { _, _, _, _, failure -> thrown += failure }
+        assertEquals(ListenableWorker.Result.retry(), run(poll, logger))
+        assertTrue(thrown.any { it is IllegalStateException })
     }
 }

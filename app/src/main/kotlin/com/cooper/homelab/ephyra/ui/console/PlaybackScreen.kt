@@ -38,6 +38,7 @@ import com.binge.designsystem.component.PageIntro
 import com.binge.designsystem.layout.LayoutAnchors
 import com.binge.designsystem.layout.layoutAnchor
 import com.binge.designsystem.template.FormScreen
+import com.binge.designsystem.template.ScreenBar
 import com.binge.designsystem.template.formSaveStatus
 import com.cooper.homelab.core.flags.bingePromotion
 import com.cooper.homelab.core.uiandroid.flags.LocalFlags
@@ -86,6 +87,7 @@ fun PlaybackScreen(
     val ready = state as? PlaybackUiState.Ready
     FormScreen(
         title = stringResource(R.string.playback_title),
+        bar = ScreenBar.Small,
         onBack = actions.onBack,
         snackbarHostState = host,
         saveStatus = ready?.save?.let { formSaveStatus(it.status, it.failed, actions.onRetrySave) },

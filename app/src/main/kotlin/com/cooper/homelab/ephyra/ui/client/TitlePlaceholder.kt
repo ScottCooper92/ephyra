@@ -6,6 +6,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import com.binge.designsystem.template.BingeScreenScaffold
 import com.binge.designsystem.template.EmptyScreen
+import com.binge.designsystem.template.ScreenBar
 import com.binge.designsystem.template.ScreenBody
 import com.cooper.homelab.ephyra.R
 
@@ -15,7 +16,12 @@ internal fun TitlePlaceholder(
     onBack: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
-    BingeScreenScaffold(title = stringResource(R.string.title_placeholder_title), onBack = onBack, modifier = modifier) { padding ->
+    BingeScreenScaffold(
+        title = stringResource(R.string.title_placeholder_title),
+        bar = ScreenBar.Small,
+        onBack = onBack,
+        modifier = modifier,
+    ) { padding ->
         ScreenBody(padding) { _ ->
             EmptyScreen(stringResource(R.string.shell_placeholder_message), Modifier.fillMaxSize())
         }

@@ -32,6 +32,7 @@ import com.binge.designsystem.layout.layoutAnchor
 import com.binge.designsystem.layout.layoutAnchorIf
 import com.binge.designsystem.template.BingeScreenScaffold
 import com.binge.designsystem.template.EmptyScreen
+import com.binge.designsystem.template.ScreenBar
 import com.binge.designsystem.template.ScreenBody
 import com.binge.designsystem.template.screenListPadding
 import com.cooper.homelab.ephyra.R
@@ -74,6 +75,7 @@ fun LibrariesScreen(
     val host = remember { SnackbarHostState() }
     BingeScreenScaffold(
         title = stringResource(R.string.libraries_title),
+        bar = ScreenBar.Small,
         onBack = actions.onBack,
         snackbarHostState = host,
         bottomBar = {

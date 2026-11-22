@@ -42,6 +42,7 @@ import com.binge.designsystem.layout.LayoutAnchors
 import com.binge.designsystem.layout.layoutAnchor
 import com.binge.designsystem.template.BingeScreenScaffold
 import com.binge.designsystem.template.EmptyScreen
+import com.binge.designsystem.template.ScreenBar
 import com.binge.designsystem.template.ScreenBody
 import com.binge.designsystem.template.screenListPadding
 import com.cooper.homelab.ephyra.R
@@ -95,6 +96,7 @@ fun UsersScreen(
     val host = remember { SnackbarHostState() }
     BingeScreenScaffold(
         title = stringResource(R.string.users_title),
+        bar = ScreenBar.Small,
         onBack = actions.onBack,
         snackbarHostState = host,
         bottomBar = {
@@ -150,6 +152,7 @@ fun UserScreen(
     val host = remember { SnackbarHostState() }
     BingeScreenScaffold(
         title = user?.name ?: stringResource(R.string.users_title),
+        bar = ScreenBar.Small,
         onBack = actions.onBack,
         snackbarHostState = host,
     ) { padding ->
@@ -189,6 +192,7 @@ fun UserSectionScreen(
     val host = remember { SnackbarHostState() }
     BingeScreenScaffold(
         title = stringResource(section.title()),
+        bar = ScreenBar.Small,
         onBack = actions.onBack,
         snackbarHostState = host,
     ) { padding ->

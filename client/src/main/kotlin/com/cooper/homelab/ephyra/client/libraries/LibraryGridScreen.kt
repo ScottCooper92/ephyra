@@ -32,6 +32,7 @@ import com.binge.designsystem.template.PagedGridCallbacks
 import com.binge.designsystem.template.PagedGridScreen
 import com.binge.designsystem.template.PagedGridState
 import com.binge.designsystem.template.ScreenAction
+import com.binge.designsystem.template.ScreenBar
 import com.cooper.homelab.core.presentation.paging.GridState
 import com.cooper.homelab.ephyra.browse.BrowseItem
 import com.cooper.homelab.ephyra.browse.FilterChoices
@@ -104,6 +105,7 @@ fun LibraryGridScreen(
                 onRefresh = actions.onRefresh,
             ),
         modifier = modifier,
+        bar = ScreenBar.Small,
         refreshing = ready?.refreshing == true,
         fastScrollbar = scrollbar,
         snackbarHostState = snackbarHostState,

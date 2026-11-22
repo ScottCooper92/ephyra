@@ -28,6 +28,7 @@ import com.binge.designsystem.mediaGridColumns
 import com.binge.designsystem.template.BingeScreenScaffold
 import com.binge.designsystem.template.EmptyScreen
 import com.binge.designsystem.template.ErrorScreen
+import com.binge.designsystem.template.ScreenBar
 import com.binge.designsystem.template.ScreenBody
 import com.binge.designsystem.template.screenListPadding
 import com.binge.designsystem.theme.BingeShapes
@@ -61,7 +62,7 @@ fun LibrariesScreen(
 ) {
     val gridState = rememberLazyGridState()
     ScrollToTopOnTabReselect(reselect, gridState)
-    BingeScreenScaffold(title = stringResource(R.string.client_libraries_title), modifier = modifier) { padding ->
+    BingeScreenScaffold(title = stringResource(R.string.client_libraries_title), bar = ScreenBar.Small, modifier = modifier) { padding ->
         ScreenBody(padding) { _ ->
             val inner = padding.screenListPadding()
             when (state) {

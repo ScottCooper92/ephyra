@@ -14,6 +14,7 @@ import com.binge.designsystem.template.PeopleGridScreen
 import com.binge.designsystem.template.PeopleGridSection
 import com.binge.designsystem.template.PeopleGridState
 import com.binge.designsystem.template.PeopleGridTab
+import com.binge.designsystem.template.ScreenBar
 import com.cooper.homelab.ephyra.client.R
 import com.cooper.homelab.ephyra.client.home.canRetry
 import com.cooper.homelab.ephyra.client.home.errorKind
@@ -51,6 +52,7 @@ fun TitlePeopleScreen(
     val ready = (state as? TitlePeopleUiState.Ready)?.people
     PeopleGridScreen(
         title = ready?.title ?: stringResource(R.string.client_people_title),
+        bar = ScreenBar.Small,
         tabs =
             listOf(
                 PeopleGridTab(

@@ -109,8 +109,20 @@ private fun SearchBody.toTemplate(
                 appendFailed = appendFailed,
                 types = types,
                 emptyMessage = stringResource(R.string.client_search_type_empty),
+                pages =
+                    pages.takeIf { it.isNotEmpty() }?.entries?.associate { (type, found) ->
+                        type.name to
+                            found.map { it.toResult(imageUrl) }
+                    },
+                query = query.takeIf { pages.isNotEmpty() },
             )
-        is SearchBody.NoResults -> SearchState.NoResults(stringResource(R.string.client_search_no_results, query), types = types)
+        is SearchBody.NoResults ->
+            SearchState.NoResults(
+                message = stringResource(R.string.client_search_no_results, query),
+                types = types,
+                pages = SearchType.entries.associate { it.name to emptyList() },
+                query = query,
+            )
         is SearchBody.Failed -> SearchState.Failed(failure.errorKind(), retryable = failure.canRetry())
     }
 

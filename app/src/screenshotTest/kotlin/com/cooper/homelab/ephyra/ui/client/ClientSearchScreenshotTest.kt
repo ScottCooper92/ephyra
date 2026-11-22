@@ -40,12 +40,22 @@ class ClientSearchScreenshotTest {
             SearchHit.Person(PersonResult("p1", "Heather Graham", null)),
         )
 
+    /** What the model sends: the chosen chip's list, and a page for it beside All's (the other chips are not read). */
     private fun ready(
         list: List<SearchHit> = hits,
         hasMore: Boolean = false,
         appending: Boolean = false,
         appendFailed: Boolean = false,
-    ) = SearchBody.Ready(list, loaded = list.size, hasMore = hasMore, appending = appending, appendFailed = appendFailed)
+        type: SearchType = SearchType.All,
+    ) = SearchBody.Ready(
+        list,
+        loaded = list.size,
+        hasMore = hasMore,
+        appending = appending,
+        appendFailed = appendFailed,
+        query = "heat",
+        pages = mapOf(SearchType.All to hits, type to list),
+    )
 
     @Composable
     private fun Search(
@@ -85,7 +95,25 @@ class ClientSearchScreenshotTest {
     @PreviewTest
     @JellyfinScreenStatePreview
     @Composable
-    fun people() = Search(ready(hits.filterIsInstance<SearchHit.Person>()), type = SearchType.People)
+    fun people() = Search(ready(hits.filterIsInstance<SearchHit.Person>(), type = SearchType.People), type = SearchType.People)
+
+    @PreviewTest
+    @JellyfinScreenStatePreview
+    @JellyfinSpanishPreviews
+    @Composable
+    fun chipLoading() =
+        Search(
+            SearchBody.Ready(
+                emptyList(),
+                loaded = 0,
+                hasMore = false,
+                appending = false,
+                appendFailed = false,
+                query = "heat",
+                pages = mapOf(SearchType.All to hits),
+            ),
+            type = SearchType.Series,
+        )
 
     @PreviewTest
     @JellyfinScreenStatePreview

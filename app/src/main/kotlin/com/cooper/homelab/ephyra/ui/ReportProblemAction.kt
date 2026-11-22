@@ -2,6 +2,7 @@ package com.cooper.homelab.ephyra.ui
 
 import androidx.compose.foundation.layout.Box
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.filled.OpenInNew
 import androidx.compose.material.icons.filled.BugReport
 import androidx.compose.material.icons.filled.MoreVert
 import androidx.compose.material3.DropdownMenu
@@ -39,6 +40,7 @@ internal fun ReportProblemAction(open: (String) -> Unit = LocalContext.current::
             DropdownMenuItem(
                 text = { Text(stringResource(R.string.report_problem)) },
                 leadingIcon = { Icon(Icons.Filled.BugReport, contentDescription = null) },
+                trailingIcon = { Icon(Icons.AutoMirrored.Filled.OpenInNew, contentDescription = null) },
                 onClick = {
                     expanded = false
                     open(installBugReportUrl())

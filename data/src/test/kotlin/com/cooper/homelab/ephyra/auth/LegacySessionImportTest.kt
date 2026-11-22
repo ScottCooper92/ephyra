@@ -1,7 +1,12 @@
 package com.cooper.homelab.ephyra.auth
 
+import androidx.datastore.preferences.core.booleanPreferencesKey
+import androidx.datastore.preferences.core.edit
 import androidx.datastore.preferences.core.stringPreferencesKey
 import com.cooper.homelab.core.foundation.LogField
+import com.cooper.homelab.core.server.address.ServerAddress
+import com.cooper.homelab.core.server.connection.LEGACY_IMPORT_DONE_KEY
+import com.cooper.homelab.core.server.connection.SavedServer
 import com.cooper.homelab.core.server.connection.SecretCipher
 import com.cooper.homelab.core.testing.PlainCipher
 import com.cooper.homelab.ephyra.FakeJellyfin
@@ -41,6 +46,36 @@ class LegacySessionImportTest {
                     .current()
                     .servers.size,
             )
+            phone.stop()
+        }
+
+    @Test
+    fun `the import marker is the key the released registry build wrote, in the registry file`() =
+        runBlocking {
+            assertEquals("legacy_import_done", LEGACY_IMPORT_DONE_KEY)
+            val phone = Phone(folder.root)
+            phone.released.save(session)
+
+            phone.store.current()
+
+            assertEquals(true, phone.registryFile.data.first()[booleanPreferencesKey("legacy_import_done")])
+            phone.stop()
+        }
+
+    @Test
+    fun `a registry and login the current build wrote are read as they are and the old file is not imported over them`() =
+        runBlocking {
+            val phone = Phone(folder.root)
+            val address = ServerAddress.parse(session.baseUrl)!!
+            phone.registry.restore(SavedServer(phone.serverIdentity.currentServerId(), address, session.serverName, JELLYFIN_KIND))
+            phone.logins.save(
+                phone.serverIdentity.currentServerId(),
+                JellyfinLogin(session.serverId, session.serverVersion, session.userId, session.userName, session.token),
+            )
+            phone.registryFile.edit { it[booleanPreferencesKey("legacy_import_done")] = true }
+            phone.released.save(session.copy(userId = "someone-else", token = "old-token"))
+
+            assertEquals(session, phone.store.current())
             phone.stop()
         }
 

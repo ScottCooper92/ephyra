@@ -124,7 +124,7 @@
     <string name="approve_body">Enter the code another device shows. Approving it signs that device in as you.</string>
     <string name="approve_field">Code</string>
     <string name="approve_action">Approve</string>
-    <string name="approve_done">Approved. The other device is signing in as you.</string>
+    <string name="approve_done">Code approved.</string>
     <string name="approve_wrong">That code isn\'t waiting to be approved. Check it, or get a new one on the other device.</string>
     <string name="tv_loading">Loading…</string>
     <string name="console_retry">Try again</string>

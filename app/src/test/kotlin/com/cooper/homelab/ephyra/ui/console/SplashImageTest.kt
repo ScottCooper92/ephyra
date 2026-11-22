@@ -73,7 +73,7 @@ class SplashImageTest {
     }
 
     /** A view model that sends the picked file as it is, so a test follows the bytes without the image work. */
-    private fun viewModel() = made(ServerSettingsViewModel(connection)).also { it.ready() }
+    private fun viewModel() = made(ServerSettingsViewModel(connection, Dispatchers.Default, Dispatchers.IO)).also { it.ready() }
 
     private fun branding() = jellyfin.lastBody("/System/Configuration/branding")
 
@@ -245,10 +245,18 @@ class SplashImageTest {
 
     @Test
     fun `a file the device cannot turn into an image is said so, and nothing is sent`() {
-        val vm = made(ServerSettingsViewModel(connection))
+        val vm = made(ServerSettingsViewModel(connection, Dispatchers.Default, Dispatchers.IO))
         vm.ready()
         // Robolectric decodes any bytes to a stand-in bitmap, so the unreadable file is the prepare step answering null.
-        val controller = SplashImageController(connection, kotlinx.coroutines.GlobalScope, {}, prepare = { null })
+        val controller =
+            SplashImageController(
+                connection,
+                kotlinx.coroutines.GlobalScope,
+                {},
+                prepare = { null },
+                work = Dispatchers.Default,
+                io = Dispatchers.IO,
+            )
         controller.choose { "not an image".toByteArray() }
         idling { withTimeout(TIMEOUT_MILLIS) { controller.state.first { !it.busy && it.unreadable } } }
         assertEquals(0, jellyfin.requests.count { it.method == "POST" && it.url.encodedPath == "/Branding/Splashscreen" })

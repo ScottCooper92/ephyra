@@ -111,7 +111,7 @@ class ConsoleFailureTest {
                 )
             jellyfin.status["/System/Configuration"] = 500
             jellyfin.statusBody["/System/Configuration"] = """{"title":"The disk is full."}"""
-            val vm = teardown.made(ServerSettingsViewModel(connection))
+            val vm = teardown.made(ServerSettingsViewModel(connection, Dispatchers.Default, Dispatchers.IO))
             idling { withTimeout(TIMEOUT_MILLIS) { vm.state.first { it !is ServerSettingsUiState.Loading } } }
             val failure = idling { withTimeout(TIMEOUT_MILLIS) { vm.state.first { it is ServerSettingsUiState.Failed } } }
             assertEquals("The disk is full.", (failure as ServerSettingsUiState.Failed).failure.reason)

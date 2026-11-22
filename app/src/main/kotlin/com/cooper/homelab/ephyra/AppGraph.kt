@@ -46,8 +46,9 @@ import com.cooper.homelab.core.server.network.CleartextGuard
 import com.cooper.homelab.core.server.network.DataStoreCleartextConsent
 import com.cooper.homelab.core.telemetry.Analytics
 import com.cooper.homelab.core.telemetry.AnalyticsConsentGate
-import com.cooper.homelab.core.telemetry.AnalyticsDecorator
 import com.cooper.homelab.core.telemetry.CrashReportingSwitch
+import com.cooper.homelab.core.telemetry.DemoAnalyticsDecorator
+import com.cooper.homelab.core.telemetry.DemoSession
 import com.cooper.homelab.core.telemetry.FirebaseCrashBreadcrumbs
 import com.cooper.homelab.core.telemetry.FirebaseCrashCollection
 import com.cooper.homelab.core.telemetry.GatedAnalytics
@@ -66,6 +67,7 @@ import com.cooper.homelab.ephyra.auth.SessionStore
 import com.cooper.homelab.ephyra.auth.TOKEN_KEY_ALIAS
 import com.cooper.homelab.ephyra.auth.forLibrary
 import com.cooper.homelab.ephyra.demo.DemoTransport
+import com.cooper.homelab.ephyra.demo.isDemoOrigin
 import com.cooper.homelab.ephyra.flags.ClientEnabled
 import com.cooper.homelab.ephyra.flags.RemoteFlagKeys
 import com.cooper.homelab.ephyra.flags.clientPreference
@@ -124,6 +126,8 @@ class AppGraph(
     context: Context,
     /** Where every server call runs. */
     private val io: CoroutineDispatcher = Dispatchers.IO,
+    /** Where work on the device's own CPU runs, such as fitting a picture before it is sent. */
+    private val work: CoroutineDispatcher = Dispatchers.Default,
     /** The session store, for a test that signs in without the platform's keystore, which a unit test has none of. The app passes none. */
     private val sessionsForTest: SessionStore? = null,
 ) {
@@ -360,13 +364,18 @@ class AppGraph(
         AnalyticsConsentGate(telemetryPrefs, scope, logger)
     }
 
+    /** Whether the saved connection is the built-in demo, so analytics can mark its events and leave them out of real use. */
+    internal val demoSession: DemoSession by lazy {
+        DemoSession(sessions.session.map { session -> session?.baseUrl?.isDemoOrigin() }, scope)
+    }
+
     /** PostHog behind the consent gate. A build with no project key has no client, and then every call is a no-op. */
     val analytics: Analytics by lazy {
         val client =
             BuildConfig.POSTHOG_API_KEY
                 .takeIf { it.isNotBlank() }
                 ?.let { PostHogClient(PostHogAndroid.with(appContext, postHogConfig(it, BuildConfig.POSTHOG_HOST))) }
-        GatedAnalytics(client, consentGate, AnalyticsDecorator.None, scope)
+        GatedAnalytics(client, consentGate, DemoAnalyticsDecorator(demoSession), scope)
     }
 
     /** Holds Crashlytics' collection to the user's crash-reporting answer. */
@@ -409,6 +418,9 @@ class AppGraph(
 
     /** The dispatcher this graph's reads and writes run on. */
     val ioDispatcher: CoroutineDispatcher get() = io
+
+    /** The dispatcher this graph's work on the device's own CPU runs on. */
+    val workDispatcher: CoroutineDispatcher get() = work
 
     private val playerDispatchers by lazy { PlayerDispatchers(main = Dispatchers.Main, io = io, default = io) }
 

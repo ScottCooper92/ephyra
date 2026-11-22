@@ -10,7 +10,6 @@ import com.cooper.homelab.ephyra.server.removeUserImage
 import com.cooper.homelab.ephyra.server.setUserImage
 import com.cooper.homelab.ephyra.server.userImage
 import kotlinx.coroutines.CoroutineDispatcher
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -48,8 +47,8 @@ class ProfilePictureViewModel(
     /** Whose picture: another user's, for an administrator on that user's page; null is the signed-in user's own. */
     private val userId: String? = null,
     private val prepare: (ByteArray) -> ByteArray? = ::squareAvatar,
-    private val work: CoroutineDispatcher = Dispatchers.Default,
-    private val io: CoroutineDispatcher = Dispatchers.IO,
+    private val work: CoroutineDispatcher,
+    private val io: CoroutineDispatcher,
 ) : ViewModel() {
     private val _state = MutableStateFlow<ProfilePictureUiState>(ProfilePictureUiState.Loading)
     val state: StateFlow<ProfilePictureUiState> = _state.asStateFlow()

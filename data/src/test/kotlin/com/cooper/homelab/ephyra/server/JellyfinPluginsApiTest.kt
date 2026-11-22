@@ -30,7 +30,7 @@ class JellyfinPluginsApiTest {
     @Test
     fun `a package version fits a server of its target release or newer, and one with no target fits any`() {
         fun version(abi: String?) = PackageVersion("1.0.0.0", null, abi, "Repo", "https://r.example/m.json")
-        val server = JellyfinVersion.parse("10.10.7")
+        val server = knownRelease("10.10.7")
         assertTrue(version("10.10.0.0").fits(server))
         assertTrue(version("10.9.0.0").fits(server))
         assertTrue(!version("10.11.0.0").fits(server))
@@ -54,9 +54,9 @@ class JellyfinPluginsApiTest {
                     PackageVersion(v, null, abi, "Repo", "https://r.example/m.json")
                 },
             )
-        assertEquals("13.0.0.0", pkg.installable(JellyfinVersion.parse("10.10.7"))?.version)
-        assertEquals("12.0.0.0", pkg.installable(JellyfinVersion.parse("10.9.0"))?.version)
-        assertNull(pkg.installable(JellyfinVersion.parse("10.8.13")))
+        assertEquals("13.0.0.0", pkg.installable(knownRelease("10.10.7"))?.version)
+        assertEquals("12.0.0.0", pkg.installable(knownRelease("10.9.0"))?.version)
+        assertNull(pkg.installable(knownRelease("10.8.13")))
         assertEquals("14.0.0.0", pkg.installable(null)?.version)
     }
 

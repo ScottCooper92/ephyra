@@ -31,10 +31,10 @@ import com.binge.designsystem.template.BingeScreenScaffold
 import com.binge.designsystem.template.ScreenBar
 import com.binge.designsystem.template.ScreenBody
 import com.binge.designsystem.template.screenListPadding
+import com.cooper.homelab.core.foundation.ServerVersion
 import com.cooper.homelab.ephyra.R
 import com.cooper.homelab.ephyra.server.BackupCreation
 import com.cooper.homelab.ephyra.server.BackupOptions
-import com.cooper.homelab.ephyra.server.JellyfinVersion
 import com.cooper.homelab.ephyra.server.ServerBackup
 import com.binge.designsystem.R as DesR
 
@@ -62,7 +62,7 @@ data class BackupsActions(
 fun BackupsScreen(
     state: BackupsUiState,
     actions: BackupsActions,
-    serverVersion: JellyfinVersion? = null,
+    serverVersion: ServerVersion? = null,
     now: Long = System.currentTimeMillis(),
 ) {
     // Held above the loading, failed and ready branches, so a reload does not drop where the user was.

@@ -38,7 +38,6 @@ import com.cooper.homelab.ephyra.server.DisplayList
 import com.cooper.homelab.ephyra.server.FetcherKind
 import com.cooper.homelab.ephyra.server.HomeLayout
 import com.cooper.homelab.ephyra.server.JellyfinServerProfile
-import com.cooper.homelab.ephyra.server.JellyfinVersion
 import com.cooper.homelab.ephyra.server.LIBRARY_SCAN_TASK
 import com.cooper.homelab.ephyra.server.LogFile
 import com.cooper.homelab.ephyra.server.NowPlaying
@@ -65,6 +64,7 @@ import com.cooper.homelab.ephyra.server.TaskTrigger
 import com.cooper.homelab.ephyra.server.TrickplaySettings
 import com.cooper.homelab.ephyra.server.TypeFetchers
 import com.cooper.homelab.ephyra.server.UserView
+import com.cooper.homelab.ephyra.server.knownRelease
 import com.cooper.homelab.ephyra.server.parseLogEntries
 import com.cooper.homelab.ephyra.server.redactLog
 import com.cooper.homelab.ephyra.theme.JellyfinTheme
@@ -843,7 +843,7 @@ class ConsoleScreensTest {
     @Test
     fun `the catalog lists packages by category and opens one on a tap`() {
         val calls = mutableListOf<String>()
-        val state = CatalogUiState.Ready(listOf(reporting, future), server = JellyfinVersion.parse("10.10.7"))
+        val state = CatalogUiState.Ready(listOf(reporting, future), server = knownRelease("10.10.7"))
         pluginsScreen(catalog = state, catalogActions = CatalogActions(onOpen = { calls += "open $it" }))
         compose.onNodeWithText("Catalog").performClick()
         compose.onNodeWithText("GENERAL").assertExists()
@@ -856,7 +856,7 @@ class ConsoleScreensTest {
     @Config(qualifiers = "w411dp-h891dp")
     fun `a package's screen installs the version for this server, or says there is none`() {
         val calls = mutableListOf<String>()
-        var state by mutableStateOf(CatalogUiState.Ready(listOf(reporting, future), server = JellyfinVersion.parse("10.10.7")))
+        var state by mutableStateOf(CatalogUiState.Ready(listOf(reporting, future), server = knownRelease("10.10.7")))
         var shown by mutableStateOf("Playback Reporting")
         val actions = CatalogActions(onInstall = { pkg, _ -> calls += "install ${pkg.name}" }, onCancel = { calls += "cancel ${it.name}" })
         compose.setContent { JellyfinTheme { PackageScreen(state, shown, actions, onBack = {}) } }
@@ -899,7 +899,7 @@ class ConsoleScreensTest {
         val state = CatalogUiState.Ready(listOf(pkg), installed = setOf(pkg.name), installedVersions = mapOf(pkg.name to "13.0.0.0"))
         val actions = CatalogActions(onInstall = { p, v -> calls += "install ${p.name} ${v?.version}" })
         compose.setContent {
-            JellyfinTheme { PackageScreen(state.copy(server = JellyfinVersion.parse("10.10.7")), pkg.name, actions, onBack = {}) }
+            JellyfinTheme { PackageScreen(state.copy(server = knownRelease("10.10.7")), pkg.name, actions, onBack = {}) }
         }
         compose.onNode(hasScrollAction()).performScrollToNode(hasText("Versions", ignoreCase = true))
         compose.onNodeWithText("Built for Jellyfin 10.11.0.0, newer than this server").assertIsNotEnabled()

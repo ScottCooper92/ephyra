@@ -1,5 +1,6 @@
 package com.cooper.homelab.ephyra.server
 
+import com.cooper.homelab.core.foundation.ServerVersion
 import com.cooper.homelab.ephyra.FakeJellyfin
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.runBlocking
@@ -31,7 +32,7 @@ class ResumeRouteTest {
     @Test
     fun `a 10_9 or later server is asked at the user items route`() =
         runBlocking {
-            client.resumeItems("user-1", JellyfinServerProfile(JellyfinVersion(10, 11, 6)), 0, 20)
+            client.resumeItems("user-1", JellyfinServerProfile(ServerVersion.of(10, 11, 6)), 0, 20)
             assertTrue("/UserItems/Resume" in paths())
             assertEquals(
                 "user-1",
@@ -45,10 +46,10 @@ class ResumeRouteTest {
     @Test
     fun `a 10_8 server is asked at the old route, with the user in the path, and the answer reads the same`() =
         runBlocking {
-            val page = client.resumeItems("user-1", JellyfinServerProfile(JellyfinVersion(10, 8, 13)), 0, 20)
+            val page = client.resumeItems("user-1", JellyfinServerProfile(ServerVersion.of(10, 8, 13)), 0, 20)
             assertTrue("/Users/user-1/Items/Resume" in paths())
             assertFalse("/UserItems/Resume" in paths())
-            assertEquals(client.resumeItems("user-1", JellyfinServerProfile(JellyfinVersion(10, 11, 6)), 0, 20).items, page.items)
+            assertEquals(client.resumeItems("user-1", JellyfinServerProfile(ServerVersion.of(10, 11, 6)), 0, 20).items, page.items)
         }
 
     @Test

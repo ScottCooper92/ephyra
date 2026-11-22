@@ -1,5 +1,6 @@
 package com.cooper.homelab.ephyra.browse
 
+import com.cooper.homelab.core.foundation.ServerVersion
 import com.cooper.homelab.ephyra.FakeJellyfin
 import com.cooper.homelab.ephyra.FakeTitle
 import com.cooper.homelab.ephyra.server.ClientIdentity
@@ -8,7 +9,6 @@ import com.cooper.homelab.ephyra.server.JellyfinClient
 import com.cooper.homelab.ephyra.server.JellyfinHttpException
 import com.cooper.homelab.ephyra.server.JellyfinServerProfile
 import com.cooper.homelab.ephyra.server.JellyfinUnreadableAnswer
-import com.cooper.homelab.ephyra.server.JellyfinVersion
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.runBlocking
 import okhttp3.HttpUrl.Companion.toHttpUrl
@@ -27,7 +27,7 @@ class BrowseReadsTest {
     private val client =
         JellyfinClient(OkHttpClient(), jellyfin.baseUrl.toHttpUrl(), identity, Dispatchers.IO, logger = DiscardLogger)
             .withToken("token-1")
-    private val profile = JellyfinServerProfile(JellyfinVersion(10, 11, 6))
+    private val profile = JellyfinServerProfile(ServerVersion.of(10, 11, 6))
     private val libraries = JellyfinLibraryRepository(client, "user-1", profile)
     private val items = JellyfinItemsRepository(client, "user-1")
     private val movies = LibraryView("lib-movies", "Movies", LibraryKind.Movies)
@@ -164,7 +164,7 @@ class BrowseReadsTest {
     @Test
     fun `an older server is asked for views the old way`() =
         runBlocking {
-            JellyfinLibraryRepository(client, "user-1", JellyfinServerProfile(JellyfinVersion(10, 8, 13))).views()
+            JellyfinLibraryRepository(client, "user-1", JellyfinServerProfile(ServerVersion.of(10, 8, 13))).views()
             assertTrue(jellyfin.requests.any { it.url.encodedPath == "/Users/user-1/Views" })
         }
 

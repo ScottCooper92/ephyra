@@ -1,5 +1,6 @@
 package com.cooper.homelab.ephyra.demo
 
+import com.cooper.homelab.core.foundation.ServerVersion
 import com.cooper.homelab.ephyra.browse.ItemFilters
 import com.cooper.homelab.ephyra.browse.ItemKind
 import com.cooper.homelab.ephyra.browse.ItemSort
@@ -22,7 +23,6 @@ import com.cooper.homelab.ephyra.server.ClientIdentity
 import com.cooper.homelab.ephyra.server.DiscardLogger
 import com.cooper.homelab.ephyra.server.JellyfinClient
 import com.cooper.homelab.ephyra.server.JellyfinServerProfile
-import com.cooper.homelab.ephyra.server.JellyfinVersion
 import com.cooper.homelab.ephyra.server.SegmentKind
 import com.cooper.homelab.ephyra.server.mediaSegments
 import kotlinx.coroutines.Dispatchers
@@ -46,7 +46,7 @@ class DemoBrowseTest {
             DEMO_TOKEN,
             DiscardLogger,
         )
-    private val profile = JellyfinServerProfile(JellyfinVersion(10, 11, 6))
+    private val profile = JellyfinServerProfile(ServerVersion.of(10, 11, 6))
     private val libraries = JellyfinLibraryRepository(client, "demo-user", profile)
 
     private suspend fun library(kind: LibraryKind) = libraries.views().first { it.kind == kind }
@@ -121,7 +121,7 @@ class DemoBrowseTest {
     @Test
     fun `an older profile reaches the same rows`() =
         runBlocking {
-            val old = JellyfinServerProfile(JellyfinVersion(10, 8, 13))
+            val old = JellyfinServerProfile(ServerVersion.of(10, 8, 13))
             assertEquals(3, JellyfinResumeRepository(client, "demo-user", old).resume().items.size)
             assertTrue(JellyfinLatestRepository(client, "demo-user", old).latest(library(LibraryKind.Movies)).size >= 6)
         }
@@ -139,7 +139,7 @@ class DemoBrowseTest {
     @Test
     fun `a demo title opens with a cast, a version and chapters, on either route`() =
         runBlocking {
-            listOf(profile, JellyfinServerProfile(JellyfinVersion(10, 8, 13))).forEach { each ->
+            listOf(profile, JellyfinServerProfile(ServerVersion.of(10, 8, 13))).forEach { each ->
                 val detail = JellyfinTitleRepository(client, "demo-user", each).title("demo-movie-1")!!
                 assertEquals("The Long Quiet", detail.item.name)
                 assertEquals(listOf(PersonKind.Actor, PersonKind.Director), detail.people.map { it.kind })
@@ -192,7 +192,7 @@ class DemoBrowseTest {
     @Test
     fun `the demo keeps played and favourite in memory, on either route`() =
         runBlocking {
-            listOf(profile, JellyfinServerProfile(JellyfinVersion(10, 8, 13))).forEach { each ->
+            listOf(profile, JellyfinServerProfile(ServerVersion.of(10, 8, 13))).forEach { each ->
                 val data = JellyfinUserDataRepository(client, "demo-user", each, emptyFlow())
                 val movies = library(LibraryKind.Movies)
 
@@ -215,7 +215,7 @@ class DemoBrowseTest {
     @Test
     fun `the demo has similar titles, a person with titles, and a film's box set on the route that names it`() =
         runBlocking {
-            val latest = JellyfinServerProfile(JellyfinVersion(12, 4, 0))
+            val latest = JellyfinServerProfile(ServerVersion.of(12, 4, 0))
             val similar = JellyfinTitleRepository(client, "demo-user", latest).similar("demo-movie-1")
             assertTrue(similar.isNotEmpty() && similar.none { it.id == "demo-movie-1" })
             val people = JellyfinPersonRepository(client, "demo-user", latest)

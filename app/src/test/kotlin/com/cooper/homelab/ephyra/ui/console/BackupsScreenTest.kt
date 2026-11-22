@@ -7,10 +7,10 @@ import androidx.compose.ui.test.onNodeWithContentDescription
 import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.performClick
 import com.binge.designsystem.testing.createTakeDownAndroidComposeRule
+import com.cooper.homelab.core.foundation.ServerVersion
 import com.cooper.homelab.ephyra.server.BackupCreation
 import com.cooper.homelab.ephyra.server.BackupOptions
 import com.cooper.homelab.ephyra.server.JellyfinHttpException
-import com.cooper.homelab.ephyra.server.JellyfinVersion
 import com.cooper.homelab.ephyra.server.ServerBackup
 import com.cooper.homelab.ephyra.theme.JellyfinTheme
 import org.junit.Assert.assertEquals
@@ -39,7 +39,7 @@ class BackupsScreenTest {
     private fun show(state: BackupsUiState.Ready) {
         compose.setContent {
             JellyfinTheme {
-                BackupsScreen(state, BackupsActions(onDismissCreation = { dismissed++ }), JellyfinVersion(10, 11, 6), NOW)
+                BackupsScreen(state, BackupsActions(onDismissCreation = { dismissed++ }), ServerVersion.of(10, 11, 6), NOW)
             }
         }
     }
@@ -108,7 +108,7 @@ class BackupsScreenTest {
                 BackupsScreen(
                     ready.copy(restore = Restore.NotBack),
                     BackupsActions(onDismissRestore = { restoreDismissed++ }),
-                    JellyfinVersion(10, 11, 6),
+                    ServerVersion.of(10, 11, 6),
                     NOW,
                 )
             }

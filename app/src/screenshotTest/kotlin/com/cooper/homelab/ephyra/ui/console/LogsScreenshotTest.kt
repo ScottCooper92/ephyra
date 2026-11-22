@@ -180,7 +180,7 @@ class LogsScreenshotTest {
     @JellyfinSpanishPreviews
     @JellyfinFontScalePreviews
     @Composable
-    fun retentionSheet() = Surface { RetentionSheet(3, LogsActions(), inWindow = false) }
+    fun retentionSheet() = Surface { RetentionForm(3, LogsActions()) }
 
     @PreviewTest
     @JellyfinScreenStatePreview

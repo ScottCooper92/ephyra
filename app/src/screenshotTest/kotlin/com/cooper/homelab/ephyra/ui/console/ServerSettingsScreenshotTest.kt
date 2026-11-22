@@ -78,43 +78,14 @@ class ServerSettingsScreenshotTest {
     @JellyfinScreenStateLightPreview
     @JellyfinFontScalePreviews
     @Composable
-    fun editingName() = Surface { TextSheet(ServerText.Name, previewSettings, ServerSettingsActions(), inWindow = false) }
-
-    @PreviewTest
-    @JellyfinScreenStatePreview
-    @JellyfinSpanishPreviews
-    @JellyfinScreenStateLightPreview
-    @JellyfinFontScalePreviews
-    @Composable
-    fun editingNameFailed() =
-        Surface {
-            TextSheet(
-                ServerText.Name,
-                previewSettings.copy(sheetFailed = ConsoleFailure.Refused),
-                ServerSettingsActions(),
-                inWindow = false,
-            )
-        }
-
-    @PreviewTest
-    @JellyfinScreenStatePreview
-    @Composable
-    fun editingNameSubmitting() =
-        Surface {
-            TextSheet(
-                ServerText.Name,
-                previewSettings.copy(submitting = ServerText.Name),
-                ServerSettingsActions(),
-                inWindow = false,
-            )
-        }
+    fun editingName() = Surface { TextForm(ServerText.Name, previewSettings, ServerSettingsActions()) }
 
     @PreviewTest
     @JellyfinScreenStatePreview
     @JellyfinScreenStateLightPreview
     @JellyfinFontScalePreviews
     @Composable
-    fun editingCss() = Surface { TextSheet(ServerText.CustomCss, previewSettings, ServerSettingsActions(), inWindow = false) }
+    fun editingCss() = Surface { TextForm(ServerText.CustomCss, previewSettings, ServerSettingsActions()) }
 
     @PreviewTest
     @JellyfinScreenStatePreview

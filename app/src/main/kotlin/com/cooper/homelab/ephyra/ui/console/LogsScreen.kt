@@ -290,37 +290,40 @@ private fun RetentionRow(
     )
 }
 
-/** The retention's number sheet: Save keeps what is typed if it is a whole number of days in range, and says so if it isn't. */
+/** The retention's number sheet. */
 @Composable
 internal fun RetentionSheet(
     days: Int?,
     actions: LogsActions,
-    inWindow: Boolean = true,
+) = TextSettingSheet(onDismissRequest = { actions.onEditRetention(false) }) { RetentionForm(days, actions) }
+
+/** The retention's form: Done keeps what is typed if it is a whole number of days in range, and says so if it isn't. */
+@Composable
+internal fun RetentionForm(
+    days: Int?,
+    actions: LogsActions,
 ) {
     var value by rememberSaveable { mutableStateOf(days?.toString().orEmpty()) }
     var tried by rememberSaveable { mutableStateOf(false) }
     val valid = value.trim().toIntOrNull()?.let { it in LOG_RETENTION_MIN_DAYS..LOG_RETENTION_MAX_DAYS } == true
-    ConsoleSheet(onDismissRequest = { actions.onEditRetention(false) }, inWindow = inWindow) {
-        ConsoleTextEntry(
-            title = stringResource(R.string.logs_retention_title),
-            body = stringResource(R.string.logs_retention_body),
-            value = value,
-            onValueChange = { value = it },
-            submitLabel = stringResource(R.string.logs_retention_save),
-            onSubmit = {
-                tried = true
-                if (valid) actions.onSaveRetention(value)
+    TextSettingForm(
+        title = stringResource(R.string.logs_retention_title),
+        body = stringResource(R.string.logs_retention_body),
+        value = value,
+        onValueChange = { value = it },
+        onDone = {
+            tried = true
+            if (valid) actions.onSaveRetention(value)
+        },
+        onCancel = { actions.onEditRetention(false) },
+        error =
+            if (tried && !valid) {
+                stringResource(R.string.logs_retention_invalid, LOG_RETENTION_MIN_DAYS, LOG_RETENTION_MAX_DAYS)
+            } else {
+                null
             },
-            onCancel = { actions.onEditRetention(false) },
-            error =
-                if (tried && !valid) {
-                    stringResource(R.string.logs_retention_invalid, LOG_RETENTION_MIN_DAYS, LOG_RETENTION_MAX_DAYS)
-                } else {
-                    null
-                },
-            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
-        )
-    }
+        keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
+    )
 }
 
 @Composable

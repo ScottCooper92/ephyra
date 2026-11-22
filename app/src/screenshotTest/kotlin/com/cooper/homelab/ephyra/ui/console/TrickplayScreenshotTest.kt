@@ -41,31 +41,14 @@ class TrickplayScreenshotTest {
     @JellyfinScreenStateLightPreview
     @JellyfinFontScalePreviews
     @Composable
-    fun number() = Surface { FieldSheet(TrickplayField.JpegQuality, previewSettings, TrickplayActions(), inWindow = false) }
-
-    @PreviewTest
-    @JellyfinScreenStatePreview
-    @JellyfinSpanishPreviews
-    @JellyfinScreenStateLightPreview
-    @JellyfinFontScalePreviews
-    @Composable
-    fun numberFailed() =
-        Surface {
-            FieldSheet(TrickplayField.JpegQuality, previewSettings, TrickplayActions(), failure = ConsoleFailure.Refused, inWindow = false)
-        }
-
-    @PreviewTest
-    @JellyfinScreenStatePreview
-    @Composable
-    fun numberSubmitting() =
-        Surface { FieldSheet(TrickplayField.JpegQuality, previewSettings, TrickplayActions(), submitting = true, inWindow = false) }
+    fun number() = Surface { FieldForm(TrickplayField.JpegQuality, previewSettings, TrickplayActions()) }
 
     @PreviewTest
     @JellyfinScreenStatePreview
     @JellyfinScreenStateLightPreview
     @JellyfinFontScalePreviews
     @Composable
-    fun widths() = Surface { FieldSheet(TrickplayField.Widths, previewSettings, TrickplayActions(), inWindow = false) }
+    fun widths() = Surface { FieldForm(TrickplayField.Widths, previewSettings, TrickplayActions()) }
 
     @PreviewTest
     @JellyfinScreenStatePreview

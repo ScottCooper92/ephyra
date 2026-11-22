@@ -108,7 +108,7 @@ fun TrickplayScreen(
         if (ready != null) {
             TrickplayBody(ready, actions, keyFrameOnlyAvailable) { picker = it }
             picker?.let { TrickplayPickerSheet(it, ready.settings, actions) { picker = null } }
-            ready.editing?.let { FieldSheet(it, ready.settings, actions, submitting = ready.submitting, failure = ready.sheetFailed) }
+            ready.editing?.let { FieldSheet(it, ready.settings, actions) }
             RefusedMessage(ready.refused, host)
         }
     }
@@ -321,19 +321,20 @@ private fun TrickplayPickerSheet(
     }
 }
 
-/**
- * A number's (or the widths') dialog: Save keeps what's typed if it is in range, and says so if it isn't;
- * Cancel leaves the setting as it was. While [submitting] the buttons wait, and a [failure] shows in the sheet. [inWindow] false draws
- * the form for a frame.
- */
+/** A number's (or the widths') sheet. */
 @Composable
 internal fun FieldSheet(
     field: TrickplayField,
     settings: TrickplaySettings,
     actions: TrickplayActions,
-    submitting: Boolean = false,
-    failure: ConsoleFailure? = null,
-    inWindow: Boolean = true,
+) = TextSettingSheet(onDismissRequest = { actions.onEdit(null) }) { FieldForm(field, settings, actions) }
+
+/** A number's (or the widths') form: Done keeps what's typed if it is in range, and says so if it isn't; Cancel leaves the setting as it was. */
+@Composable
+internal fun FieldForm(
+    field: TrickplayField,
+    settings: TrickplaySettings,
+    actions: TrickplayActions,
 ) {
     val current =
         when (field) {
@@ -347,7 +348,6 @@ internal fun FieldSheet(
     var value by rememberSaveable(field) { mutableStateOf(current) }
     var tried by rememberSaveable(field) { mutableStateOf(false) }
     val valid = if (field == TrickplayField.Widths) parseWidths(value) != null else field.parse(value) != null
-    val failed = failure?.let { stringResource(R.string.settings_not_saved, it.text()) }
     val (title, body) =
         when (field) {
             TrickplayField.Widths -> R.string.trickplay_widths to R.string.trickplay_widths_body
@@ -357,34 +357,29 @@ internal fun FieldSheet(
             TrickplayField.JpegQuality -> R.string.trickplay_jpeg_quality to R.string.trickplay_jpeg_quality_body
             TrickplayField.Threads -> R.string.trickplay_threads to R.string.trickplay_threads_body
         }
-    val save = {
-        tried = true
-        if (valid) actions.onSave(field, value)
-    }
-    ConsoleSheet(onDismissRequest = { actions.onEdit(null) }, inWindow = inWindow) {
-        ConsoleTextEntry(
-            title = stringResource(title),
-            body = stringResource(body),
-            value = value,
-            onValueChange = { value = it },
-            submitLabel = stringResource(R.string.trickplay_save),
-            onSubmit = save,
-            onCancel = { actions.onEdit(null) },
-            isSubmitting = submitting,
-            error =
-                if (tried && !valid) {
-                    if (field == TrickplayField.Widths) {
-                        stringResource(R.string.trickplay_widths_invalid, field.min, field.max)
-                    } else {
-                        stringResource(R.string.trickplay_number_invalid, field.min, field.max)
-                    }
+    TextSettingForm(
+        title = stringResource(title),
+        body = stringResource(body),
+        value = value,
+        onValueChange = { value = it },
+        onDone = {
+            tried = true
+            if (valid) actions.onSave(field, value)
+        },
+        onCancel = { actions.onEdit(null) },
+        error =
+            if (tried && !valid) {
+                if (field == TrickplayField.Widths) {
+                    stringResource(R.string.trickplay_widths_invalid, field.min, field.max)
                 } else {
-                    failed
-                },
-            keyboardOptions =
-                KeyboardOptions(keyboardType = if (field == TrickplayField.Widths) KeyboardType.Text else KeyboardType.Number),
-        )
-    }
+                    stringResource(R.string.trickplay_number_invalid, field.min, field.max)
+                }
+            } else {
+                null
+            },
+        keyboardOptions =
+            KeyboardOptions(keyboardType = if (field == TrickplayField.Widths) KeyboardType.Text else KeyboardType.Number),
+    )
 }
 
 private const val LOADING_ROWS = 10

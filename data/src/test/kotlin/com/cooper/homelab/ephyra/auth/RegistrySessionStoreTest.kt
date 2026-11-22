@@ -197,12 +197,21 @@ class RegistrySessionStoreTest {
                 (0 until 8)
                     .map { n ->
                         async(Dispatchers.Default) {
-                            if (n % 4 == 3) phone.store.clear() else phone.store.save(session.copy(userId = "user-$round-$n", token = "t$round$n"))
+                            if (n % 4 ==
+                                3
+                            ) {
+                                phone.store.clear()
+                            } else {
+                                phone.store.save(session.copy(userId = "user-$round-$n", token = "t$round$n"))
+                            }
                         }
                     }.awaitAll()
-                val servers = phone.registry.current().servers.size
+                val servers =
+                    phone.registry
+                        .current()
+                        .servers.size
                 val signedIn = phone.store.current() != null
-                assertEquals("round $round: ${servers} server(s), signed in $signedIn", if (signedIn) 1 else 0, servers)
+                assertEquals("round $round: $servers server(s), signed in $signedIn", if (signedIn) 1 else 0, servers)
             }
             phone.stop()
         }

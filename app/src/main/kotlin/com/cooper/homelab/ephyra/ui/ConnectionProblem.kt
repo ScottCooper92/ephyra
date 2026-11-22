@@ -4,11 +4,13 @@ import androidx.annotation.StringRes
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import com.cooper.homelab.core.presentation.connection.AutoRetryPolicy
 import com.cooper.homelab.core.presentation.connection.ConnectionProblem
 import com.cooper.homelab.core.uiandroid.connect.AllowLocalNetwork
 import com.cooper.homelab.core.uiandroid.connection.ConnectionAutoRetryEffect
 import com.cooper.homelab.core.uiandroid.connection.ConnectionProblemScreen
+import com.cooper.homelab.ephyra.R
 import com.cooper.homelab.core.uiandroid.R as CoreR
 
 /**
@@ -32,7 +34,8 @@ internal fun ConnectionProblem(
         onRetry = actions.onRefresh,
         onAllowLocalNetwork = allow?.run ?: {},
         onEditConnection = actions.onChangeServer,
-        signOut = { SignOutButton(actions) },
+        signOutLabel = stringResource(R.string.settings_sign_out),
+        onSignOut = actions.onAskSignOut,
         modifier = modifier,
     )
 }
@@ -48,6 +51,7 @@ internal fun ConnectionHealth.problem(): ConnectionProblem? =
         ConnectionHealth.CouldNotLoad -> ConnectionProblem.CouldNotLoad
         ConnectionHealth.LocalNetworkDenied -> ConnectionProblem.LocalNetworkDenied
         ConnectionHealth.ClientCertificateNeeded -> ConnectionProblem.ClientCertificateNeeded
+        ConnectionHealth.CertificateRefused -> ConnectionProblem.CertificateRefused
         ConnectionHealth.Checking, ConnectionHealth.Healthy -> null
     }
 
@@ -64,6 +68,7 @@ internal fun connectionHeadline(health: ConnectionHealth): Int =
         ConnectionHealth.CouldNotLoad -> CoreR.string.connection_couldnt_load_headline
         ConnectionHealth.LocalNetworkDenied -> CoreR.string.connection_local_network_headline
         ConnectionHealth.ClientCertificateNeeded -> CoreR.string.connection_client_certificate_headline
+        ConnectionHealth.CertificateRefused -> CoreR.string.connection_certificate_headline
         else -> CoreR.string.connection_unreachable_headline
     }
 
@@ -74,5 +79,6 @@ internal fun connectionBody(health: ConnectionHealth): Int =
         ConnectionHealth.CouldNotLoad -> CoreR.string.connection_couldnt_load_body
         ConnectionHealth.LocalNetworkDenied -> CoreR.string.connection_local_network_body
         ConnectionHealth.ClientCertificateNeeded -> CoreR.string.connection_client_certificate_body
+        ConnectionHealth.CertificateRefused -> CoreR.string.connection_certificate_body
         else -> CoreR.string.connection_unreachable_body
     }

@@ -66,6 +66,33 @@ class ConnectionProblemTest {
     }
 
     @Test
+    fun `a refused certificate says so, leads with editing the connection, and offers no retry`() {
+        val calls = mutableListOf<String>()
+        compose.setContent {
+            EphyraTheme {
+                EphyraRoot(
+                    state(ConnectionHealth.CertificateRefused),
+                    Actions(onRefresh = { calls += "retry" }, onChangeServer = { calls += "edit" }, onAskSignOut = { calls += "signout" }),
+                )
+            }
+        }
+        compose.onNodeWithText("This server's certificate isn't trusted").assertExists()
+        compose.onAllNodesWithText("Try again").assertCountEquals(0)
+        compose.onNodeWithText("Edit connection").performClick()
+        compose.onNodeWithText("Sign out").performClick()
+        assertEquals(listOf("edit", "signout"), calls)
+    }
+
+    @Test
+    fun `a refused certificate is not retried on a timer`() {
+        var retries = 0
+        compose.mainClock.autoAdvance = false
+        compose.setContent { EphyraTheme { EphyraRoot(state(ConnectionHealth.CertificateRefused), Actions(onRefresh = { retries++ })) } }
+        compose.mainClock.advanceTimeBy(60_000)
+        assertEquals(0, retries)
+    }
+
+    @Test
     fun `a server that answered something unusable says so`() {
         compose.setContent { EphyraTheme { EphyraRoot(state(ConnectionHealth.CouldNotLoad), Actions()) } }
         compose.onNodeWithText("Couldn't load your server").assertExists()

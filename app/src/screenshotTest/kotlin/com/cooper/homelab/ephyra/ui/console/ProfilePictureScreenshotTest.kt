@@ -5,9 +5,9 @@ import android.graphics.Color
 import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
 import com.android.tools.screenshot.PreviewTest
-import com.cooper.homelab.ephyra.preview.JellyfinFontScalePreviews
-import com.cooper.homelab.ephyra.preview.JellyfinScreenStatePreview
-import com.cooper.homelab.ephyra.preview.JellyfinSpanishPreviews
+import com.cooper.homelab.ephyra.preview.EphyraFontScalePreviews
+import com.cooper.homelab.ephyra.preview.EphyraScreenStatePreview
+import com.cooper.homelab.ephyra.preview.EphyraSpanishPreviews
 
 /** A square picture with a bright disc, so a frame shows the crop to a circle. */
 internal val profilePictureFixture: Bitmap =
@@ -28,54 +28,54 @@ private const val DISC = 80
 /** The profile picture page: none and one across the matrix, then each other state, and the remove confirm. */
 class ProfilePictureScreenshotTest {
     @PreviewTest
-    @JellyfinScreenStatePreview
-    @JellyfinFontScalePreviews
-    @JellyfinSpanishPreviews
+    @EphyraScreenStatePreview
+    @EphyraFontScalePreviews
+    @EphyraSpanishPreviews
     @Composable
     fun none() = ProfilePictureScreen(ProfilePictureUiState.Ready(), ProfilePictureActions())
 
     @PreviewTest
-    @JellyfinScreenStatePreview
-    @JellyfinFontScalePreviews
+    @EphyraScreenStatePreview
+    @EphyraFontScalePreviews
     @Composable
     fun picture() = ProfilePictureScreen(ProfilePictureUiState.Ready(picture = profilePictureFixture), ProfilePictureActions())
 
     @PreviewTest
-    @JellyfinScreenStatePreview
+    @EphyraScreenStatePreview
     @Composable
     fun uploading() =
         ProfilePictureScreen(ProfilePictureUiState.Ready(picture = profilePictureFixture, busy = true), ProfilePictureActions())
 
     @PreviewTest
-    @JellyfinScreenStatePreview
+    @EphyraScreenStatePreview
     @Composable
     fun unreadable() = ProfilePictureScreen(ProfilePictureUiState.Ready(unreadable = true), ProfilePictureActions())
 
     @PreviewTest
-    @JellyfinScreenStatePreview
-    @JellyfinSpanishPreviews
+    @EphyraScreenStatePreview
+    @EphyraSpanishPreviews
     @Composable
     fun otherUser() =
         ProfilePictureScreen(ProfilePictureUiState.Ready(picture = profilePictureFixture), ProfilePictureActions(), other = "Sam")
 
     @PreviewTest
-    @JellyfinScreenStatePreview
+    @EphyraScreenStatePreview
     @Composable
     fun removingOther() = Surface { RemovePictureDialog(ProfilePictureActions(), inWindow = false, other = "Sam") }
 
     @PreviewTest
-    @JellyfinScreenStatePreview
-    @JellyfinSpanishPreviews
+    @EphyraScreenStatePreview
+    @EphyraSpanishPreviews
     @Composable
     fun removing() = Surface { RemovePictureDialog(ProfilePictureActions(), inWindow = false) }
 
     @PreviewTest
-    @JellyfinScreenStatePreview
+    @EphyraScreenStatePreview
     @Composable
     fun loading() = ProfilePictureScreen(ProfilePictureUiState.Loading, ProfilePictureActions())
 
     @PreviewTest
-    @JellyfinScreenStatePreview
+    @EphyraScreenStatePreview
     @Composable
     fun failed() = ProfilePictureScreen(ProfilePictureUiState.Failed(ConsoleFailure.Unreachable), ProfilePictureActions())
 }

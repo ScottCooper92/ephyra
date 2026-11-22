@@ -9,7 +9,7 @@ import com.binge.designsystem.testing.createTakeDownAndroidComposeRule
 import com.cooper.homelab.ephyra.server.POLICY_BITRATE_LIMIT
 import com.cooper.homelab.ephyra.server.POLICY_LOCKOUT
 import com.cooper.homelab.ephyra.server.POLICY_MAX_SESSIONS
-import com.cooper.homelab.ephyra.theme.JellyfinTheme
+import com.cooper.homelab.ephyra.theme.EphyraTheme
 import kotlinx.serialization.json.Json
 import kotlinx.serialization.json.JsonObject
 import kotlinx.serialization.json.JsonPrimitive
@@ -35,7 +35,7 @@ class UserPolicySlidersTest {
     ) {
         val sent: JsonObject = Json.parseToJsonElement(policy).jsonObject
         val actions = UsersActions(onPolicy = { key, value -> saved += key to (value as JsonPrimitive).content.toInt() })
-        compose.setContent { JellyfinTheme { PolicyPickerSheet(picker, sent, UserChoices(), actions) {} } }
+        compose.setContent { EphyraTheme { PolicyPickerSheet(picker, sent, UserChoices(), actions) {} } }
     }
 
     private fun tap(description: String) = compose.onNodeWithContentDescription(description).performClick()

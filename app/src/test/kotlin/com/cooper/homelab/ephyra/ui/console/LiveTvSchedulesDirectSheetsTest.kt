@@ -9,7 +9,7 @@ import androidx.compose.ui.test.performTextInput
 import com.binge.designsystem.testing.createTakeDownAndroidComposeRule
 import com.cooper.homelab.ephyra.server.SdCountry
 import com.cooper.homelab.ephyra.server.SdLineup
-import com.cooper.homelab.ephyra.theme.JellyfinTheme
+import com.cooper.homelab.ephyra.theme.EphyraTheme
 import org.junit.Assert.assertEquals
 import org.junit.Rule
 import org.junit.Test
@@ -30,7 +30,7 @@ class LiveTvSchedulesDirectSheetsTest {
         step: SdStep,
         actions: SdActions = SdActions(),
         saving: Boolean = false,
-    ) = compose.setContent { JellyfinTheme { SdStepContent(step, saving, actions) } }
+    ) = compose.setContent { EphyraTheme { SdStepContent(step, saving, actions) } }
 
     @Test
     fun `the account step sends what was typed, and says the password is not kept`() {

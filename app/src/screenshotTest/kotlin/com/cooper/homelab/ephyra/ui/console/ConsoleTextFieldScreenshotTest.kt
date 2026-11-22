@@ -10,9 +10,9 @@ import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.text.input.ImeAction
 import com.android.tools.screenshot.PreviewTest
 import com.binge.designsystem.component.BingeTextField
-import com.cooper.homelab.ephyra.preview.JellyfinFontScalePreviews
-import com.cooper.homelab.ephyra.preview.JellyfinScreenStatePreview
-import com.cooper.homelab.ephyra.preview.JellyfinSpanishPreviews
+import com.cooper.homelab.ephyra.preview.EphyraFontScalePreviews
+import com.cooper.homelab.ephyra.preview.EphyraScreenStatePreview
+import com.cooper.homelab.ephyra.preview.EphyraSpanishPreviews
 import com.binge.designsystem.R as DesR
 
 /** The console's text field in each shape its call sites use: plain, with a hint, in error, multi-line and secret. */
@@ -27,8 +27,8 @@ class ConsoleTextFieldScreenshotTest {
         }
 
     @PreviewTest
-    @JellyfinScreenStatePreview
-    @JellyfinFontScalePreviews
+    @EphyraScreenStatePreview
+    @EphyraFontScalePreviews
     @Composable
     fun plain() =
         Fields {
@@ -47,8 +47,8 @@ class ConsoleTextFieldScreenshotTest {
         }
 
     @PreviewTest
-    @JellyfinScreenStatePreview
-    @JellyfinSpanishPreviews
+    @EphyraScreenStatePreview
+    @EphyraSpanishPreviews
     @Composable
     fun secretMasked() =
         Fields {
@@ -56,8 +56,8 @@ class ConsoleTextFieldScreenshotTest {
         }
 
     @PreviewTest
-    @JellyfinScreenStatePreview
-    @JellyfinSpanishPreviews
+    @EphyraScreenStatePreview
+    @EphyraSpanishPreviews
     @Composable
     fun secretRevealed() =
         Fields {

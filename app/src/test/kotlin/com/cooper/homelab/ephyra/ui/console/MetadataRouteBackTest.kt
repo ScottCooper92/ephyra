@@ -17,7 +17,7 @@ import com.cooper.homelab.ephyra.server.Connection
 import com.cooper.homelab.ephyra.server.FetcherKind
 import com.cooper.homelab.ephyra.session
 import com.cooper.homelab.ephyra.testSessionStore
-import com.cooper.homelab.ephyra.theme.JellyfinTheme
+import com.cooper.homelab.ephyra.theme.EphyraTheme
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.runBlocking
 import okhttp3.OkHttpClient
@@ -62,7 +62,7 @@ class MetadataRouteBackTest {
 
     private fun show() =
         compose.setContent {
-            JellyfinTheme {
+            EphyraTheme {
                 MetadataItemRoute(
                     connection,
                     item,

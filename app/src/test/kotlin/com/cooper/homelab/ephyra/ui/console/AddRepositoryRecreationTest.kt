@@ -10,7 +10,7 @@ import androidx.compose.ui.test.junit4.createEmptyComposeRule
 import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.performClick
 import androidx.compose.ui.test.performTextInput
-import com.cooper.homelab.ephyra.theme.JellyfinTheme
+import com.cooper.homelab.ephyra.theme.EphyraTheme
 import org.junit.After
 import org.junit.Rule
 import org.junit.Test
@@ -60,7 +60,7 @@ class AddRepositoryRecreationTest {
     }
 
     private fun show(controller: ActivityController<ComponentActivity>) {
-        controller.get().setContent { JellyfinTheme { AddRepositorySheet(saving = false, actions = RepositoriesActions()) } }
+        controller.get().setContent { EphyraTheme { AddRepositorySheet(saving = false, actions = RepositoriesActions()) } }
         settle()
     }
 

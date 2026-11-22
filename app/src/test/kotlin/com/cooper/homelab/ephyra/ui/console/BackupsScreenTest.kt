@@ -12,7 +12,7 @@ import com.cooper.homelab.ephyra.server.BackupCreation
 import com.cooper.homelab.ephyra.server.BackupOptions
 import com.cooper.homelab.ephyra.server.JellyfinHttpException
 import com.cooper.homelab.ephyra.server.ServerBackup
-import com.cooper.homelab.ephyra.theme.JellyfinTheme
+import com.cooper.homelab.ephyra.theme.EphyraTheme
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertTrue
 import org.junit.Rule
@@ -38,7 +38,7 @@ class BackupsScreenTest {
 
     private fun show(state: BackupsUiState.Ready) {
         compose.setContent {
-            JellyfinTheme {
+            EphyraTheme {
                 BackupsScreen(state, BackupsActions(onDismissCreation = { dismissed++ }), ServerVersion.of(10, 11, 6), NOW)
             }
         }
@@ -104,7 +104,7 @@ class BackupsScreenTest {
     fun `a restore the server did not come back from is a dialog with a next step, and OK dismisses it`() {
         var restoreDismissed = 0
         compose.setContent {
-            JellyfinTheme {
+            EphyraTheme {
                 BackupsScreen(
                     ready.copy(restore = Restore.NotBack),
                     BackupsActions(onDismissRestore = { restoreDismissed++ }),

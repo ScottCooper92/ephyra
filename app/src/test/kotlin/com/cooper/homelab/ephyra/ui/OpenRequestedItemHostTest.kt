@@ -29,7 +29,7 @@ import com.cooper.homelab.ephyra.server.Connection
 import com.cooper.homelab.ephyra.server.LibraryIndex
 import com.cooper.homelab.ephyra.session
 import com.cooper.homelab.ephyra.testSessionStore
-import com.cooper.homelab.ephyra.theme.JellyfinTheme
+import com.cooper.homelab.ephyra.theme.EphyraTheme
 import com.cooper.homelab.ephyra.ui.nav.HomeRoute
 import com.cooper.homelab.ephyra.ui.nav.MovieRoute
 import com.cooper.homelab.ephyra.ui.nav.ShellRoute
@@ -81,7 +81,7 @@ class OpenRequestedItemHostTest {
         val viewModel =
             remember {
                 teardown.made(
-                    JellyfinViewModel(
+                    EphyraViewModel(
                         sessions,
                         connection,
                         LibraryIndex(),
@@ -95,7 +95,7 @@ class OpenRequestedItemHostTest {
         val backStack = rememberNavBackStack(HomeRoute).also { shown = it }
         val actions = Actions(onAddress = viewModel::onAddress)
         CompositionLocalProvider(LocalClientEnabled provides clientOn) {
-            JellyfinTheme { ConsoleHost(state, backStack, graph, actions, actions, clientResolved = clientOn) }
+            EphyraTheme { ConsoleHost(state, backStack, graph, actions, actions, clientResolved = clientOn) }
         }
     }
 

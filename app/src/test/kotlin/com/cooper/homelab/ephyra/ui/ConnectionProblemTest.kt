@@ -15,7 +15,7 @@ import androidx.compose.ui.test.performClick
 import com.binge.designsystem.testing.createTakeDownAndroidComposeRule
 import com.cooper.homelab.ephyra.auth.JellyfinSession
 import com.cooper.homelab.ephyra.server.JellyfinAccount
-import com.cooper.homelab.ephyra.theme.JellyfinTheme
+import com.cooper.homelab.ephyra.theme.EphyraTheme
 import kotlinx.serialization.json.Json
 import kotlinx.serialization.json.jsonObject
 import org.junit.Assert.assertEquals
@@ -46,7 +46,7 @@ class ConnectionProblemTest {
 
     @Test
     fun `an unreachable server shows its problem and the three ways out, not the home`() {
-        compose.setContent { JellyfinTheme { JellyfinRoot(state(ConnectionHealth.Unreachable), Actions()) } }
+        compose.setContent { EphyraTheme { EphyraRoot(state(ConnectionHealth.Unreachable), Actions()) } }
         compose.onNodeWithText("Can't reach your server").assertExists()
         compose.onNodeWithText("Try again").assertExists()
         compose.onNodeWithText("Edit server details").assertExists()
@@ -57,7 +57,7 @@ class ConnectionProblemTest {
 
     @Test
     fun `a server that asks for a client certificate says so`() {
-        compose.setContent { JellyfinTheme { JellyfinRoot(state(ConnectionHealth.ClientCertificateNeeded), Actions()) } }
+        compose.setContent { EphyraTheme { EphyraRoot(state(ConnectionHealth.ClientCertificateNeeded), Actions()) } }
         compose.onNodeWithText("This server asks for a client certificate").assertExists()
         compose.onNodeWithText("Edit server details").assertExists()
         compose.onNodeWithText("Sign out").assertExists()
@@ -65,13 +65,13 @@ class ConnectionProblemTest {
 
     @Test
     fun `a server that answered something unusable says so`() {
-        compose.setContent { JellyfinTheme { JellyfinRoot(state(ConnectionHealth.CouldNotLoad), Actions()) } }
+        compose.setContent { EphyraTheme { EphyraRoot(state(ConnectionHealth.CouldNotLoad), Actions()) } }
         compose.onNodeWithText("Couldn't load your server").assertExists()
     }
 
     @Test
     fun `a healthy server shows the home`() {
-        compose.setContent { JellyfinTheme { JellyfinRoot(state(ConnectionHealth.Healthy), Actions()) } }
+        compose.setContent { EphyraTheme { EphyraRoot(state(ConnectionHealth.Healthy), Actions()) } }
         compose.onNodeWithContentDescription("Your account").assertExists()
         compose.onAllNodesWithText("Try again").assertCountEquals(0)
         compose.onAllNodesWithText("Can't reach your server").assertCountEquals(0)
@@ -83,7 +83,7 @@ class ConnectionProblemTest {
      */
     @Test
     fun `a server that has not answered yet shows neither the home nor a problem`() {
-        compose.setContent { JellyfinTheme { JellyfinRoot(state(ConnectionHealth.Checking), Actions()) } }
+        compose.setContent { EphyraTheme { EphyraRoot(state(ConnectionHealth.Checking), Actions()) } }
         compose.onAllNodesWithText("Scheduled tasks").assertCountEquals(0)
         compose.onAllNodesWithContentDescription("Your account").assertCountEquals(0)
         compose.onAllNodesWithText("Try again").assertCountEquals(0)
@@ -94,8 +94,8 @@ class ConnectionProblemTest {
     fun `each way out reaches its action`() {
         val calls = mutableListOf<String>()
         compose.setContent {
-            JellyfinTheme {
-                JellyfinRoot(
+            EphyraTheme {
+                EphyraRoot(
                     state(ConnectionHealth.Unreachable),
                     Actions(onRefresh = { calls += "retry" }, onChangeServer = { calls += "edit" }, onAskSignOut = { calls += "signout" }),
                 )
@@ -111,8 +111,8 @@ class ConnectionProblemTest {
     fun `a retry in flight shows a spinner in place of its label and swallows taps`() {
         val calls = mutableListOf<String>()
         compose.setContent {
-            JellyfinTheme {
-                JellyfinRoot(
+            EphyraTheme {
+                EphyraRoot(
                     state(ConnectionHealth.Unreachable, refreshing = true),
                     Actions(onRefresh = { calls += "retry" }, onChangeServer = { calls += "edit" }),
                 )
@@ -130,8 +130,8 @@ class ConnectionProblemTest {
         val calls = mutableListOf<String>()
         var asked by mutableStateOf(false)
         compose.setContent {
-            JellyfinTheme {
-                JellyfinRoot(
+            EphyraTheme {
+                EphyraRoot(
                     state(ConnectionHealth.LocalNetworkDenied),
                     Actions(onAllowLocalNetwork = { calls += "allow" }, localNetworkAsked = asked),
                 )
@@ -153,7 +153,7 @@ class ConnectionProblemTest {
         val calls = mutableListOf<Long>()
         compose.mainClock.autoAdvance = false
         compose.setContent {
-            JellyfinTheme {
+            EphyraTheme {
                 ConnectionAutoRetry(ConnectionHealth.Unreachable, refreshing = false, onRefresh = {
                     calls += compose.mainClock.currentTime
                 }, delaysMillis = listOf(1_000L, 2_000L, 3_000L))
@@ -177,7 +177,7 @@ class ConnectionProblemTest {
         var calls = 0
         compose.mainClock.autoAdvance = false
         compose.setContent {
-            JellyfinTheme {
+            EphyraTheme {
                 ConnectionAutoRetry(
                     ConnectionHealth.Unreachable,
                     refreshing = true,

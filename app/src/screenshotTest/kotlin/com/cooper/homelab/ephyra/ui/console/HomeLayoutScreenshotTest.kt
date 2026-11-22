@@ -4,11 +4,11 @@ import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
 import com.android.tools.screenshot.PreviewTest
 import com.binge.designsystem.SaveStatus
-import com.cooper.homelab.ephyra.preview.JellyfinFontScalePreviews
-import com.cooper.homelab.ephyra.preview.JellyfinScreenStatePreview
-import com.cooper.homelab.ephyra.preview.JellyfinSpanishPreviews
-import com.cooper.homelab.ephyra.preview.JellyfinWidePreview
-import com.cooper.homelab.ephyra.preview.JellyfinWideSpanishPreview
+import com.cooper.homelab.ephyra.preview.EphyraFontScalePreviews
+import com.cooper.homelab.ephyra.preview.EphyraScreenStatePreview
+import com.cooper.homelab.ephyra.preview.EphyraSpanishPreviews
+import com.cooper.homelab.ephyra.preview.EphyraWidePreview
+import com.cooper.homelab.ephyra.preview.EphyraWideSpanishPreview
 import com.cooper.homelab.ephyra.server.HomeLayout
 import com.cooper.homelab.ephyra.server.UserView
 
@@ -30,59 +30,59 @@ private val previewHome =
 /** The home screen page: the libraries and switches across the matrix, a library's page, then each other state. */
 class HomeLayoutScreenshotTest {
     @PreviewTest
-    @JellyfinScreenStatePreview
-    @JellyfinFontScalePreviews
-    @JellyfinSpanishPreviews
+    @EphyraScreenStatePreview
+    @EphyraFontScalePreviews
+    @EphyraSpanishPreviews
     @Composable
     fun libraries() = HomeLayoutScreen(previewHome, HomeLayoutActions())
 
     @PreviewTest
-    @JellyfinScreenStatePreview
-    @JellyfinFontScalePreviews
-    @JellyfinSpanishPreviews
+    @EphyraScreenStatePreview
+    @EphyraFontScalePreviews
+    @EphyraSpanishPreviews
     @Composable
     fun library() = HomeLayoutLibraryScreen(previewHome, "home", HomeLayoutActions())
 
     @PreviewTest
-    @JellyfinScreenStatePreview
-    @JellyfinFontScalePreviews
+    @EphyraScreenStatePreview
+    @EphyraFontScalePreviews
     @Composable
     fun middleLibrary() = HomeLayoutLibraryScreen(previewHome, "movies", HomeLayoutActions())
 
     @PreviewTest
-    @JellyfinScreenStatePreview
-    @JellyfinFontScalePreviews
+    @EphyraScreenStatePreview
+    @EphyraFontScalePreviews
     @Composable
     fun onlyLibrary() = HomeLayoutLibraryScreen(HomeLayoutUiState.Ready(previewViews.take(1), HomeLayout()), "movies", HomeLayoutActions())
 
     @PreviewTest
-    @JellyfinScreenStatePreview
+    @EphyraScreenStatePreview
     @Composable
     fun firstLibrary() = HomeLayoutLibraryScreen(previewHome, "shows", HomeLayoutActions())
 
     @PreviewTest
-    @JellyfinScreenStatePreview
+    @EphyraScreenStatePreview
     @Composable
     fun noLibraries() = HomeLayoutScreen(HomeLayoutUiState.Ready(emptyList(), HomeLayout()), HomeLayoutActions())
 
     @PreviewTest
-    @JellyfinScreenStatePreview
-    @JellyfinSpanishPreviews
+    @EphyraScreenStatePreview
+    @EphyraSpanishPreviews
     @Composable
     fun saving() = HomeLayoutScreen(previewHome.copy(save = SaveProgress(SaveStatus.Saving)), HomeLayoutActions())
 
     @PreviewTest
-    @JellyfinScreenStatePreview
+    @EphyraScreenStatePreview
     @Composable
     fun saved() = HomeLayoutScreen(previewHome.copy(save = SaveProgress(SaveStatus.Saved)), HomeLayoutActions())
 
     @PreviewTest
-    @JellyfinScreenStatePreview
+    @EphyraScreenStatePreview
     @Composable
     fun loading() = HomeLayoutScreen(HomeLayoutUiState.Loading, HomeLayoutActions())
 
     @PreviewTest
-    @JellyfinScreenStatePreview
+    @EphyraScreenStatePreview
     @Composable
     fun failed() = HomeLayoutScreen(HomeLayoutUiState.Failed(ConsoleFailure.Unreachable), HomeLayoutActions())
 }
@@ -90,8 +90,8 @@ class HomeLayoutScreenshotTest {
 /** The home screen page on a landscape tablet, where a library opens in a third pane: the invitation to pick one while none is. */
 class HomeLayoutPaneScreenshotTest {
     @PreviewTest
-    @JellyfinWidePreview
-    @JellyfinWideSpanishPreview
+    @EphyraWidePreview
+    @EphyraWideSpanishPreview
     @Composable
     fun placeholder() = Surface { HomeLayoutPlaceholder() }
 }

@@ -12,7 +12,7 @@ import androidx.compose.ui.test.performScrollToNode
 import com.binge.designsystem.testing.createTakeDownAndroidComposeRule
 import com.cooper.homelab.ephyra.auth.JellyfinSession
 import com.cooper.homelab.ephyra.server.JellyfinAccount
-import com.cooper.homelab.ephyra.theme.JellyfinTheme
+import com.cooper.homelab.ephyra.theme.EphyraTheme
 import com.cooper.homelab.ephyra.ui.console.ConsolePage
 import kotlinx.serialization.json.Json
 import kotlinx.serialization.json.jsonObject
@@ -48,7 +48,7 @@ class FirstLibraryCardTest {
     private fun show(
         state: UiState.SignedIn,
         actions: Actions = Actions(),
-    ) = compose.setContent { JellyfinTheme { JellyfinRoot(state, actions) } }
+    ) = compose.setContent { EphyraTheme { EphyraRoot(state, actions) } }
 
     @Test
     fun `an administrator of a server with no libraries gets the hint, and its button opens Libraries`() {

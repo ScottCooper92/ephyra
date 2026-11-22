@@ -3,11 +3,11 @@ package com.cooper.homelab.ephyra.ui.console
 import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
 import com.android.tools.screenshot.PreviewTest
-import com.cooper.homelab.ephyra.preview.JellyfinFontScalePreviews
-import com.cooper.homelab.ephyra.preview.JellyfinScreenStatePreview
-import com.cooper.homelab.ephyra.preview.JellyfinSpanishPreviews
-import com.cooper.homelab.ephyra.preview.JellyfinWidePreview
-import com.cooper.homelab.ephyra.preview.JellyfinWideSpanishPreview
+import com.cooper.homelab.ephyra.preview.EphyraFontScalePreviews
+import com.cooper.homelab.ephyra.preview.EphyraScreenStatePreview
+import com.cooper.homelab.ephyra.preview.EphyraSpanishPreviews
+import com.cooper.homelab.ephyra.preview.EphyraWidePreview
+import com.cooper.homelab.ephyra.preview.EphyraWideSpanishPreview
 import com.cooper.homelab.ephyra.server.LogEntry
 import com.cooper.homelab.ephyra.server.LogFile
 import com.cooper.homelab.ephyra.server.LogLevel
@@ -59,80 +59,80 @@ private fun open(
 /** Logs: the file list across the matrix, then a log open, cut short, searched with no match, and the read states. */
 class LogsScreenshotTest {
     @PreviewTest
-    @JellyfinScreenStatePreview
-    @JellyfinFontScalePreviews
-    @JellyfinSpanishPreviews
+    @EphyraScreenStatePreview
+    @EphyraFontScalePreviews
+    @EphyraSpanishPreviews
     @Composable
     fun fullName() = Surface { LogNameDialog(LONG_NAME, {}, inWindow = false) }
 
     @PreviewTest
-    @JellyfinScreenStatePreview
-    @JellyfinFontScalePreviews
-    @JellyfinSpanishPreviews
+    @EphyraScreenStatePreview
+    @EphyraFontScalePreviews
+    @EphyraSpanishPreviews
     @Composable
     fun list() = LogsScreen(LogsUiState.Ready(previewFiles), LogsActions(), zone = ZoneOffset.UTC)
 
     /** A pull in progress: the page stays, with the pull spinner over it. */
     @PreviewTest
-    @JellyfinScreenStatePreview
-    @JellyfinSpanishPreviews
+    @EphyraScreenStatePreview
+    @EphyraSpanishPreviews
     @Composable
     fun refreshing() = LogsScreen(LogsUiState.Ready(previewFiles, refreshing = true), LogsActions(), zone = ZoneOffset.UTC)
 
     @PreviewTest
-    @JellyfinScreenStatePreview
-    @JellyfinSpanishPreviews
-    @JellyfinFontScalePreviews
+    @EphyraScreenStatePreview
+    @EphyraSpanishPreviews
+    @EphyraFontScalePreviews
     @Composable
     fun openLog() = LogScreen(open(), "log_20261031.log", LogsActions())
 
     @PreviewTest
-    @JellyfinScreenStatePreview
-    @JellyfinFontScalePreviews
+    @EphyraScreenStatePreview
+    @EphyraFontScalePreviews
     @Composable
     fun openLogLongName() = LogScreen(open(name = LONG_NAME), LONG_NAME, LogsActions())
 
     @PreviewTest
-    @JellyfinScreenStatePreview
+    @EphyraScreenStatePreview
     @Composable
     fun openLogLoading() = LogScreen(open(content = LogContent.Loading), "log_20261031.log", LogsActions())
 
     @PreviewTest
-    @JellyfinScreenStatePreview
+    @EphyraScreenStatePreview
     @Composable
     fun openLogFailed() = LogScreen(open(content = LogContent.Failed(ConsoleFailure.Unreachable)), "log_20261031.log", LogsActions())
 
     /** A log open after a process restore, while the files load again under its screen. */
     @PreviewTest
-    @JellyfinScreenStatePreview
+    @EphyraScreenStatePreview
     @Composable
     fun logFilesLoading() = LogScreen(LogsUiState.Loading, "log_20261031.log", LogsActions())
 
     /** The same reload, failed: the error screen with Retry under the log's own bar. */
     @PreviewTest
-    @JellyfinScreenStatePreview
-    @JellyfinSpanishPreviews
+    @EphyraScreenStatePreview
+    @EphyraSpanishPreviews
     @Composable
     fun logFilesFailed() = LogScreen(LogsUiState.Failed(ConsoleFailure.Unreachable), "log_20261031.log", LogsActions())
 
     /** The files are back but the view model holds no log, or another one, so this one is read again: the skeleton. */
     @PreviewTest
-    @JellyfinScreenStatePreview
+    @EphyraScreenStatePreview
     @Composable
     fun logNotOpenYet() = LogScreen(LogsUiState.Ready(previewFiles), "log_20261031.log", LogsActions())
 
     @PreviewTest
-    @JellyfinScreenStatePreview
+    @EphyraScreenStatePreview
     @Composable
     fun truncated() = LogScreen(open(truncated = true), "log_20261031.log", LogsActions())
 
     @PreviewTest
-    @JellyfinScreenStatePreview
+    @EphyraScreenStatePreview
     @Composable
     fun warningsUp() = LogScreen(open(level = LogLevel.Warn), "log_20261031.log", LogsActions())
 
     @PreviewTest
-    @JellyfinScreenStatePreview
+    @EphyraScreenStatePreview
     @Composable
     fun unlabelledEntry() =
         LogScreen(
@@ -142,31 +142,31 @@ class LogsScreenshotTest {
         )
 
     @PreviewTest
-    @JellyfinScreenStatePreview
-    @JellyfinSpanishPreviews
+    @EphyraScreenStatePreview
+    @EphyraSpanishPreviews
     @Composable
     fun noMatch() = LogScreen(open(query = "nothing like this"), "log_20261031.log", LogsActions())
 
     @PreviewTest
-    @JellyfinScreenStatePreview
-    @JellyfinSpanishPreviews
+    @EphyraScreenStatePreview
+    @EphyraSpanishPreviews
     @Composable
     fun noFiles() = LogsScreen(LogsUiState.Ready(emptyList()), LogsActions(), zone = ZoneOffset.UTC)
 
     @PreviewTest
-    @JellyfinScreenStatePreview
-    @JellyfinSpanishPreviews
-    @JellyfinFontScalePreviews
+    @EphyraScreenStatePreview
+    @EphyraSpanishPreviews
+    @EphyraFontScalePreviews
     @Composable
     fun retention() = LogsScreen(LogsUiState.Ready(previewFiles, retention = 3), LogsActions(), zone = ZoneOffset.UTC)
 
     @PreviewTest
-    @JellyfinScreenStatePreview
+    @EphyraScreenStatePreview
     @Composable
     fun retentionOneDay() = LogsScreen(LogsUiState.Ready(previewFiles, retention = 1), LogsActions(), zone = ZoneOffset.UTC)
 
     @PreviewTest
-    @JellyfinScreenStatePreview
+    @EphyraScreenStatePreview
     @Composable
     fun retentionUnsent() =
         LogsScreen(
@@ -176,19 +176,19 @@ class LogsScreenshotTest {
         )
 
     @PreviewTest
-    @JellyfinScreenStatePreview
-    @JellyfinSpanishPreviews
-    @JellyfinFontScalePreviews
+    @EphyraScreenStatePreview
+    @EphyraSpanishPreviews
+    @EphyraFontScalePreviews
     @Composable
     fun retentionSheet() = Surface { RetentionForm(3, LogsActions()) }
 
     @PreviewTest
-    @JellyfinScreenStatePreview
+    @EphyraScreenStatePreview
     @Composable
     fun loading() = LogsScreen(LogsUiState.Loading, LogsActions())
 
     @PreviewTest
-    @JellyfinScreenStatePreview
+    @EphyraScreenStatePreview
     @Composable
     fun failed() = LogsScreen(LogsUiState.Failed(ConsoleFailure.Refused), LogsActions())
 }
@@ -196,8 +196,8 @@ class LogsScreenshotTest {
 /** The logs page on a landscape tablet, where a log opens in a third pane: the invitation to pick one while none is. */
 class LogsPaneScreenshotTest {
     @PreviewTest
-    @JellyfinWidePreview
-    @JellyfinWideSpanishPreview
+    @EphyraWidePreview
+    @EphyraWideSpanishPreview
     @Composable
     fun placeholder() = Surface { LogPlaceholder() }
 }

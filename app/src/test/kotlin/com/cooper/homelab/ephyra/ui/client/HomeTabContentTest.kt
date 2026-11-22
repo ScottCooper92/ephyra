@@ -13,7 +13,7 @@ import com.cooper.homelab.ephyra.client.home.HomeRowKey
 import com.cooper.homelab.ephyra.client.home.HomeUiState
 import com.cooper.homelab.ephyra.client.home.homeRow
 import com.cooper.homelab.ephyra.client.home.homeState
-import com.cooper.homelab.ephyra.theme.JellyfinTheme
+import com.cooper.homelab.ephyra.theme.EphyraTheme
 import org.junit.Assert.assertEquals
 import org.junit.Rule
 import org.junit.Test
@@ -42,7 +42,7 @@ class HomeTabContentTest {
         resumed: MutableList<String> = mutableListOf(),
         refreshed: MutableList<String> = mutableListOf(),
     ) = compose.setContent {
-        JellyfinTheme {
+        EphyraTheme {
             HomeTabContent(
                 state = state,
                 refreshing = false,

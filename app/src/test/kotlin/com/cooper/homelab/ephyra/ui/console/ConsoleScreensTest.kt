@@ -67,7 +67,7 @@ import com.cooper.homelab.ephyra.server.UserView
 import com.cooper.homelab.ephyra.server.knownRelease
 import com.cooper.homelab.ephyra.server.parseLogEntries
 import com.cooper.homelab.ephyra.server.redactLog
-import com.cooper.homelab.ephyra.theme.JellyfinTheme
+import com.cooper.homelab.ephyra.theme.EphyraTheme
 import kotlinx.serialization.json.JsonArray
 import kotlinx.serialization.json.JsonObject
 import kotlinx.serialization.json.JsonPrimitive
@@ -103,7 +103,7 @@ class ConsoleScreensTest {
         var state by mutableStateOf<NowPlayingUiState>(NowPlayingUiState.Ready(listOf(stream), controls = mapOf(stream.sessionId to full)))
         var session by mutableStateOf(false)
         compose.setContent {
-            JellyfinTheme {
+            EphyraTheme {
                 if (session) {
                     NowPlayingSessionScreen(
                         state,
@@ -141,7 +141,7 @@ class ConsoleScreensTest {
         val some = SessionControls(playPause = true, seek = false, skip = false, stop = false)
         val state =
             NowPlayingUiState.Ready(listOf(stream), controls = mapOf(stream.sessionId to some))
-        compose.setContent { JellyfinTheme { NowPlayingSessionScreen(state, stream.sessionId, NowPlayingActions()) } }
+        compose.setContent { EphyraTheme { NowPlayingSessionScreen(state, stream.sessionId, NowPlayingActions()) } }
         compose.onNodeWithContentDescription("Play").assertExists()
         compose.onNodeWithContentDescription("Back 10 seconds").assertDoesNotExist()
         compose.onNodeWithContentDescription("Next").assertDoesNotExist()
@@ -153,7 +153,7 @@ class ConsoleScreensTest {
         var retried = false
         var state by mutableStateOf<NowPlayingUiState>(NowPlayingUiState.Ready(emptyList()))
         compose.setContent {
-            JellyfinTheme {
+            EphyraTheme {
                 NowPlayingScreen(
                     state,
                     administrator = true,
@@ -176,7 +176,7 @@ class ConsoleScreensTest {
                 stream.copy(sessionId = "b", method = PlayMethod.DirectStream),
             )
         compose.setContent {
-            JellyfinTheme {
+            EphyraTheme {
                 NowPlayingScreen(
                     NowPlayingUiState.Ready(streams),
                     administrator = true,
@@ -194,7 +194,7 @@ class ConsoleScreensTest {
         val modes = mutableListOf<SubtitleMode>()
         val state = PlaybackUiState.Ready(PlaybackPreferences("eng", "", SubtitleMode.Default), cultures)
         compose.setContent {
-            JellyfinTheme { PlaybackScreen(state, PlaybackActions(onAudio = { audio += it }, onSubtitleMode = { modes += it })) }
+            EphyraTheme { PlaybackScreen(state, PlaybackActions(onAudio = { audio += it }, onSubtitleMode = { modes += it })) }
         }
         compose.onNodeWithText("Any language").assertExists()
         compose.onNodeWithText("Audio language").performClick()
@@ -216,7 +216,7 @@ class ConsoleScreensTest {
                 onRememberSubtitles = { switched += "subtitles:$it" },
                 onAutoplayNextEpisode = { switched += "next:$it" },
             )
-        compose.setContent { JellyfinTheme { PlaybackScreen(state, actions) } }
+        compose.setContent { EphyraTheme { PlaybackScreen(state, actions) } }
         compose.onNodeWithText("Play the default track").performClick()
         compose.onNodeWithText("Remember my audio choice").performClick()
         compose.onNodeWithText("Remember my subtitle choice").performScrollTo().performClick()
@@ -230,7 +230,7 @@ class ConsoleScreensTest {
     @Test
     fun `the home screen page lists the libraries and opens one on a tap`() {
         val calls = mutableListOf<String>()
-        compose.setContent { JellyfinTheme { HomeLayoutScreen(homeList, HomeLayoutActions(onOpen = { calls += "open:$it" })) } }
+        compose.setContent { EphyraTheme { HomeLayoutScreen(homeList, HomeLayoutActions(onOpen = { calls += "open:$it" })) } }
         compose.onNodeWithText("In My Media and Latest").assertExists()
         compose.onNodeWithText("In My Media").assertExists()
         compose.onNodeWithText("Shows").performClick()
@@ -248,7 +248,7 @@ class ConsoleScreensTest {
                 onMove = { id, by -> calls += "move:$id:$by" },
                 onBack = { calls += "back" },
             )
-        compose.setContent { JellyfinTheme { HomeLayoutLibraryScreen(homeList, "b", actions) } }
+        compose.setContent { EphyraTheme { HomeLayoutLibraryScreen(homeList, "b", actions) } }
         compose.onNodeWithText("Show in Latest").performClick()
         compose.onNodeWithText("Show in My Media").performClick()
         compose.onNodeWithText("Group with other libraries").assertDoesNotExist()
@@ -260,7 +260,7 @@ class ConsoleScreensTest {
     @Test
     fun `a library the server no longer lists closes its screen`() {
         var closed = 0
-        compose.setContent { JellyfinTheme { HomeLayoutLibraryScreen(homeList, "gone", HomeLayoutActions(onBack = { closed++ })) } }
+        compose.setContent { EphyraTheme { HomeLayoutLibraryScreen(homeList, "gone", HomeLayoutActions(onBack = { closed++ })) } }
         compose.waitForIdle()
         assertEquals(1, closed)
     }
@@ -274,7 +274,7 @@ class ConsoleScreensTest {
     fun `the library display page opens a list's editor on a tap`() {
         val calls = mutableListOf<String>()
         compose.setContent {
-            JellyfinTheme {
+            EphyraTheme {
                 LibraryDisplayScreen(
                     displayReady,
                     LibraryDisplayActions(onEdit = { calls += "edit:${it.name}" }),
@@ -291,7 +291,7 @@ class ConsoleScreensTest {
     fun `a list's editor removes the entry it is asked to, from its own list`() {
         val calls = mutableListOf<String>()
         compose.setContent {
-            JellyfinTheme {
+            EphyraTheme {
                 LibraryDisplayListScreen(
                     displayReady,
                     DisplayList.RemoveWords,
@@ -318,7 +318,7 @@ class ConsoleScreensTest {
                 onOpen = { calls += "type:$it" },
                 onOpenFetcher = { type, fetcher -> calls += "fetcher:$type:${fetcher.kind}:${fetcher.name}" },
             )
-        compose.setContent { JellyfinTheme { MetadataDefaultsScreen(metadataReady, actions, open = null) } }
+        compose.setContent { EphyraTheme { MetadataDefaultsScreen(metadataReady, actions, open = null) } }
         compose.onNodeWithText("Series").performClick()
         assertEquals(listOf("type:Series"), calls)
     }
@@ -327,7 +327,7 @@ class ConsoleScreensTest {
     fun `a type's screen opens a provider`() {
         val calls = mutableListOf<String>()
         val actions = MetadataDefaultsActions(onOpenFetcher = { type, fetcher -> calls += "fetcher:$type:${fetcher.kind}:${fetcher.name}" })
-        compose.setContent { JellyfinTheme { MetadataTypeScreen(metadataReady, "Series", actions) } }
+        compose.setContent { EphyraTheme { MetadataTypeScreen(metadataReady, "Series", actions) } }
         compose.onAllNodesWithText("TheTVDB")[0].performClick()
         assertEquals(listOf("fetcher:Series:Metadata:TheTVDB"), calls)
     }
@@ -336,7 +336,7 @@ class ConsoleScreensTest {
     fun `a provider the server no longer offers closes its screen`() {
         var closed = 0
         compose.setContent {
-            JellyfinTheme {
+            EphyraTheme {
                 MetadataFetcherScreen(
                     metadataReady,
                     "Series",
@@ -358,7 +358,7 @@ class ConsoleScreensTest {
                 HomeLayout(grouped = setOf("b")),
                 groupable = listOf(UserView("b", "Mixed")),
             )
-        compose.setContent { JellyfinTheme { HomeLayoutScreen(state, HomeLayoutActions(onGrouped = { id, on -> calls += "$id:$on" })) } }
+        compose.setContent { EphyraTheme { HomeLayoutScreen(state, HomeLayoutActions(onGrouped = { id, on -> calls += "$id:$on" })) } }
         compose.onNodeWithText("Mixed").performScrollTo().performClick()
         assertEquals(listOf("b:false"), calls)
     }
@@ -374,7 +374,7 @@ class ConsoleScreensTest {
                 onSplashscreen = { calls += "splash:$it" },
             )
         var splash by mutableStateOf(true)
-        compose.setContent { JellyfinTheme { ServerSettingsScreen(state, actions, splashscreenAvailable = splash) } }
+        compose.setContent { EphyraTheme { ServerSettingsScreen(state, actions, splashscreenAvailable = splash) } }
         compose.onNodeWithText("Server name").performClick()
         compose.onNodeWithText("Quick Connect").performScrollTo().performClick()
         compose.onNodeWithText("Login disclaimer").performScrollTo().performClick()
@@ -388,7 +388,7 @@ class ConsoleScreensTest {
     fun `before 10_11 the splash image row is left out and a note says a branding save resets an image from another app`() {
         val state = ServerSettingsUiState.Ready(ServerSettings("truenas", "en", "GB"), Branding(splashscreen = true))
         var known by mutableStateOf(false)
-        compose.setContent { JellyfinTheme { ServerSettingsScreen(state, ServerSettingsActions(), splashImageKnown = known) } }
+        compose.setContent { EphyraTheme { ServerSettingsScreen(state, ServerSettingsActions(), splashImageKnown = known) } }
         compose.onNodeWithText("Splash screen").performScrollTo().assertExists()
         compose.onNodeWithText("Splash image").assertDoesNotExist()
         compose.onNodeWithText("Saving here resets a custom splash image", substring = true).performScrollTo().assertExists()
@@ -401,7 +401,7 @@ class ConsoleScreensTest {
     fun `a server with no splash screen at all shows neither the image row nor the note`() {
         val state = ServerSettingsUiState.Ready(ServerSettings("truenas", "en", "GB"), Branding())
         compose.setContent {
-            JellyfinTheme { ServerSettingsScreen(state, ServerSettingsActions(), splashscreenAvailable = false, splashImageKnown = false) }
+            EphyraTheme { ServerSettingsScreen(state, ServerSettingsActions(), splashscreenAvailable = false, splashImageKnown = false) }
         }
         compose.onNodeWithText("Login disclaimer").performScrollTo().assertExists()
         compose.onNodeWithText("Splash image").assertDoesNotExist()
@@ -411,7 +411,7 @@ class ConsoleScreensTest {
     @Test
     fun `every subtitle mode is offered, with what it does`() {
         val state = PlaybackUiState.Ready(PlaybackPreferences("", "", SubtitleMode.None), cultures)
-        compose.setContent { JellyfinTheme { PlaybackScreen(state, PlaybackActions()) } }
+        compose.setContent { EphyraTheme { PlaybackScreen(state, PlaybackActions()) } }
         compose.onNodeWithText("Subtitle mode").performScrollTo().performClick()
         listOf("Follow the file", "Smart", "Only forced", "Always").forEach { compose.onNodeWithText(it).assertExists() }
         compose.onNodeWithText("You can still turn them on while watching").assertExists()
@@ -426,7 +426,7 @@ class ConsoleScreensTest {
                 changed =
                     true
             })
-        compose.setContent { JellyfinTheme { PasswordScreen(PasswordUiState(new = "a", confirm = "a"), actions) } }
+        compose.setContent { EphyraTheme { PasswordScreen(PasswordUiState(new = "a", confirm = "a"), actions) } }
         compose.onNodeWithText("Current password").performTextInput("x")
         compose.onNodeWithText("Confirm password").performTextInput("y")
         compose.onNode(hasText("Change password") and hasClickAction()).performClick()
@@ -439,7 +439,7 @@ class ConsoleScreensTest {
     @Test
     fun `each password result reads as it should`() {
         var state by mutableStateOf(PasswordUiState(result = PasswordResult.Changed))
-        compose.setContent { JellyfinTheme { PasswordScreen(state, PasswordActions()) } }
+        compose.setContent { EphyraTheme { PasswordScreen(state, PasswordActions()) } }
         mapOf(
             PasswordResult.Changed to "Password changed.",
             PasswordResult.WrongCurrent to "That isn't your current password.",
@@ -467,7 +467,7 @@ class ConsoleScreensTest {
         var state by mutableStateOf(LibrariesUiState.Ready(libraries, TaskBoard(listOf(scanTask))))
         val actions =
             LibrariesActions(onScan = { scanned += it.id }, onScanEverything = { everything++ }, onStopEverything = { stopped = true })
-        compose.setContent { JellyfinTheme { LibrariesScreen(state, actions) } }
+        compose.setContent { EphyraTheme { LibrariesScreen(state, actions) } }
         compose.onNodeWithText("Hasn't run yet").assertExists()
         compose.onAllNodesWithContentDescription("Scan")[0].performClick()
         assertEquals(1, everything)
@@ -509,7 +509,7 @@ class ConsoleScreensTest {
         val failed = ServerTask("c", "OptimizeDatabaseTask", "Optimise database", "", "Maintenance", false, false, null, clean.lastRun)
         var state by mutableStateOf(TasksUiState.Ready(TaskBoard(listOf(scan, clean, failed))))
         compose.setContent {
-            JellyfinTheme { TasksScreen(state, TasksActions(onRun = { ran += it.id }, onStop = { stopped += it.id }), now = 0) }
+            EphyraTheme { TasksScreen(state, TasksActions(onRun = { ran += it.id }, onStop = { stopped += it.id }), now = 0) }
         }
         compose.onNodeWithText("LIBRARY").assertExists()
         compose.onNodeWithText("MAINTENANCE").assertExists()
@@ -558,7 +558,7 @@ class ConsoleScreensTest {
         var state by mutableStateOf<ActivityUiState>(ActivityUiState.Ready(listOf(entry), total = 1))
         var closed = 0
         compose.setContent {
-            JellyfinTheme {
+            EphyraTheme {
                 ActivityScreen(
                     state,
                     ActivityActions(
@@ -587,7 +587,7 @@ class ConsoleScreensTest {
         var withAction by mutableStateOf(true)
         var state by mutableStateOf<ActivityUiState>(ActivityUiState.Ready(listOf(entry), total = 1, open = 4))
         compose.setContent {
-            JellyfinTheme {
+            EphyraTheme {
                 ActivityScreen(
                     state,
                     ActivityActions(
@@ -627,7 +627,7 @@ class ConsoleScreensTest {
             )
         var state by mutableStateOf<ActivityUiState>(ActivityUiState.Ready(entries, total = 3))
         compose.setContent {
-            JellyfinTheme { ActivityScreen(state, ActivityActions(onLoadMore = { more++ }), now = now, zone = java.time.ZoneOffset.UTC) }
+            EphyraTheme { ActivityScreen(state, ActivityActions(onLoadMore = { more++ }), now = now, zone = java.time.ZoneOffset.UTC) }
         }
         compose.onNodeWithText("Failed login attempt from sam").assertExists()
         compose.onNodeWithText("sam is online from TV").assertExists()
@@ -645,7 +645,7 @@ class ConsoleScreensTest {
         var opened: String? = null
         val files = listOf(LogFile("log_20261031.log", 4096, 1_793_570_400_000L), LogFile("log_20261030.log", 2048, null))
         var state by mutableStateOf<LogsUiState>(LogsUiState.Ready(files))
-        compose.setContent { JellyfinTheme { LogsScreen(state, LogsActions(onOpen = { opened = it }), zone = java.time.ZoneOffset.UTC) } }
+        compose.setContent { EphyraTheme { LogsScreen(state, LogsActions(onOpen = { opened = it }), zone = java.time.ZoneOffset.UTC) } }
         compose.onNodeWithText("log_20261030.log").assertExists()
         compose.onNodeWithText("log_20261031.log").performClick()
         assertEquals("log_20261031.log", opened)
@@ -664,7 +664,7 @@ class ConsoleScreensTest {
         val files = listOf(LogFile("log_20261031.log", 4096, 1_793_570_400_000L))
         var state by mutableStateOf<LogsUiState>(LogsUiState.Ready(files))
         compose.setContent {
-            JellyfinTheme {
+            EphyraTheme {
                 LogScreen(
                     state,
                     "log_20261031.log",
@@ -704,7 +704,7 @@ class ConsoleScreensTest {
         val read = mutableListOf<String>()
         val other = OpenLog("older.log", LogContent.Ready(emptyList(), truncated = false))
         compose.setContent {
-            JellyfinTheme {
+            EphyraTheme {
                 LogScreen(
                     LogsUiState.Ready(listOf(LogFile("log_20261031.log", 1, null)), other),
                     "log_20261031.log",
@@ -729,7 +729,7 @@ class ConsoleScreensTest {
         repositoryActions: RepositoriesActions = RepositoriesActions(),
         onBack: () -> Unit = {},
     ) = compose.setContent {
-        JellyfinTheme { PluginsScreen(installed, catalog, repositories, actions, catalogActions, repositoryActions, onBack) }
+        EphyraTheme { PluginsScreen(installed, catalog, repositories, actions, catalogActions, repositoryActions, onBack) }
     }
 
     @Test
@@ -763,7 +763,7 @@ class ConsoleScreensTest {
                 onUninstall = { calls += "uninstall" },
                 onOpenSettings = { calls += "settings ${it.name}" },
             )
-        compose.setContent { JellyfinTheme { PluginScreen(state, "a1b2", actions, onBack = { calls += "back" }) } }
+        compose.setContent { EphyraTheme { PluginScreen(state, "a1b2", actions, onBack = { calls += "back" }) } }
         compose.onNodeWithText("Anime metadata.").assertExists()
         compose.onNodeWithText("Settings").performClick()
         compose.onNodeWithText("Enabled").performClick()
@@ -778,7 +778,7 @@ class ConsoleScreensTest {
     fun `a plugin that was uninstalled closes its screen, once`() {
         val calls = mutableListOf<String>()
         compose.setContent {
-            JellyfinTheme {
+            EphyraTheme {
                 PluginScreen(
                     PluginsUiState.Ready(listOf(aniDb), uninstalled = "a1b2"),
                     "a1b2",
@@ -795,7 +795,7 @@ class ConsoleScreensTest {
     fun `a plugin the server no longer lists closes its screen`() {
         var closed = 0
         compose.setContent {
-            JellyfinTheme {
+            EphyraTheme {
                 PluginScreen(
                     PluginsUiState.Ready(listOf(aniDb)),
                     "gone",
@@ -811,7 +811,7 @@ class ConsoleScreensTest {
     @Test
     fun `a plugin that can't run has no switch, and one that can't be uninstalled has no Uninstall`() {
         val stuck = aniDb.copy(status = PluginStatus.NotSupported, canUninstall = false, hasSettings = false)
-        compose.setContent { JellyfinTheme { PluginScreen(PluginsUiState.Ready(listOf(stuck)), "a1b2", PluginsActions(), onBack = {}) } }
+        compose.setContent { EphyraTheme { PluginScreen(PluginsUiState.Ready(listOf(stuck)), "a1b2", PluginsActions(), onBack = {}) } }
         compose.onNodeWithText("Not supported by this server", substring = true).assertExists()
         compose.onNodeWithText("Enabled").assertDoesNotExist()
         compose.onNodeWithText("Settings").assertDoesNotExist()
@@ -859,7 +859,7 @@ class ConsoleScreensTest {
         var state by mutableStateOf(CatalogUiState.Ready(listOf(reporting, future), server = knownRelease("10.10.7")))
         var shown by mutableStateOf("Playback Reporting")
         val actions = CatalogActions(onInstall = { pkg, _ -> calls += "install ${pkg.name}" }, onCancel = { calls += "cancel ${it.name}" })
-        compose.setContent { JellyfinTheme { PackageScreen(state, shown, actions, onBack = {}) } }
+        compose.setContent { EphyraTheme { PackageScreen(state, shown, actions, onBack = {}) } }
         compose.onNodeWithText("Shows who watched what.").assertExists()
         compose.onNodeWithText("13.0.0.0 · Jellyfin Stable").assertExists()
         // The changelog is Markdown, parsed off the main thread, so it appears a moment after the page.
@@ -899,7 +899,7 @@ class ConsoleScreensTest {
         val state = CatalogUiState.Ready(listOf(pkg), installed = setOf(pkg.name), installedVersions = mapOf(pkg.name to "13.0.0.0"))
         val actions = CatalogActions(onInstall = { p, v -> calls += "install ${p.name} ${v?.version}" })
         compose.setContent {
-            JellyfinTheme { PackageScreen(state.copy(server = knownRelease("10.10.7")), pkg.name, actions, onBack = {}) }
+            EphyraTheme { PackageScreen(state.copy(server = knownRelease("10.10.7")), pkg.name, actions, onBack = {}) }
         }
         compose.onNode(hasScrollAction()).performScrollToNode(hasText("Versions", ignoreCase = true))
         compose.onNodeWithText("Built for Jellyfin 10.11.0.0, newer than this server").assertIsNotEnabled()
@@ -931,7 +931,7 @@ class ConsoleScreensTest {
                 onRemove = { calls += "remove" },
             )
         compose.setContent {
-            JellyfinTheme {
+            EphyraTheme {
                 PluginsScreen(
                     PluginsUiState.Ready(emptyList()),
                     CatalogUiState.Ready(emptyList()),
@@ -972,7 +972,7 @@ class ConsoleScreensTest {
         val opened = mutableListOf<String>()
         val scan = ServerTask("t", LIBRARY_SCAN_TASK, "Scan Media Library", "Scans for new files.", "Library", false, false, null, null)
         compose.setContent {
-            JellyfinTheme { TasksScreen(TasksUiState.Ready(TaskBoard(listOf(scan))), TasksActions(onOpen = { opened += it.id })) }
+            EphyraTheme { TasksScreen(TasksUiState.Ready(TaskBoard(listOf(scan))), TasksActions(onOpen = { opened += it.id })) }
         }
         compose.onNodeWithText("Scan Media Library").performClick()
         assertEquals(listOf("t"), opened)
@@ -1000,7 +1000,7 @@ class ConsoleScreensTest {
                 onAddTrigger = { added += it },
                 onRemoveTrigger = { removed += it },
             )
-        compose.setContent { JellyfinTheme { TaskScreen(state, "t", actions) } }
+        compose.setContent { EphyraTheme { TaskScreen(state, "t", actions) } }
         compose.onNodeWithText("Scans for new files.").assertExists()
         compose.onNodeWithText("Every day at", substring = true).assertExists()
         compose.onNodeWithText("Stops after 2 hours").assertExists()
@@ -1044,7 +1044,7 @@ class ConsoleScreensTest {
         var closed = 0
         val scan = ServerTask("t", LIBRARY_SCAN_TASK, "Scan", "", "Library", false, false, null, null)
         compose.setContent {
-            JellyfinTheme { TaskScreen(TasksUiState.Ready(TaskBoard(listOf(scan))), "gone", TasksActions(onBack = { closed++ })) }
+            EphyraTheme { TaskScreen(TasksUiState.Ready(TaskBoard(listOf(scan))), "gone", TasksActions(onBack = { closed++ })) }
         }
         compose.waitForIdle()
         assertEquals(1, closed)
@@ -1084,7 +1084,7 @@ class ConsoleScreensTest {
                 onAskRemove = { asked += it },
                 onRemove = { removed = true },
             )
-        compose.setContent { JellyfinTheme { DevicesScreen(state, actions) } }
+        compose.setContent { EphyraTheme { DevicesScreen(state, actions) } }
         compose.onNodeWithText("This device. Sign out here instead.").assertExists()
         compose.onAllNodesWithContentDescription("Remove").assertCountEquals(1)
         compose.onNodeWithContentDescription("Remove").performClick()
@@ -1117,7 +1117,7 @@ class ConsoleScreensTest {
                 onAskRemove = { asked += it },
                 onRemove = { revoked = true },
             )
-        compose.setContent { JellyfinTheme { ApiKeysScreen(state, actions) } }
+        compose.setContent { EphyraTheme { ApiKeysScreen(state, actions) } }
         compose.onNodeWithText("Sonarr").assertExists()
         compose.onNodeWithText("****1111", substring = true).assertExists()
         compose.onNodeWithText("aaaabbbbccccdddd1111", substring = true).assertDoesNotExist()
@@ -1164,7 +1164,7 @@ class ConsoleScreensTest {
                 onInterval = { calls += "interval $it" },
             )
         var keyFrames by mutableStateOf(true)
-        compose.setContent { JellyfinTheme { TrickplayScreen(state, actions, keyFrameOnlyAvailable = keyFrames) } }
+        compose.setContent { EphyraTheme { TrickplayScreen(state, actions, keyFrameOnlyAvailable = keyFrames) } }
         compose.onNodeWithText("Hardware decoding").performClick()
         compose.onNodeWithText("Key frames only").performClick()
         keyFrames = false
@@ -1233,7 +1233,7 @@ class ConsoleScreensTest {
                 onShow = { state = state.copy(dialog = it) },
                 onCreate = { name, _ -> calls += "create $name" },
             )
-        compose.setContent { JellyfinTheme { UsersScreen(state, actions) } }
+        compose.setContent { EphyraTheme { UsersScreen(state, actions) } }
         compose.onNodeWithText("Claude (you)").assertExists()
         compose.onNodeWithText("Add a user").performClick()
         compose.onNodeWithText("Username").performTextInput("Ana")
@@ -1263,7 +1263,7 @@ class ConsoleScreensTest {
                 onSetPassword = { calls += "password $it" },
                 onDelete = { calls += "delete" },
             )
-        compose.setContent { JellyfinTheme { UserScreen(state, "sam", actions) } }
+        compose.setContent { EphyraTheme { UserScreen(state, "sam", actions) } }
         compose.onNodeWithText("Can sign in").performClick()
         compose.onNodeWithText("Administrator").performClick()
         compose.onNodeWithText("All libraries").performClick()
@@ -1291,7 +1291,7 @@ class ConsoleScreensTest {
                 open = "me",
                 actionFailed = ConsoleFailure.Refused,
             )
-        compose.setContent { JellyfinTheme { UserScreen(state, "me", UsersActions()) } }
+        compose.setContent { EphyraTheme { UserScreen(state, "me", UsersActions()) } }
         compose.onNodeWithText("This is you. Another admin can change these.").assertExists()
         compose.onNodeWithText("Can sign in").assertDoesNotExist()
         compose.onNodeWithText("Delete user").assertDoesNotExist()
@@ -1301,7 +1301,7 @@ class ConsoleScreensTest {
     fun `another user's page offers their picture`() {
         val state = UsersUiState.Ready(listOf(usersMe, usersSam), usersLibraries, me = "me", open = "sam")
         var opened = 0
-        compose.setContent { JellyfinTheme { UserScreen(state, "sam", UsersActions(onPicture = { opened++ })) } }
+        compose.setContent { EphyraTheme { UserScreen(state, "sam", UsersActions(onPicture = { opened++ })) } }
         compose.onNode(hasScrollAction()).performScrollToNode(hasText("Profile picture"))
         compose.onNodeWithText("Profile picture").performClick()
         assertEquals(1, opened)
@@ -1310,7 +1310,7 @@ class ConsoleScreensTest {
     @Test
     fun `your own user page has no picture row, as it is in your account`() {
         val state = UsersUiState.Ready(listOf(usersMe, usersSam), usersLibraries, me = "me", open = "me")
-        compose.setContent { JellyfinTheme { UserScreen(state, "me", UsersActions()) } }
+        compose.setContent { EphyraTheme { UserScreen(state, "me", UsersActions()) } }
         compose.onNodeWithText("Profile picture").assertDoesNotExist()
     }
 
@@ -1318,7 +1318,7 @@ class ConsoleScreensTest {
     fun `a user the server no longer lists closes their screen`() {
         var closed = 0
         val state = UsersUiState.Ready(listOf(usersSam), usersLibraries, me = "me")
-        compose.setContent { JellyfinTheme { UserScreen(state, "gone", UsersActions(onBack = { closed++ })) } }
+        compose.setContent { EphyraTheme { UserScreen(state, "gone", UsersActions(onBack = { closed++ })) } }
         compose.waitForIdle()
         assertEquals(1, closed)
     }
@@ -1327,7 +1327,7 @@ class ConsoleScreensTest {
     fun `a user's screen says which user the screens show, so the changes made on it are to them`() {
         val selected = mutableListOf<String?>()
         val state = UsersUiState.Ready(listOf(usersSam), usersLibraries, me = "me")
-        compose.setContent { JellyfinTheme { UserScreen(state, "sam", UsersActions(onSelect = { selected += it })) } }
+        compose.setContent { EphyraTheme { UserScreen(state, "sam", UsersActions(onSelect = { selected += it })) } }
         compose.waitForIdle()
         assertEquals(listOf<String?>("sam"), selected)
     }
@@ -1340,7 +1340,7 @@ class ConsoleScreensTest {
             ServerInfo("truenas", "10.11.6", "http://nas:8096", "X64", "", updateAvailable = true, restartPending = true, canRestart = true)
         var state by mutableStateOf(ServerUiState.Ready(info))
         compose.setContent {
-            JellyfinTheme { ServerScreen(state, ServerActions(onConfirm = { asked += it }, onRestart = { restarted = true })) }
+            EphyraTheme { ServerScreen(state, ServerActions(onConfirm = { asked += it }, onRestart = { restarted = true })) }
         }
         compose.onNodeWithText("Jellyfin 10.11.6").assertExists()
         compose.onNodeWithText("An update is available. Install it where the server runs.").assertExists()

@@ -65,24 +65,24 @@ val JellyfinLightColorScheme: ColorScheme =
     )
 
 /** The design system's brand slot in Jellyfin's purple, in place of Binge's amber. */
-val JellyfinBrand = BingeBrand(light = JellyfinLightColorScheme, dark = JellyfinDarkColorScheme)
+val EphyraBrand = BingeBrand(light = JellyfinLightColorScheme, dark = JellyfinDarkColorScheme)
 
 @Composable
-fun JellyfinTheme(content: @Composable () -> Unit) {
-    BingeExpressiveTheme(brand = JellyfinBrand, content = content)
+fun EphyraTheme(content: @Composable () -> Unit) {
+    BingeExpressiveTheme(brand = EphyraBrand, content = content)
 }
 
 /** [JellyfinDarkColorScheme] projected for the TV surface, which is dark-only like [BingeTvTheme]. */
 val JellyfinTvColorScheme: TvColorScheme = JellyfinDarkColorScheme.toTvColorScheme()
 
 /**
- * [BingeTvTheme] wearing [JellyfinTvColorScheme], the TV counterpart of [JellyfinTheme].
+ * [BingeTvTheme] wearing [JellyfinTvColorScheme], the TV counterpart of [EphyraTheme].
  *
  * The content sits on a transparent surface that gives it the light content colour. Without one, a `Text` with no colour of its
  * own comes out near-black on a device, while a screenshot frame, which is drawn on a surface of its own, shows it light.
  */
 @Composable
-fun JellyfinTvTheme(content: @Composable () -> Unit) {
+fun EphyraTvTheme(content: @Composable () -> Unit) {
     BingeTvTheme(colorScheme = JellyfinTvColorScheme) {
         Surface(
             modifier = Modifier.fillMaxSize(),

@@ -83,7 +83,7 @@ class CompanionServiceRoundTripTest {
             ).build()
 
     private companion object {
-        const val SERVICE_CLASS = "com.cooper.homelab.ephyra.service.JellyfinCompanionService"
+        const val SERVICE_CLASS = "com.cooper.homelab.ephyra.service.EphyraCompanionService"
         const val CALL_TIMEOUT_MS = 10_000L
         val FILM: MediaId =
             MediaId

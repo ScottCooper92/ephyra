@@ -35,7 +35,7 @@ import com.cooper.homelab.ephyra.server.SubtitleMode
 import com.cooper.homelab.ephyra.server.TrickplaySettings
 import com.cooper.homelab.ephyra.server.networkKeys
 import com.cooper.homelab.ephyra.server.networkSettings
-import com.cooper.homelab.ephyra.theme.JellyfinTheme
+import com.cooper.homelab.ephyra.theme.EphyraTheme
 import com.cooper.homelab.ephyra.ui.Actions
 import com.cooper.homelab.ephyra.ui.AppSettings
 import com.cooper.homelab.ephyra.ui.NotificationSettings
@@ -231,7 +231,7 @@ class SettingRowKeysTest {
 
     private fun show() =
         compose.setContent {
-            JellyfinTheme {
+            EphyraTheme {
                 val current = page
                 if (current != null) {
                     // A new page starts clean, as the console route's own composition does when it opens a page.

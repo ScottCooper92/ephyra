@@ -4,10 +4,10 @@ import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
 import com.android.tools.screenshot.PreviewTest
-import com.cooper.homelab.ephyra.preview.JellyfinFontScalePreviews
-import com.cooper.homelab.ephyra.preview.JellyfinScreenStatePreview
-import com.cooper.homelab.ephyra.preview.JellyfinSpanishPreviews
-import com.cooper.homelab.ephyra.preview.JellyfinWidePreview
+import com.cooper.homelab.ephyra.preview.EphyraFontScalePreviews
+import com.cooper.homelab.ephyra.preview.EphyraScreenStatePreview
+import com.cooper.homelab.ephyra.preview.EphyraSpanishPreviews
+import com.cooper.homelab.ephyra.preview.EphyraWidePreview
 import com.cooper.homelab.ephyra.server.ChannelMappingOptions
 import com.cooper.homelab.ephyra.server.ProviderChannel
 import com.cooper.homelab.ephyra.server.TunerChannel
@@ -37,41 +37,41 @@ private fun ready(selected: String? = null) = ChannelMappingsUiState.Ready(optio
 /** Channel mappings: the list across the matrix, the tuner channels in the phone's sheet and beside the list on a wide window. */
 class ChannelMappingsScreenshotTest {
     @PreviewTest
-    @JellyfinScreenStatePreview
-    @JellyfinFontScalePreviews
-    @JellyfinSpanishPreviews
+    @EphyraScreenStatePreview
+    @EphyraFontScalePreviews
+    @EphyraSpanishPreviews
     @Composable
     fun list() = ChannelMappingsScreen(ready(), ChannelMappingsActions())
 
     @PreviewTest
-    @JellyfinScreenStatePreview
+    @EphyraScreenStatePreview
     @Composable
     fun loading() = ChannelMappingsScreen(ChannelMappingsUiState.Loading, ChannelMappingsActions())
 
     @PreviewTest
-    @JellyfinScreenStatePreview
+    @EphyraScreenStatePreview
     @Composable
     fun failed() = ChannelMappingsScreen(ChannelMappingsUiState.Failed(ConsoleFailure.Unreachable), ChannelMappingsActions())
 
     @PreviewTest
-    @JellyfinScreenStatePreview
+    @EphyraScreenStatePreview
     @Composable
     fun noChannels() =
         ChannelMappingsScreen(ChannelMappingsUiState.Ready(options.copy(providerChannels = emptyList())), ChannelMappingsActions())
 
     /** The tuner channels as the pane draws them (the sheet's list): the filter, the channel it is paired with ticked, and one paired with another channel. */
     @PreviewTest
-    @JellyfinScreenStatePreview
-    @JellyfinFontScalePreviews
-    @JellyfinSpanishPreviews
+    @EphyraScreenStatePreview
+    @EphyraFontScalePreviews
+    @EphyraSpanishPreviews
     @Composable
     fun tunerChannels() =
         Surface { TunerChannelPane(ready("p1"), options.providerChannels.first(), ChannelMappingsActions(), PaddingValues()) }
 
     /** A filter that matches no tuner channel: the search-off line where the rows were. */
     @PreviewTest
-    @JellyfinScreenStatePreview
-    @JellyfinSpanishPreviews
+    @EphyraScreenStatePreview
+    @EphyraSpanishPreviews
     @Composable
     fun tunerChannelsNoMatch() =
         Surface {
@@ -86,7 +86,7 @@ class ChannelMappingsScreenshotTest {
 
     /** The same, beside the list from 600 dp wide. */
     @PreviewTest
-    @JellyfinWidePreview
+    @EphyraWidePreview
     @Composable
     fun twoPanesNoMatch() =
         Surface {
@@ -101,12 +101,12 @@ class ChannelMappingsScreenshotTest {
 
     /** From 600 dp wide: the list and the tuner channels of the open channel, side by side. */
     @PreviewTest
-    @JellyfinWidePreview
+    @EphyraWidePreview
     @Composable
     fun twoPanes() = ChannelMappingsScreen(ready("p3"), ChannelMappingsActions())
 
     @PreviewTest
-    @JellyfinWidePreview
+    @EphyraWidePreview
     @Composable
     fun twoPanesNothingOpen() = ChannelMappingsScreen(ready(), ChannelMappingsActions())
 }

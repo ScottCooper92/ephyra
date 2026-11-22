@@ -16,10 +16,10 @@ import com.cooper.homelab.ephyra.client.libraries.LibraryGridActions
 import com.cooper.homelab.ephyra.client.libraries.LibraryGridControls
 import com.cooper.homelab.ephyra.client.libraries.LibraryGridScreen
 import com.cooper.homelab.ephyra.client.libraries.LibraryGridUiState
-import com.cooper.homelab.ephyra.preview.JellyfinFontScalePreviews
-import com.cooper.homelab.ephyra.preview.JellyfinScreenStatePreview
-import com.cooper.homelab.ephyra.preview.JellyfinSpanishPreviews
-import com.cooper.homelab.ephyra.preview.JellyfinWidePreview
+import com.cooper.homelab.ephyra.preview.EphyraFontScalePreviews
+import com.cooper.homelab.ephyra.preview.EphyraScreenStatePreview
+import com.cooper.homelab.ephyra.preview.EphyraSpanishPreviews
+import com.cooper.homelab.ephyra.preview.EphyraWidePreview
 
 /**
  * A library's grid (`:client`) in each state: loaded on a phone, in Spanish, at larger fonts and on a tablet, with a filter applied,
@@ -53,16 +53,16 @@ class ClientLibraryGridScreenshotTest {
         )
 
     @PreviewTest
-    @JellyfinScreenStatePreview
-    @JellyfinFontScalePreviews
-    @JellyfinSpanishPreviews
-    @JellyfinWidePreview
+    @EphyraScreenStatePreview
+    @EphyraFontScalePreviews
+    @EphyraSpanishPreviews
+    @EphyraWidePreview
     @Composable
     fun loaded() = Grid(GridState.Ready(plain, titles, hasMore = false, appending = false, appendFailed = false))
 
     @PreviewTest
-    @JellyfinScreenStatePreview
-    @JellyfinSpanishPreviews
+    @EphyraScreenStatePreview
+    @EphyraSpanishPreviews
     @Composable
     fun collections() =
         Grid(
@@ -81,41 +81,41 @@ class ClientLibraryGridScreenshotTest {
         )
 
     @PreviewTest
-    @JellyfinScreenStatePreview
-    @JellyfinWidePreview
+    @EphyraScreenStatePreview
+    @EphyraWidePreview
     @Composable
     fun filterApplied() = Grid(GridState.Ready(filtered, titles.take(3), hasMore = false, appending = false, appendFailed = false))
 
     @PreviewTest
-    @JellyfinScreenStatePreview
+    @EphyraScreenStatePreview
     @Composable
     fun appending() = Grid(GridState.Ready(plain, titles, hasMore = true, appending = true, appendFailed = false))
 
     @PreviewTest
-    @JellyfinScreenStatePreview
+    @EphyraScreenStatePreview
     @Composable
     fun appendFailed() = Grid(GridState.Ready(plain, titles, hasMore = true, appending = false, appendFailed = true))
 
     @PreviewTest
-    @JellyfinScreenStatePreview
-    @JellyfinWidePreview
+    @EphyraScreenStatePreview
+    @EphyraWidePreview
     @Composable
     fun loading() = Grid(GridState.Loading(plain))
 
     @PreviewTest
-    @JellyfinScreenStatePreview
-    @JellyfinSpanishPreviews
+    @EphyraScreenStatePreview
+    @EphyraSpanishPreviews
     @Composable
     fun empty() = Grid(GridState.Empty(plain))
 
     @PreviewTest
-    @JellyfinScreenStatePreview
-    @JellyfinSpanishPreviews
+    @EphyraScreenStatePreview
+    @EphyraSpanishPreviews
     @Composable
     fun emptyFiltered() = Grid(GridState.Empty(filtered))
 
     @PreviewTest
-    @JellyfinScreenStatePreview
+    @EphyraScreenStatePreview
     @Composable
     fun failed() = Grid(GridState.Error(plain, ServerFailure.Unreachable()))
 }

@@ -4,10 +4,10 @@ import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
 import com.android.tools.screenshot.PreviewTest
 import com.binge.designsystem.SaveStatus
-import com.cooper.homelab.ephyra.preview.JellyfinFontScalePreviews
-import com.cooper.homelab.ephyra.preview.JellyfinScreenStateLightPreview
-import com.cooper.homelab.ephyra.preview.JellyfinScreenStatePreview
-import com.cooper.homelab.ephyra.preview.JellyfinSpanishPreviews
+import com.cooper.homelab.ephyra.preview.EphyraFontScalePreviews
+import com.cooper.homelab.ephyra.preview.EphyraScreenStateLightPreview
+import com.cooper.homelab.ephyra.preview.EphyraScreenStatePreview
+import com.cooper.homelab.ephyra.preview.EphyraSpanishPreviews
 import com.cooper.homelab.ephyra.server.AdvancedSettings
 import com.cooper.homelab.ephyra.server.CastReceiver
 
@@ -49,14 +49,14 @@ private val previewReady = AdvancedUiState.Ready(previewSettings)
 /** Advanced: the page across the matrix, an older server's, each sheet, then each other state. */
 class AdvancedScreenshotTest {
     @PreviewTest
-    @JellyfinScreenStatePreview
-    @JellyfinFontScalePreviews
-    @JellyfinSpanishPreviews
+    @EphyraScreenStatePreview
+    @EphyraFontScalePreviews
+    @EphyraSpanishPreviews
     @Composable
     fun advanced() = AdvancedScreen(previewReady, AdvancedActions())
 
     @PreviewTest
-    @JellyfinScreenStatePreview
+    @EphyraScreenStatePreview
     @Composable
     fun olderServer() =
         AdvancedScreen(
@@ -66,7 +66,7 @@ class AdvancedScreenshotTest {
         )
 
     @PreviewTest
-    @JellyfinScreenStatePreview
+    @EphyraScreenStatePreview
     @Composable
     fun oldestServer() =
         AdvancedScreen(
@@ -76,40 +76,40 @@ class AdvancedScreenshotTest {
         )
 
     @PreviewTest
-    @JellyfinScreenStatePreview
-    @JellyfinSpanishPreviews
-    @JellyfinScreenStateLightPreview
-    @JellyfinFontScalePreviews
+    @EphyraScreenStatePreview
+    @EphyraSpanishPreviews
+    @EphyraScreenStateLightPreview
+    @EphyraFontScalePreviews
     @Composable
     fun number() = Surface { NumberForm(AdvancedNumber.RetentionDays, previewSettings, AdvancedActions()) }
 
     @PreviewTest
-    @JellyfinScreenStatePreview
+    @EphyraScreenStatePreview
     @Composable
     fun hosts() = Surface { ListForm(AdvancedList.CorsHosts, previewSettings, AdvancedActions()) }
 
     @PreviewTest
-    @JellyfinScreenStatePreview
+    @EphyraScreenStatePreview
     @Composable
     fun castReceivers() = Surface { ListForm(AdvancedList.CastReceivers, previewSettings, AdvancedActions()) }
 
     @PreviewTest
-    @JellyfinScreenStatePreview
+    @EphyraScreenStatePreview
     @Composable
     fun saving() = AdvancedScreen(previewReady.copy(save = SaveProgress(SaveStatus.Saving)), AdvancedActions())
 
     @PreviewTest
-    @JellyfinScreenStatePreview
+    @EphyraScreenStatePreview
     @Composable
     fun unsent() = AdvancedScreen(previewReady.copy(save = SaveProgress(SaveStatus.Idle, failed = true)), AdvancedActions())
 
     @PreviewTest
-    @JellyfinScreenStatePreview
+    @EphyraScreenStatePreview
     @Composable
     fun loading() = AdvancedScreen(AdvancedUiState.Loading, AdvancedActions())
 
     @PreviewTest
-    @JellyfinScreenStatePreview
+    @EphyraScreenStatePreview
     @Composable
     fun failed() = AdvancedScreen(AdvancedUiState.Failed(ConsoleFailure.Refused), AdvancedActions())
 }

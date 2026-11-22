@@ -6,7 +6,7 @@ import com.binge.designsystem.testing.assertSkeletonReservesGeometry
 import com.binge.designsystem.testing.createTakeDownAndroidComposeRule
 import com.cooper.homelab.ephyra.server.ActivityEntry
 import com.cooper.homelab.ephyra.server.Severity
-import com.cooper.homelab.ephyra.theme.JellyfinTheme
+import com.cooper.homelab.ephyra.theme.EphyraTheme
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -28,7 +28,7 @@ class ActivitySkeletonGeometryTest {
             listOf(LayoutAnchors.section(LayoutAnchors.Collection.FIRST_ITEM)),
             checkStartEdge = true,
         ) { resolved ->
-            JellyfinTheme {
+            EphyraTheme {
                 ActivityScreen(
                     state = if (resolved) ActivityUiState.Ready(listOf(entry), 1) else ActivityUiState.Loading,
                     actions = ActivityActions(),

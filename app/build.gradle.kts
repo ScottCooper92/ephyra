@@ -203,10 +203,10 @@ translationStaleness {
 
 // Material 3 and tv-material each ship a MaterialTheme under the same simple name, so the wrong
 // import compiles and renders subtly wrong. binge-ci's gate keeps `ui/tv` on tv-material and
-// everything else off it. JellyfinTheme.kt is the one crossing.
+// everything else off it. EphyraTheme.kt is the one crossing.
 tvMaterialSeparation {
     sources.from(fileTree("src") { include("**/*.kt") })
-    allowlist.add("app/src/main/kotlin/com/cooper/homelab/ephyra/theme/JellyfinTheme.kt")
+    allowlist.add("app/src/main/kotlin/com/cooper/homelab/ephyra/theme/EphyraTheme.kt")
     themeTypeNames.addAll("JellyfinDarkColorScheme", "JellyfinLightColorScheme")
 }
 
@@ -352,12 +352,12 @@ kover {
                     "*PreviewData*",
                     "com.cooper.homelab.ephyra.MainActivity*",
                     // The Application: wiring.
-                    "com.cooper.homelab.ephyra.JellyfinApp",
+                    "com.cooper.homelab.ephyra.EphyraApp",
                     // The hand-built graph: wiring, every member a constructed object.
                     "com.cooper.homelab.ephyra.AppGraph*",
                     // The exported Service: services() and hostPolicy() hand the SDK objects from the graph.
                     // What they choose is tested through JellyfinLibraryService and selectHostPolicy.
-                    "com.cooper.homelab.ephyra.service.JellyfinCompanionService",
+                    "com.cooper.homelab.ephyra.service.EphyraCompanionService",
                     // Generated.
                     "com.cooper.homelab.ephyra.BuildConfig",
                 )

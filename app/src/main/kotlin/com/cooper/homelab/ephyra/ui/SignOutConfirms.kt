@@ -11,13 +11,13 @@ import com.cooper.homelab.ephyra.auth.JellyfinSession
 import com.cooper.homelab.ephyra.insecurePublicHost
 
 /** Shows or hides the sign-out confirm. */
-fun JellyfinViewModel.confirmSignOut(showing: Boolean) = updateSignedIn { it.copy(confirmingSignOut = showing) }
+fun EphyraViewModel.confirmSignOut(showing: Boolean) = updateSignedIn { it.copy(confirmingSignOut = showing) }
 
 /**
  * Shows or hides the confirm for taking back the plain-HTTP agreement, which the session's server card offers. Only a session
  * that holds one has it: nothing shows for any other.
  */
-fun JellyfinViewModel.confirmTakeBack(showing: Boolean) =
+fun EphyraViewModel.confirmTakeBack(showing: Boolean) =
     updateSignedIn { if (!showing || it.consentHost != null) it.copy(confirmingTakeBack = showing) else it }
 
 /**

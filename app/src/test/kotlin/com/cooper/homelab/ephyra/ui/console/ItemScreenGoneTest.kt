@@ -17,7 +17,7 @@ import com.cooper.homelab.ephyra.server.ServerTask
 import com.cooper.homelab.ephyra.server.ServerUser
 import com.cooper.homelab.ephyra.server.TypeFetchers
 import com.cooper.homelab.ephyra.server.UserView
-import com.cooper.homelab.ephyra.theme.JellyfinTheme
+import com.cooper.homelab.ephyra.theme.EphyraTheme
 import kotlinx.serialization.json.JsonObject
 import org.junit.Assert.assertEquals
 import org.junit.Rule
@@ -59,7 +59,7 @@ class ItemScreenGoneTest {
         screen: @Composable (S, () -> Unit) -> Unit,
     ) {
         var state by mutableStateOf(holds)
-        compose.setContent { JellyfinTheme { screen(state) { backs++ } } }
+        compose.setContent { EphyraTheme { screen(state) { backs++ } } }
         compose.waitForIdle()
         assertEquals("open while its item is in the list", 0, backs)
         state = loading

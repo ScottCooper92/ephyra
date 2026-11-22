@@ -5,7 +5,7 @@ import android.content.Context
 import android.content.Intent
 import androidx.test.core.app.ApplicationProvider
 import androidx.test.ext.junit.runners.AndroidJUnit4
-import com.cooper.homelab.ephyra.JellyfinApp
+import com.cooper.homelab.ephyra.EphyraApp
 import com.cooper.homelab.ephyra.MainActivity
 import com.cooper.homelab.ephyra.OpenItemActivity
 import kotlinx.coroutines.flow.first
@@ -23,7 +23,7 @@ import org.robolectric.annotation.Config
 
 /** The exported entry: that a caller can find it, and that starting it hands the request to the app and opens the app. */
 @RunWith(AndroidJUnit4::class)
-@Config(application = JellyfinApp::class)
+@Config(application = EphyraApp::class)
 class OpenItemActivityTest {
     private val context: Context = ApplicationProvider.getApplicationContext()
     private val id = "0123456789abcdef0123456789abcdef"
@@ -54,7 +54,7 @@ class OpenItemActivityTest {
     @Test
     fun `starting it hands the request to the app and starts the app`() {
         val activity = Robolectric.buildActivity(OpenItemActivity::class.java, intent()).create().get()
-        val requests = (context as JellyfinApp).graph.openRequests
+        val requests = (context as EphyraApp).graph.openRequests
         val request = runBlocking { withTimeout(TIMEOUT_MILLIS) { requests.requests.first() } }
         assertEquals(id, request.itemId)
         assertEquals("http://jelly.lan:8096", request.serverKey)
@@ -79,7 +79,7 @@ class OpenItemActivityTest {
         val activity = controller.get()
         shadowOf(activity).clearNextStartedActivities()
         controller.newIntent(intent())
-        val requests = (context as JellyfinApp).graph.openRequests
+        val requests = (context as EphyraApp).graph.openRequests
         val request = runBlocking { withTimeout(TIMEOUT_MILLIS) { requests.requests.first() } }
         assertEquals(id, request.itemId)
         assertNotNull("the app is started for it, so a running app comes to the front", shadowOf(activity).nextStartedActivity)

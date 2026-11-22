@@ -15,7 +15,7 @@ import androidx.compose.ui.test.onNodeWithTag
 import com.binge.designsystem.component.ItemGroup
 import com.binge.designsystem.component.ListItem
 import com.binge.designsystem.testing.createTakeDownAndroidComposeRule
-import com.cooper.homelab.ephyra.theme.JellyfinTheme
+import com.cooper.homelab.ephyra.theme.EphyraTheme
 import org.junit.Assert.assertEquals
 import org.junit.Rule
 import org.junit.Test
@@ -31,7 +31,7 @@ class UserAvatarTest {
     fun `a late picture and a fallback keep the row's dimensions`() {
         var picture by mutableStateOf<Bitmap?>(null)
         compose.setContent {
-            JellyfinTheme {
+            EphyraTheme {
                 Box(Modifier.testTag("row")) {
                     ItemGroup(
                         title = null,

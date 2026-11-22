@@ -4,11 +4,11 @@ import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
 import com.android.tools.screenshot.PreviewTest
 import com.binge.designsystem.SaveStatus
-import com.cooper.homelab.ephyra.preview.JellyfinFontScalePreviews
-import com.cooper.homelab.ephyra.preview.JellyfinScreenStatePreview
-import com.cooper.homelab.ephyra.preview.JellyfinSpanishPreviews
-import com.cooper.homelab.ephyra.preview.JellyfinWidePreview
-import com.cooper.homelab.ephyra.preview.JellyfinWideSpanishPreview
+import com.cooper.homelab.ephyra.preview.EphyraFontScalePreviews
+import com.cooper.homelab.ephyra.preview.EphyraScreenStatePreview
+import com.cooper.homelab.ephyra.preview.EphyraSpanishPreviews
+import com.cooper.homelab.ephyra.preview.EphyraWidePreview
+import com.cooper.homelab.ephyra.preview.EphyraWideSpanishPreview
 import com.cooper.homelab.ephyra.server.DisplayList
 import com.cooper.homelab.ephyra.server.JellyfinServerProfile
 import com.cooper.homelab.ephyra.server.ServerFolder
@@ -36,35 +36,35 @@ private val ready =
 /** Library display and metadata: the page across the matrix, an older server, each list editor and sheet, then the other states. */
 class LibraryDisplayScreenshotTest {
     @PreviewTest
-    @JellyfinScreenStatePreview
-    @JellyfinFontScalePreviews
-    @JellyfinSpanishPreviews
+    @EphyraScreenStatePreview
+    @EphyraFontScalePreviews
+    @EphyraSpanishPreviews
     @Composable
     fun display() = LibraryDisplayScreen(ready, LibraryDisplayActions(), newest)
 
     @PreviewTest
-    @JellyfinScreenStatePreview
+    @EphyraScreenStatePreview
     @Composable
     fun olderServer() = LibraryDisplayScreen(ready, LibraryDisplayActions(), JellyfinServerProfile.from("10.8.13"))
 
     @PreviewTest
-    @JellyfinScreenStatePreview
+    @EphyraScreenStatePreview
     @Composable
     fun saving() = LibraryDisplayScreen(ready.copy(save = SaveProgress(SaveStatus.Saving)), LibraryDisplayActions(), newest)
 
     @PreviewTest
-    @JellyfinScreenStatePreview
-    @JellyfinSpanishPreviews
+    @EphyraScreenStatePreview
+    @EphyraSpanishPreviews
     @Composable
     fun listEditor() = LibraryDisplayListScreen(ready, DisplayList.RemoveWords, LibraryDisplayActions())
 
     @PreviewTest
-    @JellyfinScreenStatePreview
+    @EphyraScreenStatePreview
     @Composable
     fun substitutionsEditor() = LibraryDisplayListScreen(ready, DisplayList.Substitutions, LibraryDisplayActions())
 
     @PreviewTest
-    @JellyfinScreenStatePreview
+    @EphyraScreenStatePreview
     @Composable
     fun emptyEditor() =
         LibraryDisplayListScreen(
@@ -74,29 +74,29 @@ class LibraryDisplayScreenshotTest {
         )
 
     @PreviewTest
-    @JellyfinScreenStatePreview
-    @JellyfinSpanishPreviews
+    @EphyraScreenStatePreview
+    @EphyraSpanishPreviews
     @Composable
     fun newWord() = Surface { NewEntryForm(DisplayList.RemoveWords, LibraryDisplayActions()) }
 
     @PreviewTest
-    @JellyfinScreenStatePreview
+    @EphyraScreenStatePreview
     @Composable
     fun newSubstitutionFrom() = Surface { NewEntryForm(DisplayList.Substitutions, LibraryDisplayActions()) }
 
     @PreviewTest
-    @JellyfinScreenStatePreview
+    @EphyraScreenStatePreview
     @Composable
     fun newSubstitutionTo() = Surface { NewEntryForm(DisplayList.Substitutions, LibraryDisplayActions(), startStep = 1) }
 
     @PreviewTest
-    @JellyfinScreenStatePreview
-    @JellyfinSpanishPreviews
+    @EphyraScreenStatePreview
+    @EphyraSpanishPreviews
     @Composable
     fun dummyChapters() = Surface { ChapterDurationForm(300, LibraryDisplayActions()) }
 
     @PreviewTest
-    @JellyfinScreenStatePreview
+    @EphyraScreenStatePreview
     @Composable
     fun metadataFolder() =
         Surface {
@@ -109,7 +109,7 @@ class LibraryDisplayScreenshotTest {
         }
 
     @PreviewTest
-    @JellyfinScreenStatePreview
+    @EphyraScreenStatePreview
     @Composable
     fun metadataFolderTyped() =
         Surface {
@@ -123,12 +123,12 @@ class LibraryDisplayScreenshotTest {
         }
 
     @PreviewTest
-    @JellyfinScreenStatePreview
+    @EphyraScreenStatePreview
     @Composable
     fun loading() = LibraryDisplayScreen(LibraryDisplayUiState.Loading, LibraryDisplayActions(), newest)
 
     @PreviewTest
-    @JellyfinScreenStatePreview
+    @EphyraScreenStatePreview
     @Composable
     fun failed() = LibraryDisplayScreen(LibraryDisplayUiState.Failed(ConsoleFailure.Refused), LibraryDisplayActions(), newest)
 }
@@ -136,8 +136,8 @@ class LibraryDisplayScreenshotTest {
 /** The page on a landscape tablet, where a list's editor opens in a third pane: the invitation to pick one while none is. */
 class LibraryDisplayPaneScreenshotTest {
     @PreviewTest
-    @JellyfinWidePreview
-    @JellyfinWideSpanishPreview
+    @EphyraWidePreview
+    @EphyraWideSpanishPreview
     @Composable
     fun placeholder() = Surface { LibraryDisplayPlaceholder() }
 }

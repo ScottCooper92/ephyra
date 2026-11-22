@@ -5,9 +5,9 @@ import com.android.tools.screenshot.PreviewTest
 import com.cooper.homelab.core.presentation.appsettings.LicenceEntry
 import com.cooper.homelab.core.presentation.appsettings.LicencesState
 import com.cooper.homelab.core.uiandroid.appsettings.LicencesScreen
-import com.cooper.homelab.ephyra.preview.JellyfinFontScalePreviews
-import com.cooper.homelab.ephyra.preview.JellyfinScreenStatePreview
-import com.cooper.homelab.ephyra.preview.JellyfinSpanishPreviews
+import com.cooper.homelab.ephyra.preview.EphyraFontScalePreviews
+import com.cooper.homelab.ephyra.preview.EphyraScreenStatePreview
+import com.cooper.homelab.ephyra.preview.EphyraSpanishPreviews
 
 private val previewLibraries =
     listOf(
@@ -33,26 +33,26 @@ private val previewLibraries =
 /** The licences page: the list across the matrix, then loading, an empty list and one that could not be read. */
 class LicencesScreenshotTest {
     @PreviewTest
-    @JellyfinScreenStatePreview
-    @JellyfinFontScalePreviews
-    @JellyfinSpanishPreviews
+    @EphyraScreenStatePreview
+    @EphyraFontScalePreviews
+    @EphyraSpanishPreviews
     @Composable
     fun list() = LicencesScreen(LicencesState.Ready(previewLibraries), onBack = {}, onOpenWebsite = {})
 
     @PreviewTest
-    @JellyfinScreenStatePreview
+    @EphyraScreenStatePreview
     @Composable
     fun loading() = LicencesScreen(LicencesState.Loading, onBack = {}, onOpenWebsite = {})
 
     @PreviewTest
-    @JellyfinScreenStatePreview
-    @JellyfinSpanishPreviews
+    @EphyraScreenStatePreview
+    @EphyraSpanishPreviews
     @Composable
     fun empty() = LicencesScreen(LicencesState.Empty, onBack = {}, onOpenWebsite = {})
 
     @PreviewTest
-    @JellyfinScreenStatePreview
-    @JellyfinSpanishPreviews
+    @EphyraScreenStatePreview
+    @EphyraSpanishPreviews
     @Composable
     fun unreadable() = LicencesScreen(LicencesState.Unreadable, onBack = {}, onOpenWebsite = {})
 }

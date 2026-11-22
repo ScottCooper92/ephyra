@@ -3,7 +3,7 @@ package com.cooper.homelab.ephyra.ui.console
 import androidx.activity.ComponentActivity
 import com.binge.designsystem.testing.createTakeDownAndroidComposeRule
 import com.cooper.homelab.ephyra.server.SdCountry
-import com.cooper.homelab.ephyra.theme.JellyfinTheme
+import com.cooper.homelab.ephyra.theme.EphyraTheme
 import org.junit.Assert.assertEquals
 import org.junit.Rule
 import org.junit.Test
@@ -38,7 +38,7 @@ class SdSheetBackTest {
         step: SdStep,
         saving: Boolean = false,
     ): List<String> {
-        compose.setContent { JellyfinTheme { SdSheet(SdUiState(step = step, saving = saving), actions) } }
+        compose.setContent { EphyraTheme { SdSheet(SdUiState(step = step, saving = saving), actions) } }
         compose.waitForIdle()
         compose.runOnUiThread { ShadowDialog.getLatestDialog().onBackPressed() }
         compose.waitForIdle()

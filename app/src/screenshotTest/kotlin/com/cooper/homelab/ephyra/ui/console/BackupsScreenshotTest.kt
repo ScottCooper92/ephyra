@@ -4,10 +4,10 @@ import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
 import com.android.tools.screenshot.PreviewTest
 import com.cooper.homelab.core.foundation.ServerVersion
-import com.cooper.homelab.ephyra.preview.JellyfinFontScalePreviews
-import com.cooper.homelab.ephyra.preview.JellyfinScreenStateLightPreview
-import com.cooper.homelab.ephyra.preview.JellyfinScreenStatePreview
-import com.cooper.homelab.ephyra.preview.JellyfinSpanishPreviews
+import com.cooper.homelab.ephyra.preview.EphyraFontScalePreviews
+import com.cooper.homelab.ephyra.preview.EphyraScreenStateLightPreview
+import com.cooper.homelab.ephyra.preview.EphyraScreenStatePreview
+import com.cooper.homelab.ephyra.preview.EphyraSpanishPreviews
 import com.cooper.homelab.ephyra.server.BackupCreation
 import com.cooper.homelab.ephyra.server.BackupOptions
 import com.cooper.homelab.ephyra.server.JellyfinHttpException
@@ -38,27 +38,27 @@ private val previewReady = BackupsUiState.Ready(previewBackups)
  */
 class BackupsScreenshotTest {
     @PreviewTest
-    @JellyfinScreenStatePreview
-    @JellyfinFontScalePreviews
-    @JellyfinSpanishPreviews
+    @EphyraScreenStatePreview
+    @EphyraFontScalePreviews
+    @EphyraSpanishPreviews
     @Composable
     fun backups() = BackupsScreen(previewReady, BackupsActions(), running, NOW)
 
     /** A pull in progress: the page stays, with the pull spinner over it. */
     @PreviewTest
-    @JellyfinScreenStatePreview
-    @JellyfinSpanishPreviews
+    @EphyraScreenStatePreview
+    @EphyraSpanishPreviews
     @Composable
     fun refreshing() = BackupsScreen(previewReady.copy(refreshing = true), BackupsActions(), running, NOW)
 
     @PreviewTest
-    @JellyfinScreenStatePreview
-    @JellyfinSpanishPreviews
+    @EphyraScreenStatePreview
+    @EphyraSpanishPreviews
     @Composable
     fun creating() = BackupsScreen(previewReady.copy(creation = BackupCreation.Creating), BackupsActions(), running, NOW)
 
     @PreviewTest
-    @JellyfinScreenStatePreview
+    @EphyraScreenStatePreview
     @Composable
     fun created() =
         BackupsScreen(
@@ -69,14 +69,14 @@ class BackupsScreenshotTest {
         )
 
     @PreviewTest
-    @JellyfinScreenStatePreview
+    @EphyraScreenStatePreview
     @Composable
     fun notMade() = Surface { BackupNotMadeDialog(BackupCreation.Failed(IOException("down")), BackupsActions(), inWindow = false) }
 
     @PreviewTest
-    @JellyfinScreenStatePreview
-    @JellyfinSpanishPreviews
-    @JellyfinFontScalePreviews
+    @EphyraScreenStatePreview
+    @EphyraSpanishPreviews
+    @EphyraFontScalePreviews
     @Composable
     fun notMadeRefused() =
         Surface {
@@ -88,7 +88,7 @@ class BackupsScreenshotTest {
         }
 
     @PreviewTest
-    @JellyfinScreenStatePreview
+    @EphyraScreenStatePreview
     @Composable
     fun notMadeWithReason() =
         Surface {
@@ -102,40 +102,40 @@ class BackupsScreenshotTest {
         }
 
     @PreviewTest
-    @JellyfinScreenStatePreview
-    @JellyfinSpanishPreviews
-    @JellyfinFontScalePreviews
+    @EphyraScreenStatePreview
+    @EphyraSpanishPreviews
+    @EphyraFontScalePreviews
     @Composable
     fun restoreNotBack() = Surface { RestoreNotBackDialog(BackupsActions(), inWindow = false) }
 
     @PreviewTest
-    @JellyfinScreenStatePreview
+    @EphyraScreenStatePreview
     @Composable
     fun restoring() = BackupsScreen(previewReady.copy(restore = Restore.Restoring), BackupsActions(), running, NOW)
 
     @PreviewTest
-    @JellyfinScreenStatePreview
+    @EphyraScreenStatePreview
     @Composable
     fun restored() = BackupsScreen(previewReady.copy(restore = Restore.Restored), BackupsActions(), running, NOW)
 
     @PreviewTest
-    @JellyfinScreenStatePreview
-    @JellyfinScreenStateLightPreview
-    @JellyfinSpanishPreviews
-    @JellyfinFontScalePreviews
+    @EphyraScreenStatePreview
+    @EphyraScreenStateLightPreview
+    @EphyraSpanishPreviews
+    @EphyraFontScalePreviews
     @Composable
     fun newBackup() = Surface { CreateBackupSheet(BackupOptions(database = true, metadata = true), BackupsActions(), inWindow = false) }
 
     @PreviewTest
-    @JellyfinScreenStatePreview
-    @JellyfinScreenStateLightPreview
-    @JellyfinSpanishPreviews
-    @JellyfinFontScalePreviews
+    @EphyraScreenStatePreview
+    @EphyraScreenStateLightPreview
+    @EphyraSpanishPreviews
+    @EphyraFontScalePreviews
     @Composable
     fun oneBackup() = Surface { BackupSheet(previewBackups.last(), running, BackupsActions(), NOW, inWindow = false) }
 
     @PreviewTest
-    @JellyfinScreenStatePreview
+    @EphyraScreenStatePreview
     @Composable
     fun oneBackupOtherRelease() =
         Surface {
@@ -143,29 +143,29 @@ class BackupsScreenshotTest {
         }
 
     @PreviewTest
-    @JellyfinScreenStatePreview
-    @JellyfinSpanishPreviews
-    @JellyfinFontScalePreviews
+    @EphyraScreenStatePreview
+    @EphyraSpanishPreviews
+    @EphyraFontScalePreviews
     @Composable
     fun restoreConfirm() = Surface { RestoreDialog(previewBackups.first(), running, BackupsActions(), inWindow = false) }
 
     @PreviewTest
-    @JellyfinScreenStatePreview
+    @EphyraScreenStatePreview
     @Composable
     fun restoreConfirmOtherRelease() = Surface { RestoreDialog(previewBackups.last(), running, BackupsActions(), inWindow = false) }
 
     @PreviewTest
-    @JellyfinScreenStatePreview
+    @EphyraScreenStatePreview
     @Composable
     fun empty() = BackupsScreen(BackupsUiState.Ready(emptyList()), BackupsActions(), running, NOW)
 
     @PreviewTest
-    @JellyfinScreenStatePreview
+    @EphyraScreenStatePreview
     @Composable
     fun loading() = BackupsScreen(BackupsUiState.Loading, BackupsActions(), running, NOW)
 
     @PreviewTest
-    @JellyfinScreenStatePreview
+    @EphyraScreenStatePreview
     @Composable
     fun failed() = BackupsScreen(BackupsUiState.Failed(ConsoleFailure.Refused), BackupsActions(), running, NOW)
 }

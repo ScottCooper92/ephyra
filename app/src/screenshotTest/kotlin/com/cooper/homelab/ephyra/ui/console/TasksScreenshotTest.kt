@@ -2,10 +2,10 @@ package com.cooper.homelab.ephyra.ui.console
 
 import androidx.compose.runtime.Composable
 import com.android.tools.screenshot.PreviewTest
-import com.cooper.homelab.ephyra.preview.JellyfinFontScalePreviews
-import com.cooper.homelab.ephyra.preview.JellyfinScreenStateLightPreview
-import com.cooper.homelab.ephyra.preview.JellyfinScreenStatePreview
-import com.cooper.homelab.ephyra.preview.JellyfinSpanishPreviews
+import com.cooper.homelab.ephyra.preview.EphyraFontScalePreviews
+import com.cooper.homelab.ephyra.preview.EphyraScreenStateLightPreview
+import com.cooper.homelab.ephyra.preview.EphyraScreenStatePreview
+import com.cooper.homelab.ephyra.preview.EphyraSpanishPreviews
 import com.cooper.homelab.ephyra.server.LIBRARY_SCAN_TASK
 import com.cooper.homelab.ephyra.server.ServerTask
 import com.cooper.homelab.ephyra.server.TaskRun
@@ -38,22 +38,22 @@ private val previewReady = TasksUiState.Ready(TaskBoard(previewTasks))
 /** Scheduled tasks: idle across the matrix, then one running beside outcomes, a failed run, and the read states. */
 class TasksScreenshotTest {
     @PreviewTest
-    @JellyfinScreenStatePreview
-    @JellyfinFontScalePreviews
-    @JellyfinSpanishPreviews
+    @EphyraScreenStatePreview
+    @EphyraFontScalePreviews
+    @EphyraSpanishPreviews
     @Composable
     fun tasks() = TasksScreen(previewReady, TasksActions(), now = NOW)
 
     /** A pull in progress: the list stays, with the pull spinner over it. */
     @PreviewTest
-    @JellyfinScreenStatePreview
-    @JellyfinSpanishPreviews
+    @EphyraScreenStatePreview
+    @EphyraSpanishPreviews
     @Composable
     fun refreshing() = TasksScreen(previewReady.copy(refreshing = true), TasksActions(), now = NOW)
 
     @PreviewTest
-    @JellyfinScreenStatePreview
-    @JellyfinSpanishPreviews
+    @EphyraScreenStatePreview
+    @EphyraSpanishPreviews
     @Composable
     fun running() =
         TasksScreen(
@@ -69,19 +69,19 @@ class TasksScreenshotTest {
 
     /** The server showed no tasks: every one it listed was hidden, which its own dashboard leaves out too. */
     @PreviewTest
-    @JellyfinScreenStatePreview
-    @JellyfinScreenStateLightPreview
-    @JellyfinSpanishPreviews
+    @EphyraScreenStatePreview
+    @EphyraScreenStateLightPreview
+    @EphyraSpanishPreviews
     @Composable
     fun empty() = TasksScreen(TasksUiState.Ready(TaskBoard(emptyList())), TasksActions())
 
     @PreviewTest
-    @JellyfinScreenStatePreview
+    @EphyraScreenStatePreview
     @Composable
     fun loading() = TasksScreen(TasksUiState.Loading, TasksActions())
 
     @PreviewTest
-    @JellyfinScreenStatePreview
+    @EphyraScreenStatePreview
     @Composable
     fun failed() = TasksScreen(TasksUiState.Failed(ConsoleFailure.Refused), TasksActions())
 }

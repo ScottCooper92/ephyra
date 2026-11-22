@@ -3,9 +3,9 @@ package com.cooper.homelab.ephyra.ui.console
 import androidx.compose.runtime.Composable
 import com.android.tools.screenshot.PreviewTest
 import com.binge.designsystem.SaveStatus
-import com.cooper.homelab.ephyra.preview.JellyfinFontScalePreviews
-import com.cooper.homelab.ephyra.preview.JellyfinScreenStatePreview
-import com.cooper.homelab.ephyra.preview.JellyfinSpanishPreviews
+import com.cooper.homelab.ephyra.preview.EphyraFontScalePreviews
+import com.cooper.homelab.ephyra.preview.EphyraScreenStatePreview
+import com.cooper.homelab.ephyra.preview.EphyraSpanishPreviews
 import com.cooper.homelab.ephyra.server.Culture
 import com.cooper.homelab.ephyra.server.PlaybackPreferences
 import com.cooper.homelab.ephyra.server.SubtitleMode
@@ -23,20 +23,20 @@ private val previewReady =
 /** The playback page: chosen across the matrix, then each other state on the phone cell. */
 class PlaybackScreenshotTest {
     @PreviewTest
-    @JellyfinScreenStatePreview
-    @JellyfinFontScalePreviews
-    @JellyfinSpanishPreviews
+    @EphyraScreenStatePreview
+    @EphyraFontScalePreviews
+    @EphyraSpanishPreviews
     @Composable
     fun chosen() = PlaybackScreen(previewReady, PlaybackActions())
 
     @PreviewTest
-    @JellyfinScreenStatePreview
+    @EphyraScreenStatePreview
     @Composable
     fun anyLanguage() =
         PlaybackScreen(PlaybackUiState.Ready(PlaybackPreferences("", "", SubtitleMode.Default), previewCultures), PlaybackActions())
 
     @PreviewTest
-    @JellyfinScreenStatePreview
+    @EphyraScreenStatePreview
     @Composable
     fun switchesOff() =
         PlaybackScreen(
@@ -56,24 +56,24 @@ class PlaybackScreenshotTest {
         )
 
     @PreviewTest
-    @JellyfinScreenStatePreview
-    @JellyfinSpanishPreviews
+    @EphyraScreenStatePreview
+    @EphyraSpanishPreviews
     @Composable
     fun saving() = PlaybackScreen(previewReady.copy(save = SaveProgress(SaveStatus.Saving)), PlaybackActions())
 
     @PreviewTest
-    @JellyfinScreenStatePreview
+    @EphyraScreenStatePreview
     @Composable
     fun saved() = PlaybackScreen(previewReady.copy(save = SaveProgress(SaveStatus.Saved)), PlaybackActions())
 
     @PreviewTest
-    @JellyfinScreenStatePreview
+    @EphyraScreenStatePreview
     @Composable
     fun loading() = PlaybackScreen(PlaybackUiState.Loading, PlaybackActions())
 
     @PreviewTest
-    @JellyfinScreenStatePreview
-    @JellyfinSpanishPreviews
+    @EphyraScreenStatePreview
+    @EphyraSpanishPreviews
     @Composable
     fun failed() = PlaybackScreen(PlaybackUiState.Failed(ConsoleFailure.Unreachable), PlaybackActions())
 }

@@ -13,9 +13,9 @@ import androidx.navigation3.runtime.NavBackStack
 import androidx.navigation3.runtime.NavKey
 import com.android.tools.screenshot.PreviewTest
 import com.cooper.homelab.core.uiandroid.shell.TabShellState
-import com.cooper.homelab.ephyra.preview.JellyfinScreenStatePreview
-import com.cooper.homelab.ephyra.preview.JellyfinSpanishPreviews
-import com.cooper.homelab.ephyra.preview.JellyfinWidePreview
+import com.cooper.homelab.ephyra.preview.EphyraScreenStatePreview
+import com.cooper.homelab.ephyra.preview.EphyraSpanishPreviews
+import com.cooper.homelab.ephyra.preview.EphyraWidePreview
 import com.cooper.homelab.ephyra.ui.console.ConsolePage
 
 /**
@@ -62,37 +62,37 @@ class ShellScreenshotTest {
     }
 
     @PreviewTest
-    @JellyfinScreenStatePreview
+    @EphyraScreenStatePreview
     @Composable
     fun homeTabPhone() = Shell(EphyraTab.Home)
 
     @PreviewTest
-    @JellyfinSpanishPreviews
+    @EphyraSpanishPreviews
     @Composable
     fun homeTabPhoneSpanish() = Shell(EphyraTab.Home)
 
     @PreviewTest
-    @JellyfinScreenStatePreview
+    @EphyraScreenStatePreview
     @Composable
     fun serverTabPhone() = Shell(EphyraTab.Server)
 
     @PreviewTest
-    @JellyfinWidePreview
+    @EphyraWidePreview
     @Composable
     fun homeTabTablet() = Shell(EphyraTab.Home)
 
     @PreviewTest
-    @JellyfinWidePreview
+    @EphyraWidePreview
     @Composable
     fun serverTabTabletDefaultPage() = Shell(EphyraTab.Server)
 
     @PreviewTest
-    @JellyfinWidePreview
+    @EphyraWidePreview
     @Composable
     fun serverTabTabletPageOpen() = Shell(EphyraTab.Server) { openFromHome(ConsolePage.Activity) }
 
     @PreviewTest
-    @JellyfinWidePreview
+    @EphyraWidePreview
     @Composable
     fun serverTabTabletItemOpen() =
         Shell(EphyraTab.Server) {

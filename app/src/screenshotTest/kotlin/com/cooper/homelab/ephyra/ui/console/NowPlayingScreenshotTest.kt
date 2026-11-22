@@ -3,12 +3,12 @@ package com.cooper.homelab.ephyra.ui.console
 import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
 import com.android.tools.screenshot.PreviewTest
-import com.cooper.homelab.ephyra.preview.JellyfinFontScalePreviews
-import com.cooper.homelab.ephyra.preview.JellyfinScreenStateLightPreview
-import com.cooper.homelab.ephyra.preview.JellyfinScreenStatePreview
-import com.cooper.homelab.ephyra.preview.JellyfinSpanishPreviews
-import com.cooper.homelab.ephyra.preview.JellyfinWidePreview
-import com.cooper.homelab.ephyra.preview.JellyfinWideSpanishPreview
+import com.cooper.homelab.ephyra.preview.EphyraFontScalePreviews
+import com.cooper.homelab.ephyra.preview.EphyraScreenStateLightPreview
+import com.cooper.homelab.ephyra.preview.EphyraScreenStatePreview
+import com.cooper.homelab.ephyra.preview.EphyraSpanishPreviews
+import com.cooper.homelab.ephyra.preview.EphyraWidePreview
+import com.cooper.homelab.ephyra.preview.EphyraWideSpanishPreview
 import com.cooper.homelab.ephyra.server.NowPlaying
 import com.cooper.homelab.ephyra.server.PlayMethod
 import com.cooper.homelab.ephyra.server.SessionControls
@@ -68,30 +68,30 @@ private fun page(
 /** Now playing: two streams across the matrix for an admin, then each other state on the phone cell. */
 class NowPlayingScreenshotTest {
     @PreviewTest
-    @JellyfinScreenStatePreview
-    @JellyfinFontScalePreviews
-    @JellyfinSpanishPreviews
+    @EphyraScreenStatePreview
+    @EphyraFontScalePreviews
+    @EphyraSpanishPreviews
     @Composable
     fun streams() = NowPlayingScreen(previewReady, administrator = true, NowPlayingActions())
 
     @PreviewTest
-    @JellyfinScreenStatePreview
+    @EphyraScreenStatePreview
     @Composable
     fun ownStreams() = NowPlayingScreen(NowPlayingUiState.Ready(listOf(previewMovie)), administrator = false, NowPlayingActions())
 
     @PreviewTest
-    @JellyfinScreenStatePreview
-    @JellyfinScreenStateLightPreview
-    @JellyfinSpanishPreviews
-    @JellyfinFontScalePreviews
+    @EphyraScreenStatePreview
+    @EphyraScreenStateLightPreview
+    @EphyraSpanishPreviews
+    @EphyraFontScalePreviews
     @Composable
     fun sessionPage() = NowPlayingSessionScreen(page(previewEpisode, fullControls), previewEpisode.sessionId, NowPlayingActions())
 
     @PreviewTest
-    @JellyfinScreenStatePreview
-    @JellyfinScreenStateLightPreview
-    @JellyfinSpanishPreviews
-    @JellyfinFontScalePreviews
+    @EphyraScreenStatePreview
+    @EphyraScreenStateLightPreview
+    @EphyraSpanishPreviews
+    @EphyraFontScalePreviews
     @Composable
     fun sessionPageRemote() =
         NowPlayingSessionScreen(
@@ -101,7 +101,7 @@ class NowPlayingScreenshotTest {
         )
 
     @PreviewTest
-    @JellyfinScreenStatePreview
+    @EphyraScreenStatePreview
     @Composable
     fun sessionPageMuted() =
         NowPlayingSessionScreen(
@@ -111,15 +111,15 @@ class NowPlayingScreenshotTest {
         )
 
     @PreviewTest
-    @JellyfinScreenStatePreview
-    @JellyfinSpanishPreviews
-    @JellyfinFontScalePreviews
+    @EphyraScreenStatePreview
+    @EphyraSpanishPreviews
+    @EphyraFontScalePreviews
     @Composable
     fun messageSheet() =
         Surface { MessageSheet(previewEpisode, page(previewEpisode, remoteControls), NowPlayingActions(), inWindow = false) }
 
     @PreviewTest
-    @JellyfinScreenStatePreview
+    @EphyraScreenStatePreview
     @Composable
     fun messageSheetSending() =
         Surface {
@@ -132,7 +132,7 @@ class NowPlayingScreenshotTest {
         }
 
     @PreviewTest
-    @JellyfinScreenStatePreview
+    @EphyraScreenStatePreview
     @Composable
     fun messageSheetFailed() =
         Surface {
@@ -145,18 +145,18 @@ class NowPlayingScreenshotTest {
         }
 
     @PreviewTest
-    @JellyfinScreenStatePreview
+    @EphyraScreenStatePreview
     @Composable
     fun sessionPagePaused() = NowPlayingSessionScreen(page(previewMovie, fullControls), previewMovie.sessionId, NowPlayingActions())
 
     @PreviewTest
-    @JellyfinScreenStatePreview
+    @EphyraScreenStatePreview
     @Composable
     fun sessionPageSending() =
         NowPlayingSessionScreen(page(previewEpisode, fullControls, sending = true), previewEpisode.sessionId, NowPlayingActions())
 
     @PreviewTest
-    @JellyfinScreenStatePreview
+    @EphyraScreenStatePreview
     @Composable
     fun sessionPageNoSeek() =
         NowPlayingSessionScreen(
@@ -166,7 +166,7 @@ class NowPlayingScreenshotTest {
         )
 
     @PreviewTest
-    @JellyfinScreenStatePreview
+    @EphyraScreenStatePreview
     @Composable
     fun sessionPageNoStop() =
         NowPlayingSessionScreen(
@@ -176,30 +176,30 @@ class NowPlayingScreenshotTest {
         )
 
     @PreviewTest
-    @JellyfinScreenStatePreview
+    @EphyraScreenStatePreview
     @Composable
     fun loading() = NowPlayingScreen(NowPlayingUiState.Loading, administrator = true, NowPlayingActions())
 
     @PreviewTest
-    @JellyfinScreenStatePreview
-    @JellyfinScreenStateLightPreview
-    @JellyfinSpanishPreviews
+    @EphyraScreenStatePreview
+    @EphyraScreenStateLightPreview
+    @EphyraSpanishPreviews
     @Composable
     fun nothingPlaying() = NowPlayingScreen(NowPlayingUiState.Ready(emptyList()), administrator = true, NowPlayingActions())
 
     @PreviewTest
-    @JellyfinScreenStatePreview
-    @JellyfinSpanishPreviews
+    @EphyraScreenStatePreview
+    @EphyraSpanishPreviews
     @Composable
     fun confirmingStop() = Surface { StopDialog(previewEpisode, NowPlayingActions(), inWindow = false) }
 
     @PreviewTest
-    @JellyfinScreenStatePreview
+    @EphyraScreenStatePreview
     @Composable
     fun stopping() = NowPlayingScreen(previewReady.copy(stopping = "tv"), administrator = true, NowPlayingActions())
 
     @PreviewTest
-    @JellyfinScreenStatePreview
+    @EphyraScreenStatePreview
     @Composable
     fun failed() = NowPlayingScreen(NowPlayingUiState.Failed(ConsoleFailure.Refused), administrator = false, NowPlayingActions())
 }
@@ -207,8 +207,8 @@ class NowPlayingScreenshotTest {
 /** The page on a landscape tablet, where a stream opens in a third pane: the invitation to pick one while none is. */
 class NowPlayingPaneScreenshotTest {
     @PreviewTest
-    @JellyfinWidePreview
-    @JellyfinWideSpanishPreview
+    @EphyraWidePreview
+    @EphyraWideSpanishPreview
     @Composable
     fun placeholder() = Surface { NowPlayingPlaceholder() }
 }

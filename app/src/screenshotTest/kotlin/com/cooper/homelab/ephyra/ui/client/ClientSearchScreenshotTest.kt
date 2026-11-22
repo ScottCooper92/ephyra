@@ -13,10 +13,10 @@ import com.cooper.homelab.ephyra.client.search.SearchHit
 import com.cooper.homelab.ephyra.client.search.SearchTabScreen
 import com.cooper.homelab.ephyra.client.search.SearchType
 import com.cooper.homelab.ephyra.client.search.SearchUiState
-import com.cooper.homelab.ephyra.preview.JellyfinFontScalePreviews
-import com.cooper.homelab.ephyra.preview.JellyfinScreenStatePreview
-import com.cooper.homelab.ephyra.preview.JellyfinSpanishPreviews
-import com.cooper.homelab.ephyra.preview.JellyfinWidePreview
+import com.cooper.homelab.ephyra.preview.EphyraFontScalePreviews
+import com.cooper.homelab.ephyra.preview.EphyraScreenStatePreview
+import com.cooper.homelab.ephyra.preview.EphyraSpanishPreviews
+import com.cooper.homelab.ephyra.preview.EphyraWidePreview
 
 /**
  * The Search tab (`:client`) in each state: the recent queries, loading, results of every kind with their marks, narrowed to one type,
@@ -69,37 +69,37 @@ class ClientSearchScreenshotTest {
     )
 
     @PreviewTest
-    @JellyfinScreenStatePreview
-    @JellyfinFontScalePreviews
-    @JellyfinSpanishPreviews
-    @JellyfinWidePreview
+    @EphyraScreenStatePreview
+    @EphyraFontScalePreviews
+    @EphyraSpanishPreviews
+    @EphyraWidePreview
     @Composable
     fun results() = Search(ready())
 
     @PreviewTest
-    @JellyfinScreenStatePreview
-    @JellyfinSpanishPreviews
+    @EphyraScreenStatePreview
+    @EphyraSpanishPreviews
     @Composable
     fun recents() = Search(SearchBody.Idle(listOf("alien", "heat", "the wire")), text = "")
 
     @PreviewTest
-    @JellyfinScreenStatePreview
+    @EphyraScreenStatePreview
     @Composable
     fun idleWithNoRecents() = Search(SearchBody.Idle(emptyList()), text = "")
 
     @PreviewTest
-    @JellyfinScreenStatePreview
+    @EphyraScreenStatePreview
     @Composable
     fun loading() = Search(SearchBody.Loading)
 
     @PreviewTest
-    @JellyfinScreenStatePreview
+    @EphyraScreenStatePreview
     @Composable
     fun people() = Search(ready(hits.filterIsInstance<SearchHit.Person>(), type = SearchType.People), type = SearchType.People)
 
     @PreviewTest
-    @JellyfinScreenStatePreview
-    @JellyfinSpanishPreviews
+    @EphyraScreenStatePreview
+    @EphyraSpanishPreviews
     @Composable
     fun chipLoading() =
         Search(
@@ -116,23 +116,23 @@ class ClientSearchScreenshotTest {
         )
 
     @PreviewTest
-    @JellyfinScreenStatePreview
+    @EphyraScreenStatePreview
     @Composable
     fun appending() = Search(ready(hasMore = true, appending = true))
 
     @PreviewTest
-    @JellyfinScreenStatePreview
+    @EphyraScreenStatePreview
     @Composable
     fun appendFailed() = Search(ready(hasMore = true, appendFailed = true))
 
     @PreviewTest
-    @JellyfinScreenStatePreview
-    @JellyfinSpanishPreviews
+    @EphyraScreenStatePreview
+    @EphyraSpanishPreviews
     @Composable
     fun noResults() = Search(SearchBody.NoResults("heat"))
 
     @PreviewTest
-    @JellyfinScreenStatePreview
+    @EphyraScreenStatePreview
     @Composable
     fun failed() = Search(SearchBody.Failed(ServerFailure.Unreachable()))
 }

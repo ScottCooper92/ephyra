@@ -11,7 +11,7 @@ import com.cooper.homelab.ephyra.server.LiveTvSummary
 import com.cooper.homelab.ephyra.server.TUNER_TYPE_HDHOMERUN
 import com.cooper.homelab.ephyra.server.TUNER_TYPE_M3U
 import com.cooper.homelab.ephyra.server.TunerHostSummary
-import com.cooper.homelab.ephyra.theme.JellyfinTheme
+import com.cooper.homelab.ephyra.theme.EphyraTheme
 import kotlinx.serialization.json.JsonObject
 import kotlinx.serialization.json.JsonPrimitive
 import org.junit.Assert.assertEquals
@@ -37,14 +37,14 @@ class LiveTvTunerSheetsTest {
         sheet: TunerSheet,
         actions: LiveTvActions = LiveTvActions(),
         saving: Boolean = false,
-    ) = compose.setContent { JellyfinTheme { TunerSheetContent(sheet, saving, actions) } }
+    ) = compose.setContent { EphyraTheme { TunerSheetContent(sheet, saving, actions) } }
 
     @Test
     fun `the page's Add tuner opens the choice, and a tuner row opens that tuner`() {
         val sheets = mutableListOf<TunerSheet?>()
         val edited = mutableListOf<String>()
         compose.setContent {
-            JellyfinTheme {
+            EphyraTheme {
                 LiveTvScreen(
                     LiveTvUiState.Ready(summary),
                     LiveTvActions(onSheet = { sheets += it }, onEdit = { edited += it }),
@@ -60,7 +60,7 @@ class LiveTvTunerSheetsTest {
 
     @Test
     fun `Add tuner is not offered on a failed page`() {
-        compose.setContent { JellyfinTheme { LiveTvScreen(LiveTvUiState.Failed(ConsoleFailure.Unreachable), LiveTvActions(), now = NOW) } }
+        compose.setContent { EphyraTheme { LiveTvScreen(LiveTvUiState.Failed(ConsoleFailure.Unreachable), LiveTvActions(), now = NOW) } }
         compose.onNodeWithText("Add tuner").assertDoesNotExist()
     }
 

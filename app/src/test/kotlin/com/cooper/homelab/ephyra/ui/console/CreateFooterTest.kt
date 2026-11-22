@@ -14,7 +14,7 @@ import com.binge.designsystem.testing.createTakeDownAndroidComposeRule
 import com.cooper.homelab.ephyra.server.ServerLibrary
 import com.cooper.homelab.ephyra.server.ServerTask
 import com.cooper.homelab.ephyra.server.ServerUser
-import com.cooper.homelab.ephyra.theme.JellyfinTheme
+import com.cooper.homelab.ephyra.theme.EphyraTheme
 import kotlinx.serialization.json.JsonObject
 import org.junit.Assert.assertEquals
 import org.junit.Rule
@@ -35,7 +35,7 @@ class CreateFooterTest {
     fun `API keys has New key in the footer, disabled while loading, working once ready, and gone on a failure`() {
         var asked = 0
         var state by mutableStateOf<ApiKeysUiState>(ApiKeysUiState.Loading)
-        compose.setContent { JellyfinTheme { ApiKeysScreen(state, ApiKeysActions(onAskCreate = { asked++ })) } }
+        compose.setContent { EphyraTheme { ApiKeysScreen(state, ApiKeysActions(onAskCreate = { asked++ })) } }
         compose.onNodeWithText("New key").assertIsNotEnabled()
         state = ApiKeysUiState.Ready(emptyList())
         compose.waitForIdle()
@@ -50,7 +50,7 @@ class CreateFooterTest {
     fun `Libraries has Add library in the footer, once, including when there are none`() {
         var adding = false
         var state by mutableStateOf<LibrariesUiState>(LibrariesUiState.Loading)
-        compose.setContent { JellyfinTheme { LibrariesScreen(state, LibrariesActions(onAskAdd = { adding = it })) } }
+        compose.setContent { EphyraTheme { LibrariesScreen(state, LibrariesActions(onAskAdd = { adding = it })) } }
         compose.onNodeWithText("Add library").assertIsNotEnabled()
         state = LibrariesUiState.Ready(emptyList(), TaskBoard(emptyList()))
         compose.waitForIdle()
@@ -69,7 +69,7 @@ class CreateFooterTest {
         val libraries = listOf(ServerLibrary("m", "Movies", "movies", emptyList()))
         var shown = emptyList<UserDialog?>()
         var state by mutableStateOf<UsersUiState>(UsersUiState.Loading)
-        compose.setContent { JellyfinTheme { UsersScreen(state, UsersActions(onShow = { shown = shown + it })) } }
+        compose.setContent { EphyraTheme { UsersScreen(state, UsersActions(onShow = { shown = shown + it })) } }
         compose.onNodeWithText("Add a user").assertIsNotEnabled()
         state = UsersUiState.Ready(listOf(ana), libraries, me = "me")
         compose.waitForIdle()
@@ -85,7 +85,7 @@ class CreateFooterTest {
         var adding = false
         var repositories by mutableStateOf<RepositoriesUiState>(RepositoriesUiState.Loading)
         compose.setContent {
-            JellyfinTheme {
+            EphyraTheme {
                 PluginsScreen(
                     PluginsUiState.Ready(emptyList()),
                     CatalogUiState.Ready(emptyList()),
@@ -119,7 +119,7 @@ class CreateFooterTest {
         val task = ServerTask("t", "k", "Scan", "", "Library", false, false, null, null)
         val state = TasksUiState.Ready(TaskBoard(listOf(task)))
         compose.setContent {
-            JellyfinTheme {
+            EphyraTheme {
                 TasksScreen(state, TasksActions())
                 TaskScreen(state, "t", TasksActions(onAskAdd = { adding = it }))
             }

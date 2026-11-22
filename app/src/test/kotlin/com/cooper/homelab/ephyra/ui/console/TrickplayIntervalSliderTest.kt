@@ -9,7 +9,7 @@ import androidx.compose.ui.test.performClick
 import androidx.compose.ui.test.performScrollTo
 import com.binge.designsystem.testing.createTakeDownAndroidComposeRule
 import com.cooper.homelab.ephyra.server.TrickplaySettings
-import com.cooper.homelab.ephyra.theme.JellyfinTheme
+import com.cooper.homelab.ephyra.theme.EphyraTheme
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertTrue
 import org.junit.Rule
@@ -31,7 +31,7 @@ class TrickplayIntervalSliderTest {
         label: String,
     ) {
         val state = TrickplayUiState.Ready(TrickplaySettings(intervalMillis = millis))
-        compose.setContent { JellyfinTheme { TrickplayScreen(state, TrickplayActions(onInterval = { saved += it })) } }
+        compose.setContent { EphyraTheme { TrickplayScreen(state, TrickplayActions(onInterval = { saved += it })) } }
         compose.onNodeWithText(label).performScrollTo().performClick()
     }
 

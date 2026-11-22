@@ -4,9 +4,9 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelStore
 import com.binge.designsystem.SaveStatus
+import com.cooper.homelab.core.testing.DiscardLogger
 import com.cooper.homelab.ephyra.FakeJellyfin
 import com.cooper.homelab.ephyra.server.Connection
-import com.cooper.homelab.ephyra.server.DiscardLogger
 import com.cooper.homelab.ephyra.server.ENCODING_ACCELERATION
 import com.cooper.homelab.ephyra.server.ENCODING_AV1
 import com.cooper.homelab.ephyra.server.ENCODING_DECODE_HEVC_10

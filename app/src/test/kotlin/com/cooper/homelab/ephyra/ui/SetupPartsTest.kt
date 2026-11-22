@@ -10,11 +10,11 @@ import com.cooper.homelab.core.presentation.connect.ProbedServer
 import com.cooper.homelab.core.presentation.connect.SignInForm
 import com.cooper.homelab.core.server.address.ServerAddress
 import com.cooper.homelab.core.server.network.UnreadableAnswerException
+import com.cooper.homelab.core.testing.DiscardLogger
 import com.cooper.homelab.ephyra.FakeJellyfin
 import com.cooper.homelab.ephyra.auth.JellyfinSession
 import com.cooper.homelab.ephyra.auth.SessionStore
 import com.cooper.homelab.ephyra.server.Connection
-import com.cooper.homelab.ephyra.server.DiscardLogger
 import com.cooper.homelab.ephyra.server.LibraryIndex
 import com.cooper.homelab.ephyra.server.PublicServerInfo
 import com.cooper.homelab.ephyra.server.SignedIn

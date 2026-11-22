@@ -1,8 +1,8 @@
 package com.cooper.homelab.ephyra.demo
 
+import com.cooper.homelab.core.testing.DiscardLogger
 import com.cooper.homelab.ephyra.server.BackupOptions
 import com.cooper.homelab.ephyra.server.ClientIdentity
-import com.cooper.homelab.ephyra.server.DiscardLogger
 import com.cooper.homelab.ephyra.server.JellyfinClient
 import com.cooper.homelab.ephyra.server.PluginStatus
 import com.cooper.homelab.ephyra.server.TaskStatus

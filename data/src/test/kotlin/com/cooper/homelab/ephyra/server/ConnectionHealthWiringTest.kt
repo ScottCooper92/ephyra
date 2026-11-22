@@ -1,6 +1,7 @@
 package com.cooper.homelab.ephyra.server
 
 import com.cooper.homelab.core.server.connection.ConnectionHealth
+import com.cooper.homelab.core.testing.DiscardLogger
 import com.cooper.homelab.ephyra.FakeJellyfin
 import com.cooper.homelab.ephyra.session
 import com.cooper.homelab.ephyra.testSessionStore

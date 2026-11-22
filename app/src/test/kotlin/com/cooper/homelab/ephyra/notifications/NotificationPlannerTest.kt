@@ -2,6 +2,7 @@ package com.cooper.homelab.ephyra.notifications
 
 import com.cooper.homelab.core.telemetry.NoOpCrashBreadcrumbs
 import com.cooper.homelab.core.testing.InMemoryDataStore
+import com.cooper.homelab.core.testing.RecordingScheduler
 import com.cooper.homelab.ephyra.FakeJellyfin
 import com.cooper.homelab.ephyra.auth.JellyfinSession
 import com.cooper.homelab.ephyra.auth.ServerIdentity
@@ -53,7 +54,7 @@ class NotificationPlannerTest {
     private val jellyfin = FakeJellyfin()
     private val sessions = MemorySessionStore()
     private val prefs = NotificationPrefs(InMemoryDataStore())
-    private val scheduler = FakeScheduler()
+    private val scheduler = RecordingScheduler()
     private val notifier = FakeNotifier()
 
     @After
@@ -83,11 +84,11 @@ class NotificationPlannerTest {
             sessions.save(jellyfin.session())
             prefs.setEnabled(true)
             runCurrent()
-            assertTrue("schedule 60" in scheduler.calls)
+            assertTrue("schedule:60" in scheduler.calls)
 
             prefs.setIntervalMinutes(30)
             runCurrent()
-            assertEquals("schedule 30", scheduler.calls.last())
+            assertEquals("schedule:30", scheduler.calls.last())
 
             prefs.setEnabled(false)
             runCurrent()
@@ -101,7 +102,7 @@ class NotificationPlannerTest {
             sessions.save(jellyfin.session())
             prefs.setEnabled(true)
             runCurrent()
-            assertEquals("schedule 60", scheduler.calls.last())
+            assertEquals("schedule:60", scheduler.calls.last())
 
             sessions.clear()
             runCurrent()
@@ -116,7 +117,7 @@ class NotificationPlannerTest {
             sessions.save(jellyfin.session())
             prefs.setEnabled(true)
             runCurrent()
-            assertEquals("schedule 60", scheduler.calls.last())
+            assertEquals("schedule:60", scheduler.calls.last())
 
             prefs.setPausedForAuthFailure(true)
             runCurrent()
@@ -124,7 +125,7 @@ class NotificationPlannerTest {
 
             sessions.save(jellyfin.session().copy(token = "token-2"))
             runCurrent()
-            assertEquals("schedule 60", scheduler.calls.last())
+            assertEquals("schedule:60", scheduler.calls.last())
             assertFalse(prefs.pausedForAuthFailure.first())
             assertTrue(notifier.connectionCancels > 0)
         }

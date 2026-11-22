@@ -1,6 +1,7 @@
 package com.cooper.homelab.ephyra.server
 
 import com.cooper.homelab.core.foundation.ServerVersion
+import com.cooper.homelab.core.testing.DiscardLogger
 import com.cooper.homelab.ephyra.FakeJellyfin
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.runBlocking

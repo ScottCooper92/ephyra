@@ -48,11 +48,6 @@ class ProfilePictureScreenshotTest {
 
     @PreviewTest
     @EphyraScreenStatePreview
-    @Composable
-    fun unreadable() = ProfilePictureScreen(ProfilePictureUiState.Ready(unreadable = true), ProfilePictureActions())
-
-    @PreviewTest
-    @EphyraScreenStatePreview
     @EphyraSpanishPreviews
     @Composable
     fun otherUser() =

@@ -216,6 +216,7 @@ internal fun ProfilePictureRoute(
             onBack = onBack,
         ),
         other = name,
+        unreadable = picture.unreadable,
     )
 }
 

@@ -474,6 +474,27 @@ class ConsoleScreensTest {
     }
 
     @Test
+    fun `an unreadable picture is a snackbar, and a recreated page does not say it again`() {
+        val events = Channel<Unit>(Channel.BUFFERED)
+        val restoration = StateRestorationTester(compose)
+        restoration.setContent {
+            EphyraTheme {
+                ProfilePictureScreen(
+                    ProfilePictureUiState.Ready(),
+                    ProfilePictureActions(),
+                    unreadable = events.receiveAsFlow(),
+                )
+            }
+        }
+        events.trySend(Unit)
+        val text = "That file isn’t a picture this device can read."
+        compose.waitUntil(SNACKBAR_TIMEOUT_MILLIS) { compose.onAllNodesWithText(text).fetchSemanticsNodes().isNotEmpty() }
+        restoration.emulateSavedInstanceStateRestore()
+        compose.waitForIdle()
+        compose.onAllNodesWithText(text).assertCountEquals(0)
+    }
+
+    @Test
     fun `a recreated approval page shows no result it has already shown`() {
         val events = Channel<ApproveOutcome>(Channel.BUFFERED)
         val restoration = StateRestorationTester(compose)

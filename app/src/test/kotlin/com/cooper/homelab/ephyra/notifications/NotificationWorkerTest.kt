@@ -1,6 +1,8 @@
 package com.cooper.homelab.ephyra.notifications
 
 import android.content.Context
+import androidx.datastore.core.DataStore
+import androidx.datastore.preferences.core.Preferences
 import androidx.test.core.app.ApplicationProvider
 import androidx.work.ListenableWorker
 import androidx.work.testing.TestListenableWorkerBuilder
@@ -13,6 +15,8 @@ import com.cooper.homelab.ephyra.server.DiscardLogger
 import com.cooper.homelab.ephyra.session
 import com.cooper.homelab.ephyra.testSessionStore
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.runBlocking
 import okhttp3.OkHttpClient
 import org.junit.After
@@ -83,20 +87,20 @@ class NotificationWorkerTest {
     }
 
     @Test
-    fun `a poll that throws is retried and logged by its type, never its message`() {
-        runBlocking { sessions.save(jellyfin.session()) }
-        jellyfin.activityEntries = listOf(activityJson(1, "SessionStarted"))
-        assertEquals(ListenableWorker.Result.success(), run())
-        jellyfin.activityEntries = listOf(activityJson(2, "AuthenticationFailed"), activityJson(1, "SessionStarted"))
-        val exploding =
-            object : ActivityNotifier by notifier {
-                override suspend fun notifyActivity(summary: ActivitySummary): Unit = throw IllegalStateException("secret-message")
+    fun `a poll that throws past the checker's guards is retried and the throw reaches the logger`() {
+        val unreadable =
+            object : DataStore<Preferences> {
+                override val data: Flow<Preferences> = flow { throw IllegalStateException("secret-message") }
+
+                override suspend fun updateData(transform: suspend (Preferences) -> Preferences): Preferences =
+                    throw IllegalStateException("secret-message")
             }
+        val identity = ServerIdentity(unreadable)
         val poll =
             PollRunner(
-                ActivityChecker(connection, testFeedCursors(), LegacyActivityCursor(prefs), serverIdentity, exploding, DiscardLogger),
-                pollReactor(exploding, scheduler, prefs) { false },
-                serverIdentity,
+                ActivityChecker(connection, testFeedCursors(), LegacyActivityCursor(prefs), identity, notifier, DiscardLogger),
+                pollReactor(notifier, scheduler, prefs) { false },
+                identity,
             )
         val thrown = mutableListOf<Throwable?>()
         val logger = Logger { _, _, _, _, failure -> thrown += failure }

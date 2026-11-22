@@ -36,9 +36,9 @@ navigation3 = "1.1.7"
 androidxTestCore = "1.7.0"
 androidxTestRunner = "1.7.0"
 androidxTestJunit = "1.3.0"
-okhttp = "5.4.0"
-kotlinxSerializationJson = "1.12.0"
-datastore = "1.2.1"
+okhttp = "5.5.1"
+kotlinxSerializationJson = "1.13.0"
+datastore = "1.3.0"
 workManager = "2.12.0"
 # Must agree with binge-companions' catalog: the SDK brings grpc-binder at its version, and the
 # in-process transport the tests use has to be the same release.

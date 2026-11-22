@@ -243,20 +243,14 @@ class AppGraph(
     /** Whether the user wants the client surfaces, in a store of its own. On until turned off. */
     private val clientPrefs: BooleanPreference by lazy {
         clientPreference(
-            PreferenceDataStoreFactory.create(
-                corruptionHandler = ReplaceFileCorruptionHandler { emptyPreferences() },
-                produceFile = { appContext.preferencesDataStoreFile("client") },
-            ),
+            dataStore("client"),
         )
     }
 
     /** The most the user lets a play stream, on Wi-Fi and on mobile data, in a store of its own. Auto until chosen. */
     val streamingQualityPrefs: StreamingQualityPrefs by lazy {
         StreamingQualityPrefs(
-            PreferenceDataStoreFactory.create(
-                corruptionHandler = ReplaceFileCorruptionHandler { emptyPreferences() },
-                produceFile = { appContext.preferencesDataStoreFile("streaming_quality") },
-            ),
+            dataStore("streaming_quality"),
         )
     }
 
@@ -271,10 +265,7 @@ class AppGraph(
     /** The user's answers about usage data and crash reports, in a store of their own. */
     val telemetryPrefs: TelemetryPrefs by lazy {
         TelemetryPrefs(
-            PreferenceDataStoreFactory.create(
-                corruptionHandler = ReplaceFileCorruptionHandler { emptyPreferences() },
-                produceFile = { appContext.preferencesDataStoreFile("telemetry") },
-            ),
+            dataStore("telemetry"),
             // Crash reporting is opt-in here: it is off until the user agrees on the first-run screen or in Settings.
             crashReportingDefault = false,
         )
@@ -294,10 +285,7 @@ class AppGraph(
     /** The settings search's last few results, kept on this device alone. */
     val recentSearches: LocalRecentSearches by lazy {
         LocalRecentSearches(
-            PreferenceDataStoreFactory.create(
-                corruptionHandler = ReplaceFileCorruptionHandler { emptyPreferences() },
-                produceFile = { appContext.preferencesDataStoreFile("recent_searches") },
-            ),
+            dataStore("recent_searches"),
         )
     }
 
@@ -346,10 +334,7 @@ class AppGraph(
         ReviewPrompt(
             store =
                 ReviewSignalStore(
-                    PreferenceDataStoreFactory.create(
-                        corruptionHandler = ReplaceFileCorruptionHandler { emptyPreferences() },
-                        produceFile = { appContext.preferencesDataStoreFile("review") },
-                    ),
+                    dataStore("review"),
                 ),
             launcher = PlayReviewPromptLauncher(appContext, AppDispatchers.platform()),
             isEnabled = { flags.flags.value[SharedFlags.ReviewPrompt] },

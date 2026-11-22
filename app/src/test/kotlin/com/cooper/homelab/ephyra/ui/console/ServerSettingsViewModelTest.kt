@@ -72,7 +72,7 @@ class ServerSettingsViewModelTest {
 
     @Test
     fun `reads the settings, the branding and what the pickers offer`() {
-        val ready = made(ServerSettingsViewModel(connection)).ready()
+        val ready = made(ServerSettingsViewModel(connection, Dispatchers.Default, Dispatchers.IO)).ready()
         assertEquals(ServerSettings("truenas", "en", "US", quickConnect = true), ready.settings)
         assertEquals(Branding(), ready.branding)
         assertEquals(listOf("GB", "US"), ready.countries.map { it.code })
@@ -81,7 +81,7 @@ class ServerSettingsViewModelTest {
 
     @Test
     fun `a setting saves into the whole configuration, the rest as it was`() {
-        val vm = made(ServerSettingsViewModel(connection))
+        val vm = made(ServerSettingsViewModel(connection, Dispatchers.Default, Dispatchers.IO))
         vm.ready()
         vm.setMetadataCountry("GB")
         saves("/System/Configuration", 1)
@@ -96,7 +96,7 @@ class ServerSettingsViewModelTest {
 
     @Test
     fun `a text saves when its dialog does, and a blank server name doesn't`() {
-        val vm = made(ServerSettingsViewModel(connection))
+        val vm = made(ServerSettingsViewModel(connection, Dispatchers.Default, Dispatchers.IO))
         vm.ready()
         vm.edit(ServerText.Name)
         assertEquals(ServerText.Name, vm.ready().editing)
@@ -126,7 +126,7 @@ class ServerSettingsViewModelTest {
 
     @Test
     fun `the splash screen saves into the branding`() {
-        val vm = made(ServerSettingsViewModel(connection))
+        val vm = made(ServerSettingsViewModel(connection, Dispatchers.Default, Dispatchers.IO))
         vm.ready()
         vm.setSplashscreen(true)
         saves("/System/Configuration/branding", 1)
@@ -142,7 +142,7 @@ class ServerSettingsViewModelTest {
 
     @Test
     fun `Retry resends the branding write that failed and not the server write that never did`() {
-        val vm = made(ServerSettingsViewModel(connection))
+        val vm = made(ServerSettingsViewModel(connection, Dispatchers.Default, Dispatchers.IO))
         vm.ready()
         jellyfin.dropped += "/System/Configuration/branding"
         vm.setSplashscreen(false)
@@ -157,7 +157,7 @@ class ServerSettingsViewModelTest {
 
     @Test
     fun `a write that cannot reach the server keeps the change, says so in the save status, and Retry sends it`() {
-        val vm = made(ServerSettingsViewModel(connection))
+        val vm = made(ServerSettingsViewModel(connection, Dispatchers.Default, Dispatchers.IO))
         vm.ready()
         jellyfin.dropped += "/System/Configuration"
         vm.setQuickConnect(false)
@@ -178,7 +178,7 @@ class ServerSettingsViewModelTest {
 
     @Test
     fun `a save that fails puts the setting back and says so`() {
-        val vm = made(ServerSettingsViewModel(connection))
+        val vm = made(ServerSettingsViewModel(connection, Dispatchers.Default, Dispatchers.IO))
         vm.ready()
         jellyfin.status["/System/Configuration"] = 409
         vm.setMetadataLanguage("fr")
@@ -189,7 +189,7 @@ class ServerSettingsViewModelTest {
 
     @Test
     fun `an unreachable branding write does not clear the other writer's refusal`() {
-        val vm = made(ServerSettingsViewModel(connection))
+        val vm = made(ServerSettingsViewModel(connection, Dispatchers.Default, Dispatchers.IO))
         vm.ready()
         val branding = jellyfin.hold("/System/Configuration/branding", method = "POST")
         vm.setSplashscreen(false)
@@ -209,7 +209,7 @@ class ServerSettingsViewModelTest {
     @Test
     fun `countries that can't be read leave the rest of the page`() {
         jellyfin.status["/Localization/Countries"] = 500
-        val ready = made(ServerSettingsViewModel(connection)).ready()
+        val ready = made(ServerSettingsViewModel(connection, Dispatchers.Default, Dispatchers.IO)).ready()
         assertEquals(emptyList<Any>(), ready.countries)
         assertEquals("truenas", ready.settings.name)
     }
@@ -217,7 +217,10 @@ class ServerSettingsViewModelTest {
     @Test
     fun `settings that can't be read fail the page`() {
         jellyfin.status["/System/Configuration"] = 500
-        assertEquals(ServerSettingsUiState.Failed(ConsoleFailure.Refused), made(ServerSettingsViewModel(connection)).settled())
+        assertEquals(
+            ServerSettingsUiState.Failed(ConsoleFailure.Refused),
+            made(ServerSettingsViewModel(connection, Dispatchers.Default, Dispatchers.IO)).settled(),
+        )
     }
 
     private fun ServerSettingsViewModel.sheet(check: (ServerSettingsUiState.Ready) -> Boolean) =
@@ -225,7 +228,7 @@ class ServerSettingsViewModelTest {
 
     @Test
     fun `a text sheet stays open while its save runs and closes when the server takes it`() {
-        val vm = made(ServerSettingsViewModel(connection))
+        val vm = made(ServerSettingsViewModel(connection, Dispatchers.Default, Dispatchers.IO))
         vm.ready()
         vm.edit(ServerText.Name)
         vm.saveText(ServerText.Name, "Den")
@@ -239,7 +242,7 @@ class ServerSettingsViewModelTest {
 
     @Test
     fun `a text the server refuses stays in its sheet with the reason, and the setting goes back`() {
-        val vm = made(ServerSettingsViewModel(connection))
+        val vm = made(ServerSettingsViewModel(connection, Dispatchers.Default, Dispatchers.IO))
         vm.ready()
         jellyfin.status["/System/Configuration/branding"] = 409
         vm.edit(ServerText.CustomCss)
@@ -256,7 +259,7 @@ class ServerSettingsViewModelTest {
 
     @Test
     fun `a text the server can't be reached for closes its sheet and the change waits on the page`() {
-        val vm = made(ServerSettingsViewModel(connection))
+        val vm = made(ServerSettingsViewModel(connection, Dispatchers.Default, Dispatchers.IO))
         vm.ready()
         jellyfin.dropped += "/System/Configuration"
         vm.edit(ServerText.Name)
@@ -270,7 +273,7 @@ class ServerSettingsViewModelTest {
 
     @Test
     fun `a sheet dismissed before its save is refused reports the refusal on the page`() {
-        val vm = made(ServerSettingsViewModel(connection))
+        val vm = made(ServerSettingsViewModel(connection, Dispatchers.Default, Dispatchers.IO))
         vm.ready()
         val held = jellyfin.hold("/System/Configuration", method = "POST")
         vm.edit(ServerText.Name)
@@ -286,7 +289,7 @@ class ServerSettingsViewModelTest {
 
     @Test
     fun `an unchanged text closes its sheet without a save`() {
-        val vm = made(ServerSettingsViewModel(connection))
+        val vm = made(ServerSettingsViewModel(connection, Dispatchers.Default, Dispatchers.IO))
         vm.ready()
         vm.edit(ServerText.Name)
         vm.saveText(ServerText.Name, " truenas ")

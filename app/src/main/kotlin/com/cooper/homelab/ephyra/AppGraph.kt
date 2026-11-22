@@ -12,7 +12,6 @@ import androidx.datastore.preferences.core.emptyPreferences
 import androidx.datastore.preferences.preferencesDataStoreFile
 import androidx.lifecycle.ViewModelProvider
 import androidx.media3.common.util.UnstableApi
-import com.binge.companion.kit.KeystoreSecretCipher
 import com.cooper.homelab.core.diagnostics.Redactor
 import com.cooper.homelab.core.diagnostics.RingLog
 import com.cooper.homelab.core.diagnostics.follow
@@ -38,6 +37,7 @@ import com.cooper.homelab.core.review.PlayReviewPromptLauncher
 import com.cooper.homelab.core.review.ReviewPrompt
 import com.cooper.homelab.core.review.ReviewSignalStore
 import com.cooper.homelab.core.server.connection.DeviceIdentity
+import com.cooper.homelab.core.server.connection.KeystoreSecretCipher
 import com.cooper.homelab.core.server.connection.SecretCipher
 import com.cooper.homelab.core.server.connection.ServerRegistry
 import com.cooper.homelab.core.server.network.AndroidLocalNetworkPermission
@@ -49,8 +49,9 @@ import com.cooper.homelab.core.server.network.LocalNetworkInterceptor
 import com.cooper.homelab.core.server.network.LocalNetworkPermission
 import com.cooper.homelab.core.telemetry.Analytics
 import com.cooper.homelab.core.telemetry.AnalyticsConsentGate
-import com.cooper.homelab.core.telemetry.AnalyticsDecorator
 import com.cooper.homelab.core.telemetry.CrashReportingSwitch
+import com.cooper.homelab.core.telemetry.DemoAnalyticsDecorator
+import com.cooper.homelab.core.telemetry.DemoSession
 import com.cooper.homelab.core.telemetry.FirebaseCrashBreadcrumbs
 import com.cooper.homelab.core.telemetry.FirebaseCrashCollection
 import com.cooper.homelab.core.telemetry.GatedAnalytics
@@ -67,8 +68,8 @@ import com.cooper.homelab.ephyra.auth.RegistrySessionStore
 import com.cooper.homelab.ephyra.auth.ServerIdentity
 import com.cooper.homelab.ephyra.auth.SessionStore
 import com.cooper.homelab.ephyra.auth.TOKEN_KEY_ALIAS
-import com.cooper.homelab.ephyra.auth.forLibrary
 import com.cooper.homelab.ephyra.demo.DemoTransport
+import com.cooper.homelab.ephyra.demo.isDemoOrigin
 import com.cooper.homelab.ephyra.flags.ClientEnabled
 import com.cooper.homelab.ephyra.flags.RemoteFlagKeys
 import com.cooper.homelab.ephyra.flags.clientPreference
@@ -127,6 +128,8 @@ class AppGraph(
     context: Context,
     /** Where every server call runs. */
     private val io: CoroutineDispatcher = Dispatchers.IO,
+    /** Where work on the device's own CPU runs, such as fitting a picture before it is sent. */
+    private val work: CoroutineDispatcher = Dispatchers.Default,
     /** The session store, for a test that signs in without the platform's keystore, which a unit test has none of. The app passes none. */
     private val sessionsForTest: SessionStore? = null,
 ) {
@@ -173,8 +176,14 @@ class AppGraph(
         cleartextConsent.followSession(sessions.session.map { it?.baseUrl }, scope)
     }
 
+    /**
+     * The one Keystore cipher for the session's token, built once: the session store, the registry's logins and the Quick Connect wait all
+     * share it, because two instances under one alias can race on the first key generation.
+     */
+    private val tokenCipher: SecretCipher by lazy { KeystoreSecretCipher(TOKEN_KEY_ALIAS) }
+
     /** Seals what a Quick Connect wait would keep, under the same Keystore key as the session's token. */
-    internal val linkCipher: SecretCipher by lazy { KeystoreSecretCipher(TOKEN_KEY_ALIAS).forLibrary() }
+    internal val linkCipher: SecretCipher get() = tokenCipher
 
     /** Where a Quick Connect wait is kept until it ends: one sealed record in a private file, written at once and excluded from backup. */
     internal val linkStash: LinkStash by lazy {
@@ -206,7 +215,7 @@ class AppGraph(
 
     val sessions: SessionStore by lazy {
         sessionsForTest?.let { return@lazy it }
-        val cipher = KeystoreSecretCipher(TOKEN_KEY_ALIAS)
+        val cipher = tokenCipher
         val legacyFile = dataStore("session")
         val legacy = LegacySessionStore(legacyFile, cipher, io)
         if (!serverRegistryEnabled) return@lazy legacy
@@ -214,7 +223,7 @@ class AppGraph(
         val logger = LogcatLogger()
         val registryFile = dataStore("servers")
         val registry = ServerRegistry(registryFile, "registry", { UUID.randomUUID().toString() }, logger)
-        val logins = LoginStore(dataStore("server_logins"), JellyfinLoginCodec, cipher.forLibrary(), logger)
+        val logins = LoginStore(dataStore("server_logins"), JellyfinLoginCodec, cipher, logger)
         val device = DeviceIdentity(registryFile, "device_id") { UUID.randomUUID().toString() }
         val importer = LegacySessionImport(legacyFile, registry, logins, device, registryFile, serverIdentity, logger)
         RegistrySessionStore(registry, logins, importer, serverIdentity, device, io)
@@ -368,13 +377,18 @@ class AppGraph(
         AnalyticsConsentGate(telemetryPrefs, scope, logger)
     }
 
+    /** Whether the saved connection is the built-in demo, so analytics can mark its events and leave them out of real use. */
+    internal val demoSession: DemoSession by lazy {
+        DemoSession(sessions.session.map { session -> session?.baseUrl?.isDemoOrigin() }, scope)
+    }
+
     /** PostHog behind the consent gate. A build with no project key has no client, and then every call is a no-op. */
     val analytics: Analytics by lazy {
         val client =
             BuildConfig.POSTHOG_API_KEY
                 .takeIf { it.isNotBlank() }
                 ?.let { PostHogClient(PostHogAndroid.with(appContext, postHogConfig(it, BuildConfig.POSTHOG_HOST))) }
-        GatedAnalytics(client, consentGate, AnalyticsDecorator.None, scope)
+        GatedAnalytics(client, consentGate, DemoAnalyticsDecorator(demoSession), scope)
     }
 
     /** Holds Crashlytics' collection to the user's crash-reporting answer. */
@@ -417,6 +431,9 @@ class AppGraph(
 
     /** The dispatcher this graph's reads and writes run on. */
     val ioDispatcher: CoroutineDispatcher get() = io
+
+    /** The dispatcher this graph's work on the device's own CPU runs on. */
+    val workDispatcher: CoroutineDispatcher get() = work
 
     private val playerDispatchers by lazy { PlayerDispatchers(main = Dispatchers.Main, io = io, default = io) }
 

@@ -25,6 +25,9 @@ internal const val JELLYFIN_KIND = "jellyfin"
  * The saved session in the shared library's per-server stores, as one server and one user: the active server of the registry and
  * its login. This app has no switcher, so [save] replaces that server and [clear] removes it.
  *
+ * Writes run one at a time: a [save] and a [clear], or two [save]s, that overlap would interleave the registry's and the login's writes
+ * and could leave a server with no login or a login with no server.
+ *
  * The first read, and every write, runs [importer] once, so a user who updates has the session the released version kept, and the
  * device id has moved with it. The token is decrypted on [io], as [LegacySessionStore] does: the setup screens collect on the main
  * thread, and a Keystore decrypt is a binder call.
@@ -38,6 +41,9 @@ class RegistrySessionStore(
     private val io: CoroutineDispatcher,
 ) : SessionStore {
     private val importing = Mutex()
+    private val writing = Mutex()
+
+    @Volatile
     private var imported = false
 
     override val session: Flow<JellyfinSession?> =
@@ -55,7 +61,9 @@ class RegistrySessionStore(
 
     override suspend fun current(): JellyfinSession? = session.first()
 
-    override suspend fun save(session: JellyfinSession): Boolean {
+    override suspend fun save(session: JellyfinSession): Boolean = writing.withLock { write(session) }
+
+    private suspend fun write(session: JellyfinSession): Boolean {
         ready()
         val address = ServerAddress.parse(session.baseUrl) ?: return false
         val name = session.serverName.ifBlank { address.host }
@@ -72,13 +80,14 @@ class RegistrySessionStore(
         return true
     }
 
-    override suspend fun clear() {
-        ready()
-        registry.current().servers.forEach { server ->
-            registry.remove(server.id)
-            logins.remove(server.id)
+    override suspend fun clear() =
+        writing.withLock {
+            ready()
+            registry.current().servers.forEach { server ->
+                registry.remove(server.id)
+                logins.remove(server.id)
+            }
         }
-    }
 
     override suspend fun deviceId(): String {
         ready()

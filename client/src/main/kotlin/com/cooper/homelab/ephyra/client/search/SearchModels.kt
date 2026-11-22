@@ -69,8 +69,9 @@ sealed interface SearchBody {
     data object Loading : SearchBody
 
     /**
-     * The results of the chosen type. [loaded] is how many have arrived across every type, so a page that adds nothing to the chosen type
-     * still asks for more while there are more.
+     * The results of the chosen type. [loaded] is how many have arrived, so a page that adds nothing still asks for more while there are more.
+     * [pages] holds each chip's results for [query], the query they answer: a chip not read yet, or holding the answer to an older query, has
+     * no entry, so its page shows loading rows. [hits] and the flags are the chosen chip's.
      */
     data class Ready(
         val hits: List<SearchHit>,
@@ -78,6 +79,8 @@ sealed interface SearchBody {
         val hasMore: Boolean,
         val appending: Boolean,
         val appendFailed: Boolean,
+        val query: String = "",
+        val pages: Map<SearchType, List<SearchHit>> = emptyMap(),
     ) : SearchBody
 
     data class NoResults(

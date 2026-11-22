@@ -122,7 +122,7 @@ internal fun ConsoleTextEntry(
 }
 
 /**
- * A form sheet built from [ConsoleTextField]s, for a form of more than one labelled field, which the design system's
+ * A form sheet built from the design system's text fields, for a form of more than one labelled field, which the design system's
  * single-value text-entry surface cannot hold: it draws that surface's chrome (title, the page's [body], Cancel and the submit
  * button) around the console's own fields.
  */

@@ -14,8 +14,10 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import com.binge.designsystem.component.BingeFilledButton
+import com.binge.designsystem.component.BingeTextField
 import com.binge.designsystem.component.PageIntro
 import com.binge.designsystem.template.BingeScreenScaffold
 import com.binge.designsystem.template.ScreenBar
@@ -55,13 +57,14 @@ fun ApproveCodeScreen(
                 verticalArrangement = Arrangement.spacedBy(dimensionResource(DesR.dimen.padding_l)),
             ) {
                 PageIntro(stringResource(R.string.approve_body))
-                ConsoleTextField(
+                BingeTextField(
                     value = state.code,
                     onValueChange = actions.onCode,
                     label = stringResource(R.string.approve_field),
                     isError = state.result != null && state.result != ApproveResult.Approved,
                     keyboardType = KeyboardType.NumberPassword,
                     onDone = actions.onApprove,
+                    imeAction = ImeAction.Done,
                 )
                 Text(
                     text = state.result?.let { resultText(it) }.orEmpty(),

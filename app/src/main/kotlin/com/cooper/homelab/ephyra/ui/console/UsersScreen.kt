@@ -32,6 +32,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.ImeAction
 import com.binge.designsystem.component.BingePullToRefresh
 import com.binge.designsystem.component.BingeTextButton
+import com.binge.designsystem.component.BingeTextField
 import com.binge.designsystem.component.ItemGroup
 import com.binge.designsystem.component.ListItem
 import com.binge.designsystem.component.ListItemNote
@@ -450,19 +451,20 @@ internal fun CreateSheet(
             submitting = submitting,
             error = error,
         ) {
-            ConsoleTextField(
+            BingeTextField(
                 value = name,
                 onValueChange = { name = it },
                 label = stringResource(R.string.setup_username),
                 enabled = !submitting,
                 imeAction = ImeAction.Next,
             )
-            ConsoleTextField(
+            BingeTextField(
                 value = password,
                 onValueChange = { password = it },
                 label = stringResource(R.string.setup_password),
                 enabled = !submitting,
                 secret = true,
+                imeAction = ImeAction.Done,
             )
         }
     }

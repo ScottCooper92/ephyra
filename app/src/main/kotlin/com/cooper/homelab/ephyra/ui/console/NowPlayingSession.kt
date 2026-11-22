@@ -37,6 +37,7 @@ import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.input.ImeAction
 import com.binge.designsystem.component.BingeOutlinedButton
 import com.binge.designsystem.component.BingeTextButton
+import com.binge.designsystem.component.BingeTextField
 import com.binge.designsystem.component.ExpressiveIconButton
 import com.binge.designsystem.component.ItemGroup
 import com.binge.designsystem.component.ListItem
@@ -260,20 +261,21 @@ internal fun MessageSheet(
             submitting = submitting,
             error = state.messageFailed?.let { stringResource(R.string.now_playing_not_sent, it.text()) },
         ) {
-            ConsoleTextField(
+            BingeTextField(
                 value = header,
                 onValueChange = { header = it.take(MESSAGE_HEADER_MAX) },
                 label = stringResource(R.string.now_playing_message_header),
                 enabled = !submitting,
                 imeAction = ImeAction.Next,
             )
-            ConsoleTextField(
+            BingeTextField(
                 value = text,
                 onValueChange = { text = it.take(MESSAGE_TEXT_MAX) },
                 label = stringResource(R.string.now_playing_message_text),
                 enabled = !submitting,
                 singleLine = false,
                 minLines = 3,
+                imeAction = ImeAction.Done,
             )
         }
     }

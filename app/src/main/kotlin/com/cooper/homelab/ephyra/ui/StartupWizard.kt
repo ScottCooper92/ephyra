@@ -1,7 +1,6 @@
 package com.cooper.homelab.ephyra.ui
 
 import com.binge.companion.sdk.attempt
-import com.cooper.homelab.core.server.network.LocalNetworkPermission
 import com.cooper.homelab.ephyra.server.Connection
 import com.cooper.homelab.ephyra.server.Country
 import com.cooper.homelab.ephyra.server.Culture
@@ -113,17 +112,16 @@ class StartupWizard internal constructor(
     private val connection: Connection,
     private val state: MutableStateFlow<UiState.Setup>,
     private val scope: CoroutineScope,
-    private val localNetwork: LocalNetworkPermission,
     /** The wizard was left for the notice it was opened from: the sign-in step shows again as it was. */
     private val onBack: () -> Unit,
     signInByHand: (name: String, baseUrl: String) -> Unit,
     signIn: suspend (HttpUrl, PublicServerInfo, SignedIn) -> Unit,
 ) {
     /** The first account: its fields and its save. */
-    val account = StartupAccountStep(connection, state, scope, localNetwork)
+    val account = StartupAccountStep(connection, state, scope)
 
     /** Remote access, then completing the server and signing in as the account. */
-    val finish = StartupFinishStep(connection, state, scope, localNetwork, signIn, signInByHand)
+    val finish = StartupFinishStep(connection, state, scope, signIn, signInByHand)
 
     /** Opens the wizard from the notice, and reads what it needs. */
     fun open() {
@@ -166,11 +164,12 @@ class StartupWizard internal constructor(
             val saved = attempt { connection.anonymous(url).saveStartupConfiguration(step.configuration) }
             saved.exceptionOrNull()?.let { connection.logger.noted(TAG, "setup save failed", it) }
             if (saved.isSuccess) account.suggestName(url)
+            val failure = saved.exceptionOrNull()
+            val error = failure?.let { if (it.isRefusal()) SetupError.Generic else it.unreachableSetup() }
             update {
                 if (saved.isSuccess) {
                     copy(phase = StartupPhase.Account())
                 } else {
-                    val error = if (saved.exceptionOrNull().isRefusal()) SetupError.Generic else unreachableSetup(baseUrl, localNetwork)
                     copy(phase = (phase as? StartupPhase.Configuring)?.copy(busy = false, error = error) ?: phase)
                 }
             }

@@ -9,7 +9,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.rememberUpdatedState
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
-import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.LocalResources
 import androidx.compose.ui.res.stringResource
 import com.cooper.homelab.ephyra.R
 import kotlinx.coroutines.flow.Flow
@@ -76,7 +76,8 @@ internal fun <T> SnackbarEvents(
     host: SnackbarHostState,
     text: (T) -> Int,
 ) {
-    val context = LocalContext.current
+    // Read at the moment of each event, so a configuration change that does not recreate the page (a language or font scale) is seen.
+    val resources by rememberUpdatedState(LocalResources.current)
     val sentence by rememberUpdatedState(text)
-    LaunchedEffect(events) { events.collect { host.showSnackbar(context.getString(sentence(it))) } }
+    LaunchedEffect(events) { events.collect { host.showSnackbar(resources.getString(sentence(it))) } }
 }

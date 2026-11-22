@@ -34,7 +34,6 @@ import com.binge.designsystem.template.StepHeading
 import com.cooper.homelab.core.presentation.connect.ConnectState
 import com.cooper.homelab.core.presentation.connect.LinkState
 import com.cooper.homelab.core.presentation.connect.SignInForm
-import com.cooper.homelab.core.uiandroid.connect.AllowLocalNetwork
 import com.cooper.homelab.core.uiandroid.connect.ConnectAddressActions
 import com.cooper.homelab.core.uiandroid.connect.ConnectCopy
 import com.cooper.homelab.core.uiandroid.connect.ConnectLinkActions
@@ -124,7 +123,7 @@ internal fun ConnectSetupScreen(
         },
         barActions = { ReportProblemAction() },
         localNetwork =
-            enterServerShown?.takeIf { it.error == SetupError.LocalNetworkDenied }?.let { localNetworkAsk(actions) },
+            enterServerShown?.takeIf { it.error == SetupError.LocalNetworkDenied }?.let { actions.localNetwork },
         foundServers = enterServerShown?.let { step -> { DiscoveredServers(step, actions) } },
         errorText = { error -> errorText(error.toSetupError()) },
         signInOptions =
@@ -197,15 +196,6 @@ private fun signInActions(
     onChangeServer = actions.onChangeServer,
     onCheckAgain = actions.onRecheckServer,
 )
-
-/** The way to grant the local-network permission: asks for it, and once asked, opens the app's settings where it can be switched on. */
-@Composable
-private fun localNetworkAsk(actions: Actions) =
-    AllowLocalNetwork(
-        label = if (actions.localNetworkAsked) R.string.connection_open_settings else R.string.connection_allow_local_network,
-        shortLabel = if (actions.localNetworkAsked) R.string.connection_open_settings else R.string.connection_allow_local_network,
-        run = actions.onAllowLocalNetwork,
-    )
 
 @Composable
 private fun SetupWizardEntry(actions: Actions) {
@@ -296,8 +286,9 @@ private fun ColumnScope.AfterError(
         )
     }
     if (asksLocalNetwork) {
-        val ask = localNetworkAsk(actions)
-        BingeOutlinedButton(label = stringResource(ask.label), onClick = ask.run, modifier = Modifier.fillMaxWidth())
+        actions.localNetwork?.let { ask ->
+            BingeOutlinedButton(label = stringResource(ask.label), onClick = ask.run, modifier = Modifier.fillMaxWidth())
+        }
     }
 }
 

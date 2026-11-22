@@ -26,6 +26,7 @@ import com.cooper.homelab.ephyra.ui.console.ConsoleFailure
 import com.cooper.homelab.ephyra.ui.console.PlaybackActions
 import com.cooper.homelab.ephyra.ui.console.PlaybackUiState
 import com.cooper.homelab.ephyra.ui.console.SaveProgress
+import com.cooper.homelab.ephyra.ui.previewAllowLocalNetwork
 import com.cooper.homelab.ephyra.ui.previewEnterServerCleartextRefused
 import com.cooper.homelab.ephyra.ui.previewEnterServerClientCertificate
 import com.cooper.homelab.ephyra.ui.previewEnterServerError
@@ -282,7 +283,7 @@ class TvJellyfinScreenshotTest {
     @PreviewTest
     @EphyraTvScreenPreviews
     @Composable
-    fun signedInLocalNetworkDenied() = TvEphyraRoot(previewSignedInLocalNetworkDenied, Actions())
+    fun signedInLocalNetworkDenied() = TvEphyraRoot(previewSignedInLocalNetworkDenied, Actions(localNetwork = previewAllowLocalNetwork))
 
     /** With the Binge flag on: the library check, with what Binge can see, leads the page. */
     @PreviewTest

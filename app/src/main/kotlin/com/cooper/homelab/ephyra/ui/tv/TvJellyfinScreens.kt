@@ -637,13 +637,10 @@ private fun connectionRows(
     actions: Actions,
 ): List<TvPaneRow> {
     if (!state.health.isProblem) return emptyList()
+    val allow = actions.localNetwork
     return listOf(
-        if (state.health == ConnectionHealth.LocalNetworkDenied) {
-            val label =
-                stringResource(
-                    if (actions.localNetworkAsked) R.string.connection_open_settings else R.string.connection_allow_local_network_short,
-                )
-            tvActionRow(RETRY_KEY, label, Icons.Filled.Router, actions.onAllowLocalNetwork)
+        if (state.health == ConnectionHealth.LocalNetworkDenied && allow != null) {
+            tvActionRow(RETRY_KEY, stringResource(allow.shortLabel), Icons.Filled.Router, allow.run)
         } else {
             tvActionRow(RETRY_KEY, stringResource(R.string.connection_retry), Icons.Filled.Refresh, actions.onRefresh, state.refreshing)
         },

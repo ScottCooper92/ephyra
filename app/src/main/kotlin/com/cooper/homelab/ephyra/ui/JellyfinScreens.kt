@@ -33,6 +33,7 @@ import com.binge.designsystem.template.BingeScreenScaffold
 import com.binge.designsystem.template.ScreenBar
 import com.binge.designsystem.template.ScreenBody
 import com.binge.designsystem.template.screenListPadding
+import com.cooper.homelab.core.uiandroid.connect.AllowLocalNetwork
 import com.cooper.homelab.ephyra.R
 import com.cooper.homelab.ephyra.server.DiscoveredServer
 import com.cooper.homelab.ephyra.server.PublicUser
@@ -79,10 +80,11 @@ data class Actions(
     val onOpenRow: (ConsolePage, String?) -> Unit = { page, _ -> },
     /** A search result opened beside the home: the search closes and the page takes its place in the detail pane. */
     val onOpenResult: (ConsolePage, String?) -> Unit = { page, _ -> },
-    /** Asks for the local-network permission, or, once it has been asked for, opens the app's settings where it can be switched on. */
-    val onAllowLocalNetwork: () -> Unit = {},
-    /** The permission has been asked for, so the way to it is now the app's settings. */
-    val localNetworkAsked: Boolean = false,
+    /**
+     * What the "allow local network access" button says and does: asks for the permission, and once it has been asked for, opens
+     * the app's settings where it can be switched on. Null where nothing can ask (a frame).
+     */
+    val localNetwork: AllowLocalNetwork? = null,
     /** The page showing beside the home, marked in its list; null where none is (the pages' own actions carry none). */
     val selectedPage: ConsolePage? = null,
     /** What the user has chosen this app may report, and the two ways to change it. */

@@ -2,6 +2,7 @@ package com.cooper.homelab.ephyra.ui
 
 import android.graphics.Bitmap
 import android.graphics.Color
+import com.cooper.homelab.core.uiandroid.connect.AllowLocalNetwork
 import com.cooper.homelab.ephyra.auth.JellyfinSession
 import com.cooper.homelab.ephyra.server.Country
 import com.cooper.homelab.ephyra.server.Culture
@@ -16,6 +17,7 @@ import com.cooper.homelab.ephyra.ui.console.ConsoleFailure
 import kotlinx.serialization.json.buildJsonObject
 import kotlinx.serialization.json.put
 import okhttp3.HttpUrl.Companion.toHttpUrl
+import com.cooper.homelab.core.uiandroid.R as CoreR
 
 private const val LAN = "http://192.168.1.20:8096"
 private const val REMOTE = "https://jellyfin.example.com"
@@ -199,6 +201,14 @@ val previewSignedInCouldNotLoad = previewSignedInFailed.copy(health = Connection
 
 /** The server asks for a client certificate, which the app cannot present. */
 val previewSignedInClientCertificate = previewSignedInFailed.copy(health = ConnectionHealth.ClientCertificateNeeded)
+
+/** The local-network button before the permission has been asked for. */
+val previewAllowLocalNetwork =
+    AllowLocalNetwork(CoreR.string.connect_local_network_allow, CoreR.string.connect_local_network_allow_short) {}
+
+/** The local-network button once it has been asked for, when the way to the permission is the app's settings. */
+val previewOpenSettings =
+    AllowLocalNetwork(CoreR.string.connect_local_network_open_settings, CoreR.string.connect_local_network_open_settings) {}
 
 /** The server is on the local network and Android has not let the app reach it. */
 val previewSignedInLocalNetworkDenied = previewSignedInFailed.copy(health = ConnectionHealth.LocalNetworkDenied)

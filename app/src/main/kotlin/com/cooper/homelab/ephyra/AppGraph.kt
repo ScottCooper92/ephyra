@@ -40,10 +40,13 @@ import com.cooper.homelab.core.server.connection.DeviceIdentity
 import com.cooper.homelab.core.server.connection.KeystoreSecretCipher
 import com.cooper.homelab.core.server.connection.SecretCipher
 import com.cooper.homelab.core.server.connection.ServerRegistry
+import com.cooper.homelab.core.server.network.AndroidLocalNetworkPermission
 import com.cooper.homelab.core.server.network.CleartextConsent
 import com.cooper.homelab.core.server.network.CleartextGate
 import com.cooper.homelab.core.server.network.CleartextGuard
 import com.cooper.homelab.core.server.network.DataStoreCleartextConsent
+import com.cooper.homelab.core.server.network.LocalNetworkInterceptor
+import com.cooper.homelab.core.server.network.LocalNetworkPermission
 import com.cooper.homelab.core.telemetry.Analytics
 import com.cooper.homelab.core.telemetry.AnalyticsConsentGate
 import com.cooper.homelab.core.telemetry.CrashReportingSwitch
@@ -141,11 +144,16 @@ class AppGraph(
      */
     val searchTogglesEnabled: Boolean by lazy { debugSwitch(SEARCH_TOGGLES_SWITCH) }
 
+    /** Whether the platform lets this app reach the local network: always before SDK 37, the runtime permission from then on. */
+    val localNetwork: LocalNetworkPermission by lazy { AndroidLocalNetworkPermission(appContext) }
+
     val http: OkHttpClient by lazy {
         OkHttpClient
             .Builder()
             // Answers the demo server's address from memory and passes every other host through.
             .addInterceptor(DemoTransport())
+            // A call to a local-network host is refused by name while the permission is not granted, so it reads as that and not as a server that is down.
+            .addInterceptor(LocalNetworkInterceptor(localNetwork))
             .connectTimeout(10, TimeUnit.SECONDS)
             .readTimeout(30, TimeUnit.SECONDS)
             // A network interceptor, so it judges every hop, a redirect down to HTTP included. The demo never reaches it.

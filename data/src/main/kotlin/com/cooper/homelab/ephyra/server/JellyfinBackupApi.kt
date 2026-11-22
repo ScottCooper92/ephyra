@@ -1,5 +1,6 @@
 package com.cooper.homelab.ephyra.server
 
+import com.cooper.homelab.core.server.network.UnreadableAnswerException
 import kotlinx.serialization.json.JsonArray
 import kotlinx.serialization.json.JsonObject
 import kotlinx.serialization.json.JsonPrimitive
@@ -45,7 +46,7 @@ suspend fun JellyfinClient.createBackup(options: BackupOptions): ServerBackup {
             ),
         )
     return withReadTimeout(CREATE_READ_TIMEOUT_MILLIS).postObject("Backup/Create", body).toBackup()
-        ?: throw JellyfinUnreadableAnswer("Backup/Create")
+        ?: throw UnreadableAnswerException()
 }
 
 /**

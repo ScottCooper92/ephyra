@@ -22,7 +22,7 @@ internal suspend fun JellyfinClient.browseSearchTitles(
     query["startIndex"] = startIndex.toString()
     query["limit"] = limit.toString()
     query["enableTotalRecordCount"] = withTotal.toString()
-    return decodeAnswer(ItemsWire.serializer(), getObject("Items", query), "Items").toPage(startIndex, withTotal)
+    return decodeAnswer(ItemsWire.serializer(), getObject("Items", query)).toPage(startIndex, withTotal)
 }
 
 /** People matching [term]: `/Persons`, which pages only from 12.0 (see [JellyfinServerProfile.hasPersonsPaging]). */
@@ -44,7 +44,7 @@ internal suspend fun JellyfinClient.browseSearchPeople(
             "imageTypeLimit" to "1",
         )
     if (profile.hasPersonsPaging) query["startIndex"] = startIndex.toString()
-    val items = decodeAnswer(ItemsWire.serializer(), getObject("Persons", query), "Persons").items
+    val items = decodeAnswer(ItemsWire.serializer(), getObject("Persons", query)).items
     val people =
         items.mapNotNull { person ->
             person.id?.let { PersonResult(it, person.name.orEmpty(), person.imageTags["Primary"]) }

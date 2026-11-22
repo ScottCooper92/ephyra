@@ -12,7 +12,6 @@ import androidx.datastore.preferences.core.emptyPreferences
 import androidx.datastore.preferences.preferencesDataStoreFile
 import androidx.lifecycle.ViewModelProvider
 import androidx.media3.common.util.UnstableApi
-import com.binge.companion.kit.KeystoreSecretCipher
 import com.cooper.homelab.core.diagnostics.Redactor
 import com.cooper.homelab.core.diagnostics.RingLog
 import com.cooper.homelab.core.diagnostics.follow
@@ -38,6 +37,7 @@ import com.cooper.homelab.core.review.PlayReviewPromptLauncher
 import com.cooper.homelab.core.review.ReviewPrompt
 import com.cooper.homelab.core.review.ReviewSignalStore
 import com.cooper.homelab.core.server.connection.DeviceIdentity
+import com.cooper.homelab.core.server.connection.KeystoreSecretCipher
 import com.cooper.homelab.core.server.connection.SecretCipher
 import com.cooper.homelab.core.server.connection.ServerRegistry
 import com.cooper.homelab.core.server.network.CleartextConsent
@@ -65,7 +65,6 @@ import com.cooper.homelab.ephyra.auth.RegistrySessionStore
 import com.cooper.homelab.ephyra.auth.ServerIdentity
 import com.cooper.homelab.ephyra.auth.SessionStore
 import com.cooper.homelab.ephyra.auth.TOKEN_KEY_ALIAS
-import com.cooper.homelab.ephyra.auth.forLibrary
 import com.cooper.homelab.ephyra.demo.DemoTransport
 import com.cooper.homelab.ephyra.demo.isDemoOrigin
 import com.cooper.homelab.ephyra.flags.ClientEnabled
@@ -169,8 +168,14 @@ class AppGraph(
         cleartextConsent.followSession(sessions.session.map { it?.baseUrl }, scope)
     }
 
+    /**
+     * The one Keystore cipher for the session's token, built once: the session store, the registry's logins and the Quick Connect wait all
+     * share it, because two instances under one alias can race on the first key generation.
+     */
+    private val tokenCipher: SecretCipher by lazy { KeystoreSecretCipher(TOKEN_KEY_ALIAS) }
+
     /** Seals what a Quick Connect wait would keep, under the same Keystore key as the session's token. */
-    internal val linkCipher: SecretCipher by lazy { KeystoreSecretCipher(TOKEN_KEY_ALIAS).forLibrary() }
+    internal val linkCipher: SecretCipher get() = tokenCipher
 
     /** Where a Quick Connect wait is kept until it ends: one sealed record in a private file, written at once and excluded from backup. */
     internal val linkStash: LinkStash by lazy {
@@ -202,7 +207,7 @@ class AppGraph(
 
     val sessions: SessionStore by lazy {
         sessionsForTest?.let { return@lazy it }
-        val cipher = KeystoreSecretCipher(TOKEN_KEY_ALIAS)
+        val cipher = tokenCipher
         val legacyFile = dataStore("session")
         val legacy = LegacySessionStore(legacyFile, cipher, io)
         if (!serverRegistryEnabled) return@lazy legacy
@@ -210,7 +215,7 @@ class AppGraph(
         val logger = LogcatLogger()
         val registryFile = dataStore("servers")
         val registry = ServerRegistry(registryFile, "registry", { UUID.randomUUID().toString() }, logger)
-        val logins = LoginStore(dataStore("server_logins"), JellyfinLoginCodec, cipher.forLibrary(), logger)
+        val logins = LoginStore(dataStore("server_logins"), JellyfinLoginCodec, cipher, logger)
         val device = DeviceIdentity(registryFile, "device_id") { UUID.randomUUID().toString() }
         val importer = LegacySessionImport(legacyFile, registry, logins, device, registryFile, serverIdentity, logger)
         RegistrySessionStore(registry, logins, importer, serverIdentity, device, io)

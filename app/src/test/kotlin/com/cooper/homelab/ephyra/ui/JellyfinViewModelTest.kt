@@ -37,7 +37,6 @@ import kotlinx.coroutines.cancelAndJoin
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.test.setMain
 import kotlinx.coroutines.withTimeout
 import kotlinx.serialization.json.Json
@@ -50,9 +49,7 @@ import mockwebserver3.MockWebServer
 import mockwebserver3.RecordedRequest
 import okhttp3.HttpUrl
 import okhttp3.HttpUrl.Companion.toHttpUrl
-import okhttp3.Interceptor
 import okhttp3.OkHttpClient
-import okhttp3.Response
 import org.junit.After
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertFalse
@@ -86,34 +83,20 @@ class JellyfinViewModelTest {
     /** The one teardown every view model test shares: the view models are stopped and finished, and the connections closed, before Main is reset. */
     private val teardown = ViewModelTeardown()
 
-    /**
-     * The calls to the fake server that have not been answered yet. The connection's own health interceptor sits inside this one,
-     * so a call is reported to the monitor before it stops counting here.
-     */
-    private val calls = CallsInFlight()
-
     private val connection =
         teardown.made(
-            Connection(
-                OkHttpClient.Builder().addInterceptor(calls).build(),
-                sessions,
-                "Jellyfin Companion",
-                "Test",
-                "1.0",
-                Dispatchers.IO,
-                DiscardLogger,
-            ),
+            Connection(OkHttpClient(), sessions, "Jellyfin Companion", "Test", "1.0", Dispatchers.IO, DiscardLogger),
         )
 
     @Before
     fun main() {
-        Dispatchers.setMain(Dispatchers.Unconfined)
+        Dispatchers.setMain(MainLooperDispatcher)
         jellyfin.items += FakeItem("m", "Companion", "Movie", tmdbId = 1084199)
     }
 
     @After
     fun close() {
-        teardown.close(jellyfin)
+        teardown.close(jellyfin, idle = ::idleMain)
         mainExecutor?.shutdownNow()
     }
 
@@ -138,7 +121,7 @@ class JellyfinViewModelTest {
     private val sessionsEnded = AtomicInteger()
 
     /** A successful sign-in is counted just after the signed-in state shows, so a test waits for the count it expects. */
-    private fun awaitReports(count: Int) = runBlocking { withTimeout(10_000) { while (reported.size < count) delay(5) } }
+    private fun awaitReports(count: Int) = idling { withTimeout(10_000) { while (reported.size < count) delay(5) } }
 
     private fun viewModel(
         over: Connection = connection,
@@ -168,13 +151,22 @@ class JellyfinViewModelTest {
     /** A wait that times out says which state it was in and what the server had been asked (method and path only), so a failure on a loaded machine can be told apart. */
     private inline fun <reified T : UiState> JellyfinViewModel.await(crossinline matches: (T) -> Boolean = { true }): T =
         try {
-            runBlocking { withTimeout(10_000) { state.first { it is T && matches(it) } as T } }
+            idling { withTimeout(10_000) { state.first { it is T && matches(it) } as T } }
         } catch (e: TimeoutCancellationException) {
             throw AssertionError(
                 "Timed out waiting for ${T::class.simpleName}. The state was ${state.value::class.simpleName}; the server was asked ${jellyfin.asked()}",
                 e,
             )
         }
+
+    /**
+     * Waits until the server card has the three figures it reads for a user who is not an administrator, which is who these tests sign
+     * in as. The card starts its reads before the library is counted, as background work, and each answer is reported to the health
+     * monitor before its figure is shown, so once all three are shown no answer is left to land between calls a test reports itself.
+     * Counting the calls that have reached the server instead would miss a read the view model has launched but not yet sent.
+     */
+    private fun JellyfinViewModel.awaitCard() =
+        await<UiState.SignedIn> { it.card.playing != null && it.card.movies != null && it.card.tmdb != null }
 
     private fun JellyfinViewModel.toSignIn(): UiState.SignIn {
         await<UiState.EnterServer>()
@@ -219,7 +211,7 @@ class JellyfinViewModelTest {
         vm.await<UiState.SignedIn>()
         // The typed password and the account pictures live in the step, so the step must not outlive the sign-in. The signed-in state shows
         // a moment before the step is cleared, on the thread that finished the sign-in, so the step is waited for, not read once.
-        runBlocking { withTimeout(10_000) { vm.setupStep.first { it == UiState.Loading } } }
+        idling { withTimeout(10_000) { vm.setupStep.first { it == UiState.Loading } } }
     }
 
     @Test
@@ -776,7 +768,7 @@ class JellyfinViewModelTest {
     @Test
     fun `a plain http host the user agreed to earlier is found agreed to again when its server is edited`() {
         val consent = RecordingConsent().apply { granted += "jellyfin.example.com" }
-        runBlocking { sessions.save(jellyfin.session().copy(baseUrl = "http://jellyfin.example.com")) }
+        idling { sessions.save(jellyfin.session().copy(baseUrl = "http://jellyfin.example.com")) }
         val vm = viewModel(offlineConnection(), consent)
         vm.await<UiState.SignedIn>()
 
@@ -792,7 +784,7 @@ class JellyfinViewModelTest {
 
     /** The draft is written from the background, so a test waits for the value it expects. */
     private fun SavedStateHandle.awaitAddress(expected: String?) =
-        runBlocking { withTimeout(10_000) { while (get<String>("setup_address") != expected) delay(5) } }
+        idling { withTimeout(10_000) { while (get<String>("setup_address") != expected) delay(5) } }
 
     @Test
     fun `a kill on the address step reopens it with the address typed`() {
@@ -834,7 +826,7 @@ class JellyfinViewModelTest {
         vm.await<UiState.SignIn>()
         vm.actions.selectMethod(quickConnect = true)
         vm.await<UiState.SignIn> { it.quickConnectSelected }
-        runBlocking { withTimeout(10_000) { while (handle.get<Boolean>("setup_quick_connect") != true) delay(5) } }
+        idling { withTimeout(10_000) { while (handle.get<Boolean>("setup_quick_connect") != true) delay(5) } }
 
         val reopened = viewModel(savedState = handle.afterKill())
 
@@ -873,7 +865,7 @@ class JellyfinViewModelTest {
         vm.await<UiState.SignIn> { it.quickConnectSelected }
         vm.actions.selectMethod(quickConnect = false)
         vm.await<UiState.SignIn> { !it.quickConnectSelected }
-        runBlocking { withTimeout(10_000) { while (handle.get<Boolean>("setup_quick_connect") != false) delay(5) } }
+        idling { withTimeout(10_000) { while (handle.get<Boolean>("setup_quick_connect") != false) delay(5) } }
 
         val reopened = viewModel(savedState = handle.afterKill())
 
@@ -882,7 +874,7 @@ class JellyfinViewModelTest {
 
     @Test
     fun `nothing is kept once a session exists, and a saved draft does not override the session`() {
-        runBlocking { sessions.save(jellyfin.session()) }
+        idling { sessions.save(jellyfin.session()) }
         val handle = SavedStateHandle(mapOf("setup_address" to "http://elsewhere.example:8096", "setup_signing_in" to true))
         val vm = viewModel(savedState = handle)
 
@@ -892,7 +884,7 @@ class JellyfinViewModelTest {
 
     @Test
     fun `leaving a plain HTTP public host's session brings back the row asking for agreement`() {
-        runBlocking { sessions.save(jellyfin.session().copy(baseUrl = "http://jellyfin.example.com")) }
+        idling { sessions.save(jellyfin.session().copy(baseUrl = "http://jellyfin.example.com")) }
         val vm = viewModel(offlineConnection())
         // The saved session is read in the background: signing out before it has been read lets the read land after the sign-out.
         vm.await<UiState.SignedIn>()
@@ -905,7 +897,7 @@ class JellyfinViewModelTest {
 
     @Test
     fun `a session to a public plain HTTP host holds an agreement the user can take back`() {
-        runBlocking { sessions.save(jellyfin.session().copy(baseUrl = "http://jellyfin.example.com")) }
+        idling { sessions.save(jellyfin.session().copy(baseUrl = "http://jellyfin.example.com")) }
         val vm = viewModel(offlineConnection())
         assertEquals("jellyfin.example.com", vm.await<UiState.SignedIn>().consentHost)
     }
@@ -913,7 +905,7 @@ class JellyfinViewModelTest {
     @Test
     fun `a session that holds no agreement has none to take back and cannot ask`() {
         listOf("https://jellyfin.example.com", "http://192.168.1.10:8096").forEach { url ->
-            runBlocking { sessions.save(jellyfin.session().copy(baseUrl = url)) }
+            idling { sessions.save(jellyfin.session().copy(baseUrl = url)) }
             val vm = viewModel(offlineConnection())
             assertNull(url, vm.await<UiState.SignedIn>().consentHost)
             vm.confirmTakeBack(true)
@@ -923,7 +915,7 @@ class JellyfinViewModelTest {
 
     @Test
     fun `taking the agreement back asks first, and confirming signs out and brings back the row asking for it`() {
-        runBlocking { sessions.save(jellyfin.session().copy(baseUrl = "http://jellyfin.example.com")) }
+        idling { sessions.save(jellyfin.session().copy(baseUrl = "http://jellyfin.example.com")) }
         val vm = viewModel(offlineConnection())
         vm.await<UiState.SignedIn>()
 
@@ -932,7 +924,7 @@ class JellyfinViewModelTest {
         // Cancelling changes nothing: the session is still there.
         vm.confirmTakeBack(false)
         assertFalse(vm.await<UiState.SignedIn> { !it.confirmingTakeBack }.confirmingTakeBack)
-        assertEquals("jellyfin.example.com", runBlocking { sessions.current() }?.baseUrl?.removePrefix("http://"))
+        assertEquals("jellyfin.example.com", idling { sessions.current() }?.baseUrl?.removePrefix("http://"))
 
         vm.confirmTakeBack(true)
         vm.signOut()
@@ -940,7 +932,7 @@ class JellyfinViewModelTest {
         assertEquals("jellyfin.example.com", asked.insecureHost)
         assertFalse(asked.cleartextAllowed)
         assertFalse(asked.canConnect)
-        assertNull(runBlocking { sessions.current() })
+        assertNull(idling { sessions.current() })
     }
 
     @Test
@@ -1015,7 +1007,7 @@ class JellyfinViewModelTest {
 
     @Test
     fun `a saved server that asks for a client certificate says so on reconnect`() {
-        runBlocking { sessions.save(jellyfin.session()) }
+        idling { sessions.save(jellyfin.session()) }
         val vm = viewModel(askingForCertificate())
         vm.refresh()
         assertEquals(
@@ -1037,7 +1029,7 @@ class JellyfinViewModelTest {
 
     @Test
     fun `a saved server whose earlier attempt met a client certificate request says so on reconnect`() {
-        runBlocking { sessions.save(jellyfin.session()) }
+        idling { sessions.save(jellyfin.session()) }
         val vm = viewModel(askedThenRejected())
         vm.refresh()
         assertEquals(
@@ -1311,7 +1303,7 @@ class JellyfinViewModelTest {
 
         vm.pickPublicUser(users.first { it.name == "Kid" })
         vm.await<UiState.SignedIn> { it.titles != null }
-        assertEquals("token-1", runBlocking { sessions.current() }?.token)
+        assertEquals("token-1", idling { sessions.current() }?.token)
     }
 
     @Test
@@ -1328,7 +1320,7 @@ class JellyfinViewModelTest {
         val signedIn = vm.await<UiState.SignedIn> { it.titles != null }
         assertEquals("Claude", signedIn.session.userName)
         assertEquals(1, signedIn.titles)
-        assertEquals("token-1", runBlocking { sessions.current() }?.token)
+        assertEquals("token-1", idling { sessions.current() }?.token)
     }
 
     @Test
@@ -1510,7 +1502,7 @@ class JellyfinViewModelTest {
 
     @Test
     fun `a record left behind is forgotten when a session exists at launch and when it ends`() {
-        runBlocking { sessions.save(jellyfin.session()) }
+        idling { sessions.save(jellyfin.session()) }
         val stash = MemoryStash().apply { value = "left by an earlier run" }
         val vm = viewModel(linkStash = stash)
         vm.await<UiState.SignedIn>()
@@ -1529,7 +1521,7 @@ class JellyfinViewModelTest {
         val first = viewModel(linkStash = stash)
         val code = requireNotNull(first.waitingForApproval().quickConnectCode)
         // The process dies: the view model's work is cancelled and nothing runs after it, so nothing clears the record.
-        runBlocking { requireNotNull(first.viewModelScope.coroutineContext[Job]).cancelAndJoin() }
+        idling { requireNotNull(first.viewModelScope.coroutineContext[Job]).cancelAndJoin() }
         assertNotNull("the record outlives the view model", stash.value)
 
         val second = viewModel(linkStash = stash)
@@ -1540,7 +1532,7 @@ class JellyfinViewModelTest {
         second.await<UiState.SignedIn>()
 
         assertNull(stash.value)
-        assertEquals(jellyfin.baseUrl, runBlocking { sessions.current() }?.baseUrl)
+        assertEquals(jellyfin.baseUrl, idling { sessions.current() }?.baseUrl)
     }
 
     @Test
@@ -1549,7 +1541,7 @@ class JellyfinViewModelTest {
         val stash = MemoryStash()
         val first = viewModel(linkStash = stash)
         first.waitingForApproval()
-        runBlocking { requireNotNull(first.viewModelScope.coroutineContext[Job]).cancelAndJoin() }
+        idling { requireNotNull(first.viewModelScope.coroutineContext[Job]).cancelAndJoin() }
         assertNotNull(stash.value)
 
         val notedStash = ThreadNotingStash(stash)
@@ -1581,7 +1573,7 @@ class JellyfinViewModelTest {
         val vm = viewModel(linkStash = stash)
 
         vm.await<UiState.EnterServer>()
-        runBlocking { withTimeout(10_000) { while (stash.value != null) delay(5) } }
+        idling { withTimeout(10_000) { while (stash.value != null) delay(5) } }
         assertNull(stash.value)
     }
 
@@ -1635,7 +1627,7 @@ class JellyfinViewModelTest {
         assertEquals("123456", vm.await<UiState.SignIn> { it.quickConnectCode != null }.quickConnectCode)
         jellyfin.quickConnectApproved = true
         vm.await<UiState.SignedIn>()
-        assertEquals("user-1", runBlocking { sessions.current() }?.userId)
+        assertEquals("user-1", idling { sessions.current() }?.userId)
     }
 
     @Test
@@ -1666,7 +1658,7 @@ class JellyfinViewModelTest {
 
     @Test
     fun `signing out ends the session on the server and here, and keeps the address`() {
-        runBlocking { sessions.save(jellyfin.session()) }
+        idling { sessions.save(jellyfin.session()) }
         val vm = viewModel()
         vm.await<UiState.SignedIn> { it.titles != null }
         vm.confirmSignOut(true)
@@ -1676,7 +1668,7 @@ class JellyfinViewModelTest {
         vm.signOut()
         assertEquals(jellyfin.baseUrl, vm.await<UiState.EnterServer>().address)
         assertEquals(1, jellyfin.hits("/Sessions/Logout"))
-        assertNull(runBlocking { sessions.current() })
+        assertNull(idling { sessions.current() })
         assertEquals("what was cached about the account goes with the session", 1, sessionsEnded.get())
     }
 
@@ -1687,7 +1679,7 @@ class JellyfinViewModelTest {
         val held = jellyfin.hold("/System/Info/Public")
         vm.onAddress(jellyfin.baseUrl)
         vm.connect()
-        held.awaitArrival()
+        idling { held.awaitArrival() }
         vm.connect()
         vm.chooseServer(DiscoveredServer("cabin", "Cabin", "https://jellyfin.example.com"))
         vm.tryDemo()
@@ -1695,12 +1687,12 @@ class JellyfinViewModelTest {
         held.release()
         vm.await<UiState.SignIn>()
         assertEquals("only the first check asked the server", 1, jellyfin.hits("/System/Info/Public"))
-        assertNull(runBlocking { sessions.current() })
+        assertNull(idling { sessions.current() })
     }
 
     @Test
     fun `a refresh that cannot reach the server says so`() {
-        runBlocking { sessions.save(jellyfin.session()) }
+        idling { sessions.save(jellyfin.session()) }
         val vm = viewModel()
         vm.await<UiState.SignedIn> { it.titles != null }
         jellyfin.status["/Items"] = 500
@@ -1710,7 +1702,7 @@ class JellyfinViewModelTest {
 
     @Test
     fun `a server that does not answer takes the home's place until a retry reaches it`() {
-        runBlocking { sessions.save(jellyfin.session()) }
+        idling { sessions.save(jellyfin.session()) }
         val vm = viewModel()
         assertEquals(ConnectionHealth.Healthy, vm.await<UiState.SignedIn> { it.titles != null }.health)
         jellyfin.dropped += "/Items"
@@ -1727,12 +1719,12 @@ class JellyfinViewModelTest {
 
     @Test
     fun `a run of calls without an answer turns a fine home into the server's problem, and an answer clears it`() {
-        runBlocking { sessions.save(jellyfin.session()) }
+        idling { sessions.save(jellyfin.session()) }
         val vm = viewModel()
         assertEquals(ConnectionHealth.Healthy, vm.await<UiState.SignedIn> { it.titles != null }.health)
-        // The server card's reads start before the library is counted and may still be answering: an answer between the two failures
-        // below would start the run over, and the health would never turn into a problem.
-        calls.awaitNone()
+        // The server card's reads may still be answering: an answer between the two failures below would start the run over, and the
+        // health would never turn into a problem.
+        vm.awaitCard()
         connection.monitor.report(SAVED_SERVER, CallResult.TransportFailure())
         // One call without an answer is a blip, as binge-seerr counts it.
         assertEquals(ConnectionHealth.Healthy, vm.await<UiState.SignedIn>().health)
@@ -1744,16 +1736,15 @@ class JellyfinViewModelTest {
 
     @Test
     fun `a read of the server card answered between two calls without an answer starts the run over`() {
-        runBlocking { sessions.save(jellyfin.session()) }
+        idling { sessions.save(jellyfin.session()) }
         // The card's read of what is playing is held in the server, so it is answered when the test says.
         val held = jellyfin.hold("/Sessions")
         val vm = viewModel()
         vm.await<UiState.SignedIn> { it.titles != null }
-        held.awaitArrival()
+        idling { held.awaitArrival() }
         connection.monitor.report(SAVED_SERVER, CallResult.TransportFailure())
         held.release()
-        vm.await<UiState.SignedIn> { it.card.playing != null }
-        calls.awaitNone()
+        vm.awaitCard()
         connection.monitor.report(SAVED_SERVER, CallResult.TransportFailure())
         // The answer came between the two, so they are not a run of two: this is why a test that reports its own failures waits for
         // the calls the app makes to be answered first.
@@ -1763,14 +1754,14 @@ class JellyfinViewModelTest {
 
     @Test
     fun `a read of the server card still waiting for its answer is waited for before the failures are reported`() {
-        runBlocking { sessions.save(jellyfin.session()) }
+        idling { sessions.save(jellyfin.session()) }
         val held = jellyfin.hold("/Sessions")
         val vm = viewModel()
         vm.await<UiState.SignedIn> { it.titles != null }
-        held.awaitArrival()
+        idling { held.awaitArrival() }
         // Answered a moment after the wait begins: the failures are reported once it has been, so they are a run of two.
         val answering = Thread { Thread.sleep(ANSWER_AFTER_MILLIS).also { held.release() } }.also { it.start() }
-        calls.awaitNone()
+        vm.awaitCard()
         answering.join()
         connection.monitor.report(SAVED_SERVER, CallResult.TransportFailure())
         connection.monitor.report(SAVED_SERVER, CallResult.TransportFailure())
@@ -1779,7 +1770,7 @@ class JellyfinViewModelTest {
 
     @Test
     fun `the live calls leave a server that answered an error, and a start's first read, to the read`() {
-        runBlocking { sessions.save(jellyfin.session()) }
+        idling { sessions.save(jellyfin.session()) }
         val vm = viewModel()
         vm.await<UiState.SignedIn> { it.titles != null }
         jellyfin.status["/Items"] = 500
@@ -1795,7 +1786,7 @@ class JellyfinViewModelTest {
 
     @Test
     fun `a server that answers an error, or something that is not Jellyfin, could not be loaded`() {
-        runBlocking { sessions.save(jellyfin.session()) }
+        idling { sessions.save(jellyfin.session()) }
         val vm = viewModel()
         vm.await<UiState.SignedIn> { it.titles != null }
         jellyfin.status["/Items"] = 500
@@ -1809,7 +1800,7 @@ class JellyfinViewModelTest {
 
     @Test
     fun `editing a server that cannot be reached goes back to the server step with its address, and keeps the session`() {
-        runBlocking { sessions.save(jellyfin.session()) }
+        idling { sessions.save(jellyfin.session()) }
         val vm = viewModel()
         vm.await<UiState.SignedIn> { it.titles != null }
         jellyfin.dropped += "/Items"
@@ -1817,34 +1808,34 @@ class JellyfinViewModelTest {
         vm.await<UiState.SignedIn> { it.health.isProblem }
         vm.changeServer()
         assertEquals(jellyfin.baseUrl, vm.await<UiState.EnterServer>().address)
-        assertEquals(jellyfin.baseUrl, runBlocking { sessions.current() }?.baseUrl)
+        assertEquals(jellyfin.baseUrl, idling { sessions.current() }?.baseUrl)
     }
 
     @Test
     fun `a token the server refuses sends the user back to sign in`() {
-        runBlocking { sessions.save(jellyfin.session()) }
+        idling { sessions.save(jellyfin.session()) }
         val vm = viewModel()
         vm.await<UiState.SignedIn> { it.titles != null }
         jellyfin.status["/Items"] = 401
         vm.refresh()
         assertEquals(jellyfin.baseUrl, vm.await<UiState.EnterServer>().address)
-        assertNull(runBlocking { sessions.current() })
+        assertNull(idling { sessions.current() })
         assertEquals(1, sessionsEnded.get())
     }
 
     @Test
     fun `a token a console page found refused sends the user to sign in again`() {
-        runBlocking { sessions.save(jellyfin.session()) }
+        idling { sessions.save(jellyfin.session()) }
         val vm = viewModel()
         vm.await<UiState.SignedIn> { it.titles != null }
         connection.reportRefused()
         assertEquals(jellyfin.baseUrl, vm.await<UiState.EnterServer>().address)
-        assertNull(runBlocking { sessions.current() })
+        assertNull(idling { sessions.current() })
     }
 
     @Test
     fun `a refresh answered with something that is not JSON fails without crashing`() {
-        runBlocking { sessions.save(jellyfin.session()) }
+        idling { sessions.save(jellyfin.session()) }
         val vm = viewModel()
         vm.await<UiState.SignedIn> { it.titles != null }
         jellyfin.notJson += "/Items"
@@ -1941,7 +1932,7 @@ class JellyfinViewModelTest {
             vm.onPassword("right")
             vm.signInWithPassword()
             vm.await<UiState.SignedIn>()
-            assertEquals(jellyfin.baseUrl, runBlocking { sessions.current() }?.baseUrl)
+            assertEquals(jellyfin.baseUrl, idling { sessions.current() }?.baseUrl)
             // Only the first request went through the redirect.
             assertEquals(1, proxy.requestCount)
         } finally {
@@ -2008,7 +1999,7 @@ class JellyfinViewModelTest {
     @Test
     fun `an administrator is marked as one once the library is read`() {
         jellyfin.administrator = true
-        runBlocking { sessions.save(jellyfin.session()) }
+        idling { sessions.save(jellyfin.session()) }
         val vm = viewModel()
         assertTrue(vm.await<UiState.SignedIn> { it.isAdministrator }.isAdministrator)
     }
@@ -2017,7 +2008,7 @@ class JellyfinViewModelTest {
     fun `the refresh reads what the server and the user allow`() {
         jellyfin.quickConnectEnabled = false
         jellyfin.policy = ""","EnableUserPreferenceAccess":false"""
-        runBlocking { sessions.save(jellyfin.session()) }
+        idling { sessions.save(jellyfin.session()) }
         val vm = viewModel()
         val state = vm.await<UiState.SignedIn> { it.account.isRead }
         assertFalse(state.profile.quickConnect)
@@ -2026,7 +2017,7 @@ class JellyfinViewModelTest {
 
     @Test
     fun `a refresh asked for while one is running starts no second read`() {
-        runBlocking { sessions.save(jellyfin.session()) }
+        idling { sessions.save(jellyfin.session()) }
         val vm = viewModel()
         vm.await<UiState.SignedIn> { it.titles != null && !it.refreshing }
 
@@ -2035,7 +2026,7 @@ class JellyfinViewModelTest {
         // Held at the gates, the first refresh is certainly still running when the others are asked for.
         val held = jellyfin.hold("/QuickConnect/Enabled")
         vm.refresh()
-        held.awaitArrival()
+        idling { held.awaitArrival() }
         assertTrue(vm.await<UiState.SignedIn>().refreshing)
         vm.refresh()
         vm.refresh()
@@ -2046,11 +2037,11 @@ class JellyfinViewModelTest {
 
     @Test
     fun `the home is healthy once the server answers, before the library index is built`() {
-        runBlocking { sessions.save(jellyfin.session()) }
+        idling { sessions.save(jellyfin.session()) }
         // The index's pages are the /Items reads that ask for titles with a TMDB id; hold the first, so the index cannot finish.
         val held = jellyfin.hold("/Items", query = "hasTmdbId" to "true")
         val vm = viewModel()
-        held.awaitArrival()
+        idling { held.awaitArrival() }
         val state = vm.await<UiState.SignedIn> { it.health == ConnectionHealth.Healthy }
         assertTrue(state.refreshing)
         held.release()
@@ -2059,7 +2050,7 @@ class JellyfinViewModelTest {
 
     @Test
     fun `a gates-only refresh picks up a change without reading the library again`() {
-        runBlocking { sessions.save(jellyfin.session()) }
+        idling { sessions.save(jellyfin.session()) }
         val vm = viewModel()
         vm.await<UiState.SignedIn> { it.account.isRead && !it.refreshing && it.card.tmdb != null }
 
@@ -2087,29 +2078,4 @@ private const val DEAD_PORT = "http://127.0.0.1:1/"
 private const val CERTIFICATE_REQUIRED_ALERT =
     "Read error: ssl=0x0: error:1000045c:SSL routines:OPENSSL_internal:TLSV1_ALERT_CERTIFICATE_REQUIRED"
 
-private const val CALLS_WAIT_MILLIS = 10_000L
-private const val CALLS_POLL_MILLIS = 5L
 private const val ANSWER_AFTER_MILLIS = 400L
-
-/** Counts the calls that have been sent and not yet answered, so a test can wait for the server to go quiet. */
-private class CallsInFlight : Interceptor {
-    private val open = AtomicInteger()
-
-    override fun intercept(chain: Interceptor.Chain): Response {
-        open.incrementAndGet()
-        try {
-            return chain.proceed(chain.request())
-        } finally {
-            open.decrementAndGet()
-        }
-    }
-
-    /** Waits until no call is waiting for an answer. */
-    fun awaitNone() {
-        val until = System.nanoTime() + TimeUnit.MILLISECONDS.toNanos(CALLS_WAIT_MILLIS)
-        while (open.get() > 0) {
-            check(System.nanoTime() < until) { "${open.get()} calls still had no answer after $CALLS_WAIT_MILLIS ms" }
-            Thread.sleep(CALLS_POLL_MILLIS)
-        }
-    }
-}

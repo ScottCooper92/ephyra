@@ -109,7 +109,7 @@ class SearchTabViewModelTest {
         val ready = vm.settled { it.body is SearchBody.Ready }.body as SearchBody.Ready
         assertTrue(ready.hits.any { it.id == "m1" })
         vm.selectType(SearchType.People)
-        assertTrue((vm.settled { it.type == SearchType.People }.body as SearchBody.Ready).hits.isEmpty())
+        assertTrue((vm.settled { it.type == SearchType.People && it.body is SearchBody.Ready }.body as SearchBody.Ready).hits.isEmpty())
         vm.clear()
         assertTrue(vm.settled { it.body is SearchBody.Idle }.text.isEmpty())
     }

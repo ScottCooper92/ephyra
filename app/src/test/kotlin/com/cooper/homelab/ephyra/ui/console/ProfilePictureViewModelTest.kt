@@ -64,7 +64,8 @@ class ProfilePictureViewModelTest {
     }
 
     /** A view model that sends the picked file as it is, so a test follows the bytes without the image work. */
-    private fun viewModel(newRoute: Boolean = true) = made(ProfilePictureViewModel(connection, newRoute, prepare = { it }))
+    private fun viewModel(newRoute: Boolean = true) =
+        made(ProfilePictureViewModel(connection, newRoute, prepare = { it }, work = Dispatchers.Default, io = Dispatchers.IO))
 
     @Test
     fun `a user with no picture reads none`() {
@@ -102,7 +103,17 @@ class ProfilePictureViewModelTest {
 
     @Test
     fun `an administrator's change to another user's picture is sent for that user, not for themselves`() {
-        val vm = made(ProfilePictureViewModel(connection, true, userId = "user-2", prepare = { it }))
+        val vm =
+            made(
+                ProfilePictureViewModel(
+                    connection,
+                    true,
+                    userId = "user-2",
+                    prepare = { it },
+                    work = Dispatchers.Default,
+                    io = Dispatchers.IO,
+                ),
+            )
         vm.ready()
         vm.choose { jpeg() }
         vm.ready { it.picture != null && !it.busy }
@@ -143,7 +154,7 @@ class ProfilePictureViewModelTest {
     @Test
     fun `a file the device cannot turn into a picture is said so, and nothing is sent`() {
         // Robolectric decodes any bytes to a stand-in bitmap, so the file that cannot be read is the prepare step answering null.
-        val vm = made(ProfilePictureViewModel(connection, true, prepare = { null }))
+        val vm = made(ProfilePictureViewModel(connection, true, prepare = { null }, work = Dispatchers.Default, io = Dispatchers.IO))
         vm.ready()
         vm.choose { "not an image".toByteArray() }
         assertTrue(vm.ready { it.unreadable && !it.busy }.unreadable)

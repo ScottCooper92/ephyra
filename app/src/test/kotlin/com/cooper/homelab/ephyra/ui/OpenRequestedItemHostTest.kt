@@ -19,7 +19,6 @@ import com.cooper.homelab.ephyra.FakeJellyfin
 import com.cooper.homelab.ephyra.FakeTitle
 import com.cooper.homelab.ephyra.PlainCipher
 import com.cooper.homelab.ephyra.auth.SessionStore
-import com.cooper.homelab.ephyra.auth.forLibrary
 import com.cooper.homelab.ephyra.browse.ItemKind
 import com.cooper.homelab.ephyra.flags.LocalClientEnabled
 import com.cooper.homelab.ephyra.openitem.OpenItemRequest
@@ -87,7 +86,7 @@ class OpenRequestedItemHostTest {
                         connection,
                         LibraryIndex(),
                         dispatcher = Dispatchers.IO,
-                        cipher = PlainCipher.forLibrary(),
+                        cipher = PlainCipher,
                         discover = { emptyList() },
                     ),
                 )

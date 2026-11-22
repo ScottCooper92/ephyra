@@ -37,7 +37,7 @@ androidxTestCore = "1.7.0"
 androidxTestRunner = "1.7.0"
 androidxTestJunit = "1.3.0"
 okhttp = "5.4.0"
-kotlinxSerializationJson = "1.11.0"
+kotlinxSerializationJson = "1.12.0"
 datastore = "1.2.1"
 workManager = "2.12.0"
 # Must agree with binge-companions' catalog: the SDK brings grpc-binder at its version, and the
@@ -47,9 +47,9 @@ grpc = "1.85.1"
 firebaseBom = "34.19.0"
 # Firebase brings fragment 1.1.0, which lint refuses beside registerForActivityResult (needs 1.3+).
 fragment = "1.9.1"
-googleServices = "4.5.0"
+googleServices = "4.6.0"
 firebaseCrashlytics = "3.0.8"
-posthog = "3.76.0"
+posthog = "3.76.2"
 # Renders a plugin changelog's Markdown. Apache-2.0, as is its parser (JetBrains markdown). The m3 module has no image loader, so nothing is fetched.
 markdownRenderer = "0.46.0"
 

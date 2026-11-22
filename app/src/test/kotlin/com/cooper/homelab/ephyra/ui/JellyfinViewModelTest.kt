@@ -2,9 +2,9 @@ package com.cooper.homelab.ephyra.ui
 
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.viewModelScope
-import com.binge.companion.kit.SecretCipher
 import com.cooper.homelab.core.presentation.connect.LinkStash
 import com.cooper.homelab.core.server.connection.CallResult
+import com.cooper.homelab.core.server.connection.SecretCipher
 import com.cooper.homelab.core.server.network.CleartextConsent
 import com.cooper.homelab.core.server.network.CleartextGate
 import com.cooper.homelab.core.server.network.CleartextGuard
@@ -13,7 +13,6 @@ import com.cooper.homelab.ephyra.FakeItem
 import com.cooper.homelab.ephyra.FakeJellyfin
 import com.cooper.homelab.ephyra.PlainCipher
 import com.cooper.homelab.ephyra.auth.SessionStore
-import com.cooper.homelab.ephyra.auth.forLibrary
 import com.cooper.homelab.ephyra.demo.DEMO_ORIGIN
 import com.cooper.homelab.ephyra.demo.DEMO_TOKEN
 import com.cooper.homelab.ephyra.demo.DemoTransport
@@ -70,7 +69,6 @@ import java.util.concurrent.atomic.AtomicInteger
 import javax.net.ssl.SSLHandshakeException
 import javax.net.ssl.SSLProtocolException
 import com.cooper.homelab.core.server.connection.ConnectionHealth as CoreHealth
-import com.cooper.homelab.core.server.connection.SecretCipher as LibraryCipher
 
 /** Setup and settings against a fake server. The server calls run on a real IO thread, so each step waits for its state. */
 @OptIn(ExperimentalCoroutinesApi::class)
@@ -128,7 +126,7 @@ class JellyfinViewModelTest {
         cleartext: CleartextConsent = CleartextConsent.None,
         savedState: SavedStateHandle = SavedStateHandle(),
         linkStash: LinkStash = NoLinkStash,
-        cipher: LibraryCipher = PlainCipher.forLibrary(),
+        cipher: SecretCipher = PlainCipher,
     ) = made(
         JellyfinViewModel(
             sessions,
@@ -194,7 +192,7 @@ class JellyfinViewModelTest {
                 demoConnection,
                 index,
                 dispatcher = Dispatchers.IO,
-                cipher = PlainCipher.forLibrary(),
+                cipher = PlainCipher,
                 discover = { found },
                 analytics = analytics,
             ),
@@ -1151,8 +1149,8 @@ class JellyfinViewModelTest {
 
     /** A cipher that notes whether each decryption ran on the main thread: it is a Keystore call. */
     private class ThreadNotingCipher(
-        private val inner: LibraryCipher,
-    ) : LibraryCipher {
+        private val inner: SecretCipher,
+    ) : SecretCipher {
         val decryptedOnMain = CopyOnWriteArrayList<Boolean>()
 
         override fun encrypt(plaintext: String): String = inner.encrypt(plaintext)
@@ -1545,7 +1543,7 @@ class JellyfinViewModelTest {
         assertNotNull(stash.value)
 
         val notedStash = ThreadNotingStash(stash)
-        val notedCipher = ThreadNotingCipher(PlainCipher.forLibrary())
+        val notedCipher = ThreadNotingCipher(PlainCipher)
         val second = viewModel(linkStash = notedStash, cipher = notedCipher)
         second.await<UiState.SignIn> { it.quickConnectCode != null }
 
@@ -1976,7 +1974,7 @@ class JellyfinViewModelTest {
                         teardown.made(Connection(slow, sessions, "Jellyfin Companion", "Test", "1.0", Dispatchers.IO, DiscardLogger)),
                         index,
                         dispatcher = Dispatchers.IO,
-                        cipher = PlainCipher.forLibrary(),
+                        cipher = PlainCipher,
                         discover = {
                             gate.await()
                             server

@@ -10,7 +10,6 @@ import com.cooper.homelab.ephyra.server.splashscreenImage
 import com.cooper.homelab.ephyra.server.uploadSplashscreen
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -47,8 +46,8 @@ internal class SplashImageController(
     private val scope: CoroutineScope,
     private val adoptBranding: suspend (JsonObject) -> Unit,
     private val prepare: (ByteArray) -> ByteArray? = ::fittedImage,
-    private val work: CoroutineDispatcher = Dispatchers.Default,
-    private val io: CoroutineDispatcher = Dispatchers.IO,
+    private val work: CoroutineDispatcher,
+    private val io: CoroutineDispatcher,
 ) {
     private val _state = MutableStateFlow(SplashUiState())
     val state: StateFlow<SplashUiState> = _state.asStateFlow()

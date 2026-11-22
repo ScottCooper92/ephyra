@@ -5,7 +5,7 @@
 ## Checked before pushing
 
 <!-- Tick what you ran locally on the final head. If you couldn't run one, leave it unticked and say why. Don't tick a box you didn't run. -->
-- [ ] `./gradlew ktlintCheck detekt`
+- [ ] `./gradlew ktlintCheck detekt checkTranslationStaleness`
 - [ ] `./gradlew lintDebug`
 - [ ] `./gradlew testDebugUnitTest koverVerify` (every module)
 - [ ] Re-recorded screenshots viewed: all of them, or every one checked by script and a sample by eye (say which)

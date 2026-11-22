@@ -50,6 +50,7 @@ dependencies {
     testFixturesImplementation(libs.okhttp.mockwebserver)
     testFixturesImplementation(libs.homelab.appservices)
     testFixturesApi(libs.homelab.server)
+    testFixturesApi(libs.homelab.testing)
     testFixturesImplementation(libs.kotlinx.coroutines.android)
     testFixturesImplementation(libs.junit)
     testFixturesImplementation(libs.kotlinx.serialization.json)

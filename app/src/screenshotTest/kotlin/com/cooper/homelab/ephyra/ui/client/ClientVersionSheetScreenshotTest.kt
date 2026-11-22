@@ -7,9 +7,9 @@ import com.cooper.homelab.ephyra.client.title.Resolution
 import com.cooper.homelab.ephyra.client.title.TrackUi
 import com.cooper.homelab.ephyra.client.title.VersionSheetContent
 import com.cooper.homelab.ephyra.client.title.VersionUi
-import com.cooper.homelab.ephyra.preview.JellyfinFontScalePreviews
-import com.cooper.homelab.ephyra.preview.JellyfinScreenStatePreview
-import com.cooper.homelab.ephyra.preview.JellyfinSpanishPreviews
+import com.cooper.homelab.ephyra.preview.EphyraFontScalePreviews
+import com.cooper.homelab.ephyra.preview.EphyraScreenStatePreview
+import com.cooper.homelab.ephyra.preview.EphyraSpanishPreviews
 
 /**
  * The versions sheet (`:client`): a film with a named file, a file named only by its resolution and range, and a bare one that falls back
@@ -54,9 +54,9 @@ class ClientVersionSheetScreenshotTest {
     private fun Sheet() = VersionSheetContent(versions, selected = "v2", onSelect = {})
 
     @PreviewTest
-    @JellyfinScreenStatePreview
-    @JellyfinFontScalePreviews
-    @JellyfinSpanishPreviews
+    @EphyraScreenStatePreview
+    @EphyraFontScalePreviews
+    @EphyraSpanishPreviews
     @Composable
     fun versions() = Sheet()
 }

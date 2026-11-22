@@ -13,11 +13,11 @@ import com.cooper.homelab.core.presentation.tip.TipState
 import com.cooper.homelab.core.tip.TIP_STEPS
 import com.cooper.homelab.core.uiandroid.flags.LocalFlags
 import com.cooper.homelab.core.uiandroid.search.SettingsSearchScreen
-import com.cooper.homelab.ephyra.preview.JellyfinFontScalePreviews
+import com.cooper.homelab.ephyra.preview.EphyraFontScalePreviews
+import com.cooper.homelab.ephyra.preview.EphyraScreenStatePreview
+import com.cooper.homelab.ephyra.preview.EphyraSpanishFontScalePreviews
+import com.cooper.homelab.ephyra.preview.EphyraSpanishPreviews
 import com.cooper.homelab.ephyra.preview.JellyfinHomeLayoutPreviews
-import com.cooper.homelab.ephyra.preview.JellyfinScreenStatePreview
-import com.cooper.homelab.ephyra.preview.JellyfinSpanishFontScalePreviews
-import com.cooper.homelab.ephyra.preview.JellyfinSpanishPreviews
 import com.cooper.homelab.ephyra.server.ForgotPasswordAction
 import com.cooper.homelab.ephyra.ui.console.ConsolePage
 import com.cooper.homelab.ephyra.ui.search.available
@@ -28,410 +28,410 @@ class JellyfinScreenshotTest {
     // The server step.
 
     @PreviewTest
-    @JellyfinScreenStatePreview
-    @JellyfinFontScalePreviews
-    @JellyfinSpanishPreviews
+    @EphyraScreenStatePreview
+    @EphyraFontScalePreviews
+    @EphyraSpanishPreviews
     @Composable
-    fun serverFound() = JellyfinRoot(previewEnterServerFound, Actions())
+    fun serverFound() = EphyraRoot(previewEnterServerFound, Actions())
 
     @PreviewTest
-    @JellyfinScreenStatePreview
+    @EphyraScreenStatePreview
     @Composable
-    fun serverEmpty() = JellyfinRoot(previewEnterServerEmpty, Actions())
+    fun serverEmpty() = EphyraRoot(previewEnterServerEmpty, Actions())
 
     @PreviewTest
-    @JellyfinScreenStatePreview
+    @EphyraScreenStatePreview
     @Composable
-    fun serverSearching() = JellyfinRoot(previewEnterServerSearching, Actions())
+    fun serverSearching() = EphyraRoot(previewEnterServerSearching, Actions())
 
     @PreviewTest
-    @JellyfinScreenStatePreview
-    @JellyfinSpanishPreviews
+    @EphyraScreenStatePreview
+    @EphyraSpanishPreviews
     @Composable
-    fun serverUnreachable() = JellyfinRoot(previewEnterServerError, Actions())
+    fun serverUnreachable() = EphyraRoot(previewEnterServerError, Actions())
 
     @PreviewTest
-    @JellyfinScreenStatePreview
-    @JellyfinSpanishPreviews
+    @EphyraScreenStatePreview
+    @EphyraSpanishPreviews
     @Composable
-    fun serverLocalNetworkDenied() = JellyfinRoot(previewEnterServerLocalNetwork, Actions())
+    fun serverLocalNetworkDenied() = EphyraRoot(previewEnterServerLocalNetwork, Actions())
 
     @PreviewTest
-    @JellyfinScreenStatePreview
+    @EphyraScreenStatePreview
     @Composable
-    fun serverInvalidAddress() = JellyfinRoot(previewEnterServerInvalid, Actions())
+    fun serverInvalidAddress() = EphyraRoot(previewEnterServerInvalid, Actions())
 
     @PreviewTest
-    @JellyfinScreenStatePreview
+    @EphyraScreenStatePreview
     @Composable
-    fun serverNotJellyfin() = JellyfinRoot(previewEnterServerNotJellyfin, Actions())
+    fun serverNotJellyfin() = EphyraRoot(previewEnterServerNotJellyfin, Actions())
 
     /** A public plain-HTTP address: the warning and the agreement beside it, with Connect waiting. */
     @PreviewTest
-    @JellyfinScreenStatePreview
-    @JellyfinSpanishPreviews
+    @EphyraScreenStatePreview
+    @EphyraSpanishPreviews
     @Composable
-    fun serverInsecure() = JellyfinRoot(previewEnterServerInsecure, Actions())
+    fun serverInsecure() = EphyraRoot(previewEnterServerInsecure, Actions())
 
     @PreviewTest
-    @JellyfinScreenStatePreview
+    @EphyraScreenStatePreview
     @Composable
-    fun serverInsecureAgreed() = JellyfinRoot(previewEnterServerInsecureAgreed, Actions())
+    fun serverInsecureAgreed() = EphyraRoot(previewEnterServerInsecureAgreed, Actions())
 
     @PreviewTest
-    @JellyfinScreenStatePreview
-    @JellyfinSpanishPreviews
+    @EphyraScreenStatePreview
+    @EphyraSpanishPreviews
     @Composable
-    fun serverCleartextRefused() = JellyfinRoot(previewEnterServerCleartextRefused, Actions())
+    fun serverCleartextRefused() = EphyraRoot(previewEnterServerCleartextRefused, Actions())
 
     @PreviewTest
-    @JellyfinScreenStatePreview
-    @JellyfinSpanishPreviews
+    @EphyraScreenStatePreview
+    @EphyraSpanishPreviews
     @Composable
-    fun serverClientCertificate() = JellyfinRoot(previewEnterServerClientCertificate, Actions())
+    fun serverClientCertificate() = EphyraRoot(previewEnterServerClientCertificate, Actions())
 
     @PreviewTest
-    @JellyfinScreenStatePreview
+    @EphyraScreenStatePreview
     @Composable
-    fun serverGenericError() = JellyfinRoot(previewEnterServerGeneric, Actions())
+    fun serverGenericError() = EphyraRoot(previewEnterServerGeneric, Actions())
 
     @PreviewTest
-    @JellyfinScreenStatePreview
+    @EphyraScreenStatePreview
     @Composable
-    fun loading() = JellyfinRoot(UiState.Loading, Actions())
+    fun loading() = EphyraRoot(UiState.Loading, Actions())
 
     // Sign-in.
 
     @PreviewTest
-    @JellyfinScreenStatePreview
-    @JellyfinFontScalePreviews
-    @JellyfinSpanishPreviews
-    @JellyfinSpanishFontScalePreviews
+    @EphyraScreenStatePreview
+    @EphyraFontScalePreviews
+    @EphyraSpanishPreviews
+    @EphyraSpanishFontScalePreviews
     @Composable
-    fun signIn() = JellyfinRoot(previewSignIn, Actions())
+    fun signIn() = EphyraRoot(previewSignIn, Actions())
 
     /** A server that has not finished its first-run setup: the notice stands where the sign-in would. */
     @PreviewTest
-    @JellyfinScreenStatePreview
-    @JellyfinSpanishPreviews
+    @EphyraScreenStatePreview
+    @EphyraSpanishPreviews
     @Composable
-    fun setupIncomplete() = JellyfinRoot(previewSetupIncomplete, Actions())
+    fun setupIncomplete() = EphyraRoot(previewSetupIncomplete, Actions())
 
     @PreviewTest
-    @JellyfinScreenStatePreview
-    @JellyfinFontScalePreviews
-    @JellyfinSpanishPreviews
+    @EphyraScreenStatePreview
+    @EphyraFontScalePreviews
+    @EphyraSpanishPreviews
     @Composable
-    fun signInUsers() = JellyfinRoot(previewSignInUsers, Actions())
+    fun signInUsers() = EphyraRoot(previewSignInUsers, Actions())
 
     @PreviewTest
-    @JellyfinScreenStatePreview
-    @JellyfinFontScalePreviews
-    @JellyfinSpanishPreviews
+    @EphyraScreenStatePreview
+    @EphyraFontScalePreviews
+    @EphyraSpanishPreviews
     @Composable
-    fun signInUsersPictures() = JellyfinRoot(previewSignInUsersPictures, Actions())
+    fun signInUsersPictures() = EphyraRoot(previewSignInUsersPictures, Actions())
 
     // The setup wizard of a server that has not finished its first-run setup.
 
     @PreviewTest
-    @JellyfinScreenStatePreview
-    @JellyfinFontScalePreviews
-    @JellyfinSpanishPreviews
+    @EphyraScreenStatePreview
+    @EphyraFontScalePreviews
+    @EphyraSpanishPreviews
     @Composable
-    fun startup() = JellyfinRoot(previewStartup, Actions())
+    fun startup() = EphyraRoot(previewStartup, Actions())
 
     @PreviewTest
-    @JellyfinScreenStatePreview
-    @JellyfinFontScalePreviews
-    @JellyfinSpanishPreviews
+    @EphyraScreenStatePreview
+    @EphyraFontScalePreviews
+    @EphyraSpanishPreviews
     @Composable
-    fun startupAccount() = JellyfinRoot(previewStartupAccountFilled, Actions())
+    fun startupAccount() = EphyraRoot(previewStartupAccountFilled, Actions())
 
     @PreviewTest
-    @JellyfinScreenStatePreview
+    @EphyraScreenStatePreview
     @Composable
-    fun startupAccountEmpty() = JellyfinRoot(previewStartupAccount, Actions())
+    fun startupAccountEmpty() = EphyraRoot(previewStartupAccount, Actions())
 
     @PreviewTest
-    @JellyfinScreenStatePreview
+    @EphyraScreenStatePreview
     @Composable
-    fun startupAccountMismatch() = JellyfinRoot(previewStartupAccountMismatch, Actions())
+    fun startupAccountMismatch() = EphyraRoot(previewStartupAccountMismatch, Actions())
 
     @PreviewTest
-    @JellyfinScreenStatePreview
+    @EphyraScreenStatePreview
     @Composable
-    fun startupAccountSaving() = JellyfinRoot(previewStartupAccountSaving, Actions())
+    fun startupAccountSaving() = EphyraRoot(previewStartupAccountSaving, Actions())
 
     @PreviewTest
-    @JellyfinScreenStatePreview
+    @EphyraScreenStatePreview
     @Composable
-    fun startupAccountRefused() = JellyfinRoot(previewStartupAccountRefused, Actions())
+    fun startupAccountRefused() = EphyraRoot(previewStartupAccountRefused, Actions())
 
     /** The server refused the account and said why: its own words stand in place of the generic sentence. */
     @PreviewTest
-    @JellyfinScreenStatePreview
+    @EphyraScreenStatePreview
     @Composable
-    fun startupAccountReason() = JellyfinRoot(previewStartupAccountReason, Actions())
+    fun startupAccountReason() = EphyraRoot(previewStartupAccountReason, Actions())
 
     @PreviewTest
-    @JellyfinScreenStatePreview
+    @EphyraScreenStatePreview
     @Composable
-    fun startupNoName() = JellyfinRoot(previewStartupNoName, Actions())
+    fun startupNoName() = EphyraRoot(previewStartupNoName, Actions())
 
     @PreviewTest
-    @JellyfinScreenStatePreview
+    @EphyraScreenStatePreview
     @Composable
-    fun startupSaving() = JellyfinRoot(previewStartupSaving, Actions())
+    fun startupSaving() = EphyraRoot(previewStartupSaving, Actions())
 
     @PreviewTest
-    @JellyfinScreenStatePreview
+    @EphyraScreenStatePreview
     @Composable
-    fun startupRefused() = JellyfinRoot(previewStartupRefused, Actions())
+    fun startupRefused() = EphyraRoot(previewStartupRefused, Actions())
 
     @PreviewTest
-    @JellyfinScreenStatePreview
+    @EphyraScreenStatePreview
     @Composable
-    fun startupLoading() = JellyfinRoot(previewStartupLoading, Actions())
+    fun startupLoading() = EphyraRoot(previewStartupLoading, Actions())
 
     @PreviewTest
-    @JellyfinScreenStatePreview
+    @EphyraScreenStatePreview
     @Composable
-    fun startupFailed() = JellyfinRoot(previewStartupFailed, Actions())
+    fun startupFailed() = EphyraRoot(previewStartupFailed, Actions())
 
     @PreviewTest
-    @JellyfinScreenStatePreview
-    @JellyfinFontScalePreviews
-    @JellyfinSpanishPreviews
+    @EphyraScreenStatePreview
+    @EphyraFontScalePreviews
+    @EphyraSpanishPreviews
     @Composable
-    fun startupFinish() = JellyfinRoot(previewStartupFinish, Actions())
+    fun startupFinish() = EphyraRoot(previewStartupFinish, Actions())
 
     @PreviewTest
-    @JellyfinScreenStatePreview
+    @EphyraScreenStatePreview
     @Composable
-    fun startupFinishPorts() = JellyfinRoot(previewStartupFinishPorts, Actions())
+    fun startupFinishPorts() = EphyraRoot(previewStartupFinishPorts, Actions())
 
     @PreviewTest
-    @JellyfinScreenStatePreview
+    @EphyraScreenStatePreview
     @Composable
-    fun startupFinishOff() = JellyfinRoot(previewStartupFinishOff, Actions())
+    fun startupFinishOff() = EphyraRoot(previewStartupFinishOff, Actions())
 
     @PreviewTest
-    @JellyfinScreenStatePreview
+    @EphyraScreenStatePreview
     @Composable
-    fun startupFinishSaving() = JellyfinRoot(previewStartupFinishSaving, Actions())
+    fun startupFinishSaving() = EphyraRoot(previewStartupFinishSaving, Actions())
 
     @PreviewTest
-    @JellyfinScreenStatePreview
+    @EphyraScreenStatePreview
     @Composable
-    fun startupFinishRefused() = JellyfinRoot(previewStartupFinishRefused, Actions())
+    fun startupFinishRefused() = EphyraRoot(previewStartupFinishRefused, Actions())
 
     @PreviewTest
-    @JellyfinScreenStatePreview
+    @EphyraScreenStatePreview
     @Composable
-    fun signInHttps() = JellyfinRoot(previewSignInHttps, Actions())
+    fun signInHttps() = EphyraRoot(previewSignInHttps, Actions())
 
     @PreviewTest
-    @JellyfinScreenStatePreview
+    @EphyraScreenStatePreview
     @Composable
-    fun signInWrongPassword() = JellyfinRoot(previewSignInWrongPassword, Actions())
+    fun signInWrongPassword() = EphyraRoot(previewSignInWrongPassword, Actions())
 
     @PreviewTest
-    @JellyfinScreenStatePreview
-    @JellyfinFontScalePreviews
-    @JellyfinSpanishPreviews
+    @EphyraScreenStatePreview
+    @EphyraFontScalePreviews
+    @EphyraSpanishPreviews
     @Composable
     fun quickConnectCode() = QuickConnectCodeBody(requireNotNull(previewQuickConnect.quickConnectCode), Actions())
 
     /** The sign-in step on its Quick Connect tab, before a code is asked for, with the tab labels at large font and in Spanish. */
     @PreviewTest
-    @JellyfinScreenStatePreview
-    @JellyfinFontScalePreviews
-    @JellyfinSpanishPreviews
-    @JellyfinSpanishFontScalePreviews
+    @EphyraScreenStatePreview
+    @EphyraFontScalePreviews
+    @EphyraSpanishPreviews
+    @EphyraSpanishFontScalePreviews
     @Composable
-    fun quickConnectTab() = JellyfinRoot(previewQuickConnectTab, Actions())
+    fun quickConnectTab() = EphyraRoot(previewQuickConnectTab, Actions())
 
     @PreviewTest
-    @JellyfinScreenStatePreview
+    @EphyraScreenStatePreview
     @Composable
-    fun quickConnectOff() = JellyfinRoot(previewQuickConnectOff, Actions())
+    fun quickConnectOff() = EphyraRoot(previewQuickConnectOff, Actions())
 
     @PreviewTest
-    @JellyfinScreenStatePreview
+    @EphyraScreenStatePreview
     @Composable
-    fun quickConnectNotOffered() = JellyfinRoot(previewQuickConnectNotOffered, Actions())
+    fun quickConnectNotOffered() = EphyraRoot(previewQuickConnectNotOffered, Actions())
 
     @PreviewTest
-    @JellyfinScreenStatePreview
+    @EphyraScreenStatePreview
     @Composable
-    fun quickConnectExpired() = JellyfinRoot(previewQuickConnectExpired, Actions())
+    fun quickConnectExpired() = EphyraRoot(previewQuickConnectExpired, Actions())
 
     @PreviewTest
-    @JellyfinScreenStatePreview
+    @EphyraScreenStatePreview
     @Composable
-    fun quickConnectGetting() = JellyfinRoot(previewQuickConnectGetting, Actions())
+    fun quickConnectGetting() = EphyraRoot(previewQuickConnectGetting, Actions())
 
     /** A failure that isn't the password's is said under Sign in, and the field stays unmarked. */
     @PreviewTest
-    @JellyfinScreenStatePreview
-    @JellyfinSpanishPreviews
+    @EphyraScreenStatePreview
+    @EphyraSpanishPreviews
     @Composable
-    fun signInUnreachable() = JellyfinRoot(previewSignInUnreachable, Actions())
+    fun signInUnreachable() = EphyraRoot(previewSignInUnreachable, Actions())
 
     @PreviewTest
-    @JellyfinScreenStatePreview
+    @EphyraScreenStatePreview
     @Composable
-    fun signInLocalNetworkDenied() = JellyfinRoot(previewSignInLocalNetwork, Actions(localNetworkAsked = true))
+    fun signInLocalNetworkDenied() = EphyraRoot(previewSignInLocalNetwork, Actions(localNetworkAsked = true))
 
     // Signed in.
 
     @PreviewTest
     @JellyfinHomeLayoutPreviews
-    @JellyfinFontScalePreviews
-    @JellyfinSpanishPreviews
+    @EphyraFontScalePreviews
+    @EphyraSpanishPreviews
     @Composable
-    fun signedIn() = JellyfinRoot(previewSignedIn, Actions())
+    fun signedIn() = EphyraRoot(previewSignedIn, Actions())
 
     /** An administrator of a server with no libraries: the card above the server group. */
     @PreviewTest
-    @JellyfinScreenStatePreview
-    @JellyfinSpanishPreviews
+    @EphyraScreenStatePreview
+    @EphyraSpanishPreviews
     @Composable
-    fun signedInNoLibraries() = JellyfinRoot(previewSignedInNoLibraries, Actions())
+    fun signedInNoLibraries() = EphyraRoot(previewSignedInNoLibraries, Actions())
 
     @PreviewTest
-    @JellyfinScreenStatePreview
+    @EphyraScreenStatePreview
     @Composable
     fun signedInChecking() =
         CompositionLocalProvider(LocalFlags provides Flags.of(SharedFlags.BingePromotion to true)) {
-            JellyfinRoot(previewSignedInChecking, Actions())
+            EphyraRoot(previewSignedInChecking, Actions())
         }
 
     /** The saved server has not answered yet: nothing of the home, only the wait, until it does or its problem replaces it. */
     @PreviewTest
-    @JellyfinScreenStatePreview
+    @EphyraScreenStatePreview
     @Composable
-    fun signedInWaiting() = JellyfinRoot(previewSignedInWaiting, Actions())
+    fun signedInWaiting() = EphyraRoot(previewSignedInWaiting, Actions())
 
     @PreviewTest
-    @JellyfinScreenStatePreview
+    @EphyraScreenStatePreview
     @Composable
     fun signedInFailed() =
         CompositionLocalProvider(LocalFlags provides Flags.of(SharedFlags.BingePromotion to true)) {
-            JellyfinRoot(previewSignedInFailed, Actions())
+            EphyraRoot(previewSignedInFailed, Actions())
         }
 
     @PreviewTest
-    @JellyfinScreenStatePreview
-    @JellyfinSpanishPreviews
+    @EphyraScreenStatePreview
+    @EphyraSpanishPreviews
     @Composable
-    fun signedInCouldNotLoad() = JellyfinRoot(previewSignedInCouldNotLoad, Actions())
+    fun signedInCouldNotLoad() = EphyraRoot(previewSignedInCouldNotLoad, Actions())
 
     @PreviewTest
-    @JellyfinScreenStatePreview
-    @JellyfinSpanishPreviews
+    @EphyraScreenStatePreview
+    @EphyraSpanishPreviews
     @Composable
-    fun signedInClientCertificate() = JellyfinRoot(previewSignedInClientCertificate, Actions())
+    fun signedInClientCertificate() = EphyraRoot(previewSignedInClientCertificate, Actions())
 
     @PreviewTest
-    @JellyfinScreenStatePreview
-    @JellyfinSpanishPreviews
+    @EphyraScreenStatePreview
+    @EphyraSpanishPreviews
     @Composable
-    fun signedInLocalNetworkDenied() = JellyfinRoot(previewSignedInLocalNetworkDenied, Actions())
+    fun signedInLocalNetworkDenied() = EphyraRoot(previewSignedInLocalNetworkDenied, Actions())
 
     @PreviewTest
-    @JellyfinScreenStatePreview
+    @EphyraScreenStatePreview
     @Composable
-    fun signedInLocalNetworkAsked() = JellyfinRoot(previewSignedInLocalNetworkDenied, Actions(localNetworkAsked = true))
+    fun signedInLocalNetworkAsked() = EphyraRoot(previewSignedInLocalNetworkDenied, Actions(localNetworkAsked = true))
 
     @PreviewTest
-    @JellyfinScreenStatePreview
+    @EphyraScreenStatePreview
     @Composable
-    fun signedInRetrying() = JellyfinRoot(previewSignedInRetrying, Actions())
+    fun signedInRetrying() = EphyraRoot(previewSignedInRetrying, Actions())
 
     @PreviewTest
-    @JellyfinFontScalePreviews
+    @EphyraFontScalePreviews
     @Composable
-    fun signedInFailedLarge() = JellyfinRoot(previewSignedInFailed, Actions())
+    fun signedInFailedLarge() = EphyraRoot(previewSignedInFailed, Actions())
 
     @PreviewTest
-    @JellyfinScreenStatePreview
+    @EphyraScreenStatePreview
     @Composable
-    fun signedInHttps() = JellyfinRoot(previewSignedInHttps, Actions())
+    fun signedInHttps() = EphyraRoot(previewSignedInHttps, Actions())
 
     @PreviewTest
-    @JellyfinScreenStatePreview
-    @JellyfinFontScalePreviews
-    @JellyfinSpanishPreviews
+    @EphyraScreenStatePreview
+    @EphyraFontScalePreviews
+    @EphyraSpanishPreviews
     @Composable
-    fun signedInAdmin() = JellyfinRoot(previewSignedInAdmin, Actions())
+    fun signedInAdmin() = EphyraRoot(previewSignedInAdmin, Actions())
 
     /** The Live TV row, for an administrator whose policy lets them manage it. A user who is not an administrator is offered none. */
     @PreviewTest
-    @JellyfinScreenStatePreview
+    @EphyraScreenStatePreview
     @Composable
-    fun signedInAdminLiveTv() = JellyfinRoot(previewSignedInAdminLiveTv, Actions())
+    fun signedInAdminLiveTv() = EphyraRoot(previewSignedInAdminLiveTv, Actions())
 
     /** The server card with three pills at once, on an unencrypted address: an administrator's, at every size and in Spanish. */
     @PreviewTest
-    @JellyfinScreenStatePreview
-    @JellyfinFontScalePreviews
-    @JellyfinSpanishPreviews
+    @EphyraScreenStatePreview
+    @EphyraFontScalePreviews
+    @EphyraSpanishPreviews
     @Composable
-    fun serverCardAlerts() = JellyfinRoot(previewSignedInAdminAlerts, Actions())
+    fun serverCardAlerts() = EphyraRoot(previewSignedInAdminAlerts, Actions())
 
     /** The note under the server card for the titles with no TMDB id: plain, at every size and in Spanish. */
     @PreviewTest
-    @JellyfinScreenStatePreview
-    @JellyfinFontScalePreviews
-    @JellyfinSpanishPreviews
+    @EphyraScreenStatePreview
+    @EphyraFontScalePreviews
+    @EphyraSpanishPreviews
     @Composable
-    fun noTmdbIds() = JellyfinRoot(previewSignedInNoTmdb, Actions())
+    fun noTmdbIds() = EphyraRoot(previewSignedInNoTmdb, Actions())
 
     /** The same note with the Binge flag on, which names Binge. */
     @PreviewTest
-    @JellyfinScreenStatePreview
-    @JellyfinSpanishPreviews
+    @EphyraScreenStatePreview
+    @EphyraSpanishPreviews
     @Composable
     fun noTmdbIdsPromoted() =
         CompositionLocalProvider(LocalFlags provides Flags.of(SharedFlags.BingePromotion to true)) {
-            JellyfinRoot(previewSignedInNoTmdb, Actions())
+            EphyraRoot(previewSignedInNoTmdb, Actions())
         }
 
     /** The card before its figures arrive: a placeholder in each, and no Connected. */
     @PreviewTest
-    @JellyfinScreenStatePreview
+    @EphyraScreenStatePreview
     @Composable
-    fun serverCardLoading() = JellyfinRoot(previewSignedInCardLoading, Actions())
+    fun serverCardLoading() = EphyraRoot(previewSignedInCardLoading, Actions())
 
     /** An administrator's account, behind the avatar: the rows everyone else has inline on their home. */
     @PreviewTest
-    @JellyfinScreenStatePreview
-    @JellyfinFontScalePreviews
-    @JellyfinSpanishPreviews
+    @EphyraScreenStatePreview
+    @EphyraFontScalePreviews
+    @EphyraSpanishPreviews
     @Composable
     fun account() = AccountScreen(previewSignedInAdmin, Actions(), onBack = {})
 
     /** The This app page, behind the home's This app row: what the app reports, feedback, and About. */
     @PreviewTest
-    @JellyfinScreenStatePreview
-    @JellyfinFontScalePreviews
-    @JellyfinSpanishPreviews
+    @EphyraScreenStatePreview
+    @EphyraFontScalePreviews
+    @EphyraSpanishPreviews
     @Composable
     fun thisApp() = ThisAppScreen(Actions(), onBack = {})
 
     /** An administrator's This app page with the notifications switch off: only the switch. */
     @PreviewTest
-    @JellyfinScreenStatePreview
-    @JellyfinSpanishPreviews
+    @EphyraScreenStatePreview
+    @EphyraSpanishPreviews
     @Composable
     fun thisAppNotificationsOff() = ThisAppScreen(Actions(notifications = NotificationSettings()), onBack = {})
 
     /** With the switch on: the cadence, and the system warnings that apply, both here. */
     @PreviewTest
-    @JellyfinScreenStatePreview
-    @JellyfinFontScalePreviews
-    @JellyfinSpanishPreviews
+    @EphyraScreenStatePreview
+    @EphyraFontScalePreviews
+    @EphyraSpanishPreviews
     @Composable
     fun thisAppNotificationsOn() =
         ThisAppScreen(
@@ -441,43 +441,43 @@ class JellyfinScreenshotTest {
 
     /** On, with nothing in Android's way: the switch and the cadence alone. */
     @PreviewTest
-    @JellyfinScreenStatePreview
+    @EphyraScreenStatePreview
     @Composable
     fun thisAppNotificationsClear() = ThisAppScreen(Actions(notifications = NotificationSettings(enabled = true)), onBack = {})
 
     /** The Check every choices, drawn in place because a frame can't capture the sheet's own window. */
     @PreviewTest
-    @JellyfinScreenStatePreview
-    @JellyfinSpanishPreviews
+    @EphyraScreenStatePreview
+    @EphyraSpanishPreviews
     @Composable
     fun notificationsInterval() =
         Surface { IntervalChoices(NotificationSettings(enabled = true, intervalMinutes = 120), Actions(), close = {}) }
 
     /** The settings search before a query, with results (each with where it is) and with none. */
     @PreviewTest
-    @JellyfinScreenStatePreview
-    @JellyfinFontScalePreviews
-    @JellyfinSpanishPreviews
+    @EphyraScreenStatePreview
+    @EphyraFontScalePreviews
+    @EphyraSpanishPreviews
     @Composable
     fun searchPrompt() = SearchPage()
 
     @PreviewTest
-    @JellyfinScreenStatePreview
-    @JellyfinFontScalePreviews
-    @JellyfinSpanishPreviews
+    @EphyraScreenStatePreview
+    @EphyraFontScalePreviews
+    @EphyraSpanishPreviews
     @Composable
     fun searchResults() = SearchPage(initialQuery = "port")
 
     @PreviewTest
-    @JellyfinScreenStatePreview
+    @EphyraScreenStatePreview
     @Composable
     fun searchNoMatch() = SearchPage(initialQuery = "zzz")
 
     /** The search before a query, with what the user opened last and its Clear. */
     @PreviewTest
-    @JellyfinScreenStatePreview
-    @JellyfinFontScalePreviews
-    @JellyfinSpanishPreviews
+    @EphyraScreenStatePreview
+    @EphyraFontScalePreviews
+    @EphyraSpanishPreviews
     @Composable
     fun searchRecent() =
         SearchPage(
@@ -486,41 +486,41 @@ class JellyfinScreenshotTest {
 
     /** The This app page with the tip jar priced, so its row shows. */
     @PreviewTest
-    @JellyfinScreenStatePreview
-    @JellyfinFontScalePreviews
-    @JellyfinSpanishPreviews
+    @EphyraScreenStatePreview
+    @EphyraFontScalePreviews
+    @EphyraSpanishPreviews
     @Composable
     fun thisAppWithTipJar() = ThisAppScreen(Actions(), onBack = {}, tip = TipState.Ready(TIP_STEPS.associateWith { "£$it" }))
 
     /** The sign-out confirm's body: a screen frame can't capture the dialog's own window. */
     @PreviewTest
-    @JellyfinScreenStatePreview
-    @JellyfinFontScalePreviews
-    @JellyfinSpanishPreviews
+    @EphyraScreenStatePreview
+    @EphyraFontScalePreviews
+    @EphyraSpanishPreviews
     @Composable
     fun signOutConfirm() = Surface { SignOutConfirm(Actions(), inWindow = false) }
 
     /** The confirm for taking back the agreement to plain HTTP, whose server is named in its body. */
     @PreviewTest
-    @JellyfinScreenStatePreview
-    @JellyfinFontScalePreviews
-    @JellyfinSpanishPreviews
+    @EphyraScreenStatePreview
+    @EphyraFontScalePreviews
+    @EphyraSpanishPreviews
     @Composable
     fun takeBackConfirm() = Surface { TakeBackConfirm("media.example.com", Actions(), inWindow = false) }
 
     /** With the Binge flag on: the Library group shows what Binge can see. */
     @PreviewTest
-    @JellyfinScreenStatePreview
-    @JellyfinSpanishPreviews
+    @EphyraScreenStatePreview
+    @EphyraSpanishPreviews
     @Composable
     fun signedInPromoted() =
         CompositionLocalProvider(LocalFlags provides Flags.of(SharedFlags.BingePromotion to true)) {
-            JellyfinRoot(previewSignedIn, Actions())
+            EphyraRoot(previewSignedIn, Actions())
         }
 
     /** With the Binge flag on, signing out says what Binge stops doing. */
     @PreviewTest
-    @JellyfinScreenStatePreview
+    @EphyraScreenStatePreview
     @Composable
     fun signOutConfirmPromoted() =
         CompositionLocalProvider(LocalFlags provides Flags.of(SharedFlags.BingePromotion to true)) {
@@ -530,30 +530,30 @@ class JellyfinScreenshotTest {
     // Forgot password: each step of the reset.
 
     @PreviewTest
-    @JellyfinScreenStatePreview
-    @JellyfinSpanishPreviews
-    @JellyfinFontScalePreviews
+    @EphyraScreenStatePreview
+    @EphyraSpanishPreviews
+    @EphyraFontScalePreviews
     @Composable
     fun forgotContactAdmin() =
         Surface { ForgotPasswordOverlay(ForgotPasswordStep.Told(ForgotPasswordAction.ContactAdmin), null, inWindow = false) }
 
     @PreviewTest
-    @JellyfinScreenStatePreview
-    @JellyfinSpanishPreviews
+    @EphyraScreenStatePreview
+    @EphyraSpanishPreviews
     @Composable
     fun forgotInNetworkRequired() =
         Surface { ForgotPasswordOverlay(ForgotPasswordStep.Told(ForgotPasswordAction.InNetworkRequired), null, inWindow = false) }
 
     @PreviewTest
-    @JellyfinScreenStatePreview
-    @JellyfinSpanishPreviews
-    @JellyfinFontScalePreviews
+    @EphyraScreenStatePreview
+    @EphyraSpanishPreviews
+    @EphyraFontScalePreviews
     @Composable
     fun forgotPin() =
         Surface { ForgotPasswordOverlay(ForgotPasswordStep.EnterPin("/config/data/passwordreset.json"), null, inWindow = false) }
 
     @PreviewTest
-    @JellyfinScreenStatePreview
+    @EphyraScreenStatePreview
     @Composable
     fun forgotPinWrong() =
         Surface {
@@ -565,14 +565,14 @@ class JellyfinScreenshotTest {
         }
 
     @PreviewTest
-    @JellyfinScreenStatePreview
-    @JellyfinSpanishPreviews
+    @EphyraScreenStatePreview
+    @EphyraSpanishPreviews
     @Composable
     fun forgotFailed() = Surface { ForgotPasswordOverlay(ForgotPasswordStep.Failed, null, inWindow = false) }
 
     @PreviewTest
-    @JellyfinScreenStatePreview
-    @JellyfinSpanishPreviews
+    @EphyraScreenStatePreview
+    @EphyraSpanishPreviews
     @Composable
     fun forgotDone() = Surface { ForgotPasswordOverlay(ForgotPasswordStep.Done, null, inWindow = false) }
 }

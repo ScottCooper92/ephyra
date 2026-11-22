@@ -5,7 +5,7 @@ import com.binge.designsystem.testing.createTakeDownAndroidComposeRule
 import com.cooper.homelab.ephyra.server.LiveTvSummary
 import com.cooper.homelab.ephyra.server.TUNER_TYPE_HDHOMERUN
 import com.cooper.homelab.ephyra.server.TUNER_TYPE_M3U
-import com.cooper.homelab.ephyra.theme.JellyfinTheme
+import com.cooper.homelab.ephyra.theme.EphyraTheme
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertNull
 import org.junit.Rule
@@ -33,7 +33,7 @@ class LiveTvTunerSheetBackTest {
         saving: Boolean = false,
     ): List<TunerSheet?> {
         compose.setContent {
-            JellyfinTheme {
+            EphyraTheme {
                 TunerSheets(
                     LiveTvUiState.Ready(LiveTvSummary(), sheet = sheet, saving = saving),
                     LiveTvActions(onSheet = { shown += it }),

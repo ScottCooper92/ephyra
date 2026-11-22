@@ -27,6 +27,7 @@ import com.binge.designsystem.component.BingeSheetNav
 import com.binge.designsystem.component.ItemGroup
 import com.binge.designsystem.component.ListItem
 import com.binge.designsystem.component.TextEntrySurface
+import com.cooper.homelab.ephyra.R
 import com.binge.designsystem.R as DesR
 
 /**
@@ -122,7 +123,47 @@ internal fun ConsoleTextEntry(
 }
 
 /**
- * A form sheet built from [ConsoleTextField]s, for a form of more than one labelled field, which the design system's
+ * The sheet of a text setting, which saves as made: Done closes it at once and the page reports a failure on its status line,
+ * so the sheet itself has no spinner and no error of a server's. A value its own check refuses ([error]) keeps it open.
+ * Draw [TextSettingForm] inside it; a frame draws the form alone.
+ */
+@Composable
+internal fun TextSettingSheet(
+    onDismissRequest: () -> Unit,
+    content: @Composable () -> Unit,
+) = ConsoleSheet(onDismissRequest = onDismissRequest, content = content)
+
+/** The form of a text setting's sheet: one value under its title and [body], with Done and Cancel, as [ConsoleTextEntry] draws it. */
+@Composable
+internal fun TextSettingForm(
+    title: String,
+    body: String,
+    value: String,
+    onValueChange: (String) -> Unit,
+    onDone: () -> Unit,
+    onCancel: () -> Unit,
+    error: String? = null,
+    singleLine: Boolean = true,
+    minLines: Int = 1,
+    maxLines: Int = 1,
+    keyboardOptions: KeyboardOptions = KeyboardOptions.Default,
+) = ConsoleTextEntry(
+    title = title,
+    body = body,
+    value = value,
+    onValueChange = onValueChange,
+    submitLabel = stringResource(R.string.settings_done),
+    onSubmit = onDone,
+    onCancel = onCancel,
+    error = error,
+    singleLine = singleLine,
+    minLines = minLines,
+    maxLines = maxLines,
+    keyboardOptions = keyboardOptions,
+)
+
+/**
+ * A form sheet built from the design system's text fields, for a form of more than one labelled field, which the design system's
  * single-value text-entry surface cannot hold: it draws that surface's chrome (title, the page's [body], Cancel and the submit
  * button) around the console's own fields.
  */

@@ -1,13 +1,13 @@
 package com.cooper.homelab.ephyra.ui.client
 
 import com.cooper.homelab.core.foundation.ServerFailure
+import com.cooper.homelab.core.testing.DiscardLogger
 import com.cooper.homelab.ephyra.FakeJellyfin
 import com.cooper.homelab.ephyra.browse.ImageKind
 import com.cooper.homelab.ephyra.browse.LibraryKind
 import com.cooper.homelab.ephyra.client.libraries.LibrariesUiState
 import com.cooper.homelab.ephyra.client.libraries.LibraryTile
 import com.cooper.homelab.ephyra.server.Connection
-import com.cooper.homelab.ephyra.server.DiscardLogger
 import com.cooper.homelab.ephyra.server.JellyfinServerProfile
 import com.cooper.homelab.ephyra.session
 import com.cooper.homelab.ephyra.testSessionStore

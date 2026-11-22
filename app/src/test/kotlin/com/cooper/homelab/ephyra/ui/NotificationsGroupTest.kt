@@ -6,7 +6,7 @@ import androidx.compose.ui.test.onAllNodesWithText
 import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.performClick
 import com.binge.designsystem.testing.createTakeDownAndroidComposeRule
-import com.cooper.homelab.ephyra.theme.JellyfinTheme
+import com.cooper.homelab.ephyra.theme.EphyraTheme
 import org.junit.Assert.assertEquals
 import org.junit.Rule
 import org.junit.Test
@@ -23,7 +23,7 @@ class NotificationsGroupTest {
     private fun show(
         settings: NotificationSettings?,
         actions: Actions = Actions(),
-    ) = compose.setContent { JellyfinTheme { ThisAppScreen(actions.copy(notifications = settings), onBack = {}) } }
+    ) = compose.setContent { EphyraTheme { ThisAppScreen(actions.copy(notifications = settings), onBack = {}) } }
 
     @Test
     fun `a user who is not an administrator is shown no such group`() {
@@ -70,7 +70,7 @@ class NotificationsGroupTest {
     fun `a chosen interval is passed on`() {
         val chosen = mutableListOf<Int>()
         compose.setContent {
-            JellyfinTheme {
+            EphyraTheme {
                 IntervalChoices(NotificationSettings(enabled = true), Actions(onNotificationInterval = { chosen += it }), close = {})
             }
         }

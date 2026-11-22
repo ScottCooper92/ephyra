@@ -20,7 +20,7 @@ import com.cooper.homelab.ephyra.server.TICKS_PER_HOUR
 import com.cooper.homelab.ephyra.server.TICKS_PER_MINUTE
 import com.cooper.homelab.ephyra.server.TaskTrigger
 import com.cooper.homelab.ephyra.server.TriggerKind
-import com.cooper.homelab.ephyra.theme.JellyfinTheme
+import com.cooper.homelab.ephyra.theme.EphyraTheme
 import org.junit.Assert.assertEquals
 import org.junit.Rule
 import org.junit.Test
@@ -36,14 +36,14 @@ class AddTriggerFormTest {
 
     @Test
     fun `the Add button stays in view when the weekly form is taller than the room`() {
-        compose.setContent { JellyfinTheme { Box(Modifier.height(SHORT_WINDOW.dp)) { AddTriggerForm(TasksActions()) } } }
+        compose.setContent { EphyraTheme { Box(Modifier.height(SHORT_WINDOW.dp)) { AddTriggerForm(TasksActions()) } } }
         compose.onNodeWithText("Weekly").performClick()
         compose.onNodeWithText("Add").assertIsDisplayed()
     }
 
     private fun trigger(limitHours: Int?): TaskTrigger {
         val added = mutableListOf<TaskTrigger>()
-        compose.setContent { JellyfinTheme { AddTriggerForm(TasksActions(onAddTrigger = { added += it }), TriggerKind.Startup) } }
+        compose.setContent { EphyraTheme { AddTriggerForm(TasksActions(onAddTrigger = { added += it }), TriggerKind.Startup) } }
         compose.onNodeWithText("No limit").assertIsDisplayed()
         if (limitHours != null) {
             compose.onNode(SemanticsMatcher.keyIsDefined(SemanticsActions.SetProgress)).performSemanticsAction(
@@ -68,7 +68,7 @@ class AddTriggerFormTest {
     @Test
     fun `the daily trigger shows its time in the phone's clock format, and Add sends it`() {
         val added = mutableListOf<TaskTrigger>()
-        compose.setContent { JellyfinTheme { AddTriggerForm(TasksActions(onAddTrigger = { added += it }), is24Hour = true) } }
+        compose.setContent { EphyraTheme { AddTriggerForm(TasksActions(onAddTrigger = { added += it }), is24Hour = true) } }
         compose.onNodeWithTag(TRIGGER_TIME_TAG).assertIsDisplayed()
         compose.onNodeWithText("03:00").assertIsDisplayed()
         compose.onNodeWithText("Add").performClick()
@@ -77,7 +77,7 @@ class AddTriggerFormTest {
 
     @Test
     fun `a twelve hour phone reads the time with a period, and the row opens the picker`() {
-        compose.setContent { JellyfinTheme { AddTriggerForm(TasksActions(), is24Hour = false) } }
+        compose.setContent { EphyraTheme { AddTriggerForm(TasksActions(), is24Hour = false) } }
         compose.onNodeWithText("OK").assertDoesNotExist()
         compose.onNodeWithText("Time").performClick()
         compose.onNodeWithText("OK").assertIsDisplayed()
@@ -88,20 +88,20 @@ class AddTriggerFormTest {
     @Test
     @Config(fontScale = 2f)
     fun `the time row is in view at twice the font size`() {
-        compose.setContent { JellyfinTheme { AddTriggerForm(TasksActions(), TriggerKind.Weekly, is24Hour = true) } }
+        compose.setContent { EphyraTheme { AddTriggerForm(TasksActions(), TriggerKind.Weekly, is24Hour = true) } }
         compose.onNodeWithTag(TRIGGER_TIME_TAG).assertIsDisplayed()
     }
 
     @Test
     fun `the interval and startup kinds have no time row`() {
-        compose.setContent { JellyfinTheme { AddTriggerForm(TasksActions(), TriggerKind.Interval) } }
+        compose.setContent { EphyraTheme { AddTriggerForm(TasksActions(), TriggerKind.Interval) } }
         compose.onNodeWithTag(TRIGGER_TIME_TAG).assertDoesNotExist()
     }
 
     @Test
     fun `an interval slider draft becomes the same minutes in the added trigger`() {
         val added = mutableListOf<TaskTrigger>()
-        compose.setContent { JellyfinTheme { AddTriggerForm(TasksActions(onAddTrigger = { added += it }), TriggerKind.Interval) } }
+        compose.setContent { EphyraTheme { AddTriggerForm(TasksActions(onAddTrigger = { added += it }), TriggerKind.Interval) } }
         compose
             .onAllNodes(SemanticsMatcher.keyIsDefined(SemanticsActions.SetProgress))[0]
             .performSemanticsAction(SemanticsActions.SetProgress) { it(45f) }
@@ -115,7 +115,7 @@ class AddTriggerFormTest {
     fun `the last weekday can scroll into view and is the day added`() {
         val added = mutableListOf<TaskTrigger>()
         compose.setContent {
-            JellyfinTheme {
+            EphyraTheme {
                 AddTriggerForm(
                     TasksActions(onAddTrigger = { added += it }),
                     TriggerKind.Weekly,

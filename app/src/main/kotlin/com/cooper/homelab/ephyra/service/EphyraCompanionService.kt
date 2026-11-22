@@ -6,7 +6,7 @@ import com.binge.companion.sdk.BingeHosts
 import com.binge.companion.sdk.HostPolicy
 import com.binge.companion.sdk.IntegrationService
 import com.cooper.homelab.ephyra.BuildConfig
-import com.cooper.homelab.ephyra.JellyfinApp
+import com.cooper.homelab.ephyra.EphyraApp
 import com.cooper.homelab.ephyra.R
 import io.grpc.BindableService
 import io.grpc.Status
@@ -14,9 +14,9 @@ import io.grpc.binder.SecurityPolicy
 import java.time.Instant
 
 /** The exported Service Binge binds to: LIBRARY v1, admitted for Binge's certificate on release and its package names on debug. */
-class JellyfinCompanionService : IntegrationService() {
+class EphyraCompanionService : IntegrationService() {
     override fun services(): List<BindableService> {
-        val graph = (application as JellyfinApp).graph
+        val graph = (application as EphyraApp).graph
         val messages = AndroidUserMessages(this)
         return listOf(
             JellyfinLibraryService(

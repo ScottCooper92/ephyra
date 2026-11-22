@@ -27,6 +27,7 @@ import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.unit.dp
 import com.binge.designsystem.component.BingeLoadingIndicator
 import com.binge.designsystem.component.BingeOutlinedButton
+import com.binge.designsystem.component.BingeTextField
 import com.binge.designsystem.component.ItemGroup
 import com.binge.designsystem.component.ListItem
 import com.cooper.homelab.ephyra.R
@@ -120,19 +121,20 @@ private fun AccountStep(
         onCancel = actions.onClose,
         submitting = saving,
     ) {
-        ConsoleTextField(
+        BingeTextField(
             value = username,
             onValueChange = { username = it },
             label = stringResource(R.string.live_tv_sd_username),
             enabled = !saving,
             imeAction = ImeAction.Next,
         )
-        ConsoleTextField(
+        BingeTextField(
             value = password,
             onValueChange = { password = it },
             label = stringResource(R.string.live_tv_sd_password),
             secret = true,
             enabled = !saving,
+            imeAction = ImeAction.Done,
         )
     }
 }
@@ -169,11 +171,12 @@ private fun LocationStep(
                     ),
                 ),
         )
-        ConsoleTextField(
+        BingeTextField(
             value = step.postalCode,
             onValueChange = actions.onPostalCode,
             label = stringResource(R.string.live_tv_sd_postal_code),
             supporting = stringResource(R.string.live_tv_sd_postal_code_detail),
+            imeAction = ImeAction.Done,
         )
     }
 }

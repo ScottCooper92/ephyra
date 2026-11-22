@@ -8,7 +8,7 @@ import androidx.compose.ui.test.onNodeWithText
 import androidx.navigation3.runtime.NavBackStack
 import androidx.navigation3.runtime.NavKey
 import com.binge.designsystem.testing.createTakeDownAndroidComposeRule
-import com.cooper.homelab.ephyra.theme.JellyfinTheme
+import com.cooper.homelab.ephyra.theme.EphyraTheme
 import com.cooper.homelab.ephyra.ui.nav.EphyraNavHost
 import com.cooper.homelab.ephyra.ui.nav.HubRoute
 import com.cooper.homelab.ephyra.ui.nav.closeTop
@@ -35,7 +35,7 @@ class ConsoleListDetailBackTest {
         page: ConsolePage,
         content: @Composable (() -> Unit) -> Unit,
     ) = compose.setContent {
-        JellyfinTheme {
+        EphyraTheme {
             val stack = rememberConsoleBackStack { openFromHome(page) }
             current = stack
             EphyraNavHost(

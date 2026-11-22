@@ -1,10 +1,10 @@
 package com.cooper.homelab.ephyra.ui
 
+import com.cooper.homelab.core.testing.DiscardLogger
+import com.cooper.homelab.core.testing.PlainCipher
 import com.cooper.homelab.ephyra.FakeItem
 import com.cooper.homelab.ephyra.FakeJellyfin
-import com.cooper.homelab.ephyra.PlainCipher
 import com.cooper.homelab.ephyra.server.Connection
-import com.cooper.homelab.ephyra.server.DiscardLogger
 import com.cooper.homelab.ephyra.server.LibraryIndex
 import com.cooper.homelab.ephyra.server.TmdbCoverage
 import com.cooper.homelab.ephyra.session
@@ -49,9 +49,9 @@ class ServerCardTest {
         teardown.close(jellyfin)
     }
 
-    private fun viewModel(): JellyfinViewModel =
+    private fun viewModel(): EphyraViewModel =
         teardown.made(
-            JellyfinViewModel(
+            EphyraViewModel(
                 sessions,
                 connection,
                 LibraryIndex(),
@@ -61,14 +61,14 @@ class ServerCardTest {
             ),
         )
 
-    private fun JellyfinViewModel.signedIn(matches: (UiState.SignedIn) -> Boolean): UiState.SignedIn =
+    private fun EphyraViewModel.signedIn(matches: (UiState.SignedIn) -> Boolean): UiState.SignedIn =
         runBlocking { withTimeout(TIMEOUT_MILLIS) { state.first { it is UiState.SignedIn && matches(it) } as UiState.SignedIn } }
 
     /**
      * The card once every figure the viewer may read has come in. An administrator's flags come from a read of their own,
      * which may land after the totals, so a test that asserts them says what they should be in [flagsRead].
      */
-    private fun JellyfinViewModel.read(
+    private fun EphyraViewModel.read(
         administrator: Boolean,
         flagsRead: (ServerCardState) -> Boolean = { true },
     ) = signedIn { s ->
@@ -176,7 +176,7 @@ class ServerCardTest {
         assertEquals(0, jellyfin.hits("/Library/VirtualFolders"))
     }
 
-    private fun JellyfinViewModel.coverage(): TmdbCoverage = signedIn { it.card.tmdb != null }.card.tmdb!!
+    private fun EphyraViewModel.coverage(): TmdbCoverage = signedIn { it.card.tmdb != null }.card.tmdb!!
 
     @Test
     fun `the titles with no TMDB id are counted among the movies and series the user can see, and episodes are not`() {

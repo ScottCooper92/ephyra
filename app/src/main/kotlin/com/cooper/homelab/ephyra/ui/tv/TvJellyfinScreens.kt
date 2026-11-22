@@ -87,7 +87,7 @@ private const val STATUS_LINES = 2
  * arrives (servers found on the network) or a step's state changes (a code, an error).
  */
 @Composable
-fun TvJellyfinRoot(
+fun TvEphyraRoot(
     state: UiState,
     actions: Actions,
     modifier: Modifier = Modifier,

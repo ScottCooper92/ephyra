@@ -2,10 +2,10 @@ package com.cooper.homelab.ephyra.ui.console
 
 import androidx.compose.runtime.Composable
 import com.android.tools.screenshot.PreviewTest
-import com.cooper.homelab.ephyra.preview.JellyfinFontScalePreviews
-import com.cooper.homelab.ephyra.preview.JellyfinScreenStateLightPreview
-import com.cooper.homelab.ephyra.preview.JellyfinScreenStatePreview
-import com.cooper.homelab.ephyra.preview.JellyfinSpanishPreviews
+import com.cooper.homelab.ephyra.preview.EphyraFontScalePreviews
+import com.cooper.homelab.ephyra.preview.EphyraScreenStateLightPreview
+import com.cooper.homelab.ephyra.preview.EphyraScreenStatePreview
+import com.cooper.homelab.ephyra.preview.EphyraSpanishPreviews
 import com.cooper.homelab.ephyra.server.ActivityEntry
 import com.cooper.homelab.ephyra.server.Severity
 import java.time.ZoneOffset
@@ -63,14 +63,14 @@ private val previewReady = ActivityUiState.Ready(previewEntries, total = preview
 /** Activity: grouped by day across the matrix, then more to come, a failed next page, empty, and the read states. */
 class ActivityScreenshotTest {
     @PreviewTest
-    @JellyfinScreenStatePreview
-    @JellyfinFontScalePreviews
-    @JellyfinSpanishPreviews
+    @EphyraScreenStatePreview
+    @EphyraFontScalePreviews
+    @EphyraSpanishPreviews
     @Composable
     fun activity() = ActivityScreen(previewReady, ActivityActions(), now = NOW, zone = ZoneOffset.UTC)
 
     @PreviewTest
-    @JellyfinScreenStatePreview
+    @EphyraScreenStatePreview
     @Composable
     fun moreFailed() =
         ActivityScreen(
@@ -81,39 +81,39 @@ class ActivityScreenshotTest {
         )
 
     @PreviewTest
-    @JellyfinScreenStatePreview
-    @JellyfinScreenStateLightPreview
-    @JellyfinSpanishPreviews
+    @EphyraScreenStatePreview
+    @EphyraScreenStateLightPreview
+    @EphyraSpanishPreviews
     @Composable
     fun empty() = ActivityScreen(ActivityUiState.Ready(emptyList(), total = 0), ActivityActions(), now = NOW, zone = ZoneOffset.UTC)
 
     @PreviewTest
-    @JellyfinScreenStatePreview
+    @EphyraScreenStatePreview
     @Composable
     fun loading() = ActivityScreen(ActivityUiState.Loading, ActivityActions())
 
     @PreviewTest
-    @JellyfinScreenStatePreview
+    @EphyraScreenStatePreview
     @Composable
     fun failed() = ActivityScreen(ActivityUiState.Failed(ConsoleFailure.Refused), ActivityActions())
 
     /** One entry in full: when it happened to the second, its type, and both lines the server wrote. */
     @PreviewTest
-    @JellyfinScreenStatePreview
-    @JellyfinFontScalePreviews
-    @JellyfinSpanishPreviews
+    @EphyraScreenStatePreview
+    @EphyraFontScalePreviews
+    @EphyraSpanishPreviews
     @Composable
     fun detail() = ActivityDetailContent(previewDetailEntry, ZoneOffset.UTC) {}
 
     /** An entry with nothing but a name and a type, as most of the log is. */
     @PreviewTest
-    @JellyfinScreenStatePreview
+    @EphyraScreenStatePreview
     @Composable
     fun detailBare() = ActivityDetailContent(previewEntries[3], ZoneOffset.UTC) {}
 
     /** An entry about a user, for an administrator: the sheet offers Open user. */
     @PreviewTest
-    @JellyfinScreenStatePreview
+    @EphyraScreenStatePreview
     @Composable
     fun detailWithUser() = ActivityDetailContent(previewDetailEntry.copy(userId = "u7"), ZoneOffset.UTC, onOpenUser = {}) {}
 }

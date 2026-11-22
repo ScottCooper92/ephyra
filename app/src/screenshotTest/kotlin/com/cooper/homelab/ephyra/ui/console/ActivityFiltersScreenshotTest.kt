@@ -4,9 +4,9 @@ import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
 import com.android.tools.screenshot.PreviewTest
 import com.binge.designsystem.preview.PreviewSystemBarInsets
-import com.cooper.homelab.ephyra.preview.JellyfinFontScalePreviews
-import com.cooper.homelab.ephyra.preview.JellyfinScreenStatePreview
-import com.cooper.homelab.ephyra.preview.JellyfinSpanishPreviews
+import com.cooper.homelab.ephyra.preview.EphyraFontScalePreviews
+import com.cooper.homelab.ephyra.preview.EphyraScreenStatePreview
+import com.cooper.homelab.ephyra.preview.EphyraSpanishPreviews
 import com.cooper.homelab.ephyra.server.ActivityEntry
 import com.cooper.homelab.ephyra.server.ActivityFilter
 import com.cooper.homelab.ephyra.server.ActivityTimePreset
@@ -33,9 +33,9 @@ private val users = ActivityUsers.Ready(listOf("alice", "bob", "Claude", "sam"))
 /** The activity filters: the page with its chips and nothing matching, and each page of the sheet. */
 class ActivityFiltersScreenshotTest {
     @PreviewTest
-    @JellyfinScreenStatePreview
-    @JellyfinFontScalePreviews
-    @JellyfinSpanishPreviews
+    @EphyraScreenStatePreview
+    @EphyraFontScalePreviews
+    @EphyraSpanishPreviews
     @Composable
     fun chips() =
         ActivityScreen(
@@ -48,7 +48,7 @@ class ActivityFiltersScreenshotTest {
 
     /** With a status bar, as on a device: the chips sit below the bar, not under it. */
     @PreviewTest
-    @JellyfinScreenStatePreview
+    @EphyraScreenStatePreview
     @Composable
     fun chipsUnderSystemBars() =
         PreviewSystemBarInsets {
@@ -62,7 +62,7 @@ class ActivityFiltersScreenshotTest {
         }
 
     @PreviewTest
-    @JellyfinScreenStatePreview
+    @EphyraScreenStatePreview
     @Composable
     fun nothingMatches() =
         ActivityScreen(
@@ -74,16 +74,16 @@ class ActivityFiltersScreenshotTest {
         )
 
     @PreviewTest
-    @JellyfinScreenStatePreview
+    @EphyraScreenStatePreview
     @Composable
     fun filteredLoading() =
         ActivityScreen(ActivityUiState.Loading, ActivityActions(), now = NOW, filters = ActivityFilters(applied = applied, draft = applied))
 
     /** The search field above the list, with its text as a chip and the list narrowed. */
     @PreviewTest
-    @JellyfinScreenStatePreview
-    @JellyfinFontScalePreviews
-    @JellyfinSpanishPreviews
+    @EphyraScreenStatePreview
+    @EphyraFontScalePreviews
+    @EphyraSpanishPreviews
     @Composable
     fun search() =
         ActivityScreen(
@@ -100,7 +100,7 @@ class ActivityFiltersScreenshotTest {
         )
 
     @PreviewTest
-    @JellyfinScreenStatePreview
+    @EphyraScreenStatePreview
     @Composable
     fun searchNothingMatches() =
         ActivityScreen(
@@ -113,7 +113,7 @@ class ActivityFiltersScreenshotTest {
 
     /** The field stays while the narrowed list loads. */
     @PreviewTest
-    @JellyfinScreenStatePreview
+    @EphyraScreenStatePreview
     @Composable
     fun searchLoading() =
         ActivityScreen(
@@ -131,36 +131,36 @@ class ActivityFiltersScreenshotTest {
 
     /** No filter and no text, on a server that searches: the field above the whole log. */
     @PreviewTest
-    @JellyfinScreenStatePreview
+    @EphyraScreenStatePreview
     @Composable
     fun searchEmptyField() =
         ActivityScreen(ActivityUiState.Ready(listOf(entry, warning), 2), ActivityActions(), now = NOW, extendedFilters = true)
 
     @PreviewTest
-    @JellyfinScreenStatePreview
+    @EphyraScreenStatePreview
     @Composable
     fun noFilter() = ActivityScreen(ActivityUiState.Ready(listOf(entry, warning), 2), ActivityActions(), now = NOW)
 
     @PreviewTest
-    @JellyfinScreenStatePreview
-    @JellyfinFontScalePreviews
-    @JellyfinSpanishPreviews
+    @EphyraScreenStatePreview
+    @EphyraFontScalePreviews
+    @EphyraSpanishPreviews
     @Composable
     fun sheet() = Surface { MainPage(draft, extended = true, push = {}, actions = ActivityFilterActions()) }
 
     /** An older server: only the time and the system or user split. */
     @PreviewTest
-    @JellyfinScreenStatePreview
+    @EphyraScreenStatePreview
     @Composable
     fun sheetOlderServer() = Surface { MainPage(draft, extended = false, push = {}, actions = ActivityFilterActions()) }
 
     @PreviewTest
-    @JellyfinScreenStatePreview
+    @EphyraScreenStatePreview
     @Composable
     fun time() = Surface { TimePage(draft, extended = true, push = {}, pop = {}, actions = ActivityFilterActions()) }
 
     @PreviewTest
-    @JellyfinScreenStatePreview
+    @EphyraScreenStatePreview
     @Composable
     fun who() =
         Surface {
@@ -168,7 +168,7 @@ class ActivityFiltersScreenshotTest {
         }
 
     @PreviewTest
-    @JellyfinScreenStatePreview
+    @EphyraScreenStatePreview
     @Composable
     fun whoLoading() =
         Surface {
@@ -181,13 +181,13 @@ class ActivityFiltersScreenshotTest {
         }
 
     @PreviewTest
-    @JellyfinScreenStatePreview
+    @EphyraScreenStatePreview
     @Composable
     fun severity() = Surface { SeverityPage(draft, pop = {}, actions = ActivityFilterActions()) }
 
     @PreviewTest
-    @JellyfinScreenStatePreview
-    @JellyfinSpanishPreviews
+    @EphyraScreenStatePreview
+    @EphyraSpanishPreviews
     @Composable
     fun type() = Surface { TypePage(applied, pop = {}, actions = ActivityFilterActions()) }
 }

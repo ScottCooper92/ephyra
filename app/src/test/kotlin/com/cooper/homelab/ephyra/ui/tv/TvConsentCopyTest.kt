@@ -4,7 +4,7 @@ import androidx.activity.ComponentActivity
 import androidx.compose.ui.test.onNodeWithText
 import com.binge.designsystem.testing.createTakeDownAndroidComposeRule
 import com.cooper.homelab.ephyra.R
-import com.cooper.homelab.ephyra.theme.JellyfinTvTheme
+import com.cooper.homelab.ephyra.theme.EphyraTvTheme
 import org.junit.Assert.assertNotEquals
 import org.junit.Rule
 import org.junit.Test
@@ -43,7 +43,7 @@ class TvConsentCopyTest {
     }
 
     private fun assertLibraryWordsShown() {
-        compose.setContent { JellyfinTvTheme { TvConsentScreen(onChoice = {}) } }
+        compose.setContent { EphyraTvTheme { TvConsentScreen(onChoice = {}) } }
         shared.forEach { shown(it) }
         shown(R.string.tv_consent_reassurance)
         // The last point's title is the TV's own, worded for a press and not a tap.

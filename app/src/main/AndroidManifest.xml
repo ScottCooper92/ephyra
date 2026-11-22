@@ -34,7 +34,7 @@
     </queries>
 
     <application
-        android:name=".JellyfinApp"
+        android:name=".EphyraApp"
         android:allowBackup="false"
         android:dataExtractionRules="@xml/data_extraction_rules"
         android:banner="@drawable/tv_banner"
@@ -99,11 +99,11 @@
         </activity>
 
         <!--
-            The integration surface. exported="true": the caller policy in JellyfinCompanionService is
+            The integration surface. exported="true": the caller policy in EphyraCompanionService is
             what guards it. Binge reads the meta-data without binding.
         -->
         <service
-            android:name=".service.JellyfinCompanionService"
+            android:name=".service.EphyraCompanionService"
             android:exported="true">
             <intent-filter>
                 <action android:name="com.binge.companion.LIBRARY" />
@@ -129,7 +129,7 @@
                 android:value="1" />
         </service>
 
-        <!-- WorkManager's own initialiser is removed so it starts through JellyfinApp's configuration, whose worker factory builds the poll's worker. -->
+        <!-- WorkManager's own initialiser is removed so it starts through EphyraApp's configuration, whose worker factory builds the poll's worker. -->
         <provider
             android:name="androidx.startup.InitializationProvider"
             android:authorities="${applicationId}.androidx-startup"

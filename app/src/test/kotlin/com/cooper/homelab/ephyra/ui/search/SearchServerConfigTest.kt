@@ -1,9 +1,9 @@
 package com.cooper.homelab.ephyra.ui.search
 
 import androidx.lifecycle.ViewModel
+import com.cooper.homelab.core.testing.DiscardLogger
 import com.cooper.homelab.ephyra.FakeJellyfin
 import com.cooper.homelab.ephyra.server.Connection
-import com.cooper.homelab.ephyra.server.DiscardLogger
 import com.cooper.homelab.ephyra.server.ENCODING_AUDIO_VBR
 import com.cooper.homelab.ephyra.server.ENCODING_THROTTLING
 import com.cooper.homelab.ephyra.server.LIVE_TV_SAVE_NFO

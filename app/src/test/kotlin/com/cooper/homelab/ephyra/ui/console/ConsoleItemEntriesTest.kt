@@ -18,7 +18,7 @@ import com.binge.designsystem.LocalIsSinglePaneNav
 import com.binge.designsystem.LocalPaneDepth
 import com.binge.designsystem.paneShowsBack
 import com.binge.designsystem.testing.createTakeDownAndroidComposeRule
-import com.cooper.homelab.ephyra.theme.JellyfinTheme
+import com.cooper.homelab.ephyra.theme.EphyraTheme
 import com.cooper.homelab.ephyra.ui.nav.EphyraNavHost
 import com.cooper.homelab.ephyra.ui.nav.HubRoute
 import com.cooper.homelab.ephyra.ui.nav.closeTop
@@ -51,7 +51,7 @@ abstract class ItemEntriesBase {
 
     protected fun host(seed: NavBackStack<NavKey>.() -> Unit = { openFromHome(ConsolePage.Tasks) }) {
         compose.setContent {
-            JellyfinTheme {
+            EphyraTheme {
                 val stack = rememberConsoleBackStack(seed)
                 backStack = stack
                 EphyraNavHost(

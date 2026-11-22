@@ -8,7 +8,7 @@ import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.performClick
 import com.binge.designsystem.testing.createTakeDownAndroidComposeRule
 import com.cooper.homelab.ephyra.server.LIVE_TV_GUIDE_DAYS
-import com.cooper.homelab.ephyra.theme.JellyfinTheme
+import com.cooper.homelab.ephyra.theme.EphyraTheme
 import kotlinx.serialization.json.JsonElement
 import kotlinx.serialization.json.JsonNull
 import kotlinx.serialization.json.JsonPrimitive
@@ -29,7 +29,7 @@ class GuideDaysSliderTest {
 
     private fun show(current: String) {
         val actions = LiveTvRecordingActions(onSet = { key, value -> saved += key to value })
-        compose.setContent { JellyfinTheme { Surface { RecordingNumberForm(RecordingNumber.GuideDays, current, actions) } } }
+        compose.setContent { EphyraTheme { Surface { RecordingNumberForm(RecordingNumber.GuideDays, current, actions) } } }
     }
 
     private fun tap(description: String) = compose.onNodeWithContentDescription(description).performClick()

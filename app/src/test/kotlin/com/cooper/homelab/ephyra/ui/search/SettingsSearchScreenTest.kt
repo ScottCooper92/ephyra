@@ -18,7 +18,7 @@ import com.cooper.homelab.core.uiandroid.resolve
 import com.cooper.homelab.core.uiandroid.search.SettingsSearchScreen
 import com.cooper.homelab.ephyra.server.JellyfinAccount
 import com.cooper.homelab.ephyra.server.JellyfinServerProfile
-import com.cooper.homelab.ephyra.theme.JellyfinTheme
+import com.cooper.homelab.ephyra.theme.EphyraTheme
 import com.cooper.homelab.ephyra.ui.console.ConsolePage
 import kotlinx.serialization.json.Json
 import kotlinx.serialization.json.jsonObject
@@ -46,7 +46,7 @@ class SettingsSearchScreenTest {
         recent: (List<SettingEntry<SearchTarget>>) -> List<SettingEntry<SearchTarget>> = { emptyList() },
         onClearRecent: () -> Unit = {},
     ) = compose.setContent {
-        JellyfinTheme {
+        EphyraTheme {
             val entries = settingsIndex(LocalContext.current.resources)
             SettingsSearchScreen(
                 state = SettingsSearchState.Ready({ it.available(profile, account) }, recent(entries), Unit),

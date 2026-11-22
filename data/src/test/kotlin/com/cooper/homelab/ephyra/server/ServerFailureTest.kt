@@ -10,6 +10,10 @@ import org.junit.Test
 import java.io.IOException
 import java.net.SocketTimeoutException
 import java.net.UnknownServiceException
+import java.security.cert.CertificateException
+import javax.net.ssl.SSLException
+import javax.net.ssl.SSLHandshakeException
+import javax.net.ssl.SSLPeerUnverifiedException
 
 /** A call that got no answer is read by the shared library, so a signed-in call says what went wrong and not only "Unreachable". */
 class ServerFailureTest {
@@ -36,6 +40,20 @@ class ServerFailureTest {
     fun `a timeout and a plain connect failure are unreachable`() {
         assertEquals(ServerFailure.Unreachable(timedOut = true), failure(SocketTimeoutException("timeout")))
         assertEquals(ServerFailure.Unreachable(), failure(IOException("connection reset")))
+    }
+
+    @Test
+    fun `a certificate the device does not trust reads as unreachable and not as unknown`() {
+        assertEquals(ServerFailure.Unreachable(), failure(SSLPeerUnverifiedException("Hostname jf.lan not verified")))
+        assertEquals(
+            ServerFailure.Unreachable(),
+            failure(SSLHandshakeException("handshake failed").apply { initCause(CertificateException("path validation failed")) }),
+        )
+    }
+
+    @Test
+    fun `a tls failure that is not about the certificate keeps the shared reading`() {
+        assertEquals(ServerFailure.Unreachable(), failure(SSLException("connection closed by peer")))
     }
 
     @Test

@@ -11,7 +11,7 @@ import com.binge.designsystem.component.LocalTabReselectSignal
 import com.binge.designsystem.testing.createTakeDownAndroidComposeRule
 import com.cooper.homelab.ephyra.auth.JellyfinSession
 import com.cooper.homelab.ephyra.server.JellyfinAccount
-import com.cooper.homelab.ephyra.theme.JellyfinTheme
+import com.cooper.homelab.ephyra.theme.EphyraTheme
 import com.cooper.homelab.ephyra.ui.nav.EphyraTab
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.serialization.json.Json
@@ -43,9 +43,9 @@ class HomeScrollToTopOnReselectTest {
 
     private fun show(withSignal: Boolean = true) {
         compose.setContent {
-            JellyfinTheme {
+            EphyraTheme {
                 CompositionLocalProvider(LocalTabReselectSignal provides signal.takeIf { withSignal }) {
-                    JellyfinRoot(state, Actions())
+                    EphyraRoot(state, Actions())
                 }
             }
         }

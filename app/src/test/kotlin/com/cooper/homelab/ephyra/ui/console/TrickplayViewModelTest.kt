@@ -2,9 +2,9 @@ package com.cooper.homelab.ephyra.ui.console
 
 import androidx.lifecycle.ViewModel
 import com.binge.designsystem.SaveStatus
+import com.cooper.homelab.core.testing.DiscardLogger
 import com.cooper.homelab.ephyra.FakeJellyfin
 import com.cooper.homelab.ephyra.server.Connection
-import com.cooper.homelab.ephyra.server.DiscardLogger
 import com.cooper.homelab.ephyra.server.TrickplaySettings
 import com.cooper.homelab.ephyra.session
 import com.cooper.homelab.ephyra.testSessionStore
@@ -239,36 +239,32 @@ class TrickplayViewModelTest {
     }
 
     @Test
-    fun `a number sheet stays open while its save runs and closes when the server takes it`() {
+    fun `a number sheet closes at once and the page shows the saved number`() {
         val vm = made(TrickplayViewModel(connection))
         vm.ready()
         vm.edit(TrickplayField.JpegQuality)
         vm.save(TrickplayField.JpegQuality, "75")
-        assertTrue(vm.ready().submitting)
-        assertEquals(TrickplayField.JpegQuality, vm.ready().editing)
-        val closed = vm.ready { it.editing == null }
-        assertFalse(closed.submitting)
-        assertNull(closed.sheetFailed)
-        assertEquals(75, closed.settings.jpegQuality)
+        assertNull(vm.ready().editing)
+        assertEquals(75, vm.ready().settings.jpegQuality)
+        val saved = vm.ready { it.save.status == SaveStatus.Saved }
+        assertNull(saved.refused)
     }
 
     @Test
-    fun `a number the server refuses stays in its sheet with the reason, and the page doesn't repeat it`() {
+    fun `a number the server refuses is reported on the page, and the setting goes back`() {
         val vm = made(TrickplayViewModel(connection))
         vm.ready()
         jellyfin.status[CONFIGURATION] = 409
         vm.edit(TrickplayField.JpegQuality)
         vm.save(TrickplayField.JpegQuality, "75")
-        val failed = vm.ready { it.sheetFailed != null }
-        assertEquals(ConsoleFailure.Refused, failed.sheetFailed)
-        assertEquals(TrickplayField.JpegQuality, failed.editing)
-        assertFalse(failed.submitting)
-        assertNull(failed.refused)
+        assertNull(vm.ready().editing)
+        val failed = vm.ready { it.refused != null }
+        assertEquals(ConsoleFailure.Refused, failed.refused)
         assertEquals(90, failed.settings.jpegQuality)
     }
 
     @Test
-    fun `a number the server can't be reached for closes its sheet and waits unsent, with Retry on the page`() {
+    fun `a number the server can't be reached for waits unsent, with Retry on the page`() {
         val vm = made(TrickplayViewModel(connection))
         vm.ready()
         jellyfin.dropped += CONFIGURATION
@@ -276,28 +272,10 @@ class TrickplayViewModelTest {
         vm.save(TrickplayField.JpegQuality, "75")
         val waiting = vm.ready { it.save.failed && it.editing == null }
         assertNull(waiting.editing)
-        assertFalse(waiting.submitting)
-        assertNull(waiting.sheetFailed)
         assertEquals(75, waiting.settings.jpegQuality)
         jellyfin.dropped.clear()
         vm.retrySave()
         assertFalse(vm.ready { it.save.status == SaveStatus.Saved }.save.failed)
-    }
-
-    @Test
-    fun `a sheet dismissed before its save is refused reports the refusal on the page`() {
-        val vm = made(TrickplayViewModel(connection))
-        vm.ready()
-        val held = jellyfin.hold(CONFIGURATION, method = "POST")
-        vm.edit(TrickplayField.JpegQuality)
-        vm.save(TrickplayField.JpegQuality, "75")
-        idling { held.awaitArrival() }
-        // The sheet is closed while the call is still running, then the call is refused.
-        vm.edit(null)
-        held.refuse(409)
-        val failed = vm.ready { it.refused != null }
-        assertEquals(ConsoleFailure.Refused, failed.refused)
-        assertNull(failed.sheetFailed)
     }
 
     @Test
@@ -307,7 +285,6 @@ class TrickplayViewModelTest {
         vm.edit(TrickplayField.JpegQuality)
         vm.save(TrickplayField.JpegQuality, "90")
         assertNull(vm.ready().editing)
-        assertFalse(vm.ready().submitting)
         assertEquals(0, jellyfin.requests.count { it.method == "POST" && it.url.encodedPath == CONFIGURATION })
     }
 

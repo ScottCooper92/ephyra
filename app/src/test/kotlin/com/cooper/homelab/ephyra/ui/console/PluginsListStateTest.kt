@@ -21,7 +21,7 @@ import androidx.compose.ui.test.swipeRight
 import com.binge.designsystem.testing.createTakeDownAndroidComposeRule
 import com.cooper.homelab.ephyra.server.CatalogPackage
 import com.cooper.homelab.ephyra.server.PackageVersion
-import com.cooper.homelab.ephyra.theme.JellyfinTheme
+import com.cooper.homelab.ephyra.theme.EphyraTheme
 import org.junit.Assert.assertEquals
 import org.junit.Rule
 import org.junit.Test
@@ -47,7 +47,7 @@ class PluginsListStateTest {
 
     private fun show() =
         compose.setContent {
-            JellyfinTheme {
+            EphyraTheme {
                 PluginsScreen(
                     installed = PluginsUiState.Ready(emptyList()),
                     catalog = catalog,

@@ -2,10 +2,10 @@ package com.cooper.homelab.ephyra.ui.console
 
 import androidx.lifecycle.ViewModel
 import com.binge.designsystem.SaveStatus
+import com.cooper.homelab.core.testing.DiscardLogger
 import com.cooper.homelab.ephyra.FakeJellyfin
 import com.cooper.homelab.ephyra.server.Connection
 import com.cooper.homelab.ephyra.server.DISPLAY_FOLDER_VIEW
-import com.cooper.homelab.ephyra.server.DiscardLogger
 import com.cooper.homelab.ephyra.server.DisplayList
 import com.cooper.homelab.ephyra.server.ListEntry
 import com.cooper.homelab.ephyra.server.PATH_SUBSTITUTIONS

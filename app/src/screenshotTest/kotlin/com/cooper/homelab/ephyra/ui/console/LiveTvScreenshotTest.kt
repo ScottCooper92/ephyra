@@ -5,9 +5,9 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.res.stringResource
 import com.android.tools.screenshot.PreviewTest
 import com.cooper.homelab.ephyra.R
-import com.cooper.homelab.ephyra.preview.JellyfinFontScalePreviews
-import com.cooper.homelab.ephyra.preview.JellyfinScreenStatePreview
-import com.cooper.homelab.ephyra.preview.JellyfinSpanishPreviews
+import com.cooper.homelab.ephyra.preview.EphyraFontScalePreviews
+import com.cooper.homelab.ephyra.preview.EphyraScreenStatePreview
+import com.cooper.homelab.ephyra.preview.EphyraSpanishPreviews
 import com.cooper.homelab.ephyra.server.GuideProviderSummary
 import com.cooper.homelab.ephyra.server.LiveTvSummary
 import com.cooper.homelab.ephyra.server.SdCountry
@@ -40,49 +40,49 @@ private val withTasks = LiveTvActions(onOpenTasks = {})
 /** Live TV: the page across the matrix, then what is empty, and what a user who cannot open Scheduled tasks sees. */
 class LiveTvScreenshotTest {
     @PreviewTest
-    @JellyfinScreenStatePreview
-    @JellyfinFontScalePreviews
-    @JellyfinSpanishPreviews
+    @EphyraScreenStatePreview
+    @EphyraFontScalePreviews
+    @EphyraSpanishPreviews
     @Composable
     fun liveTv() = LiveTvScreen(LiveTvUiState.Ready(previewSummary), withTasks, now = NOW)
 
     @PreviewTest
-    @JellyfinScreenStatePreview
+    @EphyraScreenStatePreview
     @Composable
     fun empty() = LiveTvScreen(LiveTvUiState.Ready(LiveTvSummary()), withTasks, now = NOW)
 
     /** A user who manages Live TV but cannot open Scheduled tasks: no Refresh guide row, and no guide end where they cannot ask. */
     @PreviewTest
-    @JellyfinScreenStatePreview
+    @EphyraScreenStatePreview
     @Composable
     fun withoutTasks() = LiveTvScreen(LiveTvUiState.Ready(previewSummary.copy(guideEndMillis = null)), LiveTvActions(), now = NOW)
 
     /** An administrator who manages Live TV also sees the Recording row. */
     @PreviewTest
-    @JellyfinScreenStatePreview
+    @EphyraScreenStatePreview
     @Composable
     fun withRecording() =
         LiveTvScreen(LiveTvUiState.Ready(previewSummary), LiveTvActions(onOpenTasks = {}, onOpenRecording = {}), now = NOW)
 
     @PreviewTest
-    @JellyfinScreenStatePreview
+    @EphyraScreenStatePreview
     @Composable
     fun loading() = LiveTvScreen(LiveTvUiState.Loading, LiveTvActions(), now = NOW)
 
     @PreviewTest
-    @JellyfinScreenStatePreview
+    @EphyraScreenStatePreview
     @Composable
     fun failed() = LiveTvScreen(LiveTvUiState.Failed(ConsoleFailure.Unreachable), LiveTvActions(), now = NOW)
 
     @PreviewTest
-    @JellyfinScreenStatePreview
-    @JellyfinSpanishPreviews
+    @EphyraScreenStatePreview
+    @EphyraSpanishPreviews
     @Composable
     fun xmltvForm() = Surface { GuideFormContent(GuideForm(), false, LiveTvGuideActions()) }
 
     /** An existing XMLTV guide: its path filled, and Remove last. */
     @PreviewTest
-    @JellyfinScreenStatePreview
+    @EphyraScreenStatePreview
     @Composable
     fun xmltvEdit() =
         Surface {
@@ -91,25 +91,25 @@ class LiveTvScreenshotTest {
 
     /** A Schedules Direct account with its lineup: no field, a way to choose the lineup again, and the way to remove it. */
     @PreviewTest
-    @JellyfinScreenStatePreview
-    @JellyfinSpanishPreviews
+    @EphyraScreenStatePreview
+    @EphyraSpanishPreviews
     @Composable
     fun schedulesDirectForm() =
         Surface { GuideFormContent(GuideForm("g2", type = "SchedulesDirect", name = "alice"), false, LiveTvGuideActions()) }
 
     @PreviewTest
-    @JellyfinScreenStatePreview
-    @JellyfinSpanishPreviews
+    @EphyraScreenStatePreview
+    @EphyraSpanishPreviews
     @Composable
     fun addChoice() = Surface { TunerSheetContent(TunerSheet.Choose, false, LiveTvActions()) }
 
     @PreviewTest
-    @JellyfinScreenStatePreview
+    @EphyraScreenStatePreview
     @Composable
     fun discovering() = Surface { TunerSheetContent(TunerSheet.Discovering, false, LiveTvActions()) }
 
     @PreviewTest
-    @JellyfinScreenStatePreview
+    @EphyraScreenStatePreview
     @Composable
     fun found() =
         Surface {
@@ -126,19 +126,19 @@ class LiveTvScreenshotTest {
         }
 
     @PreviewTest
-    @JellyfinScreenStatePreview
+    @EphyraScreenStatePreview
     @Composable
     fun foundNone() = Surface { TunerSheetContent(TunerSheet.Found(emptyList()), false, LiveTvActions()) }
 
     @PreviewTest
-    @JellyfinScreenStatePreview
-    @JellyfinSpanishPreviews
+    @EphyraScreenStatePreview
+    @EphyraSpanishPreviews
     @Composable
     fun discoveryFailed() = Surface { TunerSheetContent(TunerSheet.Failed(ConsoleFailure.Unreachable), false, LiveTvActions()) }
 
     @PreviewTest
-    @JellyfinScreenStatePreview
-    @JellyfinSpanishPreviews
+    @EphyraScreenStatePreview
+    @EphyraSpanishPreviews
     @Composable
     fun hdHomeRunForm() =
         Surface {
@@ -150,18 +150,18 @@ class LiveTvScreenshotTest {
         }
 
     @PreviewTest
-    @JellyfinScreenStatePreview
+    @EphyraScreenStatePreview
     @Composable
     fun guideSaving() = Surface { GuideFormContent(GuideForm("g1", "/config/guide.xml"), true, LiveTvGuideActions()) }
 
     @PreviewTest
-    @JellyfinScreenStatePreview
+    @EphyraScreenStatePreview
     @Composable
     fun m3uForm() = Surface { TunerSheetContent(TunerSheet.Form(TunerDraft(TUNER_TYPE_M3U)), false, LiveTvActions()) }
 
     /** An existing tuner: its fields filled, and Remove last. */
     @PreviewTest
-    @JellyfinScreenStatePreview
+    @EphyraScreenStatePreview
     @Composable
     fun editForm() =
         Surface {
@@ -179,8 +179,8 @@ class LiveTvScreenshotTest {
 
     /** An HDHomeRun on a 10.10 server, which sent the fallback bitrate. */
     @PreviewTest
-    @JellyfinScreenStatePreview
-    @JellyfinSpanishPreviews
+    @EphyraScreenStatePreview
+    @EphyraSpanishPreviews
     @Composable
     fun fallbackBitrate() =
         Surface {
@@ -193,7 +193,7 @@ class LiveTvScreenshotTest {
 
     /** The fallback bitrate emptied: the field says so and Save does nothing. */
     @PreviewTest
-    @JellyfinScreenStatePreview
+    @EphyraScreenStatePreview
     @Composable
     fun fallbackBitrateInvalid() =
         Surface {
@@ -206,9 +206,9 @@ class LiveTvScreenshotTest {
 
     /** An M3U tuner on a 10.11 server, which sent every stream option: some on, some off. Just the group, so the whole of each explanation shows. */
     @PreviewTest
-    @JellyfinScreenStatePreview
-    @JellyfinFontScalePreviews
-    @JellyfinSpanishPreviews
+    @EphyraScreenStatePreview
+    @EphyraFontScalePreviews
+    @EphyraSpanishPreviews
     @Composable
     fun streamOptions() =
         Surface {
@@ -229,7 +229,7 @@ class LiveTvScreenshotTest {
         }
 
     @PreviewTest
-    @JellyfinScreenStatePreview
+    @EphyraScreenStatePreview
     @Composable
     fun guideRemoveConfirm() =
         ConsoleConfirm(
@@ -243,7 +243,7 @@ class LiveTvScreenshotTest {
         )
 
     @PreviewTest
-    @JellyfinScreenStatePreview
+    @EphyraScreenStatePreview
     @Composable
     fun saving() =
         Surface {
@@ -251,7 +251,7 @@ class LiveTvScreenshotTest {
         }
 
     @PreviewTest
-    @JellyfinScreenStatePreview
+    @EphyraScreenStatePreview
     @Composable
     fun removeConfirm() =
         ConsoleConfirm(
@@ -265,7 +265,7 @@ class LiveTvScreenshotTest {
         )
 
     @PreviewTest
-    @JellyfinScreenStatePreview
+    @EphyraScreenStatePreview
     @Composable
     fun guideNotSaved() =
         ConsoleMessage(
@@ -277,14 +277,14 @@ class LiveTvScreenshotTest {
 
     /** The Add guide data choice, offered where the user may read lineups. */
     @PreviewTest
-    @JellyfinScreenStatePreview
-    @JellyfinSpanishPreviews
+    @EphyraScreenStatePreview
+    @EphyraSpanishPreviews
     @Composable
     fun guideChoice() = Surface { ChooseGuideContent(LiveTvGuideActions()) }
 
     /** An account saved with no lineup: its row says so, and its form offers to finish the setup. */
     @PreviewTest
-    @JellyfinScreenStatePreview
+    @EphyraScreenStatePreview
     @Composable
     fun unfinishedAccount() =
         LiveTvScreen(
@@ -296,7 +296,7 @@ class LiveTvScreenshotTest {
         )
 
     @PreviewTest
-    @JellyfinScreenStatePreview
+    @EphyraScreenStatePreview
     @Composable
     fun unfinishedForm() =
         Surface {
@@ -309,7 +309,7 @@ class LiveTvScreenshotTest {
 
     /** A manager without Live TV access: the unfinished account can only be removed. */
     @PreviewTest
-    @JellyfinScreenStatePreview
+    @EphyraScreenStatePreview
     @Composable
     fun unfinishedFormWithoutLiveTvAccess() =
         Surface {
@@ -322,18 +322,18 @@ class LiveTvScreenshotTest {
         }
 
     @PreviewTest
-    @JellyfinScreenStatePreview
-    @JellyfinSpanishPreviews
+    @EphyraScreenStatePreview
+    @EphyraSpanishPreviews
     @Composable
     fun sdAccount() = Surface { SdStepContent(SdStep.Account, false, SdActions()) }
 
     @PreviewTest
-    @JellyfinScreenStatePreview
+    @EphyraScreenStatePreview
     @Composable
     fun sdAccountSaving() = Surface { SdStepContent(SdStep.Account, true, SdActions()) }
 
     @PreviewTest
-    @JellyfinScreenStatePreview
+    @EphyraScreenStatePreview
     @Composable
     fun sdLocation() =
         Surface {
@@ -346,15 +346,15 @@ class LiveTvScreenshotTest {
 
     /** Changing a saved account's login: the username filled in, a password to type. */
     @PreviewTest
-    @JellyfinScreenStatePreview
-    @JellyfinSpanishPreviews
+    @EphyraScreenStatePreview
+    @EphyraSpanishPreviews
     @Composable
     fun sdLogin() = Surface { SdStepContent(SdStep.Credentials("g3", "carol"), false, SdActions()) }
 
     /** An account that has a lineup, choosing another: the step says the current one stays. */
     @PreviewTest
-    @JellyfinScreenStatePreview
-    @JellyfinSpanishPreviews
+    @EphyraScreenStatePreview
+    @EphyraSpanishPreviews
     @Composable
     fun sdLocationChanging() =
         Surface {
@@ -367,17 +367,17 @@ class LiveTvScreenshotTest {
 
     /** No postal code yet: Find lineups is disabled. */
     @PreviewTest
-    @JellyfinScreenStatePreview
+    @EphyraScreenStatePreview
     @Composable
     fun sdLocationEmpty() = Surface { SdStepContent(SdStep.Location("g3", sdCountries, country = sdCountries.first()), false, SdActions()) }
 
     @PreviewTest
-    @JellyfinScreenStatePreview
+    @EphyraScreenStatePreview
     @Composable
     fun sdLocationLoading() = Surface { SdStepContent(SdStep.Location("g3", countries = null), false, SdActions()) }
 
     @PreviewTest
-    @JellyfinScreenStatePreview
+    @EphyraScreenStatePreview
     @Composable
     fun sdCountryList() =
         Surface {
@@ -385,8 +385,8 @@ class LiveTvScreenshotTest {
         }
 
     @PreviewTest
-    @JellyfinScreenStatePreview
-    @JellyfinSpanishPreviews
+    @EphyraScreenStatePreview
+    @EphyraSpanishPreviews
     @Composable
     fun sdLineups() =
         Surface {
@@ -404,7 +404,7 @@ class LiveTvScreenshotTest {
         }
 
     @PreviewTest
-    @JellyfinScreenStatePreview
+    @EphyraScreenStatePreview
     @Composable
     fun sdLineupsLoading() =
         Surface {
@@ -413,7 +413,7 @@ class LiveTvScreenshotTest {
 
     /** A lineup being added: the list is replaced by the loading indicator until the server answers. */
     @PreviewTest
-    @JellyfinScreenStatePreview
+    @EphyraScreenStatePreview
     @Composable
     fun sdLineupSaving() =
         Surface {
@@ -432,7 +432,7 @@ class LiveTvScreenshotTest {
 
     /** No lineups, which the server also answers for a login that failed. */
     @PreviewTest
-    @JellyfinScreenStatePreview
+    @EphyraScreenStatePreview
     @Composable
     fun sdNoLineups() =
         Surface {
@@ -440,7 +440,7 @@ class LiveTvScreenshotTest {
         }
 
     @PreviewTest
-    @JellyfinScreenStatePreview
+    @EphyraScreenStatePreview
     @Composable
     fun sdLineupNotAdded() =
         ConsoleMessage(
@@ -452,8 +452,8 @@ class LiveTvScreenshotTest {
 
     /** The account was removed while its sheet was open. */
     @PreviewTest
-    @JellyfinScreenStatePreview
-    @JellyfinSpanishPreviews
+    @EphyraScreenStatePreview
+    @EphyraSpanishPreviews
     @Composable
     fun sdAccountGone() =
         ConsoleMessage(
@@ -464,7 +464,7 @@ class LiveTvScreenshotTest {
         )
 
     @PreviewTest
-    @JellyfinScreenStatePreview
+    @EphyraScreenStatePreview
     @Composable
     fun notAdded() =
         ConsoleMessage(

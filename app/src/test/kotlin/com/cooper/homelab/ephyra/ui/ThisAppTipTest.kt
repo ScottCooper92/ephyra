@@ -9,7 +9,7 @@ import com.binge.designsystem.testing.createTakeDownAndroidComposeRule
 import com.cooper.homelab.core.presentation.tip.TipEvent
 import com.cooper.homelab.core.presentation.tip.TipState
 import com.cooper.homelab.core.tip.TIP_STEPS
-import com.cooper.homelab.ephyra.theme.JellyfinTheme
+import com.cooper.homelab.ephyra.theme.EphyraTheme
 import kotlinx.coroutines.flow.flowOf
 import org.junit.Assert.assertEquals
 import org.junit.Rule
@@ -26,14 +26,14 @@ class ThisAppTipTest {
 
     @Test
     fun `there is no tip row until every step is priced`() {
-        compose.setContent { JellyfinTheme { ThisAppScreen(Actions(), onBack = {}) } }
+        compose.setContent { EphyraTheme { ThisAppScreen(Actions(), onBack = {}) } }
         compose.onAllNodesWithText("Buy me a coffee").assertCountEquals(0)
     }
 
     @Test
     fun `a priced jar opens its sheet at 5 and gives the step it lands on`() {
         val given = mutableListOf<Int>()
-        compose.setContent { JellyfinTheme { ThisAppScreen(Actions(), onBack = {}, tip = priced, onGiveTip = { given += it }) } }
+        compose.setContent { EphyraTheme { ThisAppScreen(Actions(), onBack = {}, tip = priced, onGiveTip = { given += it }) } }
         compose.onNodeWithText("Buy me a coffee").performClick()
         compose.onNodeWithText("Give £5").performClick()
         assertEquals(listOf(5), given)
@@ -42,7 +42,7 @@ class ThisAppTipTest {
     @Test
     fun `a failed tip explains itself in a dialog`() {
         compose.setContent {
-            JellyfinTheme { ThisAppScreen(Actions(), onBack = {}, tip = priced, tipEvents = flowOf(TipEvent.Failed)) }
+            EphyraTheme { ThisAppScreen(Actions(), onBack = {}, tip = priced, tipEvents = flowOf(TipEvent.Failed)) }
         }
         compose.onNodeWithText("The tip didn't go through").assertExists()
     }

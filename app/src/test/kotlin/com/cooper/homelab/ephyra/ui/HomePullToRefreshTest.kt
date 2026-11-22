@@ -9,7 +9,7 @@ import androidx.compose.ui.test.swipe
 import com.binge.designsystem.testing.createTakeDownAndroidComposeRule
 import com.cooper.homelab.ephyra.auth.JellyfinSession
 import com.cooper.homelab.ephyra.server.JellyfinAccount
-import com.cooper.homelab.ephyra.theme.JellyfinTheme
+import com.cooper.homelab.ephyra.theme.EphyraTheme
 import kotlinx.serialization.json.Json
 import kotlinx.serialization.json.jsonObject
 import org.junit.Assert.assertEquals
@@ -40,7 +40,7 @@ class HomePullToRefreshTest {
     @Test
     fun `pulling the home down asks for a refresh once`() {
         var refreshed = 0
-        compose.setContent { JellyfinTheme { JellyfinRoot(state, Actions(onRefresh = { refreshed++ })) } }
+        compose.setContent { EphyraTheme { EphyraRoot(state, Actions(onRefresh = { refreshed++ })) } }
         compose.waitForIdle()
         assertEquals(0, refreshed)
         compose.onAllNodes(hasScrollAction()).onFirst().performTouchInput {

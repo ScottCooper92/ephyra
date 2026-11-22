@@ -3,11 +3,11 @@ package com.cooper.homelab.ephyra.ui.console
 import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
 import com.android.tools.screenshot.PreviewTest
-import com.cooper.homelab.ephyra.preview.JellyfinFontScalePreviews
-import com.cooper.homelab.ephyra.preview.JellyfinScreenStatePreview
-import com.cooper.homelab.ephyra.preview.JellyfinSpanishPreviews
-import com.cooper.homelab.ephyra.preview.JellyfinWidePreview
-import com.cooper.homelab.ephyra.preview.JellyfinWideSpanishPreview
+import com.cooper.homelab.ephyra.preview.EphyraFontScalePreviews
+import com.cooper.homelab.ephyra.preview.EphyraScreenStatePreview
+import com.cooper.homelab.ephyra.preview.EphyraSpanishPreviews
+import com.cooper.homelab.ephyra.preview.EphyraWidePreview
+import com.cooper.homelab.ephyra.preview.EphyraWideSpanishPreview
 import com.cooper.homelab.ephyra.server.CatalogPackage
 import com.cooper.homelab.ephyra.server.PackageVersion
 import com.cooper.homelab.ephyra.server.PluginRepository
@@ -115,74 +115,74 @@ private fun Plugins(
 /** The plugins page: the installed list across the matrix, then a plugin's page, the catalog, the repositories and each sheet and confirm. */
 class PluginsScreenshotTest {
     @PreviewTest
-    @JellyfinScreenStatePreview
-    @JellyfinFontScalePreviews
-    @JellyfinSpanishPreviews
+    @EphyraScreenStatePreview
+    @EphyraFontScalePreviews
+    @EphyraSpanishPreviews
     @Composable
     fun installed() = Plugins()
 
     /** A pull in progress: the list stays, with the pull spinner over it. */
     @PreviewTest
-    @JellyfinScreenStatePreview
-    @JellyfinSpanishPreviews
+    @EphyraScreenStatePreview
+    @EphyraSpanishPreviews
     @Composable
     fun installedRefreshing() = Plugins(installed = PluginsUiState.Ready(installedPlugins, refreshing = true))
 
     @PreviewTest
-    @JellyfinScreenStatePreview
+    @EphyraScreenStatePreview
     @Composable
     fun installedQuiet() = Plugins(installed = PluginsUiState.Ready(installedPlugins.filter { it.status != PluginStatus.Restart }))
 
     @PreviewTest
-    @JellyfinScreenStatePreview
-    @JellyfinSpanishPreviews
+    @EphyraScreenStatePreview
+    @EphyraSpanishPreviews
     @Composable
     fun plugin() = PluginScreen(PluginsUiState.Ready(installedPlugins), "a", PluginsActions(), onBack = {})
 
     @PreviewTest
-    @JellyfinScreenStatePreview
+    @EphyraScreenStatePreview
     @Composable
     fun pluginCannotRun() = PluginScreen(PluginsUiState.Ready(installedPlugins), "d", PluginsActions(), onBack = {})
 
     @PreviewTest
-    @JellyfinScreenStatePreview
-    @JellyfinSpanishPreviews
+    @EphyraScreenStatePreview
+    @EphyraSpanishPreviews
     @Composable
     fun uninstalling() = Surface { UninstallDialog(installedPlugins.first(), PluginsActions(), inWindow = false) }
 
     @PreviewTest
-    @JellyfinScreenStatePreview
+    @EphyraScreenStatePreview
     @Composable
     fun installedEmpty() = Plugins(installed = PluginsUiState.Ready(emptyList()))
 
     @PreviewTest
-    @JellyfinScreenStatePreview
+    @EphyraScreenStatePreview
     @Composable
     fun installedFailed() = Plugins(installed = PluginsUiState.Failed(ConsoleFailure.Unreachable))
 
     @PreviewTest
-    @JellyfinScreenStatePreview
+    @EphyraScreenStatePreview
     @Composable
     fun loading() = Plugins(installed = PluginsUiState.Loading)
 
     @PreviewTest
-    @JellyfinScreenStatePreview
-    @JellyfinSpanishPreviews
+    @EphyraScreenStatePreview
+    @EphyraSpanishPreviews
     @Composable
     fun catalog() = CatalogTabPreview(CatalogUiState.Ready(catalogPackages, installed = setOf("AniDB"), server = server))
 
     @PreviewTest
-    @JellyfinScreenStatePreview
-    @JellyfinSpanishPreviews
-    @JellyfinFontScalePreviews
+    @EphyraScreenStatePreview
+    @EphyraSpanishPreviews
+    @EphyraFontScalePreviews
     @Composable
     fun catalogPackage() = Package("Playback Reporting", CatalogUiState.Ready(catalogPackages, server = server))
 
     /** A package with several versions: the installed one marked, one built for a newer server shown but off. */
     @PreviewTest
-    @JellyfinScreenStatePreview
-    @JellyfinSpanishPreviews
-    @JellyfinFontScalePreviews
+    @EphyraScreenStatePreview
+    @EphyraSpanishPreviews
+    @EphyraFontScalePreviews
     @Composable
     fun catalogVersions() =
         Package(
@@ -199,8 +199,8 @@ class PluginsScreenshotTest {
 
     /** One version's sheet: its changelog and Install. */
     @PreviewTest
-    @JellyfinScreenStatePreview
-    @JellyfinSpanishPreviews
+    @EphyraScreenStatePreview
+    @EphyraSpanishPreviews
     @Composable
     fun versionSheet() = Surface { VersionContent(history, history.versions[1], canInstall = true) {} }
 
@@ -209,24 +209,24 @@ class PluginsScreenshotTest {
      * renderer has no loader, so nothing is fetched.
      */
     @PreviewTest
-    @JellyfinScreenStatePreview
-    @JellyfinSpanishPreviews
-    @JellyfinFontScalePreviews
+    @EphyraScreenStatePreview
+    @EphyraSpanishPreviews
+    @EphyraFontScalePreviews
     @Composable
     fun versionRichChangelog() =
         Surface { VersionContent(history, history.versions[0].copy(changelog = richChangelog), canInstall = true) {} }
 
     /** The confirm before an older version goes over a newer one. */
     @PreviewTest
-    @JellyfinScreenStatePreview
-    @JellyfinSpanishPreviews
+    @EphyraScreenStatePreview
+    @EphyraSpanishPreviews
     @Composable
     fun versionOlder() = Surface { OlderVersionConfirm(history, history.versions[2], "13.0.0.0", {}, {}, inWindow = false) }
 
     @PreviewTest
-    @JellyfinScreenStatePreview
-    @JellyfinSpanishPreviews
-    @JellyfinFontScalePreviews
+    @EphyraScreenStatePreview
+    @EphyraSpanishPreviews
+    @EphyraFontScalePreviews
     @Composable
     fun catalogInstalling() =
         Package(
@@ -239,9 +239,9 @@ class PluginsScreenshotTest {
         )
 
     @PreviewTest
-    @JellyfinScreenStatePreview
-    @JellyfinSpanishPreviews
-    @JellyfinFontScalePreviews
+    @EphyraScreenStatePreview
+    @EphyraSpanishPreviews
+    @EphyraFontScalePreviews
     @Composable
     fun catalogDone() =
         Package(
@@ -255,47 +255,47 @@ class PluginsScreenshotTest {
         )
 
     @PreviewTest
-    @JellyfinScreenStatePreview
+    @EphyraScreenStatePreview
     @Composable
     fun catalogNoVersion() = Package("Future Plugin", CatalogUiState.Ready(catalogPackages, server = server))
 
     @PreviewTest
-    @JellyfinScreenStatePreview
+    @EphyraScreenStatePreview
     @Composable
     fun catalogEmpty() = CatalogTabPreview(CatalogUiState.Ready(emptyList(), server = server))
 
     @PreviewTest
-    @JellyfinScreenStatePreview
-    @JellyfinSpanishPreviews
+    @EphyraScreenStatePreview
+    @EphyraSpanishPreviews
     @Composable
     fun repositories() = RepositoriesTabPreview(RepositoriesUiState.Ready(repositories))
 
     /** A pull in progress: the list stays, with the pull spinner over it. */
     @PreviewTest
-    @JellyfinScreenStatePreview
-    @JellyfinSpanishPreviews
+    @EphyraScreenStatePreview
+    @EphyraSpanishPreviews
     @Composable
     fun repositoriesRefreshing() = RepositoriesTabPreview(RepositoriesUiState.Ready(repositories, refreshing = true))
 
     @PreviewTest
-    @JellyfinScreenStatePreview
+    @EphyraScreenStatePreview
     @Composable
     fun repositoriesEmpty() = RepositoriesTabPreview(RepositoriesUiState.Ready(emptyList()))
 
     @PreviewTest
-    @JellyfinScreenStatePreview
-    @JellyfinSpanishPreviews
+    @EphyraScreenStatePreview
+    @EphyraSpanishPreviews
     @Composable
     fun addRepositoryName() = Surface { AddRepositoryForm(saving = false, actions = RepositoriesActions()) }
 
     @PreviewTest
-    @JellyfinScreenStatePreview
-    @JellyfinSpanishPreviews
+    @EphyraScreenStatePreview
+    @EphyraSpanishPreviews
     @Composable
     fun addRepositoryAddress() = Surface { AddRepositoryForm(saving = false, actions = RepositoriesActions(), startStep = 1) }
 
     @PreviewTest
-    @JellyfinScreenStatePreview
+    @EphyraScreenStatePreview
     @Composable
     fun removingRepository() = Surface { RemoveRepositoryDialog(repositories.first(), RepositoriesActions(), inWindow = false) }
 }
@@ -334,8 +334,8 @@ private fun TabOpened(
 /** The plugins page on a landscape tablet, where a plugin or a package opens in a third pane: the invitation to pick one while none is. */
 class PluginsPaneScreenshotTest {
     @PreviewTest
-    @JellyfinWidePreview
-    @JellyfinWideSpanishPreview
+    @EphyraWidePreview
+    @EphyraWideSpanishPreview
     @Composable
     fun placeholder() = Surface { PluginPlaceholder() }
 }

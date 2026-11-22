@@ -191,6 +191,7 @@
     <string name="playback_quality_mobile">Calidad máxima con datos móviles</string>
     <string name="playback_quality_auto">Automática</string>
     <string name="settings_not_saved">No se ha guardado. %1$s</string>
+    <string name="settings_done">Hecho</string>
     <string name="subtitle_mode_default">Según el archivo</string>
     <string name="subtitle_mode_default_detail">Los subtítulos que el archivo marca como predeterminados o forzados</string>
     <string name="subtitle_mode_smart">Inteligente</string>
@@ -219,9 +220,9 @@
     <string name="password_body">Al cambiarla se cierra tu sesión de Jellyfin en tus otros dispositivos, que te pedirán la nueva. Esta app sigue con la sesión iniciada.</string>
     <string name="password_current">Contraseña actual</string>
     <string name="password_new">Contraseña nueva</string>
-    <string name="password_confirm">Repite la contraseña nueva</string>
+    <string name="password_confirm">Confirma la contraseña</string>
     <string name="password_action">Cambiar contraseña</string>
-    <string name="password_changed">Cambiada. Tus otros dispositivos te pedirán la contraseña nueva.</string>
+    <string name="password_changed">Contraseña cambiada.</string>
     <string name="password_wrong">Esa no es tu contraseña actual.</string>
     <string name="password_mismatch">Las contraseñas nuevas no coinciden.</string>
     <string name="now_playing_title">Reproduciendo ahora</string>
@@ -501,7 +502,6 @@
     <string name="logs_retention_unsent">Aún no guardado. Toca para reintentar.</string>
     <string name="logs_retention_body">Cuánto tiempo conservar los archivos de registro que no son los registros diarios del servidor (los que se llaman log_…), como los de transcodificación. La tarea «Limpiar archivos de registro» del servidor elimina los más antiguos. Los registros diarios siguen los ajustes de registro del servidor y esto no los elimina.</string>
     <string name="logs_retention_invalid">Introduce un número entero de días de %1$d a %2$d.</string>
-    <string name="logs_retention_save">Guardar</string>
     <string name="console_logs_detail">Los archivos de registro del servidor</string>
     <string name="logs_select_title">Ningún registro seleccionado</string>
     <string name="logs_select">Selecciona un registro para leerlo.</string>
@@ -718,7 +718,6 @@
     <string name="server_settings_splash_no_preview">No hay nada que mostrar. El servidor no sirve una imagen de inicio mientras la pantalla de inicio está desactivada, ni antes de haber creado una.</string>
     <string name="server_settings_branding_reset_note">Al guardar aquí se restablece una imagen de inicio personalizada puesta en otra aplicación.</string>
     <string name="server_settings_splash_not_changed">No se cambió la imagen de inicio. %1$s</string>
-    <string name="server_settings_save">Guardar</string>
     <string name="server_shutdown">Apagar servidor</string>
     <string name="server_shutdown_title">¿Apagar %1$s?</string>
     <string name="server_shutdown_body">Todos los que lo usan se desconectan, también esta app. Si no vuelve solo, alguien tendrá que iniciarlo donde se ejecuta.</string>
@@ -1035,7 +1034,6 @@
     <string name="trickplay_qscale">Escala de calidad</string>
     <string name="trickplay_qscale_body">La escala de calidad de ffmpeg, de 2 a 31. Más bajo es mejor, y más grande.</string>
     <string name="trickplay_number_invalid">Escribe un número entero de %1$d a %2$d.</string>
-    <string name="trickplay_save">Guardar</string>
     <string name="tasks_triggers_empty_title">Sin activadores</string>
     <string name="plugins_title">Plugins</string>
     <string name="console_plugins_detail">Instalados, el catálogo y los repositorios</string>
@@ -1168,7 +1166,6 @@
         <item quantity="other">%1$d aplicaciones</item>
     </plurals>
     <string name="advanced_number_invalid">Introduce un número entero de %1$d a %2$d.</string>
-    <string name="advanced_save">Guardar</string>
     <string name="network_title">Red</string>
     <string name="console_network_detail">Puertos, HTTPS, direcciones y acceso</string>
     <string name="network_body">Cómo se accede al servidor. La mayoría decide quién puede conectarse, también esta app. Cámbialas con cuidado: un valor erróneo puede dejar a todas las apps sin conexión hasta que lo corrijas en el propio servidor.</string>

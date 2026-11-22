@@ -9,7 +9,7 @@ import com.cooper.homelab.core.diagnostics.Redactor
 import com.cooper.homelab.core.diagnostics.RingLog
 import com.cooper.homelab.core.foundation.Clock
 import com.cooper.homelab.core.presentation.diagnostics.DiagnosticsState
-import com.cooper.homelab.ephyra.theme.JellyfinTheme
+import com.cooper.homelab.ephyra.theme.EphyraTheme
 import com.cooper.homelab.ephyra.ui.Actions
 import com.cooper.homelab.ephyra.ui.ThisAppScreen
 import kotlinx.coroutines.Dispatchers
@@ -43,7 +43,7 @@ class DiagnosticsRouteTest {
     @Test
     fun `the Diagnostics row in This app opens the Diagnostics page`() {
         val opened = mutableListOf<ConsolePage>()
-        compose.setContent { JellyfinTheme { ThisAppScreen(Actions(onOpenPage = { opened += it }), onBack = {}) } }
+        compose.setContent { EphyraTheme { ThisAppScreen(Actions(onOpenPage = { opened += it }), onBack = {}) } }
         compose.onNodeWithText("Diagnostics").performScrollTo().performClick()
         assertEquals(listOf(ConsolePage.Diagnostics), opened)
     }

@@ -2,9 +2,9 @@ package com.cooper.homelab.ephyra.ui.console
 
 import androidx.compose.runtime.Composable
 import com.android.tools.screenshot.PreviewTest
-import com.cooper.homelab.ephyra.preview.JellyfinFontScalePreviews
-import com.cooper.homelab.ephyra.preview.JellyfinScreenStatePreview
-import com.cooper.homelab.ephyra.preview.JellyfinSpanishPreviews
+import com.cooper.homelab.ephyra.preview.EphyraFontScalePreviews
+import com.cooper.homelab.ephyra.preview.EphyraScreenStatePreview
+import com.cooper.homelab.ephyra.preview.EphyraSpanishPreviews
 import com.cooper.homelab.ephyra.server.ServerUser
 import kotlinx.serialization.json.Json
 import kotlinx.serialization.json.JsonObject
@@ -25,35 +25,35 @@ private fun ready(shown: JsonObject = config) = NfoUiState.Ready(shown, users)
 /** The NFO page across the matrix, with a user chosen, with the users unreadable, and while it loads or fails. */
 class NfoScreenshotTest {
     @PreviewTest
-    @JellyfinScreenStatePreview
-    @JellyfinFontScalePreviews
-    @JellyfinSpanishPreviews
+    @EphyraScreenStatePreview
+    @EphyraFontScalePreviews
+    @EphyraSpanishPreviews
     @Composable
     fun nfo() = NfoScreen(ready(), NfoActions())
 
     /** A real server sends no `UserId` when none is set: the row still shows, as None. */
     @PreviewTest
-    @JellyfinScreenStatePreview
+    @EphyraScreenStatePreview
     @Composable
     fun noUserKey() = NfoScreen(ready(JsonObject(config - "UserId")), NfoActions())
 
     @PreviewTest
-    @JellyfinScreenStatePreview
+    @EphyraScreenStatePreview
     @Composable
     fun userChosen() = NfoScreen(ready(JsonObject(config + ("UserId" to JsonPrimitive("user-1")))), NfoActions())
 
     @PreviewTest
-    @JellyfinScreenStatePreview
+    @EphyraScreenStatePreview
     @Composable
     fun usersUnreadable() = NfoScreen(NfoUiState.Ready(JsonObject(config + ("UserId" to JsonPrimitive("user-9")))), NfoActions())
 
     @PreviewTest
-    @JellyfinScreenStatePreview
+    @EphyraScreenStatePreview
     @Composable
     fun loading() = NfoScreen(NfoUiState.Loading, NfoActions())
 
     @PreviewTest
-    @JellyfinScreenStatePreview
+    @EphyraScreenStatePreview
     @Composable
     fun failed() = NfoScreen(NfoUiState.Failed(ConsoleFailure.Unreachable), NfoActions())
 }

@@ -21,9 +21,11 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import com.binge.designsystem.component.BingeAdaptiveSheet
 import com.binge.designsystem.component.BingeSheetKind
+import com.binge.designsystem.component.BingeTextField
 import com.binge.designsystem.component.ItemGroup
 import com.binge.designsystem.component.ListItem
 import com.cooper.homelab.ephyra.R
@@ -148,12 +150,13 @@ internal fun GuideFormContent(
         submitting = saving,
     ) {
         if (form.isXmlTv) {
-            ConsoleTextField(
+            BingeTextField(
                 value = path,
                 onValueChange = { path = it },
                 label = stringResource(R.string.live_tv_guide_path),
                 enabled = !saving,
                 keyboardType = KeyboardType.Uri,
+                imeAction = ImeAction.Done,
             )
         }
         if (form.id != null) {

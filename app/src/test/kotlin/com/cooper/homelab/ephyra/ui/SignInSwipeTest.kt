@@ -15,7 +15,7 @@ import androidx.compose.ui.test.swipeLeft
 import com.binge.designsystem.testing.createTakeDownAndroidComposeRule
 import com.cooper.homelab.ephyra.server.PublicServerInfo
 import com.cooper.homelab.ephyra.server.PublicUser
-import com.cooper.homelab.ephyra.theme.JellyfinTheme
+import com.cooper.homelab.ephyra.theme.EphyraTheme
 import okhttp3.HttpUrl
 import org.junit.Assert.assertEquals
 import org.junit.Rule
@@ -74,7 +74,7 @@ class SignInSwipeTest {
                         if (follows) state = signIn(quickConnect)
                     },
                 )
-            JellyfinTheme { JellyfinRoot(state, actions) }
+            EphyraTheme { EphyraRoot(state, actions) }
         }
 
     private fun count(text: String) = compose.onAllNodesWithText(text, ignoreCase = true).fetchSemanticsNodes().size

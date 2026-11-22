@@ -3,7 +3,6 @@ package com.cooper.homelab.ephyra.ui.console
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.binge.companion.sdk.attempt
-import com.binge.designsystem.SaveStatus
 import com.cooper.homelab.ephyra.server.Branding
 import com.cooper.homelab.ephyra.server.CUSTOM_CSS
 import com.cooper.homelab.ephyra.server.Connection
@@ -50,8 +49,7 @@ sealed interface ServerSettingsUiState {
 
     /**
      * The settings as shown, what the pickers offer, and the last save that failed ([saveFailed]). [refused] keeps a page
-     * refusal until the next edit, even if the other writer cannot reach the server. A text sheet that is
-     * [submitting] stays open while its save runs; if the server refuses it, [sheetFailed] says why in the sheet.
+     * refusal until the next edit, even if the other writer cannot reach the server.
      */
     data class Ready(
         val settings: ServerSettings,
@@ -61,8 +59,6 @@ sealed interface ServerSettingsUiState {
         val editing: ServerText? = null,
         val saveFailed: ConsoleFailure? = null,
         val refused: ConsoleFailure? = null,
-        val submitting: ServerText? = null,
-        val sheetFailed: ConsoleFailure? = null,
         val serverSave: SaveProgress = SaveProgress(),
         val brandSave: SaveProgress = SaveProgress(),
     ) : ServerSettingsUiState {
@@ -90,12 +86,9 @@ class ServerSettingsViewModel(
             viewModelScope,
             TAG,
             { _, client, json -> client.saveServerConfiguration(json) },
-            onProgress = { progress ->
-                update { copy(serverSave = progress) }
-                sheetSaved(progress, SERVER_TEXTS)
-            },
+            onProgress = { progress -> update { copy(serverSave = progress) } },
         ) { shown, failure ->
-            update { copy(settings = shown.serverSettings()).routed(failure, SERVER_TEXTS) }
+            update { copy(settings = shown.serverSettings(), saveFailed = failure, refused = refusedAfter(refused, failure)) }
         }
 
     private val brand =
@@ -104,12 +97,9 @@ class ServerSettingsViewModel(
             viewModelScope,
             TAG,
             { _, client, json -> client.saveBranding(json) },
-            onProgress = { progress ->
-                update { copy(brandSave = progress) }
-                sheetSaved(progress, BRANDING_TEXTS)
-            },
+            onProgress = { progress -> update { copy(brandSave = progress) } },
         ) { shown, failure ->
-            update { copy(branding = shown.branding()).routed(failure, BRANDING_TEXTS) }
+            update { copy(branding = shown.branding(), saveFailed = failure, refused = refusedAfter(refused, failure)) }
         }
 
     /** The login splash image's sheet, which reads the branding configuration again after it changes the image. */
@@ -155,13 +145,13 @@ class ServerSettingsViewModel(
         }
     }
 
-    /** Opens the sheet for [text], or closes it for null. A save the closed sheet was waiting on reports on the page. */
-    fun edit(text: ServerText?) = update { copy(editing = text, submitting = null, sheetFailed = null) }
+    /** Opens the sheet for [text], or closes it for null. */
+    fun edit(text: ServerText?) = update { copy(editing = text) }
 
     /**
-     * Saves the text the sheet for [text] holds. The sheet stays open while the save runs: it closes when the server
-     * takes it, stays open with what was typed and says why if the server refuses it, and closes if the server can't be
-     * reached, the change then waiting unsent on the page. A text that is unchanged, or a blank server name, closes it.
+     * Saves the text the sheet for [text] holds, as made: the sheet closes at once and the page shows the change. A
+     * refusal puts it back and a server that can't be reached keeps it unsent, each reported on the page. A text that is
+     * unchanged, or a blank server name, only closes the sheet.
      */
     fun saveText(
         text: ServerText,
@@ -178,34 +168,8 @@ class ServerSettingsViewModel(
             update { copy(editing = null) }
             return
         }
-        update { copy(submitting = text, sheetFailed = null, saveFailed = null, refused = null) }
+        update { copy(editing = null, saveFailed = null, refused = null) }
         saves.set(key, json)
-    }
-
-    /** A save of one of [texts] landed: the sheet it came from, if still open and waiting, closes. */
-    private fun sheetSaved(
-        progress: SaveProgress,
-        texts: Set<ServerText>,
-    ) {
-        if (progress.status == SaveStatus.Saved) update { if (submitting in texts) copy(submitting = null, editing = null) else this }
-    }
-
-    /**
-     * Where [failure] shows. A refusal of what an open sheet submitted shows in the sheet, which keeps what was typed;
-     * an unreachable server closes it, the change unsent. Anything else, or a sheet already dismissed, shows on the page.
-     */
-    private fun ServerSettingsUiState.Ready.routed(
-        failure: ConsoleFailure?,
-        texts: Set<ServerText>,
-    ): ServerSettingsUiState.Ready {
-        val waiting = submitting != null && submitting in texts
-        return when {
-            waiting && editing != null && failure == ConsoleFailure.Refused ->
-                copy(submitting = null, sheetFailed = failure, saveFailed = null)
-            waiting && failure == ConsoleFailure.Unreachable ->
-                copy(submitting = null, editing = null, saveFailed = failure, refused = refusedAfter(refused, failure))
-            else -> copy(saveFailed = failure, refused = refusedAfter(refused, failure))
-        }
     }
 
     fun setMetadataLanguage(code: String) = server.set(METADATA_LANGUAGE, JsonPrimitive(code))
@@ -233,7 +197,5 @@ class ServerSettingsViewModel(
 
     private companion object {
         const val TAG = "JellyfinServerSettings"
-        val SERVER_TEXTS = setOf(ServerText.Name)
-        val BRANDING_TEXTS = setOf(ServerText.LoginDisclaimer, ServerText.CustomCss)
     }
 }

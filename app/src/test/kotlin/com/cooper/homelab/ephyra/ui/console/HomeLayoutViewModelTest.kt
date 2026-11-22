@@ -2,9 +2,9 @@ package com.cooper.homelab.ephyra.ui.console
 
 import androidx.lifecycle.ViewModel
 import com.binge.designsystem.SaveStatus
+import com.cooper.homelab.core.testing.DiscardLogger
 import com.cooper.homelab.ephyra.FakeJellyfin
 import com.cooper.homelab.ephyra.server.Connection
-import com.cooper.homelab.ephyra.server.DiscardLogger
 import com.cooper.homelab.ephyra.server.JellyfinServerProfile
 import com.cooper.homelab.ephyra.server.UserView
 import com.cooper.homelab.ephyra.session

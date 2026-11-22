@@ -7,7 +7,7 @@ import androidx.compose.ui.test.onNodeWithText
 import com.binge.designsystem.testing.createTakeDownAndroidComposeRule
 import com.cooper.homelab.ephyra.auth.JellyfinSession
 import com.cooper.homelab.ephyra.server.JellyfinAccount
-import com.cooper.homelab.ephyra.theme.JellyfinTheme
+import com.cooper.homelab.ephyra.theme.EphyraTheme
 import kotlinx.serialization.json.Json
 import kotlinx.serialization.json.jsonObject
 import org.junit.Rule
@@ -29,7 +29,7 @@ class ServerGroupRowsTest {
     private fun show(policy: String) {
         val account = JellyfinAccount("sam", Json.parseToJsonElement("{$policy}").jsonObject)
         val state = UiState.SignedIn(session, titles = null, health = ConnectionHealth.Healthy, account = account)
-        compose.setContent { JellyfinTheme { ServerGroup(state, Actions()) } }
+        compose.setContent { EphyraTheme { ServerGroup(state, Actions()) } }
     }
 
     @Test

@@ -16,13 +16,13 @@ import androidx.compose.ui.test.performScrollToNode
 import androidx.compose.ui.test.performSemanticsAction
 import com.binge.designsystem.testing.createTakeDownAndroidComposeRule
 import com.cooper.homelab.core.foundation.ServerVersion
+import com.cooper.homelab.core.testing.DiscardLogger
 import com.cooper.homelab.ephyra.FakeJellyfin
 import com.cooper.homelab.ephyra.server.Connection
-import com.cooper.homelab.ephyra.server.DiscardLogger
 import com.cooper.homelab.ephyra.server.JellyfinServerProfile
 import com.cooper.homelab.ephyra.session
 import com.cooper.homelab.ephyra.testSessionStore
-import com.cooper.homelab.ephyra.theme.JellyfinTheme
+import com.cooper.homelab.ephyra.theme.EphyraTheme
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.runBlocking
 import okhttp3.OkHttpClient
@@ -64,7 +64,7 @@ class LibraryRouteRecreationTest {
 
     private fun show() =
         compose.setContent {
-            JellyfinTheme { LibraryItemRoute(connection, profile, item, openSubItem = { item = it }, onBack = {}) }
+            EphyraTheme { LibraryItemRoute(connection, profile, item, openSubItem = { item = it }, onBack = {}) }
         }
 
     private fun waitFor(text: String) =

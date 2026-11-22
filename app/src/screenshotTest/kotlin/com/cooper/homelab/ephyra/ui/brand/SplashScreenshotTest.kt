@@ -13,8 +13,8 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import com.android.tools.screenshot.PreviewTest
 import com.cooper.homelab.ephyra.R
-import com.cooper.homelab.ephyra.preview.JellyfinScreenStateLightPreview
-import com.cooper.homelab.ephyra.preview.JellyfinScreenStatePreview
+import com.cooper.homelab.ephyra.preview.EphyraScreenStateLightPreview
+import com.cooper.homelab.ephyra.preview.EphyraScreenStatePreview
 
 /**
  * The frame the splash animation ends on: the launcher foreground the animated vector sweeps to, on the
@@ -22,8 +22,8 @@ import com.cooper.homelab.ephyra.preview.JellyfinScreenStatePreview
  */
 class SplashScreenshotTest {
     @PreviewTest
-    @JellyfinScreenStatePreview
-    @JellyfinScreenStateLightPreview
+    @EphyraScreenStatePreview
+    @EphyraScreenStateLightPreview
     @Composable
     fun splashRest() =
         Box(

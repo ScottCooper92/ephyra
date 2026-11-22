@@ -15,7 +15,7 @@ import com.cooper.homelab.ephyra.client.title.SeriesPlay
 import com.cooper.homelab.ephyra.demo.DEMO_ORIGIN
 import com.cooper.homelab.ephyra.playback.PlayItem
 import com.cooper.homelab.ephyra.testSessionStore
-import com.cooper.homelab.ephyra.theme.JellyfinTheme
+import com.cooper.homelab.ephyra.theme.EphyraTheme
 import com.cooper.homelab.player.api.PlayTitle
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertFalse
@@ -36,7 +36,7 @@ class PlayStartHostTest {
 
     private fun host(serverAddress: String) =
         compose.setContent {
-            JellyfinTheme {
+            EphyraTheme {
                 PlayStartHost(graph, serverAddress, onPlayer = { _, _ -> opened = true }) { play ->
                     Text("Play it", Modifier.clickable { play(PlayItem("i1", PlayTitle("Colour Bars"))) })
                 }

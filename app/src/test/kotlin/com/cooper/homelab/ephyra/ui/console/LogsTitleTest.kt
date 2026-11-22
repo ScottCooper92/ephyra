@@ -6,7 +6,7 @@ import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.performClick
 import androidx.compose.ui.test.performTouchInput
 import com.binge.designsystem.testing.createTakeDownAndroidComposeRule
-import com.cooper.homelab.ephyra.theme.JellyfinTheme
+import com.cooper.homelab.ephyra.theme.EphyraTheme
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -21,7 +21,7 @@ class LogsTitleTest {
     fun `long pressing a shortened log title shows its full name until OK`() {
         val name = "FFmpeg.Transcode-2026-10-31_09-15-02_3f2a9c.log"
         val state = LogsUiState.Ready(emptyList(), OpenLog(name, LogContent.Ready(emptyList(), truncated = false)))
-        compose.setContent { JellyfinTheme { LogScreen(state, name, LogsActions()) } }
+        compose.setContent { EphyraTheme { LogScreen(state, name, LogsActions()) } }
         compose.onNodeWithText(name).assertDoesNotExist()
         compose.onNodeWithText("Shared as shown here, with keys and tokens blanked.").assertDoesNotExist()
         compose.onNodeWithText(name.middleEllipsised()).performTouchInput { longClick() }

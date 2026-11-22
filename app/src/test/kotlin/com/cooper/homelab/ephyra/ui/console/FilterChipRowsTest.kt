@@ -10,7 +10,7 @@ import androidx.compose.ui.test.hasText
 import androidx.compose.ui.test.onNodeWithText
 import com.binge.designsystem.testing.createTakeDownAndroidComposeRule
 import com.cooper.homelab.ephyra.server.LogFile
-import com.cooper.homelab.ephyra.theme.JellyfinTheme
+import com.cooper.homelab.ephyra.theme.EphyraTheme
 import org.junit.Assert.assertEquals
 import org.junit.Rule
 import org.junit.Test
@@ -36,7 +36,7 @@ class FilterChipRowsTest {
 
     @Test
     fun `the new trigger's kind chips are on one row at twice the font size`() {
-        compose.setContent { JellyfinTheme { AddTriggerForm(TasksActions()) } }
+        compose.setContent { EphyraTheme { AddTriggerForm(TasksActions()) } }
         // A row that wraps has no horizontal scroll, and puts the later chips lower than the first.
         compose
             .onNode(SemanticsMatcher.keyIsDefined(SemanticsProperties.HorizontalScrollAxisRange) and hasAnyDescendant(hasText("Daily")))
@@ -48,7 +48,7 @@ class FilterChipRowsTest {
     fun `a log's level chips are on one row at twice the font size`() {
         val files = listOf(LogFile("log_20261031.log", 4096, 1_793_570_400_000L))
         compose.setContent {
-            JellyfinTheme {
+            EphyraTheme {
                 LogScreen(
                     LogsUiState.Ready(files, OpenLog("log_20261031.log", LogContent.Ready(emptyList(), truncated = false))),
                     "log_20261031.log",

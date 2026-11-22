@@ -1,9 +1,9 @@
 package com.cooper.homelab.ephyra.ui
 
+import com.cooper.homelab.core.testing.DiscardLogger
+import com.cooper.homelab.core.testing.PlainCipher
 import com.cooper.homelab.ephyra.FakeJellyfin
-import com.cooper.homelab.ephyra.PlainCipher
 import com.cooper.homelab.ephyra.server.Connection
-import com.cooper.homelab.ephyra.server.DiscardLogger
 import com.cooper.homelab.ephyra.server.JellyfinAccount
 import com.cooper.homelab.ephyra.server.JellyfinServerProfile
 import com.cooper.homelab.ephyra.server.LibraryIndex
@@ -61,9 +61,9 @@ class NonAdminAccountTest {
         Dispatchers.resetMain()
     }
 
-    private fun viewModel(): JellyfinViewModel =
+    private fun viewModel(): EphyraViewModel =
         teardown.made(
-            JellyfinViewModel(
+            EphyraViewModel(
                 sessions,
                 connection,
                 LibraryIndex(),
@@ -73,11 +73,11 @@ class NonAdminAccountTest {
             ),
         )
 
-    private fun JellyfinViewModel.signedIn(matches: (UiState.SignedIn) -> Boolean): UiState.SignedIn =
+    private fun EphyraViewModel.signedIn(matches: (UiState.SignedIn) -> Boolean): UiState.SignedIn =
         runBlocking { withTimeout(TIMEOUT_MILLIS) { state.first { it is UiState.SignedIn && matches(it) } as UiState.SignedIn } }
 
     /** The home once the account is read and the card has every figure a user may read. */
-    private fun JellyfinViewModel.home() = signedIn { it.account.isRead && it.card.playing != null && it.card.movies != null }
+    private fun EphyraViewModel.home() = signedIn { it.account.isRead && it.card.playing != null && it.card.movies != null }
 
     @Test
     fun `a saved session of a plain user reaches the home with no admin read and no error`() {

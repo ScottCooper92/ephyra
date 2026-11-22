@@ -1,9 +1,9 @@
 package com.cooper.homelab.ephyra.ui.console
 
 import android.graphics.Bitmap
+import com.cooper.homelab.core.testing.DiscardLogger
 import com.cooper.homelab.ephyra.FakeJellyfin
 import com.cooper.homelab.ephyra.server.Connection
-import com.cooper.homelab.ephyra.server.DiscardLogger
 import com.cooper.homelab.ephyra.server.ServerUser
 import com.cooper.homelab.ephyra.server.users
 import com.cooper.homelab.ephyra.session

@@ -41,7 +41,7 @@ import com.cooper.homelab.ephyra.ui.console.UserAvatar
 import com.cooper.homelab.ephyra.ui.console.rememberOwnPicture
 import com.binge.designsystem.R as DesR
 
-/** What the screens can ask of the [JellyfinViewModel]. */
+/** What the screens can ask of the [EphyraViewModel]. */
 data class Actions(
     val onAddress: (String) -> Unit = {},
     val onConnect: () -> Unit = {},
@@ -101,7 +101,7 @@ data class Actions(
 internal fun Actions.isOpenBeside(page: ConsolePage): Boolean = hasPaneBeside() && selectedPage == page
 
 @Composable
-fun JellyfinRoot(
+fun EphyraRoot(
     state: UiState,
     actions: Actions,
 ) {

@@ -26,7 +26,7 @@ import com.cooper.homelab.ephyra.server.JellyfinServerProfile
 import com.cooper.homelab.ephyra.server.MetadataSaver
 import com.cooper.homelab.ephyra.server.ProviderGroup
 import com.cooper.homelab.ephyra.server.ServerLibrary
-import com.cooper.homelab.ephyra.theme.JellyfinTheme
+import com.cooper.homelab.ephyra.theme.EphyraTheme
 import kotlinx.serialization.json.Json
 import kotlinx.serialization.json.JsonObject
 import kotlinx.serialization.json.jsonObject
@@ -64,7 +64,7 @@ class LibraryScreenTest {
                 dialog = dialog,
                 cultures = cultures,
             )
-        compose.setContent { JellyfinTheme { LibraryScreen(state, actions, JellyfinServerProfile.from(version), page = page) } }
+        compose.setContent { EphyraTheme { LibraryScreen(state, actions, JellyfinServerProfile.from(version), page = page) } }
     }
 
     @Test
@@ -331,7 +331,7 @@ class LibraryScreenTest {
             ),
         )
         val actions = LibraryActions(onJson = { key, value -> state = state.copy(options = JsonObject(state.options + (key to value))) })
-        compose.setContent { JellyfinTheme { LanguagesPage(state, actions, PaddingValues()) } }
+        compose.setContent { EphyraTheme { LanguagesPage(state, actions, PaddingValues()) } }
         compose.onNode(hasSetTextAction()).performTextReplacement("Spanish")
         compose.onNode(hasText("Spanish") and hasSetTextAction().not()).performClick()
         compose.onNode(hasSetTextAction()).performTextReplacement("")
@@ -359,7 +359,7 @@ class LibraryScreenTest {
                 cultures = languages,
             )
         var page by mutableStateOf<LibraryPage>(LibraryPage.Main)
-        compose.setContent { JellyfinTheme { LibraryScreen(state, LibraryActions(), JellyfinServerProfile.from("10.11.6"), page = page) } }
+        compose.setContent { EphyraTheme { LibraryScreen(state, LibraryActions(), JellyfinServerProfile.from("10.11.6"), page = page) } }
         // Scrolling the form to its last row slides the single-line bar away.
         compose.onNodeWithText("Embedded subtitles").performScrollTo()
         page = LibraryPage.Languages

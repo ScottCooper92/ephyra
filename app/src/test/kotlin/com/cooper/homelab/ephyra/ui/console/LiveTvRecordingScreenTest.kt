@@ -9,7 +9,7 @@ import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.performClick
 import androidx.compose.ui.test.performScrollTo
 import com.binge.designsystem.testing.createTakeDownAndroidComposeRule
-import com.cooper.homelab.ephyra.theme.JellyfinTheme
+import com.cooper.homelab.ephyra.theme.EphyraTheme
 import kotlinx.serialization.json.Json
 import kotlinx.serialization.json.JsonElement
 import kotlinx.serialization.json.JsonObject
@@ -38,7 +38,7 @@ class LiveTvRecordingScreenTest {
     private fun show(
         state: LiveTvRecordingUiState,
         actions: LiveTvRecordingActions = LiveTvRecordingActions(),
-    ) = compose.setContent { JellyfinTheme { LiveTvRecordingScreen(state, actions) } }
+    ) = compose.setContent { EphyraTheme { LiveTvRecordingScreen(state, actions) } }
 
     @Test
     fun `each folder shows its path, or that it is not set, with a note that recordings are not moved`() {
@@ -111,7 +111,7 @@ class LiveTvRecordingScreenTest {
     @Test
     fun `the days of guide stays after it is set and cleared, as the server leaves the key out when it holds none`() {
         var state by mutableStateOf<LiveTvRecordingUiState>(LiveTvRecordingUiState.Ready(JsonObject(config - "GuideDays")))
-        compose.setContent { JellyfinTheme { LiveTvRecordingScreen(state, LiveTvRecordingActions()) } }
+        compose.setContent { EphyraTheme { LiveTvRecordingScreen(state, LiveTvRecordingActions()) } }
         compose.onNodeWithText("Automatic").performScrollTo().assertIsDisplayed()
         state = LiveTvRecordingUiState.Ready(JsonObject(config + ("GuideDays" to JsonPrimitive(5))))
         compose.onNodeWithText("5 days").performScrollTo().assertIsDisplayed()

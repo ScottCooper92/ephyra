@@ -1,8 +1,8 @@
 package com.cooper.homelab.ephyra.auth
 
 import com.cooper.homelab.core.server.connection.SecretCipher
+import com.cooper.homelab.core.testing.PlainCipher
 import com.cooper.homelab.ephyra.FakeJellyfin
-import com.cooper.homelab.ephyra.PlainCipher
 import com.cooper.homelab.ephyra.session
 import com.cooper.homelab.ephyra.testSessionStore
 import kotlinx.coroutines.asCoroutineDispatcher

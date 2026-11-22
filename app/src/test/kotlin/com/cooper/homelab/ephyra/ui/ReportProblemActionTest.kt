@@ -8,7 +8,7 @@ import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.performClick
 import com.binge.designsystem.testing.createTakeDownAndroidComposeRule
 import com.cooper.homelab.ephyra.server.PublicServerInfo
-import com.cooper.homelab.ephyra.theme.JellyfinTheme
+import com.cooper.homelab.ephyra.theme.EphyraTheme
 import org.junit.Assert.assertFalse
 import org.junit.Assert.assertTrue
 import org.junit.Rule
@@ -39,7 +39,7 @@ class ReportProblemActionTest {
     @Test
     fun `the menu opens the bug form with the app and the device and no server`() {
         val opened = mutableListOf<String>()
-        compose.setContent { JellyfinTheme { ReportProblemAction(open = { opened += it }) } }
+        compose.setContent { EphyraTheme { ReportProblemAction(open = { opened += it }) } }
         compose.onNodeWithContentDescription("More options").performClick()
         compose.onNodeWithText("Report a problem").performClick()
         val url = opened.single()
@@ -50,15 +50,15 @@ class ReportProblemActionTest {
 
     @Test
     fun `the server step has the menu`() {
-        compose.setContent { JellyfinTheme { JellyfinRoot(UiState.EnterServer(), Actions()) } }
+        compose.setContent { EphyraTheme { EphyraRoot(UiState.EnterServer(), Actions()) } }
         compose.onNodeWithContentDescription("More options").assertExists()
     }
 
     @Test
     fun `the sign in step has the menu`() {
         compose.setContent {
-            JellyfinTheme {
-                JellyfinRoot(
+            EphyraTheme {
+                EphyraRoot(
                     UiState.SignIn(baseUrl = "http://192.168.1.20:8096", server = server),
                     Actions(),
                 )
@@ -69,7 +69,7 @@ class ReportProblemActionTest {
 
     @Test
     fun `the menu is closed until it is asked for`() {
-        compose.setContent { JellyfinTheme { ReportProblemAction(open = {}) } }
+        compose.setContent { EphyraTheme { ReportProblemAction(open = {}) } }
         compose.onAllNodesWithText("Report a problem").assertCountEquals(0)
     }
 }

@@ -10,15 +10,15 @@ import com.cooper.homelab.core.server.network.CleartextConsent
 import com.cooper.homelab.core.server.network.CleartextGate
 import com.cooper.homelab.core.server.network.CleartextGuard
 import com.cooper.homelab.core.telemetry.Analytics
+import com.cooper.homelab.core.testing.DiscardLogger
+import com.cooper.homelab.core.testing.PlainCipher
 import com.cooper.homelab.ephyra.FakeItem
 import com.cooper.homelab.ephyra.FakeJellyfin
-import com.cooper.homelab.ephyra.PlainCipher
 import com.cooper.homelab.ephyra.auth.SessionStore
 import com.cooper.homelab.ephyra.demo.DEMO_ORIGIN
 import com.cooper.homelab.ephyra.demo.DEMO_TOKEN
 import com.cooper.homelab.ephyra.demo.DemoTransport
 import com.cooper.homelab.ephyra.server.Connection
-import com.cooper.homelab.ephyra.server.DiscardLogger
 import com.cooper.homelab.ephyra.server.DiscoveredServer
 import com.cooper.homelab.ephyra.server.ForgotPasswordAction
 import com.cooper.homelab.ephyra.server.LibraryIndex
@@ -74,7 +74,7 @@ import com.cooper.homelab.core.server.connection.ConnectionHealth as CoreHealth
 /** Setup and settings against a fake server. The server calls run on a real IO thread, so each step waits for its state. */
 @OptIn(ExperimentalCoroutinesApi::class)
 @RunWith(RobolectricTestRunner::class)
-class JellyfinViewModelTest {
+class EphyraViewModelTest {
     private val jellyfin = FakeJellyfin()
     private val sessions: SessionStore = testSessionStore()
     private val index = LibraryIndex()
@@ -129,7 +129,7 @@ class JellyfinViewModelTest {
         linkStash: LinkStash = NoLinkStash,
         cipher: SecretCipher = PlainCipher,
     ) = made(
-        JellyfinViewModel(
+        EphyraViewModel(
             sessions,
             over,
             index,
@@ -145,10 +145,10 @@ class JellyfinViewModelTest {
         ),
     )
 
-    private fun made(vm: JellyfinViewModel): JellyfinViewModel = teardown.made(vm)
+    private fun made(vm: EphyraViewModel): EphyraViewModel = teardown.made(vm)
 
     /** A wait that times out says which state it was in and what the server had been asked (method and path only), so a failure on a loaded machine can be told apart. */
-    private inline fun <reified T : UiState> JellyfinViewModel.await(crossinline matches: (T) -> Boolean = { true }): T =
+    private inline fun <reified T : UiState> EphyraViewModel.await(crossinline matches: (T) -> Boolean = { true }): T =
         try {
             idling { withTimeout(10_000) { state.first { it is T && matches(it) } as T } }
         } catch (e: TimeoutCancellationException) {
@@ -164,10 +164,10 @@ class JellyfinViewModelTest {
      * monitor before its figure is shown, so once all three are shown no answer is left to land between calls a test reports itself.
      * Counting the calls that have reached the server instead would miss a read the view model has launched but not yet sent.
      */
-    private fun JellyfinViewModel.awaitCard() =
+    private fun EphyraViewModel.awaitCard() =
         await<UiState.SignedIn> { it.card.playing != null && it.card.movies != null && it.card.tmdb != null }
 
-    private fun JellyfinViewModel.toSignIn(): UiState.SignIn {
+    private fun EphyraViewModel.toSignIn(): UiState.SignIn {
         await<UiState.EnterServer>()
         onAddress(jellyfin.baseUrl)
         connect()
@@ -175,7 +175,7 @@ class JellyfinViewModelTest {
         return await<UiState.SignIn>()
     }
 
-    private fun demoVm(cipher: SecretCipher = PlainCipher): JellyfinViewModel {
+    private fun demoVm(cipher: SecretCipher = PlainCipher): EphyraViewModel {
         val demoSessions = testSessionStore(cipher)
         val demoConnection =
             Connection(
@@ -188,7 +188,7 @@ class JellyfinViewModelTest {
                 DiscardLogger,
             ).also { teardown.made(it) }
         return made(
-            JellyfinViewModel(
+            EphyraViewModel(
                 demoSessions,
                 demoConnection,
                 index,
@@ -281,7 +281,7 @@ class JellyfinViewModelTest {
         assertTrue(!vm.await<UiState.SignIn> { !it.server.setupIncomplete }.server.setupIncomplete)
     }
 
-    private fun JellyfinViewModel.toStartup(): StartupPhase.Configuring {
+    private fun EphyraViewModel.toStartup(): StartupPhase.Configuring {
         toSignIn()
         startup.open()
         return await<UiState.Startup> { it.phase is StartupPhase.Configuring }.phase as StartupPhase.Configuring
@@ -322,7 +322,7 @@ class JellyfinViewModelTest {
         assertTrue(startupCalls.none { it.headers["Authorization"].orEmpty().contains("Token=") })
     }
 
-    private fun JellyfinViewModel.toAccount(): StartupPhase.Account {
+    private fun EphyraViewModel.toAccount(): StartupPhase.Account {
         toStartup()
         startup.save()
         return await<UiState.Startup> { (it.phase as? StartupPhase.Account)?.name == "root" }.phase as StartupPhase.Account
@@ -354,7 +354,7 @@ class JellyfinViewModelTest {
     }
 
     /** The wizard at its last step, with an account the fake server will let in. */
-    private fun JellyfinViewModel.toFinish(): StartupPhase.Finish {
+    private fun EphyraViewModel.toFinish(): StartupPhase.Finish {
         toAccount()
         startup.account.onName("sam")
         startup.account.onPassword("right")
@@ -1163,7 +1163,7 @@ class JellyfinViewModelTest {
     }
 
     /** Starts Quick Connect on the sign-in step and returns once its code shows. */
-    private fun JellyfinViewModel.waitingForApproval(): UiState.SignIn {
+    private fun EphyraViewModel.waitingForApproval(): UiState.SignIn {
         toSignIn()
         startQuickConnect()
         return await<UiState.SignIn> { it.quickConnectCode != null }
@@ -1985,7 +1985,7 @@ class JellyfinViewModelTest {
             val slow = OkHttpClient.Builder().callTimeout(500, TimeUnit.MILLISECONDS).build()
             val vm =
                 made(
-                    JellyfinViewModel(
+                    EphyraViewModel(
                         sessions,
                         teardown.made(Connection(slow, sessions, "Jellyfin Companion", "Test", "1.0", Dispatchers.IO, DiscardLogger)),
                         index,

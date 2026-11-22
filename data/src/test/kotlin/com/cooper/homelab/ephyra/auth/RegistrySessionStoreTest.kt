@@ -2,8 +2,8 @@ package com.cooper.homelab.ephyra.auth
 
 import androidx.datastore.preferences.core.stringPreferencesKey
 import com.cooper.homelab.core.server.connection.SecretCipher
+import com.cooper.homelab.core.testing.PlainCipher
 import com.cooper.homelab.ephyra.FakeJellyfin
-import com.cooper.homelab.ephyra.PlainCipher
 import com.cooper.homelab.ephyra.session
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.async

@@ -16,7 +16,7 @@ import com.cooper.homelab.ephyra.server.JellyfinServerProfile
 import com.cooper.homelab.ephyra.server.NetworkImpact
 import com.cooper.homelab.ephyra.server.networkKeys
 import com.cooper.homelab.ephyra.server.networkSettings
-import com.cooper.homelab.ephyra.theme.JellyfinTheme
+import com.cooper.homelab.ephyra.theme.EphyraTheme
 import kotlinx.serialization.json.Json
 import kotlinx.serialization.json.jsonObject
 import org.junit.Assert.assertEquals
@@ -48,7 +48,7 @@ class NetworkScreenTest {
                 draft,
                 confirming = confirming,
             )
-        compose.setContent { JellyfinTheme { NetworkScreen(state, actions, appUrl = "http://nas:8096") } }
+        compose.setContent { EphyraTheme { NetworkScreen(state, actions, appUrl = "http://nas:8096") } }
     }
 
     @Test
@@ -117,7 +117,7 @@ class NetworkScreenTest {
         var opened = 0
         val keys = networkKeys(JellyfinServerProfile.from("10.10.7"))
         val state = NetworkUiState.Ready(Json.parseToJsonElement(fixture).jsonObject.networkSettings(keys), keys, restartNeeded = true)
-        compose.setContent { JellyfinTheme { NetworkScreen(state, NetworkActions(onOpenServer = { opened++ })) } }
+        compose.setContent { EphyraTheme { NetworkScreen(state, NetworkActions(onOpenServer = { opened++ })) } }
         // Clicked by its action: the footer covers the last row in a window this small.
         compose.onNodeWithText("Restart to apply").performScrollTo().performSemanticsAction(SemanticsActions.OnClick)
         assertEquals(1, opened)
@@ -147,7 +147,7 @@ class NetworkScreenTest {
                 setOf("PublicHttpPort"),
                 committing = true,
             )
-        compose.setContent { JellyfinTheme { NetworkScreen(state, NetworkActions()) } }
+        compose.setContent { EphyraTheme { NetworkScreen(state, NetworkActions()) } }
         compose.onNodeWithText("Auto discovery").performScrollTo().assertIsNotEnabled()
         compose.onNodeWithText("Known proxies").performScrollTo().assertIsNotEnabled()
         compose.onNodeWithText("HTTP port").performScrollTo().assertIsNotEnabled()

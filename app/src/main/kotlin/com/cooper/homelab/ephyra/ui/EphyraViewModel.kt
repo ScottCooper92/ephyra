@@ -124,14 +124,14 @@ internal suspend fun Throwable.unreachableSetup(): SetupError =
     if (setupFailure() == ServerFailure.LocalNetworkDenied) SetupError.LocalNetworkDenied else SetupError.Unreachable
 
 /** Picks a server found on the network: connects to it as if its address had been typed. */
-fun JellyfinViewModel.chooseServer(server: DiscoveredServer) {
+fun EphyraViewModel.chooseServer(server: DiscoveredServer) {
     if ((state.value as? UiState.EnterServer)?.checking == true) return
     onAddress(server.address)
     connect()
 }
 
 /** Picks a listed account: its name fills the username, and one with no password signs in straight away. */
-fun JellyfinViewModel.pickPublicUser(user: PublicUser) {
+fun EphyraViewModel.pickPublicUser(user: PublicUser) {
     val current = state.value as? UiState.SignIn ?: return
     if (current.busy) return
     onUsername(user.name)
@@ -195,7 +195,7 @@ private const val CONCURRENT_PICTURES = 4
  * failed for want of it. The server step connects again; a signed-in server is read again; sign-in leaves the next press
  * of its own button to the user, who may have a password half typed.
  */
-fun JellyfinViewModel.localNetworkAnswered() {
+fun EphyraViewModel.localNetworkAnswered() {
     when (state.value) {
         is UiState.EnterServer -> localNetworkResult()
         is UiState.SignedIn -> refresh()
@@ -319,7 +319,7 @@ sealed interface UiState {
  * The app's one screen state machine: server, sign-in (password or Quick Connect), then the signed-in settings. The first two steps are
  * the shared connect flow's, in [SetupFlow]; what the screens read of them is [projectSetup], in the shapes they have always taken.
  */
-class JellyfinViewModel(
+class EphyraViewModel(
     private val sessions: SessionStore,
     private val connection: Connection,
     private val index: LibraryIndex,

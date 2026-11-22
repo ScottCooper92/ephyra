@@ -6,9 +6,9 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import com.android.tools.screenshot.PreviewTest
 import com.cooper.homelab.ephyra.R
-import com.cooper.homelab.ephyra.preview.JellyfinFontScalePreviews
-import com.cooper.homelab.ephyra.preview.JellyfinScreenStatePreview
-import com.cooper.homelab.ephyra.preview.JellyfinSpanishPreviews
+import com.cooper.homelab.ephyra.preview.EphyraFontScalePreviews
+import com.cooper.homelab.ephyra.preview.EphyraScreenStatePreview
+import com.cooper.homelab.ephyra.preview.EphyraSpanishPreviews
 
 @Composable
 private fun IntervalSheet(millis: Int) {
@@ -29,19 +29,19 @@ private fun IntervalSheet(millis: Int) {
 /** The trickplay interval's sheet: a whole number of seconds, one between two seconds, and one beyond a minute. */
 class TrickplayIntervalScreenshotTest {
     @PreviewTest
-    @JellyfinScreenStatePreview
-    @JellyfinFontScalePreviews
-    @JellyfinSpanishPreviews
+    @EphyraScreenStatePreview
+    @EphyraFontScalePreviews
+    @EphyraSpanishPreviews
     @Composable
     fun intervalTen() = IntervalSheet(10_000)
 
     @PreviewTest
-    @JellyfinScreenStatePreview
+    @EphyraScreenStatePreview
     @Composable
     fun intervalBetweenSteps() = IntervalSheet(2_500)
 
     @PreviewTest
-    @JellyfinScreenStatePreview
+    @EphyraScreenStatePreview
     @Composable
     fun intervalBeyondScale() = IntervalSheet(90_000)
 }

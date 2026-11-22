@@ -9,7 +9,7 @@ import androidx.compose.ui.test.performClick
 import androidx.compose.ui.test.performScrollTo
 import com.binge.designsystem.testing.createTakeDownAndroidComposeRule
 import com.cooper.homelab.ephyra.playback.StreamingNetwork
-import com.cooper.homelab.ephyra.theme.JellyfinTheme
+import com.cooper.homelab.ephyra.theme.EphyraTheme
 import com.cooper.homelab.ephyra.ui.console.ConsoleFailure
 import com.cooper.homelab.ephyra.ui.console.PlaybackUiState
 import org.junit.Assert.assertEquals
@@ -29,7 +29,7 @@ class ThisAppQualityTest {
         playback: PlaybackUiState? = null,
         onQuality: (StreamingNetwork, Int) -> Unit = { _, _ -> },
     ) = compose.setContent {
-        JellyfinTheme { ThisAppScreen(Actions(), onBack = {}, playback = playback, quality = quality, onQuality = onQuality) }
+        EphyraTheme { ThisAppScreen(Actions(), onBack = {}, playback = playback, quality = quality, onQuality = onQuality) }
     }
 
     @Test

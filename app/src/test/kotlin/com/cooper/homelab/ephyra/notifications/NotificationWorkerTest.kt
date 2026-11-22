@@ -7,11 +7,12 @@ import androidx.test.core.app.ApplicationProvider
 import androidx.work.ListenableWorker
 import androidx.work.testing.TestListenableWorkerBuilder
 import com.cooper.homelab.core.foundation.Logger
+import com.cooper.homelab.core.testing.DiscardLogger
 import com.cooper.homelab.core.testing.InMemoryDataStore
+import com.cooper.homelab.core.testing.RecordingScheduler
 import com.cooper.homelab.ephyra.FakeJellyfin
 import com.cooper.homelab.ephyra.auth.ServerIdentity
 import com.cooper.homelab.ephyra.server.Connection
-import com.cooper.homelab.ephyra.server.DiscardLogger
 import com.cooper.homelab.ephyra.session
 import com.cooper.homelab.ephyra.testSessionStore
 import kotlinx.coroutines.Dispatchers
@@ -35,7 +36,7 @@ class NotificationWorkerTest {
     private val prefs = NotificationPrefs(InMemoryDataStore())
     private val serverIdentity = ServerIdentity(InMemoryDataStore())
     private val notifier = FakeNotifier()
-    private val scheduler = FakeScheduler()
+    private val scheduler = RecordingScheduler()
     private val connection = Connection(OkHttpClient(), sessions, "Ephyra", "Test", "1.0", Dispatchers.IO, DiscardLogger)
     private val runner =
         PollRunner(

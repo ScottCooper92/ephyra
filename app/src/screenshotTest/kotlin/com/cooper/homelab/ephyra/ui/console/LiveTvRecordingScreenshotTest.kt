@@ -3,9 +3,9 @@ package com.cooper.homelab.ephyra.ui.console
 import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
 import com.android.tools.screenshot.PreviewTest
-import com.cooper.homelab.ephyra.preview.JellyfinFontScalePreviews
-import com.cooper.homelab.ephyra.preview.JellyfinScreenStatePreview
-import com.cooper.homelab.ephyra.preview.JellyfinSpanishPreviews
+import com.cooper.homelab.ephyra.preview.EphyraFontScalePreviews
+import com.cooper.homelab.ephyra.preview.EphyraScreenStatePreview
+import com.cooper.homelab.ephyra.preview.EphyraSpanishPreviews
 import com.cooper.homelab.ephyra.server.ServerFolder
 import kotlinx.serialization.json.Json
 import kotlinx.serialization.json.JsonNull
@@ -28,69 +28,69 @@ private fun ready(shown: JsonObject = config) = LiveTvRecordingUiState.Ready(sho
 /** Live TV recording: the page across the matrix, a release without two switches, and the sheets' content. */
 class LiveTvRecordingScreenshotTest {
     @PreviewTest
-    @JellyfinScreenStatePreview
-    @JellyfinFontScalePreviews
-    @JellyfinSpanishPreviews
+    @EphyraScreenStatePreview
+    @EphyraFontScalePreviews
+    @EphyraSpanishPreviews
     @Composable
     fun recording() = LiveTvRecordingScreen(ready(), LiveTvRecordingActions())
 
     @PreviewTest
-    @JellyfinScreenStatePreview
+    @EphyraScreenStatePreview
     @Composable
     fun olderRelease() = LiveTvRecordingScreen(ready(older), LiveTvRecordingActions())
 
     @PreviewTest
-    @JellyfinScreenStatePreview
+    @EphyraScreenStatePreview
     @Composable
     fun guideAutomatic() = LiveTvRecordingScreen(ready(JsonObject(config + ("GuideDays" to JsonNull))), LiveTvRecordingActions())
 
     @PreviewTest
-    @JellyfinScreenStatePreview
+    @EphyraScreenStatePreview
     @Composable
     fun loading() = LiveTvRecordingScreen(LiveTvRecordingUiState.Loading, LiveTvRecordingActions())
 
     @PreviewTest
-    @JellyfinScreenStatePreview
+    @EphyraScreenStatePreview
     @Composable
     fun failed() = LiveTvRecordingScreen(LiveTvRecordingUiState.Failed(ConsoleFailure.Unreachable), LiveTvRecordingActions())
 
     @PreviewTest
-    @JellyfinScreenStatePreview
-    @JellyfinSpanishPreviews
+    @EphyraScreenStatePreview
+    @EphyraSpanishPreviews
     @Composable
     fun padding() = Surface { RecordingNumberForm(RecordingNumber.PostPadding, "5", LiveTvRecordingActions()) }
 
     @PreviewTest
-    @JellyfinScreenStatePreview
-    @JellyfinFontScalePreviews
+    @EphyraScreenStatePreview
+    @EphyraFontScalePreviews
     @Composable
     fun paddingOffStep() = Surface { RecordingNumberForm(RecordingNumber.PrePadding, "7", LiveTvRecordingActions()) }
 
     @PreviewTest
-    @JellyfinScreenStatePreview
+    @EphyraScreenStatePreview
     @Composable
     fun paddingOutOfRange() = Surface { RecordingNumberForm(RecordingNumber.PostPadding, "9000", LiveTvRecordingActions()) }
 
     @PreviewTest
-    @JellyfinScreenStatePreview
-    @JellyfinFontScalePreviews
-    @JellyfinSpanishPreviews
+    @EphyraScreenStatePreview
+    @EphyraFontScalePreviews
+    @EphyraSpanishPreviews
     @Composable
     fun guideDays() = Surface { RecordingNumberForm(RecordingNumber.GuideDays, "7", LiveTvRecordingActions()) }
 
     @PreviewTest
-    @JellyfinScreenStatePreview
+    @EphyraScreenStatePreview
     @Composable
     fun guideDaysAutomatic() = Surface { RecordingNumberForm(RecordingNumber.GuideDays, "", LiveTvRecordingActions()) }
 
     /** A stored length beyond the scale reads as stored. */
     @PreviewTest
-    @JellyfinScreenStatePreview
+    @EphyraScreenStatePreview
     @Composable
     fun guideDaysBeyondScale() = Surface { RecordingNumberForm(RecordingNumber.GuideDays, "20", LiveTvRecordingActions()) }
 
     @PreviewTest
-    @JellyfinScreenStatePreview
+    @EphyraScreenStatePreview
     @Composable
     fun folder() =
         Surface {
@@ -107,7 +107,7 @@ class LiveTvRecordingScreenshotTest {
         }
 
     @PreviewTest
-    @JellyfinScreenStatePreview
+    @EphyraScreenStatePreview
     @Composable
     fun folderTyped() =
         Surface {

@@ -4,10 +4,10 @@ import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
 import com.android.tools.screenshot.PreviewTest
 import com.binge.designsystem.SaveStatus
-import com.cooper.homelab.ephyra.preview.JellyfinScreenStatePreview
-import com.cooper.homelab.ephyra.preview.JellyfinSpanishPreviews
-import com.cooper.homelab.ephyra.preview.JellyfinWidePreview
-import com.cooper.homelab.ephyra.preview.JellyfinWideSpanishPreview
+import com.cooper.homelab.ephyra.preview.EphyraScreenStatePreview
+import com.cooper.homelab.ephyra.preview.EphyraSpanishPreviews
+import com.cooper.homelab.ephyra.preview.EphyraWidePreview
+import com.cooper.homelab.ephyra.preview.EphyraWideSpanishPreview
 import com.cooper.homelab.ephyra.server.FetcherKind
 import com.cooper.homelab.ephyra.server.TypeFetchers
 import kotlinx.serialization.json.Json
@@ -33,41 +33,41 @@ private val ready = MetadataDefaultsUiState.Ready(configuration, fetchers)
 /** The metadata providers by type: the list across the matrix, a type's page, a type the server named no providers for, then the other states. */
 class MetadataDefaultsScreenshotTest {
     @PreviewTest
-    @JellyfinScreenStatePreview
-    @JellyfinSpanishPreviews
+    @EphyraScreenStatePreview
+    @EphyraSpanishPreviews
     @Composable
     fun list() = MetadataDefaultsScreen(ready, MetadataDefaultsActions())
 
     @PreviewTest
-    @JellyfinScreenStatePreview
-    @JellyfinSpanishPreviews
+    @EphyraScreenStatePreview
+    @EphyraSpanishPreviews
     @Composable
     fun typePage() = MetadataTypeScreen(ready, "MusicVideo", MetadataDefaultsActions())
 
     @PreviewTest
-    @JellyfinScreenStatePreview
-    @JellyfinSpanishPreviews
+    @EphyraScreenStatePreview
+    @EphyraSpanishPreviews
     @Composable
     fun fetcherPage() =
         MetadataFetcherScreen(ready, "MusicVideo", OpenFetcher(FetcherKind.Metadata, "The Open Movie Database"), MetadataDefaultsActions())
 
     @PreviewTest
-    @JellyfinScreenStatePreview
+    @EphyraScreenStatePreview
     @Composable
     fun unnamedType() = MetadataTypeScreen(ready, "Book", MetadataDefaultsActions())
 
     @PreviewTest
-    @JellyfinScreenStatePreview
+    @EphyraScreenStatePreview
     @Composable
     fun saving() = MetadataTypeScreen(ready.copy(save = SaveProgress(SaveStatus.Saving)), "Movie", MetadataDefaultsActions())
 
     @PreviewTest
-    @JellyfinScreenStatePreview
+    @EphyraScreenStatePreview
     @Composable
     fun loading() = MetadataDefaultsScreen(MetadataDefaultsUiState.Loading, MetadataDefaultsActions())
 
     @PreviewTest
-    @JellyfinScreenStatePreview
+    @EphyraScreenStatePreview
     @Composable
     fun failed() = MetadataDefaultsScreen(MetadataDefaultsUiState.Failed(ConsoleFailure.Unreachable), MetadataDefaultsActions())
 }
@@ -75,8 +75,8 @@ class MetadataDefaultsScreenshotTest {
 /** The page on a landscape tablet, where a type opens in a third pane: the invitation to pick one while none is. */
 class MetadataDefaultsPaneScreenshotTest {
     @PreviewTest
-    @JellyfinWidePreview
-    @JellyfinWideSpanishPreview
+    @EphyraWidePreview
+    @EphyraWideSpanishPreview
     @Composable
     fun placeholder() = Surface { MetadataDefaultsPlaceholder() }
 }

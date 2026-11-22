@@ -323,16 +323,20 @@ private fun ServerPickerSheet(
     }
 }
 
-/**
- * A text setting's sheet: Save keeps what's typed, Cancel leaves the setting as it was. [inWindow]
- * false draws the form for a frame.
- */
+/** A text setting's sheet. */
 @Composable
 internal fun TextSheet(
     text: ServerText,
     state: ServerSettingsUiState.Ready,
     actions: ServerSettingsActions,
-    inWindow: Boolean = true,
+) = TextSettingSheet(onDismissRequest = { actions.onEdit(null) }) { TextForm(text, state, actions) }
+
+/** A text setting's form: Done keeps what's typed, Cancel leaves the setting as it was. */
+@Composable
+internal fun TextForm(
+    text: ServerText,
+    state: ServerSettingsUiState.Ready,
+    actions: ServerSettingsActions,
 ) {
     val current =
         when (text) {
@@ -341,7 +345,6 @@ internal fun TextSheet(
             ServerText.CustomCss -> state.branding.customCss
         }
     var value by rememberSaveable(text) { mutableStateOf(current) }
-    val error = state.sheetFailed?.let { stringResource(R.string.settings_not_saved, it.text()) }
     val (title, body) =
         when (text) {
             ServerText.Name -> R.string.server_settings_name to R.string.server_settings_name_body
@@ -349,22 +352,17 @@ internal fun TextSheet(
             ServerText.CustomCss -> R.string.server_settings_css to R.string.server_settings_css_body
         }
     val single = text == ServerText.Name
-    ConsoleSheet(onDismissRequest = { actions.onEdit(null) }, inWindow = inWindow) {
-        ConsoleTextEntry(
-            title = stringResource(title),
-            body = stringResource(body),
-            value = value,
-            onValueChange = { value = it },
-            submitLabel = stringResource(R.string.server_settings_save),
-            onSubmit = { actions.onSaveText(text, value) },
-            onCancel = { actions.onEdit(null) },
-            isSubmitting = state.submitting == text,
-            error = error,
-            singleLine = single,
-            minLines = if (text == ServerText.CustomCss) CSS_LINES else MULTILINE_MIN,
-            maxLines = if (single) 1 else CSS_LINES,
-        )
-    }
+    TextSettingForm(
+        title = stringResource(title),
+        body = stringResource(body),
+        value = value,
+        onValueChange = { value = it },
+        onDone = { actions.onSaveText(text, value) },
+        onCancel = { actions.onEdit(null) },
+        singleLine = single,
+        minLines = if (text == ServerText.CustomCss) CSS_LINES else MULTILINE_MIN,
+        maxLines = if (single) 1 else CSS_LINES,
+    )
 }
 
 private const val LOADING_ROWS = 8

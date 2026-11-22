@@ -1,6 +1,7 @@
 package com.cooper.homelab.ephyra.server
 
 import com.cooper.homelab.core.server.network.UnreadableAnswerException
+import com.cooper.homelab.core.testing.DiscardLogger
 import com.cooper.homelab.ephyra.FakeJellyfin
 import kotlinx.coroutines.CoroutineStart
 import kotlinx.coroutines.Dispatchers

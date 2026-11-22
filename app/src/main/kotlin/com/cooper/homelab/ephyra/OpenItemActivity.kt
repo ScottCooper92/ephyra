@@ -37,7 +37,7 @@ class OpenItemActivity : ComponentActivity() {
     }
 
     private fun handOff(from: Intent) {
-        val graph = (application as JellyfinApp).graph
+        val graph = (application as EphyraApp).graph
         from.toOpenItemRequest()?.let(graph.openRequests::offer)
         // A running app takes the request from the channel with its stack intact, and MainActivity reads no intent; a cold start builds the app as usual.
         startActivity(

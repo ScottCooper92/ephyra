@@ -23,18 +23,18 @@ import androidx.lifecycle.viewModelScope
 import androidx.navigation3.runtime.rememberNavBackStack
 import androidx.test.core.app.ApplicationProvider
 import com.cooper.homelab.core.presentation.connect.LinkStash
+import com.cooper.homelab.core.testing.DiscardLogger
+import com.cooper.homelab.core.testing.PlainCipher
 import com.cooper.homelab.ephyra.AppGraph
 import com.cooper.homelab.ephyra.ConsoleHost
 import com.cooper.homelab.ephyra.FakeJellyfin
-import com.cooper.homelab.ephyra.PlainCipher
 import com.cooper.homelab.ephyra.auth.SessionStore
 import com.cooper.homelab.ephyra.flags.LocalClientEnabled
 import com.cooper.homelab.ephyra.server.Connection
-import com.cooper.homelab.ephyra.server.DiscardLogger
 import com.cooper.homelab.ephyra.server.LibraryIndex
 import com.cooper.homelab.ephyra.session
 import com.cooper.homelab.ephyra.testSessionStore
-import com.cooper.homelab.ephyra.theme.JellyfinTheme
+import com.cooper.homelab.ephyra.theme.EphyraTheme
 import com.cooper.homelab.ephyra.ui.nav.HomeRoute
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
@@ -57,7 +57,7 @@ import org.robolectric.annotation.GraphicsMode
 /**
  * A process death, as the device does it (#823): the saved UI state comes back, and the view model does not. `recreate()` on the
  * activity is a configuration change, which keeps the view models and so never shows what a killed process shows: a fresh
- * [JellyfinViewModel] at `Loading` that reads the session again while the restored back stack is already on screen. This composes the
+ * [EphyraViewModel] at `Loading` that reads the session again while the restored back stack is already on screen. This composes the
  * real [ConsoleHost] over a real view model, and rebuilds the composition from its saved state with a new view model.
  */
 @OptIn(ExperimentalTestApi::class)
@@ -82,7 +82,7 @@ class ProcessDeathRestoreTest {
     fun close() = teardown.close(jellyfin, idle = { shadowOf(Looper.getMainLooper()).idle() })
 
     /** The view model the composition last built, so a test can read what it restored. */
-    private var shown: JellyfinViewModel? = null
+    private var shown: EphyraViewModel? = null
 
     /** What a process that died left for the next: a stash that outlives the view models, as the file does. */
     private class MemoryStash : LinkStash {
@@ -107,7 +107,7 @@ class ProcessDeathRestoreTest {
             remember {
                 teardown
                     .made(
-                        JellyfinViewModel(
+                        EphyraViewModel(
                             sessions,
                             connection,
                             LibraryIndex(),
@@ -122,7 +122,7 @@ class ProcessDeathRestoreTest {
         val backStack = rememberNavBackStack(HomeRoute)
         val actions = Actions(onAddress = viewModel::onAddress)
         CompositionLocalProvider(LocalClientEnabled provides true) {
-            JellyfinTheme {
+            EphyraTheme {
                 ConsoleHost(state, backStack, graph, actions, actions, clientResolved = true)
             }
         }
@@ -196,7 +196,7 @@ class ProcessDeathRestoreTest {
             // The process that dies: it shows a code, keeps the wait, and is gone before anything is approved.
             val dying =
                 teardown.made(
-                    JellyfinViewModel(
+                    EphyraViewModel(
                         sessions,
                         connection,
                         LibraryIndex(),
@@ -238,7 +238,7 @@ class ProcessDeathRestoreTest {
 
     /** Waits with the test's own idling, which runs the main looper where Main's work is, and does not block the main thread. */
     private fun AndroidComposeUiTest<ComponentActivity>.awaitState(
-        viewModel: JellyfinViewModel,
+        viewModel: EphyraViewModel,
         matches: (UiState) -> Boolean,
     ): UiState {
         waitUntil(timeoutMillis = WAIT_MILLIS) {

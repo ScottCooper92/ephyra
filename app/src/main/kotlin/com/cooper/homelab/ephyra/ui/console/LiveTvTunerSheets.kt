@@ -38,6 +38,7 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import com.binge.designsystem.component.BingeFilledButton
 import com.binge.designsystem.component.BingeOutlinedButton
+import com.binge.designsystem.component.BingeTextField
 import com.binge.designsystem.component.ItemGroup
 import com.binge.designsystem.component.ListItem
 import com.cooper.homelab.ephyra.R
@@ -232,7 +233,7 @@ internal fun TunerForm(
         onCancel = { actions.onSheet(null) },
         submitting = saving,
     ) {
-        ConsoleTextField(
+        BingeTextField(
             value = url,
             onValueChange = { url = it },
             label = stringResource(if (draft.isM3u) R.string.live_tv_field_playlist else R.string.live_tv_field_address),
@@ -277,7 +278,7 @@ private fun M3uFields(
     enabled: Boolean,
     limitInvalid: Boolean,
 ) {
-    ConsoleTextField(
+    BingeTextField(
         value = name,
         onValueChange = onName,
         label = stringResource(R.string.live_tv_field_name),
@@ -285,7 +286,7 @@ private fun M3uFields(
         enabled = enabled,
         imeAction = ImeAction.Next,
     )
-    ConsoleTextField(
+    BingeTextField(
         value = agent,
         onValueChange = onAgent,
         label = stringResource(R.string.live_tv_field_user_agent),
@@ -293,7 +294,7 @@ private fun M3uFields(
         enabled = enabled,
         imeAction = ImeAction.Next,
     )
-    ConsoleTextField(
+    BingeTextField(
         value = limit,
         onValueChange = onLimit,
         label = stringResource(R.string.live_tv_field_limit),
@@ -301,6 +302,7 @@ private fun M3uFields(
         isError = limitInvalid,
         enabled = enabled,
         keyboardType = KeyboardType.Number,
+        imeAction = ImeAction.Done,
     )
 }
 
@@ -313,7 +315,7 @@ private fun FallbackBitrateField(
     onChange: (String) -> Unit,
 ) {
     if (value == null) return
-    ConsoleTextField(
+    BingeTextField(
         value = value,
         onValueChange = onChange,
         label = stringResource(R.string.live_tv_field_fallback),
@@ -321,6 +323,7 @@ private fun FallbackBitrateField(
         isError = invalid,
         enabled = enabled,
         keyboardType = KeyboardType.Decimal,
+        imeAction = ImeAction.Done,
     )
 }
 

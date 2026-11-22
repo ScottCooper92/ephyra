@@ -5,14 +5,14 @@ import androidx.compose.ui.test.assertCountEquals
 import androidx.compose.ui.test.onAllNodesWithText
 import androidx.compose.ui.test.onNodeWithText
 import com.binge.designsystem.testing.createTakeDownAndroidComposeRule
+import com.cooper.homelab.core.testing.DiscardLogger
 import com.cooper.homelab.ephyra.FakeJellyfin
 import com.cooper.homelab.ephyra.server.ApiKey
 import com.cooper.homelab.ephyra.server.Connection
-import com.cooper.homelab.ephyra.server.DiscardLogger
 import com.cooper.homelab.ephyra.server.JellyfinHttpException
 import com.cooper.homelab.ephyra.session
 import com.cooper.homelab.ephyra.testSessionStore
-import com.cooper.homelab.ephyra.theme.JellyfinTheme
+import com.cooper.homelab.ephyra.theme.EphyraTheme
 import com.cooper.homelab.ephyra.ui.MainLooperDispatcher
 import com.cooper.homelab.ephyra.ui.ViewModelTeardown
 import com.cooper.homelab.ephyra.ui.idleMain
@@ -67,7 +67,7 @@ class ConsoleFailureTest {
     @Test
     fun `an action page says the server's reason in its message, without the generic line`() {
         compose.setContent {
-            JellyfinTheme {
+            EphyraTheme {
                 ApiKeysScreen(
                     ApiKeysUiState.Ready(keys, actionFailed = ConsoleFailure.refused("Not enough free space.")),
                     ApiKeysActions(),
@@ -81,7 +81,7 @@ class ConsoleFailureTest {
     @Test
     fun `without a reason the page keeps the generic line`() {
         compose.setContent {
-            JellyfinTheme { ApiKeysScreen(ApiKeysUiState.Ready(keys, actionFailed = ConsoleFailure.Refused), ApiKeysActions()) }
+            EphyraTheme { ApiKeysScreen(ApiKeysUiState.Ready(keys, actionFailed = ConsoleFailure.Refused), ApiKeysActions()) }
         }
         compose.onNodeWithText("Not changed. Something went wrong. Try again.").assertExists()
     }
@@ -89,7 +89,7 @@ class ConsoleFailureTest {
     @Test
     fun `a page that couldn't read shows the reason in place of the generic body, with Try again`() {
         compose.setContent {
-            JellyfinTheme {
+            EphyraTheme {
                 ApiKeysScreen(ApiKeysUiState.Failed(ConsoleFailure.refused("The database is locked.")), ApiKeysActions())
             }
         }

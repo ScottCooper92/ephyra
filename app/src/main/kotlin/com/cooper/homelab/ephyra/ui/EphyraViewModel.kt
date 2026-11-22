@@ -63,6 +63,9 @@ enum class SetupError {
 
     /** The server asks for a client certificate, which this app cannot send yet. */
     ClientCertificateNeeded,
+
+    /** The platform refused the server's certificate: self-signed, expired or for another address. A retry cannot fix it. */
+    CertificateRefused,
     Generic,
 }
 
@@ -89,6 +92,9 @@ enum class ConnectionHealth {
 
     /** The server asks for a client certificate, which this app cannot send yet: a retry on the same address cannot fix it. */
     ClientCertificateNeeded,
+
+    /** The platform refused the server's certificate: only the server's owner, or another address, can fix it. */
+    CertificateRefused,
     ;
 
     val isProblem: Boolean get() = this != Checking && this != Healthy
@@ -98,12 +104,14 @@ enum class ConnectionHealth {
  * Why a read of the signed-in server failed: the failure says it itself, since the local-network permission's refusal is
  * named by the interceptor that raised it, and a request for a client certificate is told apart from silence.
  */
-internal suspend fun IOException.refreshHealth(): ConnectionHealth =
-    when {
-        asksForClientCertificate(listOf(this)) -> ConnectionHealth.ClientCertificateNeeded
-        serverFailure() == ServerFailure.LocalNetworkDenied -> ConnectionHealth.LocalNetworkDenied
+internal suspend fun IOException.refreshHealth(): ConnectionHealth {
+    if (asksForClientCertificate(listOf(this))) return ConnectionHealth.ClientCertificateNeeded
+    return when (serverFailure()) {
+        ServerFailure.LocalNetworkDenied -> ConnectionHealth.LocalNetworkDenied
+        ServerFailure.CertificateRefused -> ConnectionHealth.CertificateRefused
         else -> ConnectionHealth.Unreachable
     }
+}
 
 /**
  * Why the live calls went unanswered. The monitor learns only that calls failed, not why, so this one still tells a refusal of the
@@ -119,9 +127,16 @@ internal fun monitoredUnreachable(
         ConnectionHealth.Unreachable
     }
 
-/** Why a call made while setting up failed: the local network's refusal names itself, and anything else is the server not answering. */
+/**
+ * Why a call made while setting up failed: the local network's refusal and a refused certificate name themselves, and anything else is
+ * the server not answering.
+ */
 internal suspend fun Throwable.unreachableSetup(): SetupError =
-    if (setupFailure() == ServerFailure.LocalNetworkDenied) SetupError.LocalNetworkDenied else SetupError.Unreachable
+    when (setupFailure()) {
+        ServerFailure.LocalNetworkDenied -> SetupError.LocalNetworkDenied
+        ServerFailure.CertificateRefused -> SetupError.CertificateRefused
+        else -> SetupError.Unreachable
+    }
 
 /** Picks a server found on the network: connects to it as if its address had been typed. */
 fun EphyraViewModel.chooseServer(server: DiscoveredServer) {

@@ -41,6 +41,7 @@ import com.cooper.homelab.ephyra.ui.console.ConsolePage
 import com.cooper.homelab.ephyra.ui.console.UserAvatar
 import com.cooper.homelab.ephyra.ui.console.rememberOwnPicture
 import com.binge.designsystem.R as DesR
+import com.cooper.homelab.core.uiandroid.R as CoreR
 
 /** What the screens can ask of the [EphyraViewModel]. */
 data class Actions(
@@ -260,6 +261,7 @@ internal fun errorText(error: SetupError): String =
             SetupError.QuickConnectExpired -> R.string.error_quick_connect_expired
             SetupError.CleartextRefused -> R.string.error_cleartext_refused
             SetupError.ClientCertificateNeeded -> R.string.error_client_certificate
+            SetupError.CertificateRefused -> CoreR.string.connect_error_certificate
             SetupError.Generic -> R.string.error_generic
         },
     )

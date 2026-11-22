@@ -1,9 +1,15 @@
 package com.cooper.homelab.ephyra.client.search
 
 import androidx.activity.ComponentActivity
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.setValue
+import androidx.compose.ui.semantics.SemanticsProperties
+import androidx.compose.ui.test.SemanticsMatcher
 import androidx.compose.ui.test.assertIsDisplayed
 import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.performClick
+import androidx.compose.ui.test.performScrollToIndex
 import com.binge.designsystem.testing.createTakeDownAndroidComposeRule
 import com.binge.designsystem.theme.BingeExpressiveTheme
 import com.cooper.homelab.core.foundation.ServerFailure
@@ -152,5 +158,69 @@ class SearchTabScreenTest {
     fun `loading shows no result`() {
         show(SearchBody.Loading, "dark")
         rule.onNodeWithText("Heat").assertDoesNotExist()
+    }
+
+    @Test
+    fun `a chip not read yet keeps the chips and shows no list of its own`() {
+        val pages = mapOf(SearchType.All to hits)
+        show(
+            SearchBody.Ready(emptyList(), 0, hasMore = false, appending = false, appendFailed = false, query = "dark", pages = pages),
+            "dark",
+            SearchType.Series,
+        )
+        rule.onNodeWithText("People").assertIsDisplayed()
+        rule.onNodeWithText("None of the results so far is of this kind.").assertDoesNotExist()
+    }
+
+    @Test
+    fun `a page keeps its place across a chip tap away and back, and a new query opens at the top`() {
+        val movies = List(60) { SearchHit.Title(BrowseItem("m$it", "Movie $it", ItemKind.Movie)) }
+
+        fun body(
+            query: String,
+            type: SearchType,
+        ) = SearchBody.Ready(
+            hits = movies,
+            loaded = movies.size,
+            hasMore = false,
+            appending = false,
+            appendFailed = false,
+            query = query,
+            pages = mapOf(SearchType.All to movies, SearchType.Movies to movies),
+        )
+        var type by mutableStateOf(SearchType.All)
+        var query by mutableStateOf("movie")
+        rule.setContent {
+            BingeExpressiveTheme {
+                SearchTabScreen(
+                    state = SearchUiState(query, type, body(query, type)),
+                    imageUrl = { _, _ -> null },
+                    actions =
+                        SearchActions(
+                            onQueryChange = {},
+                            onClear = {},
+                            onSubmit = {},
+                            onOpen = { _, _ -> },
+                            onLoadMore = {},
+                            onRetry = {},
+                            onType = { type = it },
+                            onPickRecent = {},
+                            onClearRecents = {},
+                        ),
+                )
+            }
+        }
+        rule.waitForIdle()
+        rule.onNode(SemanticsMatcher.keyIsDefined(SemanticsProperties.VerticalScrollAxisRange)).performScrollToIndex(40)
+        rule.waitForIdle()
+        rule.onNodeWithText("Movie 40").assertIsDisplayed()
+        rule.onNodeWithText("Movies").performClick()
+        rule.waitForIdle()
+        rule.onNodeWithText("All").performClick()
+        rule.waitForIdle()
+        rule.onNodeWithText("Movie 40").assertIsDisplayed()
+        query = "movie two"
+        rule.waitForIdle()
+        rule.onNodeWithText("Movie 0").assertIsDisplayed()
     }
 }

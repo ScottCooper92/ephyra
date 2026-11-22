@@ -34,6 +34,7 @@ import com.binge.designsystem.layout.LayoutAnchors
 import com.binge.designsystem.layout.layoutAnchorIf
 import com.binge.designsystem.template.BingeScreenScaffold
 import com.binge.designsystem.template.EmptyScreen
+import com.binge.designsystem.template.ScreenBar
 import com.binge.designsystem.template.ScreenBody
 import com.binge.designsystem.template.screenListPadding
 import com.cooper.homelab.ephyra.R
@@ -70,6 +71,8 @@ fun ChannelMappingsScreen(
     val title = (state as? ChannelMappingsUiState.Ready)?.options?.providerName?.takeIf { it.isNotBlank() }
     BingeScreenScaffold(
         title = stringResource(R.string.channel_mappings_title),
+        // Only the large bar draws a subtitle, and the provider's name is a real one.
+        bar = ScreenBar.Large,
         subtitle = title,
         onBack = actions.onBack,
         snackbarHostState = host,

@@ -2,6 +2,7 @@ package com.cooper.homelab.ephyra.client.search
 
 import com.binge.companion.sdk.attempt
 import com.cooper.homelab.core.foundation.ServerFailure
+import com.cooper.homelab.core.presentation.paging.Answered
 import com.cooper.homelab.core.presentation.paging.PagedList
 import com.cooper.homelab.core.presentation.paging.PagedListState
 import com.cooper.homelab.core.presentation.paging.ResultPage
@@ -15,7 +16,7 @@ import com.cooper.homelab.ephyra.browse.ItemsRepository
 import com.cooper.homelab.ephyra.browse.SearchRepository
 import com.cooper.homelab.ephyra.client.TabModel
 import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
@@ -23,7 +24,6 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.filter
-import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
@@ -38,7 +38,6 @@ import kotlinx.coroutines.launch
  * query starts on All again. It uses no Android type, and [scope] is the caller's, with no default. [initialQuery] is what the field held
  * before a process death, searched when the tab starts. No count is asked for: the chips carry none.
  */
-@OptIn(ExperimentalCoroutinesApi::class)
 class SearchModel(
     private val scope: CoroutineScope,
     private val search: SearchRepository,
@@ -107,22 +106,6 @@ class SearchModel(
         ResultPage(page.items.map(SearchHit::Title), next = page.nextStart(pageSize))
     }
 
-    override val state: StateFlow<SearchUiState> =
-        combine(kinds.selected, query.query) { selected, text -> selected to text }
-            .flatMapLatest { (selected, text) ->
-                val list = selected?.let(typed::get)
-                if (list == null) {
-                    query.state.map { SearchUiState(text, SearchType.All, it.toBody()) }
-                } else {
-                    combine(query.state, list.state) { all, shown ->
-                        SearchUiState(text, SearchType.of(selected), if (all is QuerySearchState.Idle) all.toBody() else shown.toBody(all))
-                    }
-                }
-            }.stateIn(scope, SharingStarted.Lazily, SearchUiState("", SearchType.All, SearchBody.Idle(emptyList())))
-
-    /** A search has no pull-to-refresh: a retry reads the query again. */
-    override val refreshing: StateFlow<Boolean> = MutableStateFlow(false).asStateFlow()
-
     private fun QuerySearchState<SearchHit>.settledQuery(): String =
         when (this) {
             is QuerySearchState.Idle -> ""
@@ -132,31 +115,85 @@ class SearchModel(
             is QuerySearchState.Failed -> query
         }
 
-    private fun QuerySearchState<SearchHit>.toBody(): SearchBody =
-        when (this) {
-            is QuerySearchState.Idle -> SearchBody.Idle(recents)
+    private val answers: Flow<Map<SearchKind, Answered<String, SearchHit>?>> =
+        combine(typed.map { (kind, list) -> list.answered.map { kind to it } }) { it.toMap() }
+
+    override val state: StateFlow<SearchUiState> =
+        combine(kinds.selected, query.query, query.state, answers) { selected, text, all, answered ->
+            SearchUiState(
+                text,
+                if (all is QuerySearchState.Results) SearchType.of(selected) else SearchType.All,
+                body(selected, all, answered),
+            )
+        }.stateIn(scope, SharingStarted.Lazily, SearchUiState("", SearchType.All, SearchBody.Idle(emptyList())))
+
+    /** A search has no pull-to-refresh: a retry reads the query again. */
+    override val refreshing: StateFlow<Boolean> = MutableStateFlow(false).asStateFlow()
+
+    private fun body(
+        selected: SearchKind?,
+        all: QuerySearchState<SearchHit>,
+        answered: Map<SearchKind, Answered<String, SearchHit>?>,
+    ): SearchBody =
+        when (all) {
+            is QuerySearchState.Idle -> SearchBody.Idle(all.recents)
             is QuerySearchState.Loading -> SearchBody.Loading
-            is QuerySearchState.Results -> SearchBody.Ready(items, items.size, hasMore, appending, appendFailed)
-            is QuerySearchState.NoResults -> SearchBody.NoResults(this.query)
-            is QuerySearchState.Failed -> SearchBody.Failed(failure)
+            is QuerySearchState.NoResults -> SearchBody.NoResults(all.query)
+            is QuerySearchState.Failed -> SearchBody.Failed(all.failure)
+            is QuerySearchState.Results -> {
+                // A chip's answer counts only for the query All answers now: one that is older is not shown, so a chip chosen again after a new query loads.
+                val current =
+                    answered
+                        .mapNotNull { (kind, found) ->
+                            found?.takeIf { it.query == all.query }?.let { kind to it.state }
+                        }.toMap()
+                val failed = selected?.let { current[it] } as? PagedListState.Failed
+                if (failed != null) SearchBody.Failed(failed.failure) else paged(selected, all, current)
+            }
         }
 
-    /**
-     * What the chosen chip's list shows. A chip with nothing of its type keeps the chips and says so, where All finding nothing is
-     * [SearchBody.NoResults]. While the query is still answering (All is loading), the chip waits with it.
-     */
-    private fun PagedListState<SearchHit>.toBody(all: QuerySearchState<SearchHit>): SearchBody =
-        when {
-            all is QuerySearchState.Loading -> SearchBody.Loading
-            all is QuerySearchState.NoResults -> SearchBody.NoResults(all.query)
-            else ->
-                when (this) {
-                    PagedListState.Loading -> SearchBody.Loading
-                    PagedListState.Empty -> SearchBody.Ready(emptyList(), 0, hasMore = false, appending = false, appendFailed = false)
-                    is PagedListState.Failed -> SearchBody.Failed(failure)
-                    is PagedListState.Ready -> SearchBody.Ready(items, items.size, hasMore, appending, appendFailed)
+    private fun paged(
+        selected: SearchKind?,
+        all: QuerySearchState.Results<SearchHit>,
+        current: Map<SearchKind, PagedListState<SearchHit>>,
+    ): SearchBody.Ready {
+        val pages =
+            buildMap {
+                put(SearchType.All, all.items)
+                current.forEach { (kind, state) ->
+                    when (state) {
+                        is PagedListState.Ready -> put(SearchType.of(kind), state.items)
+                        PagedListState.Empty -> put(SearchType.of(kind), emptyList())
+                        else -> Unit
+                    }
                 }
+            }
+        val shown = selected?.let { current[it] }
+        val items = pages[SearchType.of(selected)].orEmpty()
+        return when {
+            selected == null -> SearchBody.Ready(items, items.size, all.hasMore, all.appending, all.appendFailed, all.query, pages)
+            shown is PagedListState.Ready ->
+                SearchBody.Ready(
+                    items,
+                    items.size,
+                    shown.hasMore,
+                    shown.appending,
+                    shown.appendFailed,
+                    all.query,
+                    pages,
+                )
+            else ->
+                SearchBody.Ready(
+                    items,
+                    items.size,
+                    hasMore = false,
+                    appending = false,
+                    appendFailed = false,
+                    query = all.query,
+                    pages = pages,
+                )
         }
+    }
 
     /** Searches what the field held before the process ended, if it held anything. */
     override fun start() {

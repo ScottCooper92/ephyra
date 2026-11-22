@@ -7,6 +7,7 @@ import com.cooper.homelab.ephyra.browse.ItemKind
 import com.cooper.homelab.ephyra.browse.Page
 import com.cooper.homelab.ephyra.browse.PersonResult
 import com.cooper.homelab.ephyra.browse.SearchRepository
+import kotlinx.coroutines.CompletableDeferred
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
@@ -47,6 +48,8 @@ class SearchModelTest {
         var failure: Throwable? = null,
         var peopleFailure: Throwable? = null,
     ) : SearchRepository {
+        /** When set, a read of a single type waits for it, as a slow server would. */
+        var gate: CompletableDeferred<Unit>? = null
         val titleReads = mutableListOf<Triple<String, Set<ItemKind>, Int>>()
         val peopleReads = mutableListOf<Pair<String, Int>>()
 
@@ -58,6 +61,7 @@ class SearchModelTest {
             withTotal: Boolean,
         ): Page<BrowseItem> {
             titleReads += Triple(term, kinds, startIndex)
+            if (kinds.size == 1) gate?.await()
             failure?.let { throw it }
             val found = titles.filter { it.kind in kinds }
             return Page(found.drop(startIndex).take(limit), total = found.size, startIndex = startIndex)
@@ -197,6 +201,46 @@ class SearchModelTest {
         model.loadMore()
         assertEquals(5, model.ready().hits.size)
         assertFalse(model.ready().hasMore)
+    }
+
+    @Test
+    fun `the pages hold each chip's answer to the query, and a chip nobody has read has none`() {
+        val model = model()
+        model.setText("heat")
+        assertEquals(setOf(SearchType.All), model.ready().pages.keys)
+        assertEquals("heat", model.ready().query)
+        model.selectType(SearchType.Movies)
+        val ready = model.ready()
+        assertEquals(setOf(SearchType.All, SearchType.Movies), ready.pages.keys)
+        assertEquals(listOf("Movie:m1"), ready.pages.getValue(SearchType.Movies).map(::searchHitKey))
+        assertEquals(listOf("Movie:m1"), ready.hits.map(::searchHitKey))
+    }
+
+    @Test
+    fun `a chip's answer to an older query is not a page of the new one`() {
+        val model = model()
+        model.setText("heat")
+        model.selectType(SearchType.Movies)
+        model.setText("heat wave")
+        assertEquals(setOf(SearchType.All), model.ready().pages.keys)
+        assertEquals("heat wave", model.ready().query)
+        model.selectType(SearchType.Movies)
+        assertEquals(setOf(SearchType.All, SearchType.Movies), model.ready().pages.keys)
+    }
+
+    @Test
+    fun `a chip being read has no page yet, with the chips and the other pages kept`() {
+        val model = model()
+        model.setText("heat")
+        val gate = CompletableDeferred<Unit>()
+        search.gate = gate
+        model.selectType(SearchType.Series)
+        val ready = model.ready()
+        assertEquals(setOf(SearchType.All), ready.pages.keys)
+        assertEquals(SearchType.Series, model.state.value.type)
+        assertTrue(ready.hits.isEmpty())
+        gate.complete(Unit)
+        assertEquals(setOf(SearchType.All, SearchType.Series), model.ready().pages.keys)
     }
 
     @Test

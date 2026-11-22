@@ -1,7 +1,6 @@
 package com.cooper.homelab.ephyra.ui
 
 import com.binge.companion.sdk.attempt
-import com.cooper.homelab.core.server.network.LocalNetworkPermission
 import com.cooper.homelab.ephyra.server.Connection
 import com.cooper.homelab.ephyra.server.JellyfinClient
 import com.cooper.homelab.ephyra.server.JellyfinHttpException
@@ -26,7 +25,6 @@ class StartupFinishStep internal constructor(
     private val connection: Connection,
     private val state: MutableStateFlow<UiState.Setup>,
     private val scope: CoroutineScope,
-    private val localNetwork: LocalNetworkPermission,
     private val signIn: suspend (HttpUrl, PublicServerInfo, SignedIn) -> Unit,
     /** The sign-in as the new account failed: the sign-in step shows, on the server read again, with this name filled in. */
     private val signInByHand: (name: String, baseUrl: String) -> Unit,
@@ -55,7 +53,7 @@ class StartupFinishStep internal constructor(
             // These routes are anonymous until Complete, so a 401 means the server is already complete: an earlier Complete took
             // effect and its reply was lost. Go on to the sign-in, as after a normal Complete.
             if (failure != null && !failure.isAlreadyComplete()) {
-                val error = if (failure is JellyfinHttpException) SetupError.Generic else unreachableSetup(wizard.baseUrl, localNetwork)
+                val error = if (failure is JellyfinHttpException) SetupError.Generic else failure.unreachableSetup()
                 edit { copy(busy = false, error = error) }
                 return@launch
             }

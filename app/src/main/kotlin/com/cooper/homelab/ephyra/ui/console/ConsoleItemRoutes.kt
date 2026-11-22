@@ -8,10 +8,10 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.lifecycle.viewmodel.initializer
 import androidx.lifecycle.viewmodel.viewModelFactory
+import com.cooper.homelab.core.foundation.ServerVersion
 import com.cooper.homelab.ephyra.AppGraph
 import com.cooper.homelab.ephyra.server.JellyfinAccount
 import com.cooper.homelab.ephyra.server.JellyfinServerProfile
-import com.cooper.homelab.ephyra.server.JellyfinVersion
 
 /** One task's screen, with the page's view model: the one its list shows, whose triggers it changes. */
 @Composable
@@ -67,7 +67,7 @@ internal fun LogItemRoute(
 internal fun ConsoleItemRoute(
     entry: ConsoleEntry,
     graph: AppGraph,
-    server: JellyfinVersion?,
+    server: ServerVersion?,
     profile: JellyfinServerProfile,
     account: JellyfinAccount,
     openSubItem: (String) -> Unit,

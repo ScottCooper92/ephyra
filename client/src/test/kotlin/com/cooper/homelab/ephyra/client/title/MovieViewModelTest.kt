@@ -1,6 +1,7 @@
 package com.cooper.homelab.ephyra.client.title
 
 import com.cooper.homelab.core.foundation.ServerFailure
+import com.cooper.homelab.core.foundation.ServerVersion
 import com.cooper.homelab.ephyra.FakeJellyfin
 import com.cooper.homelab.ephyra.FakeTitle
 import com.cooper.homelab.ephyra.browse.JellyfinCollectionRepository
@@ -10,7 +11,6 @@ import com.cooper.homelab.ephyra.server.ClientIdentity
 import com.cooper.homelab.ephyra.server.DiscardLogger
 import com.cooper.homelab.ephyra.server.JellyfinClient
 import com.cooper.homelab.ephyra.server.JellyfinServerProfile
-import com.cooper.homelab.ephyra.server.JellyfinVersion
 import com.cooper.homelab.ephyra.server.UserDataChange
 import com.cooper.homelab.ephyra.server.serverFailure
 import kotlinx.coroutines.CoroutineScope
@@ -50,7 +50,7 @@ class MovieViewModelTest {
         jellyfin.close()
     }
 
-    private fun viewModel(version: JellyfinVersion = JellyfinVersion(12, 4, 0)): MovieViewModel {
+    private fun viewModel(version: ServerVersion = ServerVersion.of(12, 4, 0)): MovieViewModel {
         val profile = JellyfinServerProfile(version)
         return MovieViewModel(
             scope = scope,
@@ -107,7 +107,7 @@ class MovieViewModelTest {
             jellyfin.browse.titles.add(FakeTitle("m1", "Alien", "box", year = 1979))
             jellyfin.browse.titles.add(FakeTitle("m2", "Aliens", "box", year = 1986))
             jellyfin.browse.titles.add(FakeTitle("box", "Sol Levante Collection", "lib-box", "BoxSet"))
-            val movie = viewModel(JellyfinVersion(10, 11, 6)).also { it.start("m1") }.ready { it.collection != null }
+            val movie = viewModel(ServerVersion.of(10, 11, 6)).also { it.start("m1") }.ready { it.collection != null }
             assertEquals("box", movie.collection!!.id)
             assertEquals(listOf("m1", "m2"), movie.collection!!.parts.map { it.id })
         }
@@ -120,7 +120,7 @@ class MovieViewModelTest {
             jellyfin.browse.titles.add(FakeTitle("boxB", "Beta Collection", "lib-box", "BoxSet"))
             // The fake gives a title one library, so the second box set holds the film through a copy with its own id.
             jellyfin.browse.titles.add(FakeTitle("m1b", "Alien", "boxB", year = 1979))
-            val movie = viewModel(JellyfinVersion(10, 11, 6)).also { it.start("m1") }.ready { it.collection != null }
+            val movie = viewModel(ServerVersion.of(10, 11, 6)).also { it.start("m1") }.ready { it.collection != null }
             assertEquals("boxA", movie.collection!!.id)
         }
 
@@ -128,7 +128,7 @@ class MovieViewModelTest {
     fun `a film in no box set has no row on an older server, and the page still shows`() =
         runBlocking {
             add("m1", "Alien")
-            val model = viewModel(JellyfinVersion(10, 11, 6)).also { it.start("m1") }
+            val model = viewModel(ServerVersion.of(10, 11, 6)).also { it.start("m1") }
             val movie = model.ready()
             assertNull(movie.collection)
             Thread.sleep(SETTLE_MILLIS)

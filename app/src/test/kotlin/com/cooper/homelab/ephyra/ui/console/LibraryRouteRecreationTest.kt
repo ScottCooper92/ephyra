@@ -15,11 +15,11 @@ import androidx.compose.ui.test.performClick
 import androidx.compose.ui.test.performScrollToNode
 import androidx.compose.ui.test.performSemanticsAction
 import com.binge.designsystem.testing.createTakeDownAndroidComposeRule
+import com.cooper.homelab.core.foundation.ServerVersion
 import com.cooper.homelab.ephyra.FakeJellyfin
 import com.cooper.homelab.ephyra.server.Connection
 import com.cooper.homelab.ephyra.server.DiscardLogger
 import com.cooper.homelab.ephyra.server.JellyfinServerProfile
-import com.cooper.homelab.ephyra.server.JellyfinVersion
 import com.cooper.homelab.ephyra.session
 import com.cooper.homelab.ephyra.testSessionStore
 import com.cooper.homelab.ephyra.theme.JellyfinTheme
@@ -47,7 +47,7 @@ class LibraryRouteRecreationTest {
     private val jellyfin = FakeJellyfin()
     private val sessions = testSessionStore()
     private val connection = Connection(OkHttpClient(), sessions, "Jellyfin Companion", "Test", "1.0", Dispatchers.IO, DiscardLogger)
-    private val profile = JellyfinServerProfile(JellyfinVersion(10, 11, 0))
+    private val profile = JellyfinServerProfile(ServerVersion.of(10, 11, 0))
 
     @Before
     fun signIn() {

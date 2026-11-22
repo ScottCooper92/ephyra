@@ -8,8 +8,8 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.lifecycle.viewmodel.initializer
 import androidx.lifecycle.viewmodel.viewModelFactory
+import com.cooper.homelab.core.foundation.ServerVersion
 import com.cooper.homelab.ephyra.AppGraph
-import com.cooper.homelab.ephyra.server.JellyfinVersion
 import com.cooper.homelab.ephyra.ui.openInBrowser
 
 /**
@@ -20,7 +20,7 @@ import com.cooper.homelab.ephyra.ui.openInBrowser
 @Composable
 internal fun PluginsRoute(
     graph: AppGraph,
-    server: JellyfinVersion?,
+    server: ServerVersion?,
     onOpenServer: () -> Unit,
     openItem: (String) -> Unit,
     onBack: () -> Unit,
@@ -112,7 +112,7 @@ internal fun PluginItemRoute(
 @Composable
 internal fun PackageItemRoute(
     graph: AppGraph,
-    server: JellyfinVersion?,
+    server: ServerVersion?,
     name: String,
     onBack: () -> Unit,
 ) {

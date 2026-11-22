@@ -1,5 +1,6 @@
 package com.cooper.homelab.ephyra.server
 
+import com.cooper.homelab.core.foundation.ServerVersion
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertFalse
 import org.junit.Assert.assertTrue
@@ -62,8 +63,8 @@ class JellyfinEncodingApiTest {
 
     @Test
     fun `before 10_10 none and auto are stored as blank, and blank reads as them`() {
-        val nine = JellyfinServerProfile(JellyfinVersion(10, 9, 0))
-        val ten = JellyfinServerProfile(JellyfinVersion(10, 10, 0))
+        val nine = JellyfinServerProfile(ServerVersion.of(10, 9, 0))
+        val ten = JellyfinServerProfile(ServerVersion.of(10, 10, 0))
         assertEquals("none", encodingChoice("", "none"))
         assertEquals("auto", encodingChoice(null, "auto"))
         assertEquals("slow", encodingChoice("slow", "auto"))

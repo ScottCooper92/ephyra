@@ -35,6 +35,7 @@ import com.binge.designsystem.template.ScreenBody
 import com.binge.designsystem.template.screenListPadding
 import com.cooper.homelab.core.flags.NoPreferenceGate
 import com.cooper.homelab.core.flags.PreferenceGate
+import com.cooper.homelab.core.foundation.ServerVersion
 import com.cooper.homelab.core.presentation.tip.TipEvent
 import com.cooper.homelab.core.presentation.tip.TipState
 import com.cooper.homelab.core.telemetry.AnalyticsConsent
@@ -45,7 +46,6 @@ import com.cooper.homelab.ephyra.BuildConfig
 import com.cooper.homelab.ephyra.R
 import com.cooper.homelab.ephyra.feedback.installBugReportUrl
 import com.cooper.homelab.ephyra.playback.StreamingNetwork
-import com.cooper.homelab.ephyra.server.JellyfinVersion
 import com.cooper.homelab.ephyra.ui.console.ConsolePage
 import com.cooper.homelab.ephyra.ui.console.PlaybackActions
 import com.cooper.homelab.ephyra.ui.console.PlaybackUiState
@@ -77,7 +77,7 @@ internal fun AppGroup(
     actions: Actions,
     titled: Boolean = true,
     onOpenTip: (() -> Unit)? = null,
-    serverVersion: JellyfinVersion? = null,
+    serverVersion: ServerVersion? = null,
 ) {
     val context = LocalContext.current
     ItemGroup(
@@ -191,7 +191,7 @@ internal fun ThisAppScreen(
     tip: TipState = TipState.Unavailable,
     tipEvents: Flow<TipEvent> = emptyFlow(),
     onGiveTip: (Int) -> Unit = {},
-    serverVersion: JellyfinVersion? = null,
+    serverVersion: ServerVersion? = null,
     playback: PlaybackUiState? = null,
     playbackActions: PlaybackActions = PlaybackActions(),
     quality: StreamingQualitySettings? = null,

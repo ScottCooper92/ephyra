@@ -1,7 +1,7 @@
 package com.cooper.homelab.ephyra.feedback
 
 import com.cooper.homelab.core.feedback.bugReportUrl
-import com.cooper.homelab.ephyra.server.JellyfinVersion
+import com.cooper.homelab.core.foundation.ServerVersion
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertFalse
 import org.junit.Assert.assertTrue
@@ -44,6 +44,6 @@ class BugReportTest {
 
     @Test
     fun `the install's link names the connected server's release`() {
-        assertTrue(installBugReportUrl(JellyfinVersion(10, 10, 7)).endsWith("&server=Jellyfin+10.10.7"))
+        assertTrue(installBugReportUrl(ServerVersion.of(10, 10, 7)).endsWith("&server=Jellyfin+10.10.7"))
     }
 }

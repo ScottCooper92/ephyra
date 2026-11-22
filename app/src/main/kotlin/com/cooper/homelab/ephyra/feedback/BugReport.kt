@@ -3,8 +3,8 @@ package com.cooper.homelab.ephyra.feedback
 import android.os.Build
 import com.cooper.homelab.core.feedback.BugReport
 import com.cooper.homelab.core.feedback.bugReportUrl
+import com.cooper.homelab.core.foundation.ServerVersion
 import com.cooper.homelab.ephyra.BuildConfig
-import com.cooper.homelab.ephyra.server.JellyfinVersion
 
 /**
  * Where a bug in this app is reported: a new issue on the public app-feedback repository, through its Ephyra form
@@ -38,13 +38,13 @@ internal fun ephyraBugReport(
     )
 
 /** This install's [ephyraBugReport], with the connected server's release when [serverVersion] is known, and the link it makes. */
-fun installBugReportUrl(serverVersion: JellyfinVersion? = null): String =
+fun installBugReportUrl(serverVersion: ServerVersion? = null): String =
     bugReportUrl(
         BUG_REPORT_REPOSITORY,
         ephyraBugReport(
             appVersion = "${BuildConfig.VERSION_NAME} (${BuildConfig.VERSION_CODE})",
             device = "${Build.MANUFACTURER} ${Build.MODEL}",
             androidVersion = "${Build.VERSION.RELEASE} (API ${Build.VERSION.SDK_INT})",
-            server = serverVersion?.let { "Jellyfin ${it.major}.${it.minor}.${it.patch}" },
+            server = serverVersion?.let { "Jellyfin $it" },
         ),
     )

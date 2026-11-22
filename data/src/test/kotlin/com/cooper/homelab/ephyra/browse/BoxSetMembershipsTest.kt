@@ -1,12 +1,12 @@
 package com.cooper.homelab.ephyra.browse
 
+import com.cooper.homelab.core.foundation.ServerVersion
 import com.cooper.homelab.ephyra.FakeJellyfin
 import com.cooper.homelab.ephyra.FakeTitle
 import com.cooper.homelab.ephyra.server.ClientIdentity
 import com.cooper.homelab.ephyra.server.DiscardLogger
 import com.cooper.homelab.ephyra.server.JellyfinClient
 import com.cooper.homelab.ephyra.server.JellyfinServerProfile
-import com.cooper.homelab.ephyra.server.JellyfinVersion
 import com.cooper.homelab.ephyra.server.LibraryIndex
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.async
@@ -27,8 +27,8 @@ class BoxSetMembershipsTest {
     private val client =
         JellyfinClient(OkHttpClient(), jellyfin.baseUrl.toHttpUrl(), identity, Dispatchers.IO, logger = DiscardLogger)
             .withToken("token-1")
-    private val floor = JellyfinServerProfile(JellyfinVersion(10, 8, 13))
-    private val latest = JellyfinServerProfile(JellyfinVersion(12, 4, 0))
+    private val floor = JellyfinServerProfile(ServerVersion.of(10, 8, 13))
+    private val latest = JellyfinServerProfile(ServerVersion.of(12, 4, 0))
     private var clock = 1_000_000L
     private val memberships = BoxSetMemberships(now = { clock })
 

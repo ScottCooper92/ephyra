@@ -9,11 +9,11 @@ import com.cooper.homelab.ephyra.preview.JellyfinSpanishPreviews
 import com.cooper.homelab.ephyra.preview.JellyfinWidePreview
 import com.cooper.homelab.ephyra.preview.JellyfinWideSpanishPreview
 import com.cooper.homelab.ephyra.server.CatalogPackage
-import com.cooper.homelab.ephyra.server.JellyfinVersion
 import com.cooper.homelab.ephyra.server.PackageVersion
 import com.cooper.homelab.ephyra.server.PluginRepository
 import com.cooper.homelab.ephyra.server.PluginStatus
 import com.cooper.homelab.ephyra.server.ServerPlugin
+import com.cooper.homelab.ephyra.server.knownRelease
 
 private fun plugin(
     id: String,
@@ -103,7 +103,7 @@ private val repositories =
         PluginRepository("My own", "https://plugins.example.net/manifest.json", true),
     )
 
-private val server = JellyfinVersion.parse("10.10.7")
+private val server = knownRelease("10.10.7")
 
 @Composable
 private fun Plugins(

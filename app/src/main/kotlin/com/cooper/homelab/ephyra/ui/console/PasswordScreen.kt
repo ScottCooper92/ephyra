@@ -15,6 +15,8 @@ import com.binge.designsystem.template.FormAction
 import com.binge.designsystem.template.FormScreen
 import com.binge.designsystem.template.ScreenBar
 import com.cooper.homelab.ephyra.R
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.emptyFlow
 import com.binge.designsystem.R as DesR
 
 /** What the password page can ask of its view model, and of the console. */
@@ -35,6 +37,7 @@ data class PasswordActions(
 fun PasswordScreen(
     state: PasswordUiState,
     actions: PasswordActions,
+    events: Flow<PasswordOutcome> = emptyFlow(),
 ) {
     val host = remember { SnackbarHostState() }
     FormScreen(
@@ -56,8 +59,8 @@ fun PasswordScreen(
                 value = state.current,
                 onValueChange = actions.onCurrent,
                 label = stringResource(R.string.password_current),
-                isError = state.result == PasswordResult.WrongCurrent,
-                supporting = if (state.result == PasswordResult.WrongCurrent) stringResource(R.string.password_wrong) else null,
+                isError = state.fieldError == PasswordFieldError.WrongCurrent,
+                supporting = if (state.fieldError == PasswordFieldError.WrongCurrent) stringResource(R.string.password_wrong) else null,
                 secret = true,
                 contentType = ContentType.Password,
                 imeAction = ImeAction.Next,
@@ -74,8 +77,8 @@ fun PasswordScreen(
                 value = state.confirm,
                 onValueChange = actions.onConfirm,
                 label = stringResource(R.string.password_confirm),
-                isError = state.result == PasswordResult.Mismatch,
-                supporting = if (state.result == PasswordResult.Mismatch) stringResource(R.string.password_mismatch) else null,
+                isError = state.fieldError == PasswordFieldError.Mismatch,
+                supporting = if (state.fieldError == PasswordFieldError.Mismatch) stringResource(R.string.password_mismatch) else null,
                 secret = true,
                 contentType = ContentType.NewPassword,
                 onDone = actions.onChange,
@@ -83,14 +86,12 @@ fun PasswordScreen(
             )
         }
     }
-    SnackbarMessage(state.result?.snackbar()?.let { stringResource(it) }, host)
+    SnackbarEvents(events, host) { it.sentence() }
 }
 
-/** The outcomes a snackbar reports: the two a field shows are not among them. */
-private fun PasswordResult.snackbar(): Int? =
+private fun PasswordOutcome.sentence(): Int =
     when (this) {
-        PasswordResult.Changed -> R.string.password_changed
-        PasswordResult.Refused -> R.string.error_generic
-        PasswordResult.Unreachable -> R.string.error_unreachable
-        PasswordResult.WrongCurrent, PasswordResult.Mismatch -> null
+        PasswordOutcome.Changed -> R.string.password_changed
+        PasswordOutcome.Refused -> R.string.error_generic
+        PasswordOutcome.Unreachable -> R.string.error_unreachable
     }

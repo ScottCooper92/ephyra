@@ -157,7 +157,8 @@ class ProfilePictureViewModelTest {
         val vm = made(ProfilePictureViewModel(connection, true, prepare = { null }, work = Dispatchers.Default, io = Dispatchers.IO))
         vm.ready()
         vm.choose { "not an image".toByteArray() }
-        assertTrue(vm.ready { it.unreadable && !it.busy }.unreadable)
+        runBlocking { withTimeout(TIMEOUT_MILLIS) { vm.unreadable.first() } }
+        assertFalse(vm.ready { !it.busy }.busy)
         assertEquals(0, jellyfin.requests.count { it.method == "POST" })
     }
 
@@ -166,7 +167,7 @@ class ProfilePictureViewModelTest {
         val vm = viewModel()
         vm.ready()
         vm.choose { null }
-        assertTrue(vm.ready { it.unreadable }.unreadable)
+        runBlocking { withTimeout(TIMEOUT_MILLIS) { vm.unreadable.first() } }
         assertEquals(0, jellyfin.requests.count { it.method == "POST" })
     }
 

@@ -16,6 +16,8 @@ import org.junit.Assert.assertNull
 import org.junit.Assert.assertTrue
 import org.junit.Test
 import java.io.IOException
+import javax.net.ssl.SSLException
+import javax.net.ssl.SSLPeerUnverifiedException
 
 /** Which servers need the local-network permission, and what a failed connection to each says about it. */
 class LocalNetworkTest {
@@ -89,6 +91,14 @@ class LocalNetworkTest {
         runBlocking {
             assertEquals(ConnectionHealth.LocalNetworkDenied, LocalNetworkDeniedException("192.168.1.2").refreshHealth())
             assertEquals(ConnectionHealth.Unreachable, IOException("connection reset").refreshHealth())
+        }
+
+    @Test
+    fun `a certificate the device refuses is told apart from a server that is down`() =
+        runBlocking {
+            assertEquals(ConnectionHealth.CertificateRefused, SSLPeerUnverifiedException("Hostname jf.lan not verified").refreshHealth())
+            assertEquals(SetupError.CertificateRefused, SSLPeerUnverifiedException("Hostname jf.lan not verified").unreachableSetup())
+            assertEquals(ConnectionHealth.Unreachable, SSLException("connection closed by peer").refreshHealth())
         }
 
     @Test

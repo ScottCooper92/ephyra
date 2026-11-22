@@ -641,13 +641,17 @@ private fun connectionRows(
 ): List<TvPaneRow> {
     if (!state.health.isProblem) return emptyList()
     val allow = actions.localNetwork
+    val edit =
+        tvActionRow(EDIT_SERVER_KEY, stringResource(CoreR.string.connection_edit_connection), Icons.Filled.Dns, actions.onChangeServer)
+    // A retry changes nothing for a refused certificate, so editing the connection leads, as on the phone.
+    if (state.health == ConnectionHealth.CertificateRefused) return listOf(edit)
     return listOf(
         if (state.health == ConnectionHealth.LocalNetworkDenied && allow != null) {
             tvActionRow(RETRY_KEY, stringResource(allow.shortLabel), Icons.Filled.Router, allow.run)
         } else {
             tvActionRow(RETRY_KEY, stringResource(CoreR.string.connection_retry), Icons.Filled.Refresh, actions.onRefresh, state.refreshing)
         },
-        tvActionRow(EDIT_SERVER_KEY, stringResource(CoreR.string.connection_edit_connection), Icons.Filled.Dns, actions.onChangeServer),
+        edit,
     )
 }
 

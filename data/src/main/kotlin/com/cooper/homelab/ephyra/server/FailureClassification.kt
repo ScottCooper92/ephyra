@@ -5,11 +5,8 @@ import com.cooper.homelab.core.server.network.FailureMapper
 import com.cooper.homelab.core.server.network.JvmTransportFailures
 import com.cooper.homelab.core.server.network.NoBody
 import com.cooper.homelab.core.server.network.RequestFacts
-import java.security.cert.CertificateException
-import javax.net.ssl.SSLException
-import javax.net.ssl.SSLPeerUnverifiedException
 
-/** A call that did not get an answer is read by the shared library: a cleartext block, a local-network denial, an unreadable answer, a client-certificate request, a timeout, or a plain connect failure. */
+/** A call that did not get an answer is read by the shared library: a cleartext block, a local-network denial, an unreadable answer, a client-certificate request, a certificate the device does not trust, a timeout, or a plain connect failure. */
 private val mapper = FailureMapper(JvmTransportFailures)
 
 /**
@@ -21,16 +18,5 @@ suspend fun Throwable.serverFailure(): ServerFailure =
     if (this is JellyfinHttpException) {
         mapper.fromStatus(code, NoBody, RequestFacts(method = "PUT", path = ""))
     } else {
-        mapper.fromThrowable(this).let { if (it == ServerFailure.Unknown && isCertificateFailure()) ServerFailure.Unreachable() else it }
+        mapper.fromThrowable(this)
     }
-
-/**
- * A handshake that failed over the server's certificate: a peer the platform could not verify, or a TLS failure with a certificate
- * exception in its cause chain. The shared library cannot name it without the certificate, which this app has no trust manager to
- * read, so it would be `Unknown`; the user can only act on "couldn't reach it", as before.
- */
-private fun Throwable.isCertificateFailure(): Boolean =
-    this is SSLPeerUnverifiedException ||
-        (this is SSLException && generateSequence(cause) { it.cause }.take(MAX_CAUSE_DEPTH).any { it is CertificateException })
-
-private const val MAX_CAUSE_DEPTH = 8

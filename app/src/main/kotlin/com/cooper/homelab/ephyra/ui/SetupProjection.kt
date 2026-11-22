@@ -24,6 +24,7 @@ private fun ServerFailure.toSetupError(): SetupError =
         is ServerFailure.Unreachable -> SetupError.Unreachable
         ServerFailure.LocalNetworkDenied -> SetupError.LocalNetworkDenied
         ServerFailure.ClientCertificateNeeded -> SetupError.ClientCertificateNeeded
+        ServerFailure.CertificateRefused -> SetupError.CertificateRefused
         ServerFailure.CleartextBlocked -> SetupError.CleartextRefused
         ServerFailure.SessionRejected -> SetupError.WrongCredentials
         else -> SetupError.Generic
@@ -106,6 +107,7 @@ internal fun SetupError.toConnectError(): ConnectError =
         SetupError.Unreachable -> ConnectError.Failed(ServerFailure.Unreachable())
         SetupError.LocalNetworkDenied -> ConnectError.Failed(ServerFailure.LocalNetworkDenied)
         SetupError.ClientCertificateNeeded -> ConnectError.Failed(ServerFailure.ClientCertificateNeeded)
+        SetupError.CertificateRefused -> ConnectError.Failed(ServerFailure.CertificateRefused)
         SetupError.CleartextRefused -> ConnectError.Failed(ServerFailure.CleartextBlocked)
         SetupError.WrongCredentials -> ConnectError.Failed(ServerFailure.SessionRejected)
         SetupError.Generic -> ConnectError.Failed(ServerFailure.Unknown)

@@ -607,6 +607,5 @@ private fun SearchPage(
         onRetry = {},
         onClearRecent = {},
         initialQuery = initialQuery,
-        pinnedBar = true,
     )
 }

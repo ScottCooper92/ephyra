@@ -6,7 +6,7 @@ import com.cooper.homelab.ephyra.preview.EphyraFontScalePreviews
 import com.cooper.homelab.ephyra.preview.EphyraScreenStatePreview
 import com.cooper.homelab.ephyra.preview.EphyraSpanishPreviews
 
-/** Approving a Quick Connect code: the page across the matrix, then each result on the phone cell. */
+/** Approving a Quick Connect code: the page across the matrix, then the one result a field shows on the phone cell. */
 class ApproveCodeScreenshotTest {
     @PreviewTest
     @EphyraScreenStatePreview
@@ -24,16 +24,5 @@ class ApproveCodeScreenshotTest {
     @EphyraScreenStatePreview
     @EphyraSpanishPreviews
     @Composable
-    fun approved() = ApproveCodeScreen(ApproveUiState(result = ApproveResult.Approved), ApproveActions())
-
-    @PreviewTest
-    @EphyraScreenStatePreview
-    @EphyraSpanishPreviews
-    @Composable
     fun wrongCode() = ApproveCodeScreen(ApproveUiState(code = "111111", result = ApproveResult.WrongCode), ApproveActions())
-
-    @PreviewTest
-    @EphyraScreenStatePreview
-    @Composable
-    fun failed() = ApproveCodeScreen(ApproveUiState(code = "111111", result = ApproveResult.Failed), ApproveActions())
 }

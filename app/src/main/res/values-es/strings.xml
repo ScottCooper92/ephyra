@@ -124,7 +124,7 @@
     <string name="approve_body">Introduce el código que muestra el otro dispositivo. Al aprobarlo, ese dispositivo inicia sesión como tú.</string>
     <string name="approve_field">Código</string>
     <string name="approve_action">Aprobar</string>
-    <string name="approve_done">Aprobado. El otro dispositivo está iniciando sesión como tú.</string>
+    <string name="approve_done">Código aprobado.</string>
     <string name="approve_wrong">Ese código no está esperando aprobación. Revísalo o pide uno nuevo en el otro dispositivo.</string>
     <string name="tv_loading">Cargando…</string>
     <string name="console_retry">Reintentar</string>

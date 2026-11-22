@@ -3,14 +3,14 @@ package com.cooper.homelab.ephyra.client.title
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.CalendarMonth
 import androidx.compose.material.icons.filled.CheckCircle
+import androidx.compose.material.icons.filled.CheckCircleOutline
 import androidx.compose.material.icons.filled.Favorite
+import androidx.compose.material.icons.filled.FavoriteBorder
 import androidx.compose.material.icons.filled.PlayArrow
 import androidx.compose.material.icons.filled.Schedule
 import androidx.compose.material.icons.filled.Shield
 import androidx.compose.material.icons.filled.Star
 import androidx.compose.material.icons.filled.VideoLibrary
-import androidx.compose.material.icons.outlined.CheckCircleOutline
-import androidx.compose.material.icons.outlined.FavoriteBorder
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -223,7 +223,7 @@ private fun movieRoundActions(
         movie.trailerUrl?.let { url -> add(trailerAction { actions.onOpenLink(url) }) }
         add(
             DetailRoundAction(
-                icon = if (movie.watched) Icons.Filled.CheckCircle else Icons.Outlined.CheckCircleOutline,
+                icon = if (movie.watched) Icons.Filled.CheckCircle else Icons.Filled.CheckCircleOutline,
                 label = watchedLabel,
                 onClick = actions.onToggleWatched,
                 contentDescription = markWatched,
@@ -231,7 +231,7 @@ private fun movieRoundActions(
         )
         add(
             DetailRoundAction(
-                icon = if (movie.favourite) Icons.Filled.Favorite else Icons.Outlined.FavoriteBorder,
+                icon = if (movie.favourite) Icons.Filled.Favorite else Icons.Filled.FavoriteBorder,
                 label = favouriteLabel,
                 onClick = actions.onToggleFavourite,
                 contentDescription = markFavourite,

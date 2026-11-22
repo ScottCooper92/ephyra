@@ -1,26 +1,26 @@
 package com.cooper.homelab.ephyra.ui.console
 
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.outlined.Architecture
-import androidx.compose.material.icons.outlined.AudioFile
-import androidx.compose.material.icons.outlined.Brightness6
-import androidx.compose.material.icons.outlined.Contrast
-import androidx.compose.material.icons.outlined.Folder
-import androidx.compose.material.icons.outlined.FontDownload
-import androidx.compose.material.icons.outlined.GraphicEq
-import androidx.compose.material.icons.outlined.Hd
-import androidx.compose.material.icons.outlined.History
-import androidx.compose.material.icons.outlined.HourglassBottom
-import androidx.compose.material.icons.outlined.Layers
-import androidx.compose.material.icons.outlined.Memory
-import androidx.compose.material.icons.outlined.Palette
-import androidx.compose.material.icons.outlined.Pause
-import androidx.compose.material.icons.outlined.Settings
-import androidx.compose.material.icons.outlined.Speed
-import androidx.compose.material.icons.outlined.Subtitles
-import androidx.compose.material.icons.outlined.Tune
-import androidx.compose.material.icons.outlined.VideoSettings
-import androidx.compose.material.icons.outlined.Videocam
+import androidx.compose.material.icons.filled.Architecture
+import androidx.compose.material.icons.filled.AudioFile
+import androidx.compose.material.icons.filled.Brightness6
+import androidx.compose.material.icons.filled.Contrast
+import androidx.compose.material.icons.filled.Folder
+import androidx.compose.material.icons.filled.FontDownload
+import androidx.compose.material.icons.filled.GraphicEq
+import androidx.compose.material.icons.filled.Hd
+import androidx.compose.material.icons.filled.History
+import androidx.compose.material.icons.filled.HourglassBottom
+import androidx.compose.material.icons.filled.Layers
+import androidx.compose.material.icons.filled.Memory
+import androidx.compose.material.icons.filled.Palette
+import androidx.compose.material.icons.filled.Pause
+import androidx.compose.material.icons.filled.Settings
+import androidx.compose.material.icons.filled.Speed
+import androidx.compose.material.icons.filled.Subtitles
+import androidx.compose.material.icons.filled.Tune
+import androidx.compose.material.icons.filled.VideoSettings
+import androidx.compose.material.icons.filled.Videocam
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.stringResource
@@ -170,13 +170,13 @@ internal fun hardwareRows(
 ): List<ListItem> =
     listOfNotNull(
         ListItem(
-            icon = Icons.Outlined.Settings,
+            icon = Icons.Filled.Settings,
             label = stringResource(R.string.transcoding_vaapi_device),
             detail = state.encoding.string(ENCODING_VAAPI_DEVICE)?.ifBlank { null } ?: stringResource(R.string.transcoding_not_set),
             onClick = { actions.onSheet(TranscodingSheet.Text(TextField.VaapiDevice)) },
         ).takeIf { type == "vaapi" && state.encoding.sent(ENCODING_VAAPI_DEVICE) },
         ListItem(
-            icon = Icons.Outlined.Settings,
+            icon = Icons.Filled.Settings,
             label = stringResource(R.string.transcoding_qsv_device),
             detail = state.encoding.string(ENCODING_QSV_DEVICE)?.ifBlank { null } ?: stringResource(R.string.transcoding_not_set),
             onClick = { actions.onSheet(TranscodingSheet.Text(TextField.QsvDevice)) },
@@ -200,7 +200,7 @@ internal fun HardwareGroups(
             rows =
                 codecs.map { codec ->
                     ListItem(
-                        icon = Icons.Outlined.Videocam,
+                        icon = Icons.Filled.Videocam,
                         label = stringResource(codecLabel(codec)),
                         toggled = codec in on,
                         onClick = { actions.onCodec(codec, codec !in on) },
@@ -220,12 +220,12 @@ internal fun colorDepthRows(
     actions: TranscodingActions,
 ): List<ListItem> =
     listOfNotNull(
-        state.switch(ENCODING_DECODE_HEVC_10, Icons.Outlined.Videocam, R.string.transcoding_decode_hevc_10, actions),
-        state.switch(ENCODING_DECODE_VP9_10, Icons.Outlined.Videocam, R.string.transcoding_decode_vp9_10, actions),
+        state.switch(ENCODING_DECODE_HEVC_10, Icons.Filled.Videocam, R.string.transcoding_decode_hevc_10, actions),
+        state.switch(ENCODING_DECODE_VP9_10, Icons.Filled.Videocam, R.string.transcoding_decode_vp9_10, actions),
     ).filter { hasColorDepthDecoding(type) } +
         listOfNotNull(
-            state.switch(ENCODING_DECODE_HEVC_REXT_10, Icons.Outlined.Videocam, R.string.transcoding_decode_rext_10, actions),
-            state.switch(ENCODING_DECODE_HEVC_REXT_12, Icons.Outlined.Videocam, R.string.transcoding_decode_rext_12, actions),
+            state.switch(ENCODING_DECODE_HEVC_REXT_10, Icons.Filled.Videocam, R.string.transcoding_decode_rext_10, actions),
+            state.switch(ENCODING_DECODE_HEVC_REXT_12, Icons.Filled.Videocam, R.string.transcoding_decode_rext_12, actions),
         ).filter { hasHevcRextDecoding(type, profile) }
 
 @Composable
@@ -236,15 +236,15 @@ internal fun encodingRows(
     actions: TranscodingActions,
 ): List<ListItem> =
     listOfNotNull(
-        state.switch(ENCODING_HARDWARE_ENCODING, Icons.Outlined.Memory, R.string.transcoding_hardware_encoding, actions),
-        state.switch(ENCODING_HEVC, Icons.Outlined.Hd, R.string.transcoding_hevc, actions, R.string.transcoding_hevc_detail),
+        state.switch(ENCODING_HARDWARE_ENCODING, Icons.Filled.Memory, R.string.transcoding_hardware_encoding, actions),
+        state.switch(ENCODING_HEVC, Icons.Filled.Hd, R.string.transcoding_hevc, actions, R.string.transcoding_hevc_detail),
         state
-            .switch(ENCODING_AV1, Icons.Outlined.Hd, R.string.transcoding_av1, actions, R.string.transcoding_av1_detail)
+            .switch(ENCODING_AV1, Icons.Filled.Hd, R.string.transcoding_av1, actions, R.string.transcoding_av1_detail)
             .takeIf { profile.hasAdvancedEncoding },
         state
             .switch(
                 ENCODING_INTEL_LOW_POWER_HEVC,
-                Icons.Outlined.Speed,
+                Icons.Filled.Speed,
                 R.string.transcoding_low_power,
                 actions,
                 R.string.transcoding_low_power_detail,
@@ -252,7 +252,7 @@ internal fun encodingRows(
         state
             .switch(
                 ENCODING_INTEL_LOW_POWER_H264,
-                Icons.Outlined.Speed,
+                Icons.Filled.Speed,
                 R.string.transcoding_low_power_h264,
                 actions,
                 R.string.transcoding_low_power_detail,
@@ -260,13 +260,13 @@ internal fun encodingRows(
         state
             .switch(
                 ENCODING_ENHANCED_NVDEC,
-                Icons.Outlined.Architecture,
+                Icons.Filled.Architecture,
                 R.string.transcoding_nvdec,
                 actions,
                 R.string.transcoding_nvdec_detail,
             ).takeIf { type == "nvenc" },
         state
-            .switch(ENCODING_SYSTEM_NATIVE, Icons.Outlined.Memory, R.string.transcoding_native, actions, R.string.transcoding_native_detail)
+            .switch(ENCODING_SYSTEM_NATIVE, Icons.Filled.Memory, R.string.transcoding_native, actions, R.string.transcoding_native_detail)
             .takeIf { type == "qsv" },
     )
 
@@ -288,49 +288,49 @@ internal fun ToneMappingGroup(
                 state
                     .switch(
                         ENCODING_TONEMAPPING,
-                        Icons.Outlined.Palette,
+                        Icons.Filled.Palette,
                         R.string.transcoding_tonemapping_enable,
                         actions,
                     ),
                 state
                     .switch(
                         ENCODING_VPP_TONEMAPPING,
-                        Icons.Outlined.Palette,
+                        Icons.Filled.Palette,
                         R.string.transcoding_vpp,
                         actions,
                         R.string.transcoding_vpp_detail,
                     ).takeIf { hasIntelOptions(type) },
                 state
-                    .switch(ENCODING_VIDEO_TOOLBOX_TONEMAPPING, Icons.Outlined.Palette, R.string.transcoding_toolbox, actions)
+                    .switch(ENCODING_VIDEO_TOOLBOX_TONEMAPPING, Icons.Filled.Palette, R.string.transcoding_toolbox, actions)
                     .takeIf { type == "videotoolbox" && profile.hasAdvancedEncoding },
                 ListItem(
-                    icon = Icons.Outlined.Tune,
+                    icon = Icons.Filled.Tune,
                     label = stringResource(R.string.transcoding_algorithm),
                     detail = algorithmLabel(config.string(ENCODING_TONEMAPPING_ALGORITHM) ?: "none"),
                     onClick = { onPick(TranscodingPicker.Algorithm) },
                 ).takeIf { config.sent(ENCODING_TONEMAPPING_ALGORITHM) },
                 ListItem(
-                    icon = Icons.Outlined.Tune,
+                    icon = Icons.Filled.Tune,
                     label = stringResource(R.string.transcoding_mode),
                     detail = modeLabel(config.string(ENCODING_TONEMAPPING_MODE) ?: "auto"),
                     onClick = { onPick(TranscodingPicker.Mode) },
                 ).takeIf { hardware && config.sent(ENCODING_TONEMAPPING_MODE) },
                 ListItem(
-                    icon = Icons.Outlined.Tune,
+                    icon = Icons.Filled.Tune,
                     label = stringResource(R.string.transcoding_range),
                     detail = modeLabel(config.string(ENCODING_TONEMAPPING_RANGE) ?: "auto"),
                     onClick = { onPick(TranscodingPicker.Range) },
                 ).takeIf { config.sent(ENCODING_TONEMAPPING_RANGE) },
-                state.number(NumberField.Desaturation, Icons.Outlined.Palette, R.string.transcoding_desaturation, actions),
-                state.number(NumberField.PeakBrightness, Icons.Outlined.Brightness6, R.string.transcoding_peak, actions),
-                state.number(NumberField.ToneMappingParam, Icons.Outlined.Tune, R.string.transcoding_tonemapping_param, actions),
-                state.number(NumberField.VppBrightness, Icons.Outlined.Brightness6, R.string.transcoding_vpp_brightness, actions).takeIf {
+                state.number(NumberField.Desaturation, Icons.Filled.Palette, R.string.transcoding_desaturation, actions),
+                state.number(NumberField.PeakBrightness, Icons.Filled.Brightness6, R.string.transcoding_peak, actions),
+                state.number(NumberField.ToneMappingParam, Icons.Filled.Tune, R.string.transcoding_tonemapping_param, actions),
+                state.number(NumberField.VppBrightness, Icons.Filled.Brightness6, R.string.transcoding_vpp_brightness, actions).takeIf {
                     hasIntelOptions(type)
                 },
                 state
                     .number(
                         NumberField.VppContrast,
-                        Icons.Outlined.Contrast,
+                        Icons.Filled.Contrast,
                         R.string.transcoding_vpp_contrast,
                         actions,
                     ).takeIf { hasIntelOptions(type) },
@@ -350,33 +350,33 @@ internal fun QualityGroup(
         rows =
             listOfNotNull(
                 ListItem(
-                    icon = Icons.Outlined.VideoSettings,
+                    icon = Icons.Filled.VideoSettings,
                     label = stringResource(R.string.transcoding_preset),
                     detail = presetLabel(encodingChoice(config.string(ENCODING_PRESET), "auto")),
                     onClick = { onPick(TranscodingPicker.Preset) },
                 ).takeIf { config.sent(ENCODING_PRESET) },
                 ListItem(
-                    icon = Icons.Outlined.Layers,
+                    icon = Icons.Filled.Layers,
                     label = stringResource(R.string.transcoding_threads),
                     detail = threadsLabel(config.int(ENCODING_THREADS) ?: -1),
                     onClick = { onPick(TranscodingPicker.Threads) },
                 ).takeIf { config.sent(ENCODING_THREADS) },
                 ListItem(
-                    icon = Icons.Outlined.Tune,
+                    icon = Icons.Filled.Tune,
                     label = stringResource(R.string.transcoding_deinterlace),
                     detail = deinterlaceLabel(config.string(ENCODING_DEINTERLACE) ?: "yadif"),
                     onClick = { onPick(TranscodingPicker.Deinterlace) },
                 ).takeIf { config.sent(ENCODING_DEINTERLACE) },
                 state.switch(
                     ENCODING_DEINTERLACE_DOUBLE_RATE,
-                    Icons.Outlined.Speed,
+                    Icons.Filled.Speed,
                     R.string.transcoding_double_rate,
                     actions,
                     R.string.transcoding_double_rate_detail,
                 ),
-                state.number(NumberField.H264Crf, Icons.Outlined.VideoSettings, R.string.transcoding_h264_crf, actions),
-                state.number(NumberField.H265Crf, Icons.Outlined.VideoSettings, R.string.transcoding_h265_crf, actions),
-                state.number(NumberField.MuxingQueue, Icons.Outlined.Layers, R.string.transcoding_muxing_queue, actions),
+                state.number(NumberField.H264Crf, Icons.Filled.VideoSettings, R.string.transcoding_h264_crf, actions),
+                state.number(NumberField.H265Crf, Icons.Filled.VideoSettings, R.string.transcoding_h265_crf, actions),
+                state.number(NumberField.MuxingQueue, Icons.Filled.Layers, R.string.transcoding_muxing_queue, actions),
             ),
     )
 }
@@ -393,9 +393,9 @@ internal fun AudioGroup(
         title = stringResource(R.string.transcoding_audio),
         rows =
             listOfNotNull(
-                state.number(NumberField.DownmixBoost, Icons.Outlined.GraphicEq, R.string.transcoding_downmix_boost, actions),
+                state.number(NumberField.DownmixBoost, Icons.Filled.GraphicEq, R.string.transcoding_downmix_boost, actions),
                 ListItem(
-                    icon = Icons.Outlined.AudioFile,
+                    icon = Icons.Filled.AudioFile,
                     label = stringResource(R.string.transcoding_downmix),
                     detail = downmixLabel(config.string(ENCODING_DOWNMIX_ALGORITHM) ?: "None"),
                     onClick = { onPick(TranscodingPicker.Downmix) },
@@ -403,7 +403,7 @@ internal fun AudioGroup(
                 state
                     .switch(
                         ENCODING_AUDIO_VBR,
-                        Icons.Outlined.AudioFile,
+                        Icons.Filled.AudioFile,
                         R.string.transcoding_vbr,
                         actions,
                         R.string.transcoding_vbr_detail,
@@ -425,21 +425,21 @@ internal fun StreamingGroups(
             listOfNotNull(
                 state.switch(
                     ENCODING_THROTTLING,
-                    Icons.Outlined.Pause,
+                    Icons.Filled.Pause,
                     R.string.transcoding_throttle,
                     actions,
                     R.string.transcoding_throttle_detail,
                 ),
-                state.number(NumberField.ThrottleDelay, Icons.Outlined.HourglassBottom, R.string.transcoding_throttle_delay, actions),
+                state.number(NumberField.ThrottleDelay, Icons.Filled.HourglassBottom, R.string.transcoding_throttle_delay, actions),
                 state
                     .switch(
                         ENCODING_SEGMENT_DELETION,
-                        Icons.Outlined.Layers,
+                        Icons.Filled.Layers,
                         R.string.transcoding_segment_deletion,
                         actions,
                         R.string.transcoding_segment_deletion_detail,
                     ).takeIf { profile.hasAdvancedEncoding },
-                state.number(NumberField.SegmentKeep, Icons.Outlined.HourglassBottom, R.string.transcoding_segment_keep, actions).takeIf {
+                state.number(NumberField.SegmentKeep, Icons.Filled.HourglassBottom, R.string.transcoding_segment_keep, actions).takeIf {
                     profile.hasAdvancedEncoding
                 },
             ),
@@ -450,14 +450,14 @@ internal fun StreamingGroups(
             listOfNotNull(
                 state.switch(
                     ENCODING_SUBTITLE_EXTRACTION,
-                    Icons.Outlined.Subtitles,
+                    Icons.Filled.Subtitles,
                     R.string.transcoding_extraction,
                     actions,
                     R.string.transcoding_extraction_detail,
                 ),
-                state.switch(ENCODING_FALLBACK_FONT, Icons.Outlined.FontDownload, R.string.transcoding_fallback_font, actions),
+                state.switch(ENCODING_FALLBACK_FONT, Icons.Filled.FontDownload, R.string.transcoding_fallback_font, actions),
                 ListItem(
-                    icon = Icons.Outlined.FontDownload,
+                    icon = Icons.Filled.FontDownload,
                     label = stringResource(R.string.transcoding_fallback_font_path),
                     detail =
                         state.encoding
@@ -475,7 +475,7 @@ internal fun StreamingGroups(
         rows =
             listOf(
                 ListItem(
-                    icon = Icons.Outlined.Folder,
+                    icon = Icons.Filled.Folder,
                     label = stringResource(R.string.transcoding_temp_path),
                     detail =
                         state.encoding.string(ENCODING_TEMP_PATH)?.ifBlank { null } ?: stringResource(R.string.transcoding_path_default),
@@ -487,15 +487,15 @@ internal fun StreamingGroups(
         title = stringResource(R.string.transcoding_resume),
         rows =
             listOfNotNull(
-                state.number(NumberField.MinResumePercent, Icons.Outlined.History, R.string.transcoding_min_resume, actions),
-                state.number(NumberField.MaxResumePercent, Icons.Outlined.History, R.string.transcoding_max_resume, actions),
-                state.number(NumberField.MinResumeSeconds, Icons.Outlined.HourglassBottom, R.string.transcoding_min_duration, actions),
-                state.number(NumberField.MinAudiobookResume, Icons.Outlined.AudioFile, R.string.transcoding_min_audiobook, actions),
-                state.number(NumberField.MaxAudiobookResume, Icons.Outlined.AudioFile, R.string.transcoding_max_audiobook, actions),
+                state.number(NumberField.MinResumePercent, Icons.Filled.History, R.string.transcoding_min_resume, actions),
+                state.number(NumberField.MaxResumePercent, Icons.Filled.History, R.string.transcoding_max_resume, actions),
+                state.number(NumberField.MinResumeSeconds, Icons.Filled.HourglassBottom, R.string.transcoding_min_duration, actions),
+                state.number(NumberField.MinAudiobookResume, Icons.Filled.AudioFile, R.string.transcoding_min_audiobook, actions),
+                state.number(NumberField.MaxAudiobookResume, Icons.Filled.AudioFile, R.string.transcoding_max_audiobook, actions),
             ),
     )
     ItemGroup(
         title = stringResource(R.string.transcoding_streaming),
-        rows = listOfNotNull(state.number(NumberField.BitrateLimit, Icons.Outlined.Speed, R.string.transcoding_bitrate, actions)),
+        rows = listOfNotNull(state.number(NumberField.BitrateLimit, Icons.Filled.Speed, R.string.transcoding_bitrate, actions)),
     )
 }

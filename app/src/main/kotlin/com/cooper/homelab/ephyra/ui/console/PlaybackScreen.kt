@@ -5,18 +5,18 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.outlined.Audiotrack
-import androidx.compose.material.icons.outlined.ClosedCaption
-import androidx.compose.material.icons.outlined.ClosedCaptionDisabled
-import androidx.compose.material.icons.outlined.Description
-import androidx.compose.material.icons.outlined.GraphicEq
-import androidx.compose.material.icons.outlined.History
-import androidx.compose.material.icons.outlined.Language
-import androidx.compose.material.icons.outlined.PriorityHigh
-import androidx.compose.material.icons.outlined.Restore
-import androidx.compose.material.icons.outlined.SkipNext
-import androidx.compose.material.icons.outlined.Subtitles
-import androidx.compose.material.icons.outlined.Translate
+import androidx.compose.material.icons.filled.Audiotrack
+import androidx.compose.material.icons.filled.ClosedCaption
+import androidx.compose.material.icons.filled.ClosedCaptionDisabled
+import androidx.compose.material.icons.filled.Description
+import androidx.compose.material.icons.filled.GraphicEq
+import androidx.compose.material.icons.filled.History
+import androidx.compose.material.icons.filled.Language
+import androidx.compose.material.icons.filled.PriorityHigh
+import androidx.compose.material.icons.filled.Restore
+import androidx.compose.material.icons.filled.SkipNext
+import androidx.compose.material.icons.filled.Subtitles
+import androidx.compose.material.icons.filled.Translate
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -127,7 +127,7 @@ private fun PlaybackBody(
                 listOf(
                     languages.audio,
                     ListItem(
-                        icon = Icons.Outlined.GraphicEq,
+                        icon = Icons.Filled.GraphicEq,
                         label = stringResource(R.string.playback_default_audio),
                         detail = stringResource(R.string.playback_default_audio_detail),
                         supportingMaxLines = SWITCH_DETAIL_LINES,
@@ -136,7 +136,7 @@ private fun PlaybackBody(
                         key = SettingRows.PLAYBACK_DEFAULT_AUDIO,
                     ),
                     ListItem(
-                        icon = Icons.Outlined.History,
+                        icon = Icons.Filled.History,
                         label = stringResource(R.string.playback_remember_audio),
                         detail = stringResource(R.string.playback_remember_detail),
                         supportingMaxLines = SWITCH_DETAIL_LINES,
@@ -153,7 +153,7 @@ private fun PlaybackBody(
                     languages.subtitles,
                     languages.subtitleMode,
                     ListItem(
-                        icon = Icons.Outlined.Restore,
+                        icon = Icons.Filled.Restore,
                         label = stringResource(R.string.playback_remember_subtitles),
                         detail = stringResource(R.string.playback_remember_detail),
                         supportingMaxLines = SWITCH_DETAIL_LINES,
@@ -168,7 +168,7 @@ private fun PlaybackBody(
             rows =
                 listOf(
                     ListItem(
-                        icon = Icons.Outlined.SkipNext,
+                        icon = Icons.Filled.SkipNext,
                         label = stringResource(R.string.playback_autoplay),
                         toggled = preferences.autoplayNextEpisode,
                         onClick = { actions.onAutoplayNextEpisode(!preferences.autoplayNextEpisode) },
@@ -202,21 +202,21 @@ internal fun languageItems(
     return LanguageItems(
         audio =
             ListItem(
-                icon = Icons.Outlined.Audiotrack,
+                icon = Icons.Filled.Audiotrack,
                 label = stringResource(R.string.languages_audio),
                 detail = named(preferences.audio),
                 onClick = { onOpen(LanguagePicker.Audio) },
             ),
         subtitles =
             ListItem(
-                icon = Icons.Outlined.Subtitles,
+                icon = Icons.Filled.Subtitles,
                 label = stringResource(R.string.languages_subtitles),
                 detail = named(preferences.subtitles),
                 onClick = { onOpen(LanguagePicker.Subtitles) },
             ),
         subtitleMode =
             ListItem(
-                icon = Icons.Outlined.ClosedCaption,
+                icon = Icons.Filled.ClosedCaption,
                 label = stringResource(R.string.languages_subtitle_mode),
                 detail = stringResource(preferences.subtitleMode.label),
                 onClick = { onOpen(LanguagePicker.SubtitleMode) },
@@ -272,7 +272,7 @@ private fun LanguageChoiceSheet(
     val any = stringResource(R.string.languages_any)
     val choices =
         remember(cultures, locale, any) {
-            listOf(BingeChoice(ANY, any, icon = Icons.Outlined.Language)) +
+            listOf(BingeChoice(ANY, any, icon = Icons.Filled.Language)) +
                 cultures
                     .map { BingeChoice(it.code, it.label(locale), mark = it.mark()) }
                     .sortedBy { it.label.lowercase(locale) }
@@ -358,11 +358,11 @@ internal val SubtitleMode.detail: Int
 private val SubtitleMode.icon: ImageVector
     get() =
         when (this) {
-            SubtitleMode.Default -> Icons.Outlined.Description
-            SubtitleMode.Smart -> Icons.Outlined.Translate
-            SubtitleMode.OnlyForced -> Icons.Outlined.PriorityHigh
-            SubtitleMode.Always -> Icons.Outlined.ClosedCaption
-            SubtitleMode.None -> Icons.Outlined.ClosedCaptionDisabled
+            SubtitleMode.Default -> Icons.Filled.Description
+            SubtitleMode.Smart -> Icons.Filled.Translate
+            SubtitleMode.OnlyForced -> Icons.Filled.PriorityHigh
+            SubtitleMode.Always -> Icons.Filled.ClosedCaption
+            SubtitleMode.None -> Icons.Filled.ClosedCaptionDisabled
         }
 
 private const val LOADING_ROWS = 9

@@ -15,9 +15,9 @@ import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.outlined.Add
-import androidx.compose.material.icons.outlined.Extension
-import androidx.compose.material.icons.outlined.RestartAlt
+import androidx.compose.material.icons.filled.Add
+import androidx.compose.material.icons.filled.Extension
+import androidx.compose.material.icons.filled.RestartAlt
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -135,7 +135,7 @@ fun PluginsScreen(
             // Only the Repositories tab creates anything; the other tabs have no footer.
             CreateFooter(
                 label = stringResource(R.string.repositories_add),
-                icon = Icons.Outlined.Add,
+                icon = Icons.Filled.Add,
                 onClick = { repositoryActions.onAskAdd(true) },
                 visible = tab == REPOSITORIES_TAB && repositories !is RepositoriesUiState.Failed,
                 enabled = repositories is RepositoriesUiState.Ready,
@@ -287,7 +287,7 @@ private fun InstalledList(
                     rows =
                         listOf(
                             ListItem(
-                                icon = Icons.Outlined.RestartAlt,
+                                icon = Icons.Filled.RestartAlt,
                                 label = stringResource(R.string.plugins_restart_needed),
                                 detail = stringResource(R.string.plugins_restart_detail),
                                 supportingMaxLines = 3,
@@ -314,7 +314,7 @@ private fun ServerPlugin.row(
     open: Boolean,
 ): ListItem =
     ListItem(
-        icon = Icons.Outlined.Extension,
+        icon = Icons.Filled.Extension,
         label = name,
         detail = listOf(version, statusLabel(status)).filter { it.isNotBlank() }.joinToString(" · "),
         loading = id in state.busy,

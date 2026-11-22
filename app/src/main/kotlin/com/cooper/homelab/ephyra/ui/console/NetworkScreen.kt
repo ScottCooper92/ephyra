@@ -4,18 +4,18 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.outlined.Dns
-import androidx.compose.material.icons.outlined.Info
-import androidx.compose.material.icons.outlined.Key
-import androidx.compose.material.icons.outlined.Language
-import androidx.compose.material.icons.outlined.Lock
-import androidx.compose.material.icons.outlined.Public
-import androidx.compose.material.icons.outlined.RestartAlt
-import androidx.compose.material.icons.outlined.Router
-import androidx.compose.material.icons.outlined.Shield
-import androidx.compose.material.icons.outlined.Sync
-import androidx.compose.material.icons.outlined.VpnLock
-import androidx.compose.material.icons.outlined.Wifi
+import androidx.compose.material.icons.filled.Dns
+import androidx.compose.material.icons.filled.Info
+import androidx.compose.material.icons.filled.Key
+import androidx.compose.material.icons.filled.Language
+import androidx.compose.material.icons.filled.Lock
+import androidx.compose.material.icons.filled.Public
+import androidx.compose.material.icons.filled.RestartAlt
+import androidx.compose.material.icons.filled.Router
+import androidx.compose.material.icons.filled.Shield
+import androidx.compose.material.icons.filled.Sync
+import androidx.compose.material.icons.filled.VpnLock
+import androidx.compose.material.icons.filled.Wifi
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
@@ -142,7 +142,7 @@ private fun NetworkBody(
                 rows =
                     listOf(
                         ListItem(
-                            icon = Icons.Outlined.RestartAlt,
+                            icon = Icons.Filled.RestartAlt,
                             label = stringResource(R.string.network_restart),
                             detail =
                                 stringResource(
@@ -173,7 +173,7 @@ private fun NetworkUiState.Ready.formRow(
         detail = detail,
         key = rowKey,
         supportingMaxLines = NETWORK_DETAIL_LINES,
-        note = if (key in draft) ListItemNote(stringResource(R.string.network_unsaved), icon = Icons.Outlined.Info) else null,
+        note = if (key in draft) ListItemNote(stringResource(R.string.network_unsaved), icon = Icons.Filled.Info) else null,
         // Not while Save changes is writing: a change made then would skip the confirm, or be cleared by the write's result.
         enabled = !committing,
         onClick = onClick,
@@ -194,7 +194,7 @@ private fun NetworkUiState.Ready.formSwitch(
         detail = detail?.let { stringResource(it) },
         key = SettingRows.network(key),
         supportingMaxLines = NETWORK_DETAIL_LINES,
-        note = if (key in draft) ListItemNote(stringResource(R.string.network_unsaved), icon = Icons.Outlined.Info) else null,
+        note = if (key in draft) ListItemNote(stringResource(R.string.network_unsaved), icon = Icons.Filled.Info) else null,
         toggled = on,
         enabled = !committing,
         onClick = { actions.onFormSwitch(key, !on) },
@@ -237,7 +237,7 @@ private fun NetworkUiState.Ready.listRow(
     value: List<String>,
     actions: NetworkActions,
 ): ListItem? =
-    formRow(field.key, Icons.Outlined.Router, label, entries(value)) {
+    formRow(field.key, Icons.Filled.Router, label, entries(value)) {
         actions.onSheet(NetworkSheet.Items(field))
     }
 
@@ -252,19 +252,19 @@ private fun addressRows(
 ): List<ListItem> {
     val s = state.settings
     return listOfNotNull(
-        state.portRow(NetworkNumber.HttpPort, Icons.Outlined.Dns, R.string.network_http_port, s.httpPort, actions),
-        state.portRow(NetworkNumber.HttpsPort, Icons.Outlined.Lock, R.string.network_https_port, s.httpsPort, actions),
-        state.portRow(NetworkNumber.PublicHttpPort, Icons.Outlined.Public, R.string.network_public_http_port, s.publicHttpPort, actions),
-        state.portRow(NetworkNumber.PublicHttpsPort, Icons.Outlined.Public, R.string.network_public_https_port, s.publicHttpsPort, actions),
+        state.portRow(NetworkNumber.HttpPort, Icons.Filled.Dns, R.string.network_http_port, s.httpPort, actions),
+        state.portRow(NetworkNumber.HttpsPort, Icons.Filled.Lock, R.string.network_https_port, s.httpsPort, actions),
+        state.portRow(NetworkNumber.PublicHttpPort, Icons.Filled.Public, R.string.network_public_http_port, s.publicHttpPort, actions),
+        state.portRow(NetworkNumber.PublicHttpsPort, Icons.Filled.Public, R.string.network_public_https_port, s.publicHttpsPort, actions),
         state.formRow(
             NETWORK_BASE_URL,
-            Icons.Outlined.Language,
+            Icons.Filled.Language,
             R.string.network_base_url,
             s.baseUrl.ifEmpty { stringResource(R.string.network_none) },
         ) { actions.onSheet(NetworkSheet.Text(NetworkText.BaseUrl)) },
         state.formRow(
             NETWORK_BIND_ADDRESSES,
-            Icons.Outlined.Router,
+            Icons.Filled.Router,
             R.string.network_bind,
             if (s.bindAddresses.isEmpty()) stringResource(R.string.network_all_addresses) else s.bindAddresses.joinToString(", "),
         ) { actions.onSheet(NetworkSheet.Items(NetworkList.BindAddresses)) },
@@ -278,10 +278,10 @@ private fun secureRows(
 ): List<ListItem> {
     val s = state.settings
     return listOfNotNull(
-        state.formSwitch(NETWORK_ENABLE_HTTPS, Icons.Outlined.Lock, R.string.network_enable_https, null, s.enableHttps, actions),
+        state.formSwitch(NETWORK_ENABLE_HTTPS, Icons.Filled.Lock, R.string.network_enable_https, null, s.enableHttps, actions),
         state.formSwitch(
             NETWORK_REQUIRE_HTTPS,
-            Icons.Outlined.Shield,
+            Icons.Filled.Shield,
             R.string.network_require_https,
             R.string.network_require_https_detail,
             s.requireHttps,
@@ -289,14 +289,14 @@ private fun secureRows(
         ),
         state.formRow(
             NETWORK_CERTIFICATE_PATH,
-            Icons.Outlined.Shield,
+            Icons.Filled.Shield,
             R.string.network_cert_path,
             s.certificatePath.ifEmpty { stringResource(R.string.network_none) },
         ) { actions.onSheet(NetworkSheet.Text(NetworkText.CertificatePath)) },
         // Never the stored password: only whether a new one is waiting to be saved.
         state.formRow(
             NETWORK_CERTIFICATE_PASSWORD,
-            Icons.Outlined.Key,
+            Icons.Filled.Key,
             R.string.network_cert_password,
             stringResource(
                 if (NETWORK_CERTIFICATE_PASSWORD in
@@ -321,25 +321,25 @@ private fun accessRows(
     return listOfNotNull(
         state.formSwitch(
             NETWORK_REMOTE_ACCESS,
-            Icons.Outlined.Public,
+            Icons.Filled.Public,
             R.string.network_remote_access,
             R.string.network_remote_access_detail,
             s.remoteAccess,
             actions,
         ),
-        state.formRow(NETWORK_REMOTE_IP_FILTER, Icons.Outlined.VpnLock, R.string.network_ip_filter, entries(s.remoteIpFilter)) {
+        state.formRow(NETWORK_REMOTE_IP_FILTER, Icons.Filled.VpnLock, R.string.network_ip_filter, entries(s.remoteIpFilter)) {
             actions.onSheet(NetworkSheet.Items(NetworkList.RemoteIpFilter))
         },
         state.formSwitch(
             NETWORK_IP_FILTER_BLACKLIST,
-            Icons.Outlined.VpnLock,
+            Icons.Filled.VpnLock,
             R.string.network_ip_filter_blacklist,
             null,
             s.filterIsBlacklist,
             actions,
         ),
-        state.formSwitch(k.ipv4, Icons.Outlined.Wifi, R.string.network_ipv4, null, s.ipv4, actions),
-        state.formSwitch(k.ipv6, Icons.Outlined.Wifi, R.string.network_ipv6, null, s.ipv6, actions),
+        state.formSwitch(k.ipv4, Icons.Filled.Wifi, R.string.network_ipv4, null, s.ipv4, actions),
+        state.formSwitch(k.ipv6, Icons.Filled.Wifi, R.string.network_ipv6, null, s.ipv6, actions),
     )
 }
 
@@ -352,17 +352,17 @@ private fun localRows(
     return listOfNotNull(
         state.listRow(NetworkList.KnownProxies, R.string.network_proxies, s.knownProxies, actions),
         state.listRow(NetworkList.LocalSubnets, R.string.network_subnets, s.localSubnets, actions),
-        state.madeSwitch(NETWORK_AUTO_DISCOVERY, Icons.Outlined.Sync, R.string.network_discovery, s.autoDiscovery, actions),
-        state.madeSwitch(NETWORK_UPNP, Icons.Outlined.Router, R.string.network_upnp, s.upnp, actions).takeIf { state.keys.upnp },
+        state.madeSwitch(NETWORK_AUTO_DISCOVERY, Icons.Filled.Sync, R.string.network_discovery, s.autoDiscovery, actions),
+        state.madeSwitch(NETWORK_UPNP, Icons.Filled.Router, R.string.network_upnp, s.upnp, actions).takeIf { state.keys.upnp },
         state.madeSwitch(
             NETWORK_PUBLISHED_BY_REQUEST,
-            Icons.Outlined.Language,
+            Icons.Filled.Language,
             R.string.network_published_request,
             s.publishedByRequest,
             actions,
         ),
         state.listRow(NetworkList.PublishedBySubnet, R.string.network_published_subnet, s.publishedBySubnet, actions),
-        state.madeSwitch(NETWORK_IGNORE_VIRTUAL, Icons.Outlined.Wifi, R.string.network_ignore_virtual, s.ignoreVirtual, actions),
+        state.madeSwitch(NETWORK_IGNORE_VIRTUAL, Icons.Filled.Wifi, R.string.network_ignore_virtual, s.ignoreVirtual, actions),
         state.listRow(NetworkList.VirtualNames, R.string.network_virtual_names, s.virtualNames, actions),
     )
 }

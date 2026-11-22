@@ -12,7 +12,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.outlined.Today
+import androidx.compose.material.icons.filled.Today
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -115,7 +115,7 @@ private fun ScheduleDayList(onPick: (String) -> Unit) {
         title = null,
         rows =
             ScheduleDays.map { value ->
-                ListItem(icon = Icons.Outlined.Today, label = stringResource(dayLabel(value)), onClick = { onPick(value) })
+                ListItem(icon = Icons.Filled.Today, label = stringResource(dayLabel(value)), onClick = { onPick(value) })
             },
     )
 }

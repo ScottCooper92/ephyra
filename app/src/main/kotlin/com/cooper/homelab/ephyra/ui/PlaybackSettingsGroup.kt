@@ -1,8 +1,8 @@
 package com.cooper.homelab.ephyra.ui
 
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.outlined.SignalCellularAlt
-import androidx.compose.material.icons.outlined.Wifi
+import androidx.compose.material.icons.filled.SignalCellularAlt
+import androidx.compose.material.icons.filled.Wifi
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -69,13 +69,13 @@ private fun qualityItems(
 ): List<ListItem> =
     listOf(
         ListItem(
-            icon = Icons.Outlined.Wifi,
+            icon = Icons.Filled.Wifi,
             label = stringResource(R.string.playback_quality_wifi),
             detail = qualityLabel(quality.wifiMbps),
             onClick = { onOpen(StreamingNetwork.Wifi) },
         ),
         ListItem(
-            icon = Icons.Outlined.SignalCellularAlt,
+            icon = Icons.Filled.SignalCellularAlt,
             label = stringResource(R.string.playback_quality_mobile),
             detail = qualityLabel(quality.mobileMbps),
             onClick = { onOpen(StreamingNetwork.Mobile) },

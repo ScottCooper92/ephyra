@@ -5,10 +5,10 @@ import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.outlined.Language
-import androidx.compose.material.icons.outlined.Public
-import androidx.compose.material.icons.outlined.Router
-import androidx.compose.material.icons.outlined.Translate
+import androidx.compose.material.icons.filled.Language
+import androidx.compose.material.icons.filled.Public
+import androidx.compose.material.icons.filled.Router
+import androidx.compose.material.icons.filled.Translate
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -83,21 +83,21 @@ private fun ConfiguringStep(
         rows =
             listOf(
                 ListItem(
-                    icon = Icons.Outlined.Language,
+                    icon = Icons.Filled.Language,
                     label = stringResource(R.string.display_language),
                     detail = languageName ?: none,
                     enabled = !step.busy,
                     onClick = { picker = StartupPicker.UiLanguage },
                 ),
                 ListItem(
-                    icon = Icons.Outlined.Translate,
+                    icon = Icons.Filled.Translate,
                     label = stringResource(R.string.server_settings_metadata_language),
                     detail = metadataName ?: none,
                     enabled = !step.busy,
                     onClick = { picker = StartupPicker.MetadataLanguage },
                 ),
                 ListItem(
-                    icon = Icons.Outlined.Public,
+                    icon = Icons.Filled.Public,
                     label = stringResource(R.string.server_settings_metadata_country),
                     detail = countryName ?: none,
                     enabled = !step.busy,
@@ -228,14 +228,14 @@ private fun FinishStep(
         rows =
             listOfNotNull(
                 ListItem(
-                    icon = Icons.Outlined.Public,
+                    icon = Icons.Filled.Public,
                     label = stringResource(R.string.network_remote_access),
                     toggled = step.remoteAccess,
                     enabled = !step.busy,
                     onClick = { startup.onRemoteAccess(!step.remoteAccess) },
                 ),
                 ListItem(
-                    icon = Icons.Outlined.Router,
+                    icon = Icons.Filled.Router,
                     label = stringResource(R.string.startup_port_mapping),
                     toggled = step.portMapping,
                     enabled = !step.busy,

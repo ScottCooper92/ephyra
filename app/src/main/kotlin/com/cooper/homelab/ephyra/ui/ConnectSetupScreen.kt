@@ -8,9 +8,9 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.outlined.Dns
-import androidx.compose.material.icons.outlined.LockOpen
-import androidx.compose.material.icons.outlined.Person
+import androidx.compose.material.icons.filled.Dns
+import androidx.compose.material.icons.filled.LockOpen
+import androidx.compose.material.icons.filled.Person
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -229,7 +229,7 @@ private fun ColumnScope.DiscoveredServers(
                 state.discovered.map { server ->
                     val cleartext = server.address.startsWith("http://")
                     ListItem(
-                        icon = if (cleartext) Icons.Outlined.LockOpen else Icons.Outlined.Dns,
+                        icon = if (cleartext) Icons.Filled.LockOpen else Icons.Filled.Dns,
                         label = server.name,
                         // The marker leads, so a long address takes the ellipsis, never "Not encrypted".
                         detail = if (cleartext) stringResource(R.string.server_detail_cleartext, server.address) else server.address,
@@ -262,7 +262,7 @@ private fun ColumnScope.PublicUsers(
         rows =
             state.publicUsers.map { user ->
                 ListItem(
-                    icon = Icons.Outlined.Person,
+                    icon = Icons.Filled.Person,
                     label = user.name,
                     leadingContent = { UserAvatar(user.name, state.publicPictures[user.id]) },
                     selected = user.name == state.username,

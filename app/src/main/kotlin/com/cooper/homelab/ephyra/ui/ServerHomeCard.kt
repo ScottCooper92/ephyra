@@ -5,13 +5,13 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.outlined.Add
-import androidx.compose.material.icons.outlined.Info
-import androidx.compose.material.icons.outlined.Movie
-import androidx.compose.material.icons.outlined.People
-import androidx.compose.material.icons.outlined.PlayCircle
-import androidx.compose.material.icons.outlined.Tv
-import androidx.compose.material.icons.outlined.VideoLibrary
+import androidx.compose.material.icons.filled.Add
+import androidx.compose.material.icons.filled.Info
+import androidx.compose.material.icons.filled.Movie
+import androidx.compose.material.icons.filled.People
+import androidx.compose.material.icons.filled.PlayCircle
+import androidx.compose.material.icons.filled.Tv
+import androidx.compose.material.icons.filled.VideoLibrary
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
@@ -72,11 +72,11 @@ internal fun ServerHomeCard(
         )
     val stats =
         listOfNotNull(
-            ServerCardStat(Icons.Outlined.PlayCircle, card.playing?.toString(), stringResource(R.string.server_card_playing)),
-            ServerCardStat(Icons.Outlined.People, card.users?.toString(), stringResource(R.string.server_card_users))
+            ServerCardStat(Icons.Filled.PlayCircle, card.playing?.toString(), stringResource(R.string.server_card_playing)),
+            ServerCardStat(Icons.Filled.People, card.users?.toString(), stringResource(R.string.server_card_users))
                 .takeIf { state.isAdministrator },
-            ServerCardStat(Icons.Outlined.Movie, card.movies?.toString(), stringResource(R.string.server_card_movies)),
-            ServerCardStat(Icons.Outlined.Tv, card.series?.toString(), stringResource(R.string.server_card_series)),
+            ServerCardStat(Icons.Filled.Movie, card.movies?.toString(), stringResource(R.string.server_card_movies)),
+            ServerCardStat(Icons.Filled.Tv, card.series?.toString(), stringResource(R.string.server_card_series)),
         )
     ServerCard(
         title = session.serverName.ifBlank { session.baseUrl },
@@ -105,7 +105,7 @@ internal fun TmdbCoverageNote(coverage: TmdbCoverage?) {
         rows =
             listOf(
                 ListItem(
-                    icon = Icons.Outlined.Info,
+                    icon = Icons.Filled.Info,
                     label =
                         pluralStringResource(
                             R.plurals.tmdb_missing_title,
@@ -139,7 +139,7 @@ internal fun FirstLibraryCard(onAdd: () -> Unit) {
             rows =
                 listOf(
                     ListItem(
-                        icon = Icons.Outlined.VideoLibrary,
+                        icon = Icons.Filled.VideoLibrary,
                         label = stringResource(R.string.first_library_title),
                         detail = stringResource(R.string.first_library_detail),
                         supportingMaxLines = NOTE_LINES,
@@ -150,7 +150,7 @@ internal fun FirstLibraryCard(onAdd: () -> Unit) {
         BingeFilledButton(
             label = stringResource(R.string.libraries_add),
             onClick = onAdd,
-            leadingIcon = Icons.Outlined.Add,
+            leadingIcon = Icons.Filled.Add,
             modifier = Modifier.fillMaxWidth(),
         )
     }

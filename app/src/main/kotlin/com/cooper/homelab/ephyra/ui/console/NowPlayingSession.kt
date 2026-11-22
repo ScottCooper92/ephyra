@@ -8,16 +8,16 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.automirrored.outlined.VolumeOff
-import androidx.compose.material.icons.automirrored.outlined.VolumeUp
-import androidx.compose.material.icons.outlined.Forward10
-import androidx.compose.material.icons.outlined.Message
-import androidx.compose.material.icons.outlined.Pause
-import androidx.compose.material.icons.outlined.PlayArrow
-import androidx.compose.material.icons.outlined.Replay10
-import androidx.compose.material.icons.outlined.SkipNext
-import androidx.compose.material.icons.outlined.SkipPrevious
-import androidx.compose.material.icons.outlined.Stop
+import androidx.compose.material.icons.automirrored.filled.VolumeOff
+import androidx.compose.material.icons.automirrored.filled.VolumeUp
+import androidx.compose.material.icons.filled.Forward10
+import androidx.compose.material.icons.filled.Message
+import androidx.compose.material.icons.filled.Pause
+import androidx.compose.material.icons.filled.PlayArrow
+import androidx.compose.material.icons.filled.Replay10
+import androidx.compose.material.icons.filled.SkipNext
+import androidx.compose.material.icons.filled.SkipPrevious
+import androidx.compose.material.icons.filled.Stop
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Slider
 import androidx.compose.material3.Text
@@ -76,7 +76,7 @@ internal fun SessionPage(
                 rows =
                     listOf(
                         ListItem(
-                            icon = if (session.paused) Icons.Outlined.Pause else Icons.Outlined.PlayArrow,
+                            icon = if (session.paused) Icons.Filled.Pause else Icons.Filled.PlayArrow,
                             label = session.title,
                             detail = listOfNotNull(session.episode, who).joinToString("\n"),
                             supportingMaxLines = 2,
@@ -93,7 +93,7 @@ internal fun SessionPage(
                 BingeOutlinedButton(
                     label = stringResource(R.string.now_playing_message),
                     onClick = { actions.onAskMessage(session) },
-                    leadingIcon = Icons.Outlined.Message,
+                    leadingIcon = Icons.Filled.Message,
                     modifier = Modifier.fillMaxWidth(),
                 )
             }
@@ -103,7 +103,7 @@ internal fun SessionPage(
                 BingeTextButton(
                     label = stringResource(R.string.now_playing_stop),
                     onClick = { actions.onStop(session) },
-                    leadingIcon = Icons.Outlined.Stop,
+                    leadingIcon = Icons.Filled.Stop,
                     loading = state.stopping == session.sessionId,
                     destructive = true,
                     modifier = Modifier.fillMaxWidth(),
@@ -160,7 +160,7 @@ private fun Transport(
         if (controls.skip) {
             ExpressiveIconButton(
                 onClick = { actions.onSkip(session, false) },
-                icon = Icons.Outlined.SkipPrevious,
+                icon = Icons.Filled.SkipPrevious,
                 contentDescription = stringResource(R.string.now_playing_previous),
                 enabled = !sending,
             )
@@ -168,7 +168,7 @@ private fun Transport(
         if (controls.seek) {
             ExpressiveIconButton(
                 onClick = { actions.onSeekBy(session, -SKIP_MILLIS) },
-                icon = Icons.Outlined.Replay10,
+                icon = Icons.Filled.Replay10,
                 contentDescription = stringResource(R.string.now_playing_back_10),
                 enabled = !sending,
             )
@@ -176,7 +176,7 @@ private fun Transport(
         if (controls.playPause) {
             ExpressiveIconButton(
                 onClick = { actions.onPlayPause(session) },
-                icon = if (session.paused) Icons.Outlined.PlayArrow else Icons.Outlined.Pause,
+                icon = if (session.paused) Icons.Filled.PlayArrow else Icons.Filled.Pause,
                 contentDescription = stringResource(if (session.paused) R.string.now_playing_play else R.string.now_playing_pause),
                 enabled = !sending,
             )
@@ -184,7 +184,7 @@ private fun Transport(
         if (controls.seek) {
             ExpressiveIconButton(
                 onClick = { actions.onSeekBy(session, SKIP_MILLIS) },
-                icon = Icons.Outlined.Forward10,
+                icon = Icons.Filled.Forward10,
                 contentDescription = stringResource(R.string.now_playing_forward_10),
                 enabled = !sending,
             )
@@ -192,7 +192,7 @@ private fun Transport(
         if (controls.skip) {
             ExpressiveIconButton(
                 onClick = { actions.onSkip(session, true) },
-                icon = Icons.Outlined.SkipNext,
+                icon = Icons.Filled.SkipNext,
                 contentDescription = stringResource(R.string.now_playing_next),
                 enabled = !sending,
             )
@@ -218,7 +218,7 @@ private fun Volume(
         if (controls.mute) {
             ExpressiveIconButton(
                 onClick = { actions.onToggleMute(session) },
-                icon = if (session.muted) Icons.AutoMirrored.Outlined.VolumeOff else Icons.AutoMirrored.Outlined.VolumeUp,
+                icon = if (session.muted) Icons.AutoMirrored.Filled.VolumeOff else Icons.AutoMirrored.Filled.VolumeUp,
                 contentDescription = stringResource(if (session.muted) R.string.now_playing_unmute else R.string.now_playing_mute),
                 enabled = !sending,
             )

@@ -7,12 +7,12 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.outlined.Add
-import androidx.compose.material.icons.outlined.Dns
-import androidx.compose.material.icons.outlined.EventNote
-import androidx.compose.material.icons.outlined.LiveTv
-import androidx.compose.material.icons.outlined.Sync
-import androidx.compose.material.icons.outlined.Videocam
+import androidx.compose.material.icons.filled.Add
+import androidx.compose.material.icons.filled.Dns
+import androidx.compose.material.icons.filled.EventNote
+import androidx.compose.material.icons.filled.LiveTv
+import androidx.compose.material.icons.filled.Sync
+import androidx.compose.material.icons.filled.Videocam
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
@@ -80,7 +80,7 @@ fun LiveTvScreen(
         bottomBar = {
             CreateFooter(
                 label = stringResource(R.string.live_tv_add_tuner),
-                icon = Icons.Outlined.Add,
+                icon = Icons.Filled.Add,
                 onClick = { actions.onSheet(TunerSheet.Choose) },
                 visible = state !is LiveTvUiState.Failed,
                 enabled = state is LiveTvUiState.Ready,
@@ -141,7 +141,7 @@ private fun LiveTvContent(
                     rows =
                         listOf(
                             ListItem(
-                                icon = Icons.Outlined.Videocam,
+                                icon = Icons.Filled.Videocam,
                                 label = stringResource(R.string.live_tv_recording_row),
                                 detail = stringResource(R.string.live_tv_recording_row_detail),
                                 supportingMaxLines = RECORDING_DETAIL_LINES,
@@ -171,7 +171,7 @@ private fun guideRows(
 ): List<ListItem> =
     listOfNotNull(
         ListItem(
-            icon = Icons.Outlined.Add,
+            icon = Icons.Filled.Add,
             label = stringResource(R.string.live_tv_guide_add),
             detail = stringResource(R.string.live_tv_guide_add_detail),
             supportingMaxLines = ADDRESS_LINES,
@@ -179,7 +179,7 @@ private fun guideRows(
         ),
         summary.guideEndMillis?.let { end ->
             ListItem(
-                icon = Icons.Outlined.EventNote,
+                icon = Icons.Filled.EventNote,
                 label = stringResource(R.string.live_tv_guide_ends),
                 detail = formatRelativeOrAbsolute(end, now),
                 clickable = false,
@@ -187,7 +187,7 @@ private fun guideRows(
         },
         actions.onOpenTasks?.let { open ->
             ListItem(
-                icon = Icons.Outlined.Sync,
+                icon = Icons.Filled.Sync,
                 label = stringResource(R.string.live_tv_refresh_guide),
                 detail = stringResource(R.string.live_tv_refresh_guide_detail),
                 onClick = open,
@@ -198,7 +198,7 @@ private fun guideRows(
 @Composable
 private fun TunerHostSummary.row(actions: LiveTvActions): ListItem =
     ListItem(
-        icon = Icons.Outlined.LiveTv,
+        icon = Icons.Filled.LiveTv,
         label = name,
         detail = listOf(tunerTypeLabel(type), address.takeIf { it != name }).filterNotNull().joinToString(" · "),
         supportingMaxLines = ADDRESS_LINES,
@@ -208,7 +208,7 @@ private fun TunerHostSummary.row(actions: LiveTvActions): ListItem =
 @Composable
 private fun GuideProviderSummary.row(guideActions: LiveTvGuideActions): ListItem =
     ListItem(
-        icon = Icons.Outlined.Dns,
+        icon = Icons.Filled.Dns,
         label = label.ifBlank { guideTypeLabel(type) },
         detail =
             if (lineupPending) {
@@ -220,7 +220,7 @@ private fun GuideProviderSummary.row(guideActions: LiveTvGuideActions): ListItem
     )
 
 @Composable
-private fun emptyRow(message: Int): ListItem = ListItem(icon = Icons.Outlined.LiveTv, label = stringResource(message), clickable = false)
+private fun emptyRow(message: Int): ListItem = ListItem(icon = Icons.Filled.LiveTv, label = stringResource(message), clickable = false)
 
 /** The server's tuner kinds by name, and a plugin's kind as the server names it. */
 @Composable

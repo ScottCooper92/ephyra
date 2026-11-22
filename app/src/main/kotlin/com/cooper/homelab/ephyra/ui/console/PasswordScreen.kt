@@ -2,26 +2,18 @@ package com.cooper.homelab.ephyra.ui.console
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.imePadding
-import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.verticalScroll
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Text
+import androidx.compose.material3.SnackbarHostState
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.Modifier
+import androidx.compose.runtime.remember
+import androidx.compose.ui.autofill.ContentType
 import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.ImeAction
-import com.binge.designsystem.component.BingeFilledButton
 import com.binge.designsystem.component.BingeTextField
 import com.binge.designsystem.component.PageIntro
-import com.binge.designsystem.template.BingeScreenScaffold
+import com.binge.designsystem.template.FormAction
+import com.binge.designsystem.template.FormScreen
 import com.binge.designsystem.template.ScreenBar
-import com.binge.designsystem.template.ScreenBody
-import com.binge.designsystem.template.screenListPadding
 import com.cooper.homelab.ephyra.R
 import com.binge.designsystem.R as DesR
 
@@ -34,80 +26,71 @@ data class PasswordActions(
     val onBack: () -> Unit = {},
 )
 
-/** Lines the result takes, so a longer message never moves the button. */
-private const val RESULT_LINES = 2
-
 /**
- * Changing the user's password: the current one, the new one twice, and Change. It says up front
- * that other devices are signed out, and the result says what happened in place, over the button.
+ * Changing the user's password: the current one, the new one twice, and Change in the footer. It says up front that other
+ * devices are signed out. A wrong current password or two that don't match show on their field, and the rest of the
+ * outcome is a snackbar: a password is never saved a keystroke at a time, so this is a form whose submit is the point.
  */
 @Composable
 fun PasswordScreen(
     state: PasswordUiState,
     actions: PasswordActions,
 ) {
-    BingeScreenScaffold(title = stringResource(R.string.password_title), bar = ScreenBar.Small, onBack = actions.onBack) { padding ->
-        ScreenBody(padding) { _ ->
-            Column(
-                modifier =
-                    Modifier
-                        .fillMaxSize()
-                        .verticalScroll(rememberScrollState())
-                        .padding(padding.screenListPadding())
-                        .imePadding(),
-                verticalArrangement = Arrangement.spacedBy(dimensionResource(DesR.dimen.padding_l)),
-            ) {
-                PageIntro(stringResource(R.string.password_body))
-                BingeTextField(
-                    value = state.current,
-                    onValueChange = actions.onCurrent,
-                    label = stringResource(R.string.password_current),
-                    isError = state.result == PasswordResult.WrongCurrent,
-                    secret = true,
-                    imeAction = ImeAction.Next,
-                )
-                BingeTextField(
-                    value = state.new,
-                    onValueChange = actions.onNew,
-                    label = stringResource(R.string.password_new),
-                    secret = true,
-                    imeAction = ImeAction.Next,
-                )
-                BingeTextField(
-                    value = state.confirm,
-                    onValueChange = actions.onConfirm,
-                    label = stringResource(R.string.password_confirm),
-                    isError = state.result == PasswordResult.Mismatch,
-                    secret = true,
-                    onDone = actions.onChange,
-                    imeAction = ImeAction.Done,
-                )
-                Text(
-                    text = state.result?.let { stringResource(it.message) }.orEmpty(),
-                    style = MaterialTheme.typography.bodyMedium,
-                    color =
-                        if (state.result == PasswordResult.Changed) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.error,
-                    minLines = RESULT_LINES,
-                    maxLines = RESULT_LINES,
-                )
-                BingeFilledButton(
-                    label = stringResource(R.string.password_action),
-                    onClick = actions.onChange,
-                    loading = state.changing,
-                    enabled = state.complete,
-                    modifier = Modifier.fillMaxWidth(),
-                )
-            }
+    val host = remember { SnackbarHostState() }
+    FormScreen(
+        title = stringResource(R.string.password_title),
+        bar = ScreenBar.Small,
+        onBack = actions.onBack,
+        snackbarHostState = host,
+        primaryAction =
+            FormAction(
+                label = stringResource(R.string.password_action),
+                onClick = actions.onChange,
+                enabled = state.complete,
+                busy = state.changing,
+            ),
+    ) { _ ->
+        Column(verticalArrangement = Arrangement.spacedBy(dimensionResource(DesR.dimen.padding_l))) {
+            PageIntro(stringResource(R.string.password_body))
+            BingeTextField(
+                value = state.current,
+                onValueChange = actions.onCurrent,
+                label = stringResource(R.string.password_current),
+                isError = state.result == PasswordResult.WrongCurrent,
+                supporting = if (state.result == PasswordResult.WrongCurrent) stringResource(R.string.password_wrong) else null,
+                secret = true,
+                contentType = ContentType.Password,
+                imeAction = ImeAction.Next,
+            )
+            BingeTextField(
+                value = state.new,
+                onValueChange = actions.onNew,
+                label = stringResource(R.string.password_new),
+                secret = true,
+                contentType = ContentType.NewPassword,
+                imeAction = ImeAction.Next,
+            )
+            BingeTextField(
+                value = state.confirm,
+                onValueChange = actions.onConfirm,
+                label = stringResource(R.string.password_confirm),
+                isError = state.result == PasswordResult.Mismatch,
+                supporting = if (state.result == PasswordResult.Mismatch) stringResource(R.string.password_mismatch) else null,
+                secret = true,
+                contentType = ContentType.NewPassword,
+                onDone = actions.onChange,
+                imeAction = ImeAction.Done,
+            )
         }
     }
+    SnackbarMessage(state.result?.snackbar()?.let { stringResource(it) }, host)
 }
 
-private val PasswordResult.message: Int
-    get() =
-        when (this) {
-            PasswordResult.Changed -> R.string.password_changed
-            PasswordResult.WrongCurrent -> R.string.password_wrong
-            PasswordResult.Mismatch -> R.string.password_mismatch
-            PasswordResult.Refused -> R.string.error_generic
-            PasswordResult.Unreachable -> R.string.error_unreachable
-        }
+/** The outcomes a snackbar reports: the two a field shows are not among them. */
+private fun PasswordResult.snackbar(): Int? =
+    when (this) {
+        PasswordResult.Changed -> R.string.password_changed
+        PasswordResult.Refused -> R.string.error_generic
+        PasswordResult.Unreachable -> R.string.error_unreachable
+        PasswordResult.WrongCurrent, PasswordResult.Mismatch -> null
+    }

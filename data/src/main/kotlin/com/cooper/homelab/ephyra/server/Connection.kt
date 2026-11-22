@@ -4,7 +4,6 @@ import com.cooper.homelab.core.foundation.Logger
 import com.cooper.homelab.core.foundation.ServerId
 import com.cooper.homelab.core.server.connection.ConnectionHealthInterceptor
 import com.cooper.homelab.core.server.connection.ConnectionHealthMonitor
-import com.cooper.homelab.core.server.connection.GatewayClassifier
 import com.cooper.homelab.ephyra.auth.JellyfinSession
 import com.cooper.homelab.ephyra.auth.SessionStore
 import kotlinx.coroutines.CompletableDeferred

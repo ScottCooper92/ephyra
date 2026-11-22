@@ -2,27 +2,18 @@ package com.cooper.homelab.ephyra.ui.console
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.imePadding
-import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.verticalScroll
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Text
+import androidx.compose.material3.SnackbarHostState
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.Modifier
+import androidx.compose.runtime.remember
 import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
-import com.binge.designsystem.component.BingeFilledButton
 import com.binge.designsystem.component.BingeTextField
 import com.binge.designsystem.component.PageIntro
-import com.binge.designsystem.template.BingeScreenScaffold
+import com.binge.designsystem.template.FormAction
+import com.binge.designsystem.template.FormScreen
 import com.binge.designsystem.template.ScreenBar
-import com.binge.designsystem.template.ScreenBody
-import com.binge.designsystem.template.screenListPadding
 import com.cooper.homelab.ephyra.R
 import com.binge.designsystem.R as DesR
 
@@ -33,67 +24,53 @@ data class ApproveActions(
     val onBack: () -> Unit = {},
 )
 
-/** Lines the result takes, so a longer message never moves the button. */
-private const val RESULT_LINES = 2
-
 /**
- * Approving a Quick Connect code: the six digits another device shows, and Approve. The result says
- * what happened in place, under the field.
+ * Approving a Quick Connect code: the six digits another device shows, and Approve in the footer. A code that is not waiting
+ * shows on its field with what to do about it, and the rest of the outcome is a snackbar: approving is a form whose submit is
+ * the point, so there is nothing to save as made.
  */
 @Composable
 fun ApproveCodeScreen(
     state: ApproveUiState,
     actions: ApproveActions,
 ) {
-    BingeScreenScaffold(title = stringResource(R.string.approve_title), bar = ScreenBar.Small, onBack = actions.onBack) { padding ->
-        ScreenBody(padding) { _ ->
-            Column(
-                modifier =
-                    Modifier
-                        .fillMaxSize()
-                        .verticalScroll(rememberScrollState())
-                        .padding(padding.screenListPadding())
-                        .imePadding(),
-                verticalArrangement = Arrangement.spacedBy(dimensionResource(DesR.dimen.padding_l)),
-            ) {
-                PageIntro(stringResource(R.string.approve_body))
-                BingeTextField(
-                    value = state.code,
-                    onValueChange = actions.onCode,
-                    label = stringResource(R.string.approve_field),
-                    isError = state.result != null && state.result != ApproveResult.Approved,
-                    keyboardType = KeyboardType.NumberPassword,
-                    onDone = actions.onApprove,
-                    imeAction = ImeAction.Done,
-                )
-                Text(
-                    text = state.result?.let { resultText(it) }.orEmpty(),
-                    style = MaterialTheme.typography.bodyMedium,
-                    color =
-                        if (state.result == ApproveResult.Approved) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.error,
-                    minLines = RESULT_LINES,
-                    maxLines = RESULT_LINES,
-                )
-                BingeFilledButton(
-                    label = stringResource(R.string.approve_action),
-                    onClick = actions.onApprove,
-                    loading = state.approving,
-                    enabled = state.complete,
-                    modifier = Modifier.fillMaxWidth(),
-                )
-            }
+    val host = remember { SnackbarHostState() }
+    FormScreen(
+        title = stringResource(R.string.approve_title),
+        bar = ScreenBar.Small,
+        onBack = actions.onBack,
+        snackbarHostState = host,
+        primaryAction =
+            FormAction(
+                label = stringResource(R.string.approve_action),
+                onClick = actions.onApprove,
+                enabled = state.complete,
+                busy = state.approving,
+            ),
+    ) { _ ->
+        Column(verticalArrangement = Arrangement.spacedBy(dimensionResource(DesR.dimen.padding_l))) {
+            PageIntro(stringResource(R.string.approve_body))
+            BingeTextField(
+                value = state.code,
+                onValueChange = actions.onCode,
+                label = stringResource(R.string.approve_field),
+                isError = state.result == ApproveResult.WrongCode,
+                supporting = if (state.result == ApproveResult.WrongCode) stringResource(R.string.approve_wrong) else null,
+                keyboardType = KeyboardType.NumberPassword,
+                onDone = actions.onApprove,
+                imeAction = ImeAction.Done,
+            )
         }
     }
+    SnackbarMessage(state.result?.snackbar()?.let { stringResource(it) }, host)
 }
 
-@Composable
-private fun resultText(result: ApproveResult): String =
-    stringResource(
-        when (result) {
-            ApproveResult.Approved -> R.string.approve_done
-            ApproveResult.WrongCode -> R.string.approve_wrong
-            ApproveResult.QuickConnectOff -> R.string.error_quick_connect_off
-            ApproveResult.Unreachable -> R.string.error_unreachable
-            ApproveResult.Failed -> R.string.error_generic
-        },
-    )
+/** The outcomes a snackbar reports: a code that is not waiting shows on its field instead. */
+private fun ApproveResult.snackbar(): Int? =
+    when (this) {
+        ApproveResult.Approved -> R.string.approve_done
+        ApproveResult.QuickConnectOff -> R.string.error_quick_connect_off
+        ApproveResult.Unreachable -> R.string.error_unreachable
+        ApproveResult.Failed -> R.string.error_generic
+        ApproveResult.WrongCode -> null
+    }

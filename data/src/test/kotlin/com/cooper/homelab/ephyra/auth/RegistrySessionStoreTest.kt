@@ -5,6 +5,9 @@ import com.binge.companion.kit.SecretCipher
 import com.cooper.homelab.ephyra.FakeJellyfin
 import com.cooper.homelab.ephyra.PlainCipher
 import com.cooper.homelab.ephyra.session
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.async
+import kotlinx.coroutines.awaitAll
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.runBlocking
 import org.junit.Assert.assertEquals
@@ -183,6 +186,33 @@ class RegistrySessionStoreTest {
             phone.identityFile.updateData { it.toMutablePreferences().also { p -> p[stringPreferencesKey("current_server_id")] = "kept" } }
 
             assertEquals("kept", phone.serverIdentity.currentServerId().value)
+            phone.stop()
+        }
+
+    @Test
+    fun `saves and sign outs that overlap leave a server with its login or neither`() =
+        runBlocking {
+            val phone = Phone(folder.root)
+            repeat(20) { round ->
+                (0 until 8)
+                    .map { n ->
+                        async(Dispatchers.Default) {
+                            if (n % 4 ==
+                                3
+                            ) {
+                                phone.store.clear()
+                            } else {
+                                phone.store.save(session.copy(userId = "user-$round-$n", token = "t$round$n"))
+                            }
+                        }
+                    }.awaitAll()
+                val servers =
+                    phone.registry
+                        .current()
+                        .servers.size
+                val signedIn = phone.store.current() != null
+                assertEquals("round $round: $servers server(s), signed in $signedIn", if (signedIn) 1 else 0, servers)
+            }
             phone.stop()
         }
 }

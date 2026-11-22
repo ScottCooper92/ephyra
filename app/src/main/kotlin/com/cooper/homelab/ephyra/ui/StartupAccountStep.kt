@@ -1,7 +1,6 @@
 package com.cooper.homelab.ephyra.ui
 
 import com.binge.companion.sdk.attempt
-import com.cooper.homelab.core.server.network.LocalNetworkPermission
 import com.cooper.homelab.ephyra.server.Connection
 import com.cooper.homelab.ephyra.server.JellyfinClient
 import com.cooper.homelab.ephyra.server.JellyfinHttpException
@@ -22,7 +21,6 @@ class StartupAccountStep internal constructor(
     private val connection: Connection,
     private val state: MutableStateFlow<UiState.Setup>,
     private val scope: CoroutineScope,
-    private val localNetwork: LocalNetworkPermission,
 ) {
     /** Fills the name the server suggests, unless the user has already typed one. */
     internal fun suggestName(url: HttpUrl) {
@@ -49,13 +47,13 @@ class StartupAccountStep internal constructor(
             val saved = attempt { connection.anonymous(url).saveStartupUser(step.name.trim(), step.password) }
             // The exception is logged by its type and status alone: a message could carry what was sent.
             saved.exceptionOrNull()?.let { connection.logger.noted(TAG, "setup account failed", it) }
+            val refusal = saved.exceptionOrNull() as? JellyfinHttpException
+            val error = saved.exceptionOrNull()?.let { if (refusal != null) SetupError.Generic else it.unreachableSetup() }
             state.update { current ->
                 val s = current as? UiState.Startup ?: return@update current
                 if (saved.isSuccess) {
                     s.copy(phase = StartupPhase.Finish(step.name.trim(), step.password))
                 } else {
-                    val refusal = saved.exceptionOrNull() as? JellyfinHttpException
-                    val error = if (refusal != null) SetupError.Generic else unreachableSetup(s.baseUrl, localNetwork)
                     val account = s.phase as? StartupPhase.Account
                     s.copy(phase = account?.copy(busy = false, error = error, reason = refusal?.reason) ?: s.phase)
                 }

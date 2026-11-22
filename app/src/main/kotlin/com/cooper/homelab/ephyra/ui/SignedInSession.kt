@@ -111,7 +111,7 @@ class SignedInSession(
                     ConnectionHealth.CouldNotLoad
                 } catch (e: IOException) {
                     connection.logger.noted(TAG, "library refresh failed", e)
-                    unreachableHealth(current.session.baseUrl, localNetwork, e)
+                    e.refreshHealth()
                 }
             state.update {
                 it?.copy(

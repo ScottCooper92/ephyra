@@ -119,14 +119,14 @@ class ShellNarrowTest : ShellHostTestBase() {
     }
 
     @Test
-    fun `turning the gate on shows the shell on the start tab`() {
+    fun `turning the gate on shows the shell on the Server tab, where the toggle is`() {
         gate = false
         host()
         compose.runOnUiThread { gate = true }
         compose.waitForIdle()
         assertEquals(listOf<NavKey>(ShellRoute), keys())
         assertBar(true)
-        assertEquals(EphyraTab.Home, tabs?.selected)
+        assertEquals(EphyraTab.Server, tabs?.selected)
         compose.onNodeWithTag("tab_home").performClick()
     }
 

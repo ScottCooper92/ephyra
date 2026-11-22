@@ -1,5 +1,6 @@
 package com.cooper.homelab.ephyra.server
 
+import com.cooper.homelab.core.server.network.UnreadableAnswerException
 import com.cooper.homelab.ephyra.FakeJellyfin
 import kotlinx.coroutines.CoroutineStart
 import kotlinx.coroutines.Dispatchers
@@ -106,9 +107,10 @@ class JellyfinClientTest {
     @Test
     fun `an answer that is not JSON is an IOException, not an IllegalArgumentException`() {
         jellyfin.notJson += "/System/Info/Public"
-        val failure = assertThrows(JellyfinUnreadableAnswer::class.java) { runBlocking { client.publicInfo() } }
+        val failure = assertThrows(UnreadableAnswerException::class.java) { runBlocking { client.publicInfo() } }
         assertTrue(failure is java.io.IOException)
-        assertTrue(failure.cause is kotlinx.serialization.SerializationException)
+        // Coroutine stack-trace recovery may copy the exception around the original, so the parse failure is somewhere in the chain.
+        assertTrue(generateSequence<Throwable>(failure) { it.cause }.any { it is kotlinx.serialization.SerializationException })
     }
 
     @Test

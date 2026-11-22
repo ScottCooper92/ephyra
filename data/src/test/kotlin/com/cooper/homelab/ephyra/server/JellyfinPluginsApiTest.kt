@@ -34,6 +34,7 @@ class JellyfinPluginsApiTest {
         assertTrue(version("10.10.0.0").fits(server))
         assertTrue(version("10.9.0.0").fits(server))
         assertTrue(!version("10.11.0.0").fits(server))
+        assertTrue(!version("10.10.7.1").fits(server))
         assertTrue(version(null).fits(server))
         assertTrue(version("").fits(server))
         assertTrue(version("10.11.0.0").fits(null))

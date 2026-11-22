@@ -15,9 +15,9 @@ import com.cooper.homelab.core.presentation.connect.SignInMode
 import com.cooper.homelab.core.presentation.connect.awaitApproval
 import com.cooper.homelab.core.server.address.ServerAddress
 import com.cooper.homelab.core.server.network.CleartextRefusedException
+import com.cooper.homelab.core.server.network.UnreadableAnswerException
 import com.cooper.homelab.ephyra.server.Connection
 import com.cooper.homelab.ephyra.server.JellyfinHttpException
-import com.cooper.homelab.ephyra.server.JellyfinUnreadableAnswer
 import com.cooper.homelab.ephyra.server.PublicServerInfo
 import com.cooper.homelab.ephyra.server.SignedIn
 import com.cooper.homelab.ephyra.server.authenticateByName
@@ -108,7 +108,7 @@ internal class JellyfinProbe(
         attempts: List<IOException>,
     ): PublicServerInfo? {
         connection.logger.noted(TAG, "the address did not answer as a media server", failure)
-        if (failure is JellyfinHttpException || failure is JellyfinUnreadableAnswer) return null
+        if (failure is JellyfinHttpException || failure is UnreadableAnswerException) return null
         val needsCertificate = failure !is CleartextRefusedException && asksForClientCertificate(attempts + failure)
         throw if (needsCertificate) ClientCertificateRequired(failure) else failure
     }
@@ -124,14 +124,9 @@ internal class JellyfinProbe(
         }
 }
 
-/** Why a setup call failed, in the shared library's terms: what [SetupError] is worded from. */
+/** Why a setup call failed, in the shared library's terms: what [SetupError] is worded from. Only the client-certificate request is this app's own. */
 internal suspend fun Throwable.setupFailure(): ServerFailure =
-    when (this) {
-        is ClientCertificateRequired -> ServerFailure.ClientCertificateNeeded
-        is CleartextRefusedException -> ServerFailure.CleartextBlocked
-        is JellyfinUnreadableAnswer -> ServerFailure.Unreadable
-        else -> serverFailure()
-    }
+    if (this is ClientCertificateRequired) ServerFailure.ClientCertificateNeeded else serverFailure()
 
 /** Quick Connect as a link sign-in: the server gives a code, the user approves it in a signed-in Jellyfin app, and this polls until they do. */
 internal class JellyfinQuickConnect(

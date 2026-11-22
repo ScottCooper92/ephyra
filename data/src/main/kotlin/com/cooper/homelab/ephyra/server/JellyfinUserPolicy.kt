@@ -1,5 +1,6 @@
 package com.cooper.homelab.ephyra.server
 
+import com.cooper.homelab.core.server.network.UnreadableAnswerException
 import kotlinx.serialization.json.JsonArray
 import kotlinx.serialization.json.JsonElement
 import kotlinx.serialization.json.JsonObject
@@ -83,7 +84,7 @@ data class ParentalRating(
 
 /** The ratings a limit can be set to, as `/Localization/ParentalRatings` lists them. */
 suspend fun JellyfinClient.parentalRatings(): List<ParentalRating> {
-    val answer = get(PARENTAL_RATINGS) as? JsonArray ?: throw JellyfinUnreadableAnswer(PARENTAL_RATINGS)
+    val answer = get(PARENTAL_RATINGS) as? JsonArray ?: throw UnreadableAnswerException()
     return answer.mapNotNull { element ->
         val json = element as? JsonObject ?: return@mapNotNull null
         val score = json.obj("RatingScore")

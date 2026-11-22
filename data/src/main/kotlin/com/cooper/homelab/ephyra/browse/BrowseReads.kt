@@ -37,7 +37,7 @@ internal suspend fun JellyfinClient.browseViews(
 ): List<LibraryView> {
     val (path, query) =
         if (profile.hasUserViewsRoute) "UserViews" to mapOf("userId" to userId) else "Users/$userId/Views" to emptyMap()
-    return decodeAnswer(ViewsWire.serializer(), getObject(path, query), path).items.mapNotNull { it.toLibraryView() }
+    return decodeAnswer(ViewsWire.serializer(), getObject(path, query)).items.mapNotNull { it.toLibraryView() }
 }
 
 /** One page of a library's titles, ordered and filtered by the server. */
@@ -66,7 +66,7 @@ internal suspend fun JellyfinClient.browseItems(
     if (filters.years.isNotEmpty()) query["years"] = filters.years.sorted().joinToString(",")
     filters.played?.let { query["isPlayed"] = it.toString() }
     if (filters.favouritesOnly) query["isFavorite"] = "true"
-    return decodeAnswer(ItemsWire.serializer(), getObject("Items", query), "Items").toPage(startIndex, withTotal)
+    return decodeAnswer(ItemsWire.serializer(), getObject("Items", query)).toPage(startIndex, withTotal)
 }
 
 /** How many of a box set's parts a poster read looks through for one with a picture: the first often has none and a later one does. */
@@ -92,7 +92,7 @@ internal suspend fun JellyfinClient.browseFirstPoster(
             "enableImageTypes" to "Primary",
             "imageTypeLimit" to "1",
         )
-    val parts = decodeAnswer(ItemsWire.serializer(), getObject("Items", query), "Items").items
+    val parts = decodeAnswer(ItemsWire.serializer(), getObject("Items", query)).items
     return parts.firstNotNullOfOrNull { part ->
         val id = part.id
         val tag = part.imageTags["Primary"]
@@ -115,7 +115,6 @@ internal suspend fun JellyfinClient.browseFilterChoices(
                 "Items/Filters",
                 mapOf("userId" to userId, "parentId" to library.id, "includeItemTypes" to library.kind.itemTypes()),
             ),
-            "Items/Filters",
         )
     return FilterChoices(
         genres = answer.genres.sortedBy(String::lowercase),

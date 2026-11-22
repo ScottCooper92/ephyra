@@ -1,6 +1,7 @@
 package com.cooper.homelab.ephyra.server
 
 import com.cooper.homelab.core.foundation.ServerVersion
+import com.cooper.homelab.core.server.network.UnreadableAnswerException
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.mapNotNull
 import kotlinx.serialization.json.JsonArray
@@ -70,7 +71,7 @@ fun compareVersions(
 
 /** The catalog, by name. Admin only. */
 suspend fun JellyfinClient.packages(): List<CatalogPackage> {
-    val answer = get(PACKAGES) as? JsonArray ?: throw JellyfinUnreadableAnswer(PACKAGES)
+    val answer = get(PACKAGES) as? JsonArray ?: throw UnreadableAnswerException()
     return answer.mapNotNull { (it as? JsonObject)?.packageOrNull() }.sortedBy { it.name.lowercase() }
 }
 
@@ -174,7 +175,7 @@ data class PluginRepository(
 
 /** The repositories the server fetches its catalog from. Admin only. */
 suspend fun JellyfinClient.repositories(): List<PluginRepository> {
-    val answer = get(REPOSITORIES) as? JsonArray ?: throw JellyfinUnreadableAnswer(REPOSITORIES)
+    val answer = get(REPOSITORIES) as? JsonArray ?: throw UnreadableAnswerException()
     return answer.mapNotNull { element ->
         val json = element as? JsonObject ?: return@mapNotNull null
         val url = json.string("Url") ?: return@mapNotNull null

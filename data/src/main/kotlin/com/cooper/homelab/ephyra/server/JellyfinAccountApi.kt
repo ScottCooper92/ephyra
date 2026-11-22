@@ -1,5 +1,6 @@
 package com.cooper.homelab.ephyra.server
 
+import com.cooper.homelab.core.server.network.UnreadableAnswerException
 import kotlinx.serialization.json.JsonArray
 import kotlinx.serialization.json.JsonObject
 import kotlinx.serialization.json.JsonPrimitive
@@ -75,7 +76,7 @@ suspend fun JellyfinClient.saveUserConfiguration(
 
 /** The languages the server can choose between, as `/Localization/Cultures` lists them. */
 suspend fun JellyfinClient.cultures(): List<Culture> {
-    val answer = get(CULTURES) as? JsonArray ?: throw JellyfinUnreadableAnswer(CULTURES)
+    val answer = get(CULTURES) as? JsonArray ?: throw UnreadableAnswerException()
     return answer
         .mapNotNull { element ->
             val json = element as? JsonObject ?: return@mapNotNull null

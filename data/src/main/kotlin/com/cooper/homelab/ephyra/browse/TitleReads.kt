@@ -27,7 +27,7 @@ internal suspend fun JellyfinClient.browseTitle(
     // 10.9 moved the route and put the user in the query; an older server takes it in the path.
     val (path, query) =
         if (profile.hasUserItemRoutes) "Items/$id" to mapOf("userId" to userId) else "Users/$userId/Items/$id" to emptyMap()
-    return decodeAnswer(ItemWire.serializer(), getObject(path, query), path).toTitleDetail()
+    return decodeAnswer(ItemWire.serializer(), getObject(path, query)).toTitleDetail()
 }
 
 /** A series' seasons, in the server's order. Specials are season 0 and the server decides where they come. */
@@ -37,7 +37,7 @@ internal suspend fun JellyfinClient.browseSeasons(
 ): List<BrowseItem> {
     val path = "Shows/$seriesId/Seasons"
     val query = cardQuery(userId).also { it["fields"] = SEASON_FIELDS }
-    return decodeAnswer(ItemsWire.serializer(), getObject(path, query), path).items.mapNotNull { it.toBrowseItem() }
+    return decodeAnswer(ItemsWire.serializer(), getObject(path, query)).items.mapNotNull { it.toBrowseItem() }
 }
 
 /** A series' episodes, all of them or those of one season, in the server's order. */
@@ -49,7 +49,7 @@ internal suspend fun JellyfinClient.browseEpisodes(
     val path = "Shows/$seriesId/Episodes"
     val query = cardQuery(userId).also { it["fields"] = EPISODE_FIELDS }
     seasonId?.let { query["seasonId"] = it }
-    return decodeAnswer(ItemsWire.serializer(), getObject(path, query), path).items.mapNotNull { it.toBrowseItem() }
+    return decodeAnswer(ItemsWire.serializer(), getObject(path, query)).items.mapNotNull { it.toBrowseItem() }
 }
 
 /**
@@ -80,7 +80,7 @@ internal suspend fun JellyfinClient.browseSimilar(
 ): List<BrowseItem> {
     val path = "Items/$id/Similar"
     val query = mapOf("userId" to userId, "limit" to limit.toString(), "fields" to CARD_FIELDS)
-    return decodeAnswer(ItemsWire.serializer(), getObject(path, query), path).items.mapNotNull { it.toBrowseItem() }
+    return decodeAnswer(ItemsWire.serializer(), getObject(path, query)).items.mapNotNull { it.toBrowseItem() }
 }
 
 /**
@@ -94,7 +94,7 @@ internal suspend fun JellyfinClient.browsePerson(
 ): PersonDetail? {
     val (path, query) =
         if (profile.hasUserItemRoutes) "Items/$id" to mapOf("userId" to userId) else "Users/$userId/Items/$id" to emptyMap()
-    return decodeAnswer(ItemWire.serializer(), getObject(path, query), path).toPersonDetail()
+    return decodeAnswer(ItemWire.serializer(), getObject(path, query)).toPersonDetail()
 }
 
 /** The movies and series on this server a person appears in, paged, by name. */
@@ -114,7 +114,7 @@ internal suspend fun JellyfinClient.browseTitlesWith(
     query["startIndex"] = startIndex.toString()
     query["limit"] = limit.toString()
     query["enableTotalRecordCount"] = withTotal.toString()
-    return decodeAnswer(ItemsWire.serializer(), getObject("Items", query), "Items").toPage(startIndex, withTotal)
+    return decodeAnswer(ItemsWire.serializer(), getObject("Items", query)).toPage(startIndex, withTotal)
 }
 
 /** A collection's parts, oldest first as the server's own clients show them: release year, premiere date, then name. */
@@ -126,7 +126,7 @@ internal suspend fun JellyfinClient.browseCollectionParts(
     query["parentId"] = collectionId
     query["sortBy"] = "ProductionYear,PremiereDate,SortName"
     query["sortOrder"] = "Ascending"
-    return decodeAnswer(ItemsWire.serializer(), getObject("Items", query), "Items").items.mapNotNull { it.toBrowseItem() }
+    return decodeAnswer(ItemsWire.serializer(), getObject("Items", query)).items.mapNotNull { it.toBrowseItem() }
 }
 
 /**
@@ -143,7 +143,7 @@ internal suspend fun JellyfinClient.browseCollectionsOf(
     if (!profile.hasItemCollectionsRoute) return memberships.containing(this, userId, id)
     val path = "Items/$id/Collections"
     val query = cardQuery(userId)
-    return decodeAnswer(ItemsWire.serializer(), getObject(path, query), path).items.mapNotNull { it.toBrowseItem() }
+    return decodeAnswer(ItemsWire.serializer(), getObject(path, query)).items.mapNotNull { it.toBrowseItem() }
 }
 
 /** Every box set the user can see, in name order, a page at a time. `parentId` is left out: before 12.0 the server drops it for a lone BoxSet type. */
@@ -159,7 +159,7 @@ private suspend fun JellyfinClient.browseBoxSets(userId: String): List<BrowseIte
         query["startIndex"] = asked.toString()
         query["limit"] = BOX_SET_PAGE.toString()
         query["enableTotalRecordCount"] = "false"
-        val page = decodeAnswer(ItemsWire.serializer(), getObject("Items", query), "Items").items
+        val page = decodeAnswer(ItemsWire.serializer(), getObject("Items", query)).items
         boxes += page.mapNotNull { it.toBrowseItem() }
         asked += page.size
         if (page.size < BOX_SET_PAGE) return boxes
@@ -183,7 +183,7 @@ internal suspend fun JellyfinClient.browseBoxSetMembers(userId: String): List<Bo
                                     "enableUserData" to "false",
                                     "enableTotalRecordCount" to "false",
                                 )
-                            decodeAnswer(ItemsWire.serializer(), getObject("Items", query), "Items").items
+                            decodeAnswer(ItemsWire.serializer(), getObject("Items", query)).items
                         }
                     BoxSetMembers(box, members.mapNotNullTo(mutableSetOf()) { it.id })
                 }

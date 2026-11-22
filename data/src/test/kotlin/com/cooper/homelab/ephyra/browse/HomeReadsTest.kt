@@ -1,5 +1,6 @@
 package com.cooper.homelab.ephyra.browse
 
+import com.cooper.homelab.core.foundation.ServerVersion
 import com.cooper.homelab.core.server.network.UnreadableAnswerException
 import com.cooper.homelab.ephyra.FakeJellyfin
 import com.cooper.homelab.ephyra.FakeTitle
@@ -8,7 +9,6 @@ import com.cooper.homelab.ephyra.server.DiscardLogger
 import com.cooper.homelab.ephyra.server.JellyfinClient
 import com.cooper.homelab.ephyra.server.JellyfinHttpException
 import com.cooper.homelab.ephyra.server.JellyfinServerProfile
-import com.cooper.homelab.ephyra.server.JellyfinVersion
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.runBlocking
 import okhttp3.HttpUrl.Companion.toHttpUrl
@@ -27,8 +27,8 @@ class HomeReadsTest {
     private val client =
         JellyfinClient(OkHttpClient(), jellyfin.baseUrl.toHttpUrl(), identity, Dispatchers.IO, logger = DiscardLogger)
             .withToken("token-1")
-    private val current = JellyfinServerProfile(JellyfinVersion(10, 11, 6))
-    private val old = JellyfinServerProfile(JellyfinVersion(10, 8, 13))
+    private val current = JellyfinServerProfile(ServerVersion.of(10, 11, 6))
+    private val old = JellyfinServerProfile(ServerVersion.of(10, 8, 13))
     private val resume = JellyfinResumeRepository(client, "user-1", current)
     private val nextUp = JellyfinNextUpRepository(client, "user-1")
     private val latest = JellyfinLatestRepository(client, "user-1", current)

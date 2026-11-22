@@ -61,11 +61,12 @@ import com.binge.designsystem.tv.template.TvTwoPanePage
 import com.binge.designsystem.tv.template.TvTwoPaneStyle
 import com.binge.designsystem.tv.theme.TvButtonStyle
 import com.cooper.homelab.core.flags.bingePromotion
+import com.cooper.homelab.core.foundation.ServerVersion
 import com.cooper.homelab.core.uiandroid.flags.LocalFlags
 import com.cooper.homelab.ephyra.R
 import com.cooper.homelab.ephyra.feedback.installBugReportUrl
 import com.cooper.homelab.ephyra.server.ForgotPasswordAction
-import com.cooper.homelab.ephyra.server.JellyfinVersion
+import com.cooper.homelab.ephyra.server.knownRelease
 import com.cooper.homelab.ephyra.ui.Actions
 import com.cooper.homelab.ephyra.ui.ConnectionAutoRetry
 import com.cooper.homelab.ephyra.ui.ConnectionHealth
@@ -563,7 +564,7 @@ private fun TvSignedInPage(
         listOfNotNull(
             TvPaneGroup(title = stringResource(R.string.settings_signed_in_as), rows = accountRows),
             playback?.takeIf { settled }?.let { playbackGroup(it) },
-            appGroup(actions, JellyfinVersion.parse(state.session.serverVersion)),
+            appGroup(actions, knownRelease(state.session.serverVersion)),
         )
     TvListPaneBoard(
         title = stringResource(R.string.app_label),
@@ -681,7 +682,7 @@ private const val ADDRESS_LINES = 2
 @Composable
 private fun appGroup(
     actions: Actions,
-    serverVersion: JellyfinVersion?,
+    serverVersion: ServerVersion?,
 ): TvPaneGroup {
     val settings = actions.appSettings
 
@@ -732,7 +733,7 @@ private fun appGroup(
  * link fills in this install's app version and device, and the server's release when it is known.
  */
 @Composable
-private fun bugReportRow(serverVersion: JellyfinVersion?): TvPaneRow {
+private fun bugReportRow(serverVersion: ServerVersion?): TvPaneRow {
     val url = remember(serverVersion) { installBugReportUrl(serverVersion) }
     val codeSize = dimensionResource(R.dimen.tv_bug_report_code_size)
     val description = stringResource(R.string.tv_settings_report_bug_code_description)

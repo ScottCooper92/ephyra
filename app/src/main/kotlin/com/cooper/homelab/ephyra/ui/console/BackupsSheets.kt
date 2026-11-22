@@ -20,11 +20,12 @@ import com.binge.designsystem.component.BingeTextButton
 import com.binge.designsystem.component.ItemGroup
 import com.binge.designsystem.component.ListItem
 import com.binge.designsystem.formatRelativeOrAbsolute
+import com.cooper.homelab.core.foundation.ServerVersion
 import com.cooper.homelab.ephyra.R
 import com.cooper.homelab.ephyra.server.BackupCreation
 import com.cooper.homelab.ephyra.server.BackupOptions
-import com.cooper.homelab.ephyra.server.JellyfinVersion
 import com.cooper.homelab.ephyra.server.ServerBackup
+import com.cooper.homelab.ephyra.server.knownRelease
 import com.binge.designsystem.R as DesR
 
 /** The sheets and the confirm over the backups page, for whichever is open. */
@@ -32,7 +33,7 @@ import com.binge.designsystem.R as DesR
 internal fun BackupsOverlays(
     state: BackupsUiState.Ready,
     actions: BackupsActions,
-    serverVersion: JellyfinVersion?,
+    serverVersion: ServerVersion?,
     now: Long,
 ) {
     state.choosing?.let { CreateBackupSheet(it, actions) }
@@ -132,7 +133,7 @@ internal fun CreateBackupSheet(
 @Composable
 internal fun BackupSheet(
     backup: ServerBackup,
-    serverVersion: JellyfinVersion?,
+    serverVersion: ServerVersion?,
     actions: BackupsActions,
     now: Long,
     inWindow: Boolean = true,
@@ -189,7 +190,7 @@ internal fun BackupSheet(
 @Composable
 internal fun RestoreDialog(
     backup: ServerBackup,
-    serverVersion: JellyfinVersion?,
+    serverVersion: ServerVersion?,
     actions: BackupsActions,
     inWindow: Boolean = true,
 ) {
@@ -210,10 +211,10 @@ internal fun RestoreDialog(
 
 /** Says so when the backup was made by another release than the running server's; null when the same or unknown. */
 @Composable
-private fun ServerBackup.versionNote(running: JellyfinVersion?): String? {
-    val made = JellyfinVersion.parse(serverVersion) ?: return null
+private fun ServerBackup.versionNote(running: ServerVersion?): String? {
+    val made = knownRelease(serverVersion) ?: return null
     return if (running != null && made != running) {
-        stringResource(R.string.backups_version_differs, "${running.major}.${running.minor}.${running.patch}")
+        stringResource(R.string.backups_version_differs, "$running")
     } else {
         null
     }

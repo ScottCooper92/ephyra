@@ -1,6 +1,7 @@
 package com.cooper.homelab.ephyra.client.title
 
 import com.cooper.homelab.core.foundation.ServerFailure
+import com.cooper.homelab.core.foundation.ServerVersion
 import com.cooper.homelab.ephyra.FakeJellyfin
 import com.cooper.homelab.ephyra.FakeTitle
 import com.cooper.homelab.ephyra.browse.BrowseItem
@@ -16,7 +17,6 @@ import com.cooper.homelab.ephyra.server.ClientIdentity
 import com.cooper.homelab.ephyra.server.DiscardLogger
 import com.cooper.homelab.ephyra.server.JellyfinClient
 import com.cooper.homelab.ephyra.server.JellyfinServerProfile
-import com.cooper.homelab.ephyra.server.JellyfinVersion
 import com.cooper.homelab.ephyra.server.TICKS_PER_MINUTE
 import com.cooper.homelab.ephyra.server.UserDataChange
 import com.cooper.homelab.ephyra.server.serverFailure
@@ -49,7 +49,7 @@ class PersonCollectionTest {
             logger = DiscardLogger,
         ).withToken("token-1")
     private val socket = MutableSharedFlow<List<UserDataChange>>(extraBufferCapacity = 8)
-    private val profile = JellyfinServerProfile(JellyfinVersion(12, 4, 0))
+    private val profile = JellyfinServerProfile(ServerVersion.of(12, 4, 0))
     private val userData = JellyfinUserDataRepository(client, "user-1", profile, socket)
 
     @After

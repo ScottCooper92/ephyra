@@ -3,6 +3,7 @@ package com.cooper.homelab.ephyra.ui.console
 import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
 import com.android.tools.screenshot.PreviewTest
+import com.cooper.homelab.core.foundation.ServerVersion
 import com.cooper.homelab.ephyra.preview.JellyfinFontScalePreviews
 import com.cooper.homelab.ephyra.preview.JellyfinScreenStateLightPreview
 import com.cooper.homelab.ephyra.preview.JellyfinScreenStatePreview
@@ -10,14 +11,13 @@ import com.cooper.homelab.ephyra.preview.JellyfinSpanishPreviews
 import com.cooper.homelab.ephyra.server.BackupCreation
 import com.cooper.homelab.ephyra.server.BackupOptions
 import com.cooper.homelab.ephyra.server.JellyfinHttpException
-import com.cooper.homelab.ephyra.server.JellyfinVersion
 import com.cooper.homelab.ephyra.server.ServerBackup
 import java.io.IOException
 
 private const val NOW = 1_793_534_400_000L // 31 Oct 2026, 12:00 UTC
 private const val DAY = 24 * 60 * 60 * 1000L
 
-private val running = JellyfinVersion(10, 11, 6)
+private val running = ServerVersion.of(10, 11, 6)
 
 private val previewBackups =
     listOf(
@@ -139,7 +139,7 @@ class BackupsScreenshotTest {
     @Composable
     fun oneBackupOtherRelease() =
         Surface {
-            BackupSheet(previewBackups.last(), JellyfinVersion(10, 11, 7), BackupsActions(), NOW, inWindow = false)
+            BackupSheet(previewBackups.last(), ServerVersion.of(10, 11, 7), BackupsActions(), NOW, inWindow = false)
         }
 
     @PreviewTest

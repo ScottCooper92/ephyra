@@ -3,10 +3,10 @@ package com.cooper.homelab.ephyra.ui.console
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.binge.companion.sdk.attempt
+import com.cooper.homelab.core.foundation.ServerVersion
 import com.cooper.homelab.ephyra.server.CatalogPackage
 import com.cooper.homelab.ephyra.server.Connection
 import com.cooper.homelab.ephyra.server.InstallEvent
-import com.cooper.homelab.ephyra.server.JellyfinVersion
 import com.cooper.homelab.ephyra.server.PackageVersion
 import com.cooper.homelab.ephyra.server.PluginStatus
 import com.cooper.homelab.ephyra.server.ServerPlugin
@@ -47,7 +47,7 @@ sealed interface CatalogUiState {
         val outcomes: Map<String, InstallOutcome> = emptyMap(),
         val actionFailed: ConsoleFailure? = null,
         /** The server's release, so a package page offers the version built for it. */
-        val server: JellyfinVersion? = null,
+        val server: ServerVersion? = null,
     ) : CatalogUiState
 }
 
@@ -65,7 +65,7 @@ internal fun installedVersions(plugins: List<ServerPlugin>): Map<String, String>
  */
 class CatalogViewModel(
     private val connection: Connection,
-    private val server: JellyfinVersion?,
+    private val server: ServerVersion?,
 ) : ViewModel() {
     private val _state = MutableStateFlow<CatalogUiState>(CatalogUiState.Loading)
     val state: StateFlow<CatalogUiState> = _state.asStateFlow()

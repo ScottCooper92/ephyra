@@ -1,25 +1,12 @@
 package com.cooper.homelab.ephyra.server
 
-/** A Jellyfin release, `major.minor.patch`; an unstable build with no numbers has none. */
-data class JellyfinVersion(
-    val major: Int,
-    val minor: Int,
-    val patch: Int,
-) : Comparable<JellyfinVersion> {
-    override fun compareTo(other: JellyfinVersion): Int =
-        compareValuesBy(this, other, JellyfinVersion::major, JellyfinVersion::minor, JellyfinVersion::patch)
+import com.cooper.homelab.core.foundation.ServerVersion
 
-    companion object {
-        fun parse(raw: String?): JellyfinVersion? {
-            val parts = raw?.trim()?.removePrefix("v")?.split('.') ?: return null
-            if (parts.size < 2) return null
-            val numbers = parts.take(VERSION_PARTS).map { it.takeWhile(Char::isDigit).toIntOrNull() ?: return null }
-            return JellyfinVersion(numbers[0], numbers[1], numbers.getOrElse(2) { 0 })
-        }
-
-        private const val VERSION_PARTS = 3
-    }
-}
+/**
+ * The release [raw] names, or null when it names none (an unstable build that reports a commit, a blank string). A gate that cannot tell what
+ * the server is leaves a capability on rather than hide it, so it asks for null, not for a version of its own.
+ */
+fun knownRelease(raw: String?): ServerVersion? = ServerVersion.parse(raw) as? ServerVersion.Known
 
 /**
  * What the connected server is and can do: its release, and what its administrator turned on that
@@ -31,7 +18,7 @@ data class JellyfinVersion(
  * server's own 404 stays the backstop.
  */
 data class JellyfinServerProfile(
-    val version: JellyfinVersion?,
+    val version: ServerVersion?,
     /** Whether Quick Connect is on (`/QuickConnect/Enabled`, readable by anyone); unknown reads as on. */
     val quickConnect: Boolean = true,
 ) {
@@ -138,7 +125,7 @@ data class JellyfinServerProfile(
     val hasInternalPortNames: Boolean get() = atLeast(TEN, NINE)
 
     /** UPnP port mapping: in the network configuration until 10.11 marks it no longer supported. */
-    val hasUpnpOption: Boolean get() = version?.let { it < JellyfinVersion(TEN, ELEVEN, 0) } ?: true
+    val hasUpnpOption: Boolean get() = version?.let { it < ServerVersion.of(TEN, ELEVEN, 0) } ?: true
 
     /** Library update duration, parallel image encoding, the inactive session threshold and cast receivers, in the server's configuration. 10.9. */
     val hasAdvancedPerformance: Boolean get() = atLeast(TEN, NINE)
@@ -149,16 +136,16 @@ data class JellyfinServerProfile(
     private fun atLeast(
         major: Int,
         minor: Int,
-    ): Boolean = version?.let { it >= JellyfinVersion(major, minor, 0) } ?: true
+    ): Boolean = version?.let { it >= ServerVersion.of(major, minor, 0) } ?: true
 
     companion object {
         /** The oldest release the app is tested against. An older one still connects, and offers what it has. */
-        val FLOOR = JellyfinVersion(TEN, EIGHT, 0)
+        val FLOOR = ServerVersion.of(TEN, EIGHT, 0)
 
         fun from(
             version: String?,
             quickConnect: Boolean = true,
-        ) = JellyfinServerProfile(JellyfinVersion.parse(version), quickConnect)
+        ) = JellyfinServerProfile(knownRelease(version), quickConnect)
 
         private const val TEN = 10
         private const val EIGHT = 8

@@ -15,10 +15,11 @@
 #            Service, the review launcher, keep rules and the like.
 #   release  the R8 build. True only for what decides whether R8 can build the app: a build file (any
 #            *.gradle.kts), the version catalog, `gradle/` and gradle.properties, a keep rule or any .pro
-#            file, or a submodule pin (design-system, binge-companions, binge-ci, homelab-core, homelab-player). Binge builds
-#            release only on a tag; here a PR builds it only for those paths, and every push to main builds it
-#            regardless, so a break the filter missed shows right after the merge. The workflow itself,
-#            the manifest, resources and assets are not inputs: ordinary app code and UI changes skip it.
+#            file, a submodule pin (design-system, binge-companions, binge-ci, homelab-core, homelab-player) or
+#            .gitmodules, the release source set, the manifest, `res/raw`, `res/xml` and assets, or a workflow file.
+#            Binge builds release only on a tag; here a PR builds it only for those paths, and every push to main
+#            builds it regardless, so a break the filter missed shows right after the merge. Ordinary app code,
+#            string and other value resources, and UI changes skip it.
 #
 # Never state a skip-set path here that a bot reads or that the build reads. `.github/workflows`
 # is in no set: a change to the pipeline is validated by running the pipeline.
@@ -53,7 +54,11 @@ release_input() {
   case "$1" in
     *.pro | app/src/main/keepRules/*) return 0 ;;
     *.gradle.kts | libs.versions.toml | gradle/* | gradle.properties) return 0 ;;
-    design-system | binge-companions | binge-ci | homelab-core | homelab-player) return 0 ;;
+    design-system | binge-companions | binge-ci | homelab-core | homelab-player | .gitmodules) return 0 ;;
+    # What the packaged app is made of besides its code: the release source set, the manifest, raw and xml resources (a
+    # resource-shrinking keep file among them), and assets.
+    */src/release/* | */src/main/AndroidManifest.xml | */src/main/res/raw/* | */src/main/res/xml/* | */src/main/assets/*) return 0 ;;
+    .github/workflows/*) return 0 ;;
   esac
   return 1
 }

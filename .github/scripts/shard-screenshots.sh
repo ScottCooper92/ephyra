@@ -21,7 +21,7 @@ refs="${4:-app/src/screenshotTestDebug/reference}"
 # A class may carry modifiers; a `@PreviewTest` outside a class, or in a file with no matched class, is an error.
 class_re='^[[:space:]]*((public|internal|private|open|final|abstract)[[:space:]]+)*class[[:space:]]+[A-Za-z0-9_]*ScreenshotTest\b'
 while IFS= read -r f; do
-  if grep -q "@PreviewTest" "$f"; then
+  if grep -qE '^[[:space:]]*@PreviewTest' "$f"; then
     if grep -qE '^@PreviewTest' "$f"; then
       echo "$f: a top-level @PreviewTest is in no class, so in no shard; put it in a *ScreenshotTest class" >&2
       exit 1

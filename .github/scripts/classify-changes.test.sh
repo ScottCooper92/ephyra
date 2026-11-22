@@ -24,12 +24,15 @@ K=app/src/main/kotlin/com/cooper/homelab/ephyra
 check "docs only"                  "false false false" CLAUDE.md docs/listing/privacy.md .ai/agents/pr-review-guide.md
 check "scripts and tooling only"   "false false false" .github/scripts/classify-changes.sh tools/x.sh
 check "the shard script runs screenshots" "true true false" .github/scripts/shard-screenshots.sh
-check "workflows run the Gradle jobs, not R8" "true true false"    .github/workflows/ci.yml
+check "a workflow file runs the Gradle jobs and R8" "true true true"    .github/workflows/ci.yml
 check "empty diff runs everything" "true true true"
 check "a screen"                   "true true false"   "$K/ui/SignedInHome.kt"
 check "a frame"                    "true true false"   app/src/screenshotTestDebug/reference/x.png
 check "server code can reach UI"   "true true false"   data/src/main/kotlin/com/cooper/homelab/ephyra/server/JellyfinClient.kt
 check "a resource string"          "true true false"   app/src/main/res/values/strings.xml
+check "the network security config" "true true true"    app/src/main/res/xml/network_security_config.xml
+check "a raw resource (keep.xml)"   "true true true"    app/src/main/res/raw/keep.xml
+check "the client module's res/xml" "true true true"    client/src/main/res/xml/x.xml
 check "tests only"                 "true false false"  app/src/test/kotlin/x/YTest.kt
 check "the data module's tests"     "true false false"  data/src/test/kotlin/x/YTest.kt data/src/testFixtures/kotlin/x/Fake.kt
 check "the exported Service"       "true false false"  "$K/service/JellyfinCompanionService.kt"
@@ -40,10 +43,10 @@ check "the version catalog"        "true true true"    libs.versions.toml
 check "a build file"               "true true true"    app/build.gradle.kts
 check "a keep rule"                "true false true"   app/src/main/keepRules/app.pro
 check "a pro file outside keepRules" "true true true" app/proguard-rules.pro
-check "the release source set"     "true true false" app/src/release/kotlin/X.kt
-check "assets"                     "true true false" app/src/main/assets/x.json
-check "the manifest"               "true true false"    app/src/main/AndroidManifest.xml
-check "the data module's manifest"  "true true false"    data/src/main/AndroidManifest.xml
+check "the release source set"     "true true true" app/src/release/kotlin/X.kt
+check "assets"                     "true true true" app/src/main/assets/x.json
+check "the manifest"               "true true true"    app/src/main/AndroidManifest.xml
+check "the data module's manifest"  "true true true"    data/src/main/AndroidManifest.xml
 check "the data module's build file" "true true true"   data/build.gradle.kts
 check "the client module's tests"    "true false false"  client/src/test/kotlin/x/YTest.kt
 check "the client module's build file" "true true true"   client/build.gradle.kts
@@ -62,7 +65,7 @@ check "a keep rule with a newline in its name" "true false true"   $'app/src/mai
 check "docs with a screen"         "true true false"   CLAUDE.md "$K/ui/SignedInHome.kt"
 
 check "a UI-only change skips R8" "true true false" "$K/ui/SignedInHome.kt" app/src/main/res/values/strings.xml
-check ".gitmodules alone skips R8" "true true false" .gitmodules
+check ".gitmodules is an R8 input" "true true true" .gitmodules
 check "a Gradle wrapper change"     "true true true"  gradle/wrapper/gradle-wrapper.properties
 check "gradle.properties"           "true true true"  gradle.properties
 check "settings.gradle.kts"         "true true true"  settings.gradle.kts

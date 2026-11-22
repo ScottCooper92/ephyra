@@ -54,6 +54,14 @@ if "$here/shard-screenshots.sh" 3 0 "$tmp/stray" "$tmp/noRefs" >/dev/null 2>&1; 
   echo "FAIL: a @PreviewTest in a file with no *ScreenshotTest class should fail"; failed=1
 fi
 
+# A comment that names @PreviewTest is not a frame, so a file with only that comment needs no *ScreenshotTest class.
+mkdir -p "$tmp/comment"
+printf 'package x\nclass AScreenshotTest {\n}\n' > "$tmp/comment/A.kt"
+printf 'package x\n// every frame is a @PreviewTest in a *ScreenshotTest class\nclass Helper\n' > "$tmp/comment/H.kt"
+if ! "$here/shard-screenshots.sh" 3 0 "$tmp/comment" "$tmp/noRefs" >/dev/null 2>&1; then
+  echo "FAIL: a comment that names @PreviewTest should not need a screenshot class"; failed=1
+fi
+
 # References no class renders fail the script rather than piling up.
 mkdir -p "$tmp/refs/ui/GoneScreenshotTest"
 : > "$tmp/refs/ui/GoneScreenshotTest/f.png"

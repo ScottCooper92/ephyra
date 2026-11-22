@@ -116,6 +116,7 @@
     <string name="error_cleartext_refused">El HTTP sin cifrar a una dirección pública necesita tu acuerdo antes. Usa https:// si el servidor lo admite.</string>
     <string name="error_generic">Algo ha fallado. Inténtalo de nuevo.</string>
     <string name="error_signed_out">Inicia sesión en Jellyfin para ver tu biblioteca</string>
+    <string name="companion_locale">es</string>
     <string name="tv_sign_in_to">Iniciar sesión en %1$s</string>
     <string name="tv_change_server">Cambiar de servidor</string>
     <string name="tv_quick_connect_getting">Obteniendo un código…</string>

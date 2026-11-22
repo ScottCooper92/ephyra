@@ -220,9 +220,9 @@
     <string name="password_body">Al cambiarla se cierra tu sesión de Jellyfin en tus otros dispositivos, que te pedirán la nueva. Esta app sigue con la sesión iniciada.</string>
     <string name="password_current">Contraseña actual</string>
     <string name="password_new">Contraseña nueva</string>
-    <string name="password_confirm">Repite la contraseña nueva</string>
+    <string name="password_confirm">Confirma la contraseña</string>
     <string name="password_action">Cambiar contraseña</string>
-    <string name="password_changed">Cambiada. Tus otros dispositivos te pedirán la contraseña nueva.</string>
+    <string name="password_changed">Contraseña cambiada.</string>
     <string name="password_wrong">Esa no es tu contraseña actual.</string>
     <string name="password_mismatch">Las contraseñas nuevas no coinciden.</string>
     <string name="now_playing_title">Reproduciendo ahora</string>

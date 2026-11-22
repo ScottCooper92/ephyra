@@ -8,7 +8,7 @@ import com.cooper.homelab.ephyra.preview.JellyfinSpanishPreviews
 
 private val previewFilled = PasswordUiState(current = "old-secret", new = "new-secret", confirm = "new-secret")
 
-/** Changing the password: the filled form across the matrix, then each result on the phone cell. */
+/** Changing the password: the filled form across the matrix, then the two results a field shows on the phone cell. */
 class PasswordScreenshotTest {
     @PreviewTest
     @JellyfinScreenStatePreview
@@ -21,12 +21,6 @@ class PasswordScreenshotTest {
     @JellyfinScreenStatePreview
     @Composable
     fun empty() = PasswordScreen(PasswordUiState(), PasswordActions())
-
-    @PreviewTest
-    @JellyfinScreenStatePreview
-    @JellyfinSpanishPreviews
-    @Composable
-    fun changed() = PasswordScreen(PasswordUiState(result = PasswordResult.Changed), PasswordActions())
 
     @PreviewTest
     @JellyfinScreenStatePreview

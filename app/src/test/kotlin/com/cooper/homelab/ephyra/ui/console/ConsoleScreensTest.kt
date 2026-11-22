@@ -428,8 +428,8 @@ class ConsoleScreensTest {
             })
         compose.setContent { JellyfinTheme { PasswordScreen(PasswordUiState(new = "a", confirm = "a"), actions) } }
         compose.onNodeWithText("Current password").performTextInput("x")
-        compose.onNodeWithText("New password again").performTextInput("y")
-        compose.onNode(hasText("Change password") and hasClickAction()).performScrollTo().performClick()
+        compose.onNodeWithText("Confirm password").performTextInput("y")
+        compose.onNode(hasText("Change password") and hasClickAction()).performClick()
         // The fields are the view model's: each keystroke goes to it, against the value it holds.
         assertTrue("c:x" in typed)
         assertTrue(typed.any { it.startsWith("r:") && 'y' in it })
@@ -441,7 +441,7 @@ class ConsoleScreensTest {
         var state by mutableStateOf(PasswordUiState(result = PasswordResult.Changed))
         compose.setContent { JellyfinTheme { PasswordScreen(state, PasswordActions()) } }
         mapOf(
-            PasswordResult.Changed to "Changed. Your other devices will ask for the new password.",
+            PasswordResult.Changed to "Password changed.",
             PasswordResult.WrongCurrent to "That isn't your current password.",
             PasswordResult.Mismatch to "The new passwords don't match.",
             PasswordResult.Refused to "Something went wrong. Try again.",

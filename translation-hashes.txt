@@ -890,8 +890,8 @@ app:now_playing_who  287892958adf
 app:overflow_menu  bc79cdffbaa8
 app:password_action  3f9c991f63a9
 app:password_body  1214c1df1782
-app:password_changed  53111bdc6d08
-app:password_confirm  6ebce87c030c
+app:password_changed  a768c77be9dd
+app:password_confirm  5ac265f396a2
 app:password_current  72ed2bd767ce
 app:password_mismatch  b75780b4a0a7
 app:password_new  3dd9df4441fb

@@ -2,8 +2,6 @@ package com.cooper.homelab.ephyra.auth
 
 import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.Preferences
-import androidx.datastore.preferences.core.booleanPreferencesKey
-import androidx.datastore.preferences.core.edit
 import androidx.datastore.preferences.core.stringPreferencesKey
 import com.cooper.homelab.core.foundation.LogField
 import com.cooper.homelab.core.foundation.Logger
@@ -12,6 +10,7 @@ import com.cooper.homelab.core.foundation.warn
 import com.cooper.homelab.core.server.address.ServerAddress
 import com.cooper.homelab.core.server.connection.ConnectionSecurity
 import com.cooper.homelab.core.server.connection.DeviceIdentity
+import com.cooper.homelab.core.server.connection.LegacyImport
 import com.cooper.homelab.core.server.connection.SavedServer
 import com.cooper.homelab.core.server.connection.ServerRegistry
 import kotlinx.coroutines.flow.first
@@ -33,15 +32,15 @@ class LegacySessionImport(
     private val serverIdentity: ServerIdentity,
     private val logger: Logger,
 ) {
+    private val shared = LegacyImport(marker, registry, importServer = ::importSession)
+
     suspend fun importOnce() {
-        val old = legacy.data.first()
-        old[DEVICE_ID]?.let { device.adopt(it) }
-        if (marker.data.first()[DONE] == true) return
-        if (registry.current().servers.isEmpty()) importSession(old)
-        marker.edit { it[DONE] = true }
+        legacy.data.first()[DEVICE_ID]?.let { device.adopt(it) }
+        shared.importOnce()
     }
 
-    private suspend fun importSession(old: Preferences) {
+    private suspend fun importSession() {
+        val old = legacy.data.first()
         val url = old[BASE_URL]?.takeIf { it.isNotBlank() } ?: return
         val userId = old[USER_ID]?.takeIf { it.isNotBlank() }
         val address = ServerAddress.parse(url)
@@ -76,6 +75,5 @@ class LegacySessionImport(
         val USER_NAME = stringPreferencesKey("user_name")
         val TOKEN = stringPreferencesKey("token")
         val DEVICE_ID = stringPreferencesKey("device_id")
-        val DONE = booleanPreferencesKey("legacy_import_done")
     }
 }

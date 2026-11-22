@@ -57,14 +57,16 @@ internal fun projectSetup(
                 cleartextAllowed = connect.cleartextAllowed,
             )
         }
-        connect is ConnectState.SignIn -> signIn(connect.server, connect.form, connect.isConnecting, connect.error, link, current)
-        connect is ConnectState.NotSetUp -> signIn(connect.server, null, false, connect.error, null, current)
+        connect is ConnectState.SignIn ->
+            signIn(connect.server, connect.form, connect.held, connect.isConnecting, connect.error, link, current)
+        connect is ConnectState.NotSetUp -> signIn(connect.server, null, emptyMap(), false, connect.error, null, current)
         else -> UiState.Loading
     }
 
 private fun signIn(
     server: ProbedServer<PublicServerInfo>,
     form: com.cooper.homelab.core.presentation.connect.SignInForm?,
+    held: Map<String, Map<String, String>>,
     connecting: Boolean,
     error: ConnectError?,
     link: LinkState?,
@@ -74,11 +76,13 @@ private fun signIn(
     val before = (current as? UiState.SignIn)?.takeIf { it.baseUrl == base }
     val quickConnect = form?.mode == SetupMode.QuickConnect
     val failure = error?.toSetupError()
+    // On the Quick Connect tab the form holds no fields, so the password page's text is what the flow holds for it.
+    val typed = if (quickConnect) held[SetupMode.Password.id].orEmpty() else form?.values.orEmpty()
     return UiState.SignIn(
         baseUrl = base,
         server = server.preview,
-        username = form?.value(USERNAME_FIELD).orEmpty(),
-        password = form?.value(PASSWORD_FIELD).orEmpty(),
+        username = typed[USERNAME_FIELD].orEmpty(),
+        password = typed[PASSWORD_FIELD].orEmpty(),
         busy = connecting && !quickConnect,
         quickConnectCode = link?.code,
         passwordError = failure.takeUnless { quickConnect },

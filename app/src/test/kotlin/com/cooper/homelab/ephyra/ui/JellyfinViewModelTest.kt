@@ -3,6 +3,7 @@ package com.cooper.homelab.ephyra.ui
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.viewModelScope
 import com.binge.companion.kit.SecretCipher
+import com.cooper.homelab.core.presentation.connect.ConnectState
 import com.cooper.homelab.core.presentation.connect.LinkStash
 import com.cooper.homelab.core.server.connection.CallResult
 import com.cooper.homelab.core.server.network.CleartextConsent
@@ -1376,6 +1377,21 @@ class JellyfinViewModelTest {
         val back = vm.await<UiState.SignIn> { !it.quickConnectSelected && it.username == "sam" && it.password == "hunter2" }
         assertEquals("sam", back.username)
         assertEquals("hunter2", back.password)
+    }
+
+    @Test
+    fun `the password page the Quick Connect tab swipes to is drawn with what was typed`() {
+        val vm = viewModel()
+        vm.toSignIn()
+        vm.onUsername("sam")
+        vm.onPassword("hunter2")
+        vm.await<UiState.SignIn> { it.username == "sam" && it.password == "hunter2" }
+
+        vm.actions.selectMethod(quickConnect = true)
+        val onQuickConnect = vm.await<UiState.SignIn> { it.quickConnectSelected && it.username == "sam" && it.password == "hunter2" }
+
+        val held = onQuickConnect.toConnectState().let { (it as ConnectState.SignIn).held }
+        assertEquals(mapOf(USERNAME_FIELD to "sam", PASSWORD_FIELD to "hunter2"), held[SetupMode.Password.id])
     }
 
     @Test

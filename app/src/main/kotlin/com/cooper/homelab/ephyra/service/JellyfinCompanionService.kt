@@ -12,7 +12,6 @@ import io.grpc.BindableService
 import io.grpc.Status
 import io.grpc.binder.SecurityPolicy
 import java.time.Instant
-import java.util.Locale
 
 /** The exported Service Binge binds to: LIBRARY v1, admitted for Binge's certificate on release and its package names on debug. */
 class JellyfinCompanionService : IntegrationService() {
@@ -72,8 +71,6 @@ class AndroidUserMessages(
 
     override fun unreachable(): String = context.getString(R.string.error_unreachable)
 
-    override fun locale(): String =
-        context.resources.configuration.locales
-            .get(0)
-            ?.toLanguageTag() ?: Locale.getDefault().toLanguageTag()
+    /** The tag of the sentences above, from a string resource: the language they resolved in, which is not the device's when the app is not translated into it. */
+    override fun locale(): String = context.getString(R.string.companion_locale)
 }

@@ -17,4 +17,13 @@ class AndroidUserMessagesTest {
         assertEquals("No se ha podido conectar con tu servidor de Jellyfin", messages.unreachable())
         assertEquals("es", messages.locale())
     }
+
+    @Test
+    @Config(qualifiers = "fr")
+    fun `a device in a language the app has no translation for gets English, tagged as English`() {
+        val messages = AndroidUserMessages(ApplicationProvider.getApplicationContext())
+        assertEquals("Sign in to Jellyfin to see your library", messages.signedOut())
+        assertEquals("Couldn't reach your Jellyfin server", messages.unreachable())
+        assertEquals("en-GB", messages.locale())
+    }
 }

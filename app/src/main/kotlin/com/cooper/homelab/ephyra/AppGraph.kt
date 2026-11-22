@@ -102,7 +102,7 @@ import com.cooper.homelab.ephyra.ui.SharedPreferencesLinkStash
 import com.cooper.homelab.ephyra.ui.console.AboutLibrariesLicenceSource
 import com.cooper.homelab.ephyra.ui.console.UserPictures
 import com.cooper.homelab.ephyra.ui.console.clearSharedLogs
-import com.cooper.homelab.ephyra.ui.search.LocalRecentSearches
+import com.cooper.homelab.ephyra.ui.search.ServerRecentSearches
 import com.cooper.homelab.player.AudioFallbackMemory
 import com.cooper.homelab.player.InAppPlayer
 import com.cooper.homelab.player.PlayerViewModelFactory
@@ -291,10 +291,8 @@ class AppGraph(
     val activitySwitch: ActivitySwitch by lazy { ActivitySwitch(notificationPrefs, feedCursors, serverIdentity) }
 
     /** The settings search's last few results, kept on this device alone. */
-    val recentSearches: LocalRecentSearches by lazy {
-        LocalRecentSearches(
-            dataStore("recent_searches"),
-        )
+    val recentSearches: ServerRecentSearches by lazy {
+        ServerRecentSearches(dataStore("recent_searches"), serverIdentity::currentServerId)
     }
 
     /**

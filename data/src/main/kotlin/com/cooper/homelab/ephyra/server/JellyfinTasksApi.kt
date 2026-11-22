@@ -1,5 +1,6 @@
 package com.cooper.homelab.ephyra.server
 
+import com.cooper.homelab.core.server.network.UnreadableAnswerException
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.mapNotNull
 import kotlinx.serialization.json.JsonArray
@@ -38,7 +39,7 @@ const val LIBRARY_SCAN_TASK = "RefreshLibrary"
 
 /** The tasks an admin sees in Jellyfin's own dashboard: hidden ones (Live TV's guide, say) are left out. */
 suspend fun JellyfinClient.tasks(): List<ServerTask> {
-    val answer = get(TASKS, mapOf("isHidden" to "false")) as? JsonArray ?: throw JellyfinUnreadableAnswer(TASKS)
+    val answer = get(TASKS, mapOf("isHidden" to "false")) as? JsonArray ?: throw UnreadableAnswerException()
     return answer.toTasks()
 }
 

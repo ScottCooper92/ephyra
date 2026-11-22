@@ -2,6 +2,7 @@ package com.cooper.homelab.ephyra.ui
 
 import com.binge.companion.sdk.attempt
 import com.cooper.homelab.core.server.network.LocalNetworkPermission
+import com.cooper.homelab.core.server.network.UnreadableAnswerException
 import com.cooper.homelab.ephyra.auth.JellyfinSession
 import com.cooper.homelab.ephyra.auth.SessionStore
 import com.cooper.homelab.ephyra.server.Connection
@@ -9,7 +10,6 @@ import com.cooper.homelab.ephyra.server.JellyfinAccount
 import com.cooper.homelab.ephyra.server.JellyfinClient
 import com.cooper.homelab.ephyra.server.JellyfinHttpException
 import com.cooper.homelab.ephyra.server.JellyfinServerProfile
-import com.cooper.homelab.ephyra.server.JellyfinUnreadableAnswer
 import com.cooper.homelab.ephyra.server.LibraryIndex
 import com.cooper.homelab.ephyra.server.SAVED_SERVER
 import com.cooper.homelab.ephyra.server.logout
@@ -106,7 +106,7 @@ class SignedInSession(
                         return@launch
                     }
                     ConnectionHealth.CouldNotLoad
-                } catch (e: JellyfinUnreadableAnswer) {
+                } catch (e: UnreadableAnswerException) {
                     connection.logger.noted(TAG, "library refresh answered something that is not a media server's", e)
                     ConnectionHealth.CouldNotLoad
                 } catch (e: IOException) {

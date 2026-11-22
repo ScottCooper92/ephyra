@@ -1,5 +1,6 @@
 package com.cooper.homelab.ephyra.server
 
+import com.cooper.homelab.core.server.network.UnreadableAnswerException
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.SerializationException
@@ -79,11 +80,10 @@ internal fun JsonObject.userDataChanges(): List<UserDataChange> {
     }
 }
 
-/** A write's answer: the item's `UserItemDataDto`. A shape that is not one is [JellyfinUnreadableAnswer] for [path]. */
+/** A write's answer: the item's `UserItemDataDto`. A shape that is not one is [UnreadableAnswerException]. */
 internal fun decodeUserData(
     element: JsonElement,
     itemId: String,
-    path: String,
 ): UserDataChange =
     try {
         WireJson.decodeFromJsonElement(UserItemDataWire.serializer(), element).toChange(null, itemId)
@@ -91,4 +91,4 @@ internal fun decodeUserData(
         null
     } catch (_: IllegalArgumentException) {
         null
-    } ?: throw JellyfinUnreadableAnswer(path)
+    } ?: throw UnreadableAnswerException()

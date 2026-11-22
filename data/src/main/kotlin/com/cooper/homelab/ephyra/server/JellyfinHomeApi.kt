@@ -1,5 +1,6 @@
 package com.cooper.homelab.ephyra.server
 
+import com.cooper.homelab.core.server.network.UnreadableAnswerException
 import kotlinx.serialization.json.JsonArray
 import kotlinx.serialization.json.JsonObject
 import kotlinx.serialization.json.JsonPrimitive
@@ -86,7 +87,7 @@ suspend fun JellyfinClient.groupingOptions(
             "Users/$userId/GroupingOptions" to
                 emptyMap()
         }
-    val answer = get(path, query) as? JsonArray ?: throw JellyfinUnreadableAnswer(path)
+    val answer = get(path, query) as? JsonArray ?: throw UnreadableAnswerException()
     return answer.mapNotNull { it as? JsonObject }.mapNotNull { option ->
         UserView(option.string("Id") ?: return@mapNotNull null, option.string("Name").orEmpty())
     }

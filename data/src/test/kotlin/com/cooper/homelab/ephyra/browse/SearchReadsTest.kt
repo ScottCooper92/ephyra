@@ -1,5 +1,6 @@
 package com.cooper.homelab.ephyra.browse
 
+import com.cooper.homelab.core.server.network.UnreadableAnswerException
 import com.cooper.homelab.ephyra.FakeJellyfin
 import com.cooper.homelab.ephyra.FakeTitle
 import com.cooper.homelab.ephyra.server.ClientIdentity
@@ -7,7 +8,6 @@ import com.cooper.homelab.ephyra.server.DiscardLogger
 import com.cooper.homelab.ephyra.server.JellyfinClient
 import com.cooper.homelab.ephyra.server.JellyfinHttpException
 import com.cooper.homelab.ephyra.server.JellyfinServerProfile
-import com.cooper.homelab.ephyra.server.JellyfinUnreadableAnswer
 import com.cooper.homelab.ephyra.server.JellyfinVersion
 import kotlinx.coroutines.CoroutineStart
 import kotlinx.coroutines.Dispatchers
@@ -164,7 +164,7 @@ class SearchReadsTest {
         assertEquals(500, assertThrows(JellyfinHttpException::class.java) { runBlocking { search.titles("alien") } }.code)
         jellyfin.status.clear()
         jellyfin.notJson += "/Persons"
-        assertThrows(JellyfinUnreadableAnswer::class.java) { runBlocking { search.people("alien") } }
+        assertThrows(UnreadableAnswerException::class.java) { runBlocking { search.people("alien") } }
     }
 
     @Test

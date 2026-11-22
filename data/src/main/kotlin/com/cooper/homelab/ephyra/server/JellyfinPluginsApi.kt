@@ -1,6 +1,7 @@
 package com.cooper.homelab.ephyra.server
 
 import com.binge.companion.sdk.attempt
+import com.cooper.homelab.core.server.network.UnreadableAnswerException
 import kotlinx.serialization.json.JsonArray
 import kotlinx.serialization.json.JsonObject
 
@@ -41,7 +42,7 @@ data class ServerPlugin(
 
 /** The server's installed plugins, by name. */
 suspend fun JellyfinClient.plugins(): List<ServerPlugin> {
-    val answer = get(PLUGINS) as? JsonArray ?: throw JellyfinUnreadableAnswer(PLUGINS)
+    val answer = get(PLUGINS) as? JsonArray ?: throw UnreadableAnswerException()
     return answer.mapNotNull { (it as? JsonObject)?.pluginOrNull() }.sortedBy { it.name.lowercase() }
 }
 

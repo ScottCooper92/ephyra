@@ -60,7 +60,7 @@ jobs:
     permissions:
       contents: read
       pull-requests: read
-    uses: ScottCooper92/binge-ci/.github/workflows/submodule-pins.yml@de44a7c780434385c40ecf599b7f3ebd10e7fb76 # v1.0.59
+    uses: ScottCooper92/binge-ci/.github/workflows/submodule-pins.yml@bd0ca952ab5ea6c5d6d6f4eda140848438d89cb4 # v1.0.60
     with:
       private_submodules: homelab-core,homelab-player,binge-design-system,binge-ci
     secrets:
@@ -268,8 +268,25 @@ jobs:
         with:
           cache-read-only: true
 
+      # Robolectric fetches its android-all jar outside Gradle's cache, and a 429 there fails every Robolectric
+      # test. With the jar restored or fetched from a mirror, the run goes offline. Every module's tests run at
+      # sdk=34 (their robolectric.properties), so this is the one jar: add one here for any other SDK level.
+      - id: robolectric
+        uses: ScottCooper92/binge-ci/.github/actions/robolectric-cache@bd0ca952ab5ea6c5d6d6f4eda140848438d89cb4 # v1.0.60
+        with:
+          offline: true
+          jars: |
+            android-all-instrumented:14-robolectric-10818077-i7
+
       - name: Unit tests and coverage
         run: ./gradlew testDebugUnitTest koverVerify --continue
+
+      # The one writer, on the default branch only, as binge-ci's own workflow does.
+      - uses: ScottCooper92/binge-ci/.github/actions/robolectric-cache-save@bd0ca952ab5ea6c5d6d6f4eda140848438d89cb4 # v1.0.60
+        if: ${{ success() && github.ref_name == github.event.repository.default_branch }}
+        with:
+          versions: ${{ steps.robolectric.outputs.versions }}
+          restored-key: ${{ steps.robolectric.outputs.matched-key }}
 
       - name: Upload reports
         if: ${{ failure() }}
@@ -462,7 +479,7 @@ jobs:
 
       # binge-ci's shared step: a pinned release verified against its published checksum, with
       # shellcheck at warning severity.
-      - uses: ScottCooper92/binge-ci/.github/actions/actionlint@de44a7c780434385c40ecf599b7f3ebd10e7fb76 # v1.0.59
+      - uses: ScottCooper92/binge-ci/.github/actions/actionlint@bd0ca952ab5ea6c5d6d6f4eda140848438d89cb4 # v1.0.60
 
   # A red nightly has no PR or push to carry it, so without this it is a red mark in the
   # Actions tab that nothing points at. One issue stays open while the canary is red and
@@ -477,7 +494,7 @@ jobs:
     permissions:
       issues: write
     steps:
-      - uses: ScottCooper92/binge-ci/.github/actions/nightly-report@de44a7c780434385c40ecf599b7f3ebd10e7fb76 # v1.0.59
+      - uses: ScottCooper92/binge-ci/.github/actions/nightly-report@bd0ca952ab5ea6c5d6d6f4eda140848438d89cb4 # v1.0.60
         with:
           result: ${{ needs.build.result }}
           title: Nightly CI is failing on main

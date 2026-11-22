@@ -22,7 +22,7 @@
 #            string and other value resources, and UI changes skip it.
 #
 # Never state a skip-set path here that a bot reads or that the build reads. `.github/workflows`
-# is in no set: a change to the pipeline is validated by running the pipeline.
+# is in no skip set (`release_input` lists it): a change to the pipeline is validated by running the pipeline.
 set -euo pipefail
 
 list="${1:?usage: classify-changes.sh <file listing the changed paths>}"

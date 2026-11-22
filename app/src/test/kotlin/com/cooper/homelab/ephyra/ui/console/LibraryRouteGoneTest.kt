@@ -13,7 +13,7 @@ import com.cooper.homelab.ephyra.server.Connection
 import com.cooper.homelab.ephyra.server.JellyfinServerProfile
 import com.cooper.homelab.ephyra.session
 import com.cooper.homelab.ephyra.testSessionStore
-import com.cooper.homelab.ephyra.theme.JellyfinTheme
+import com.cooper.homelab.ephyra.theme.EphyraTheme
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.runBlocking
 import okhttp3.OkHttpClient
@@ -55,7 +55,7 @@ class LibraryRouteGoneTest {
 
     private fun show(id: String) =
         compose.setContent {
-            JellyfinTheme { LibraryItemRoute(connection, profile, libraryItem(id), openSubItem = {}, onBack = { backs++ }) }
+            EphyraTheme { LibraryItemRoute(connection, profile, libraryItem(id), openSubItem = {}, onBack = { backs++ }) }
         }
 
     /** [check], after the main looper has run: a condition that reads no semantics would otherwise never let the route load. */

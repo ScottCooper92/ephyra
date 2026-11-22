@@ -10,7 +10,7 @@ import com.binge.designsystem.testing.createTakeDownAndroidComposeRule
 import com.cooper.homelab.ephyra.server.Culture
 import com.cooper.homelab.ephyra.server.PlaybackPreferences
 import com.cooper.homelab.ephyra.server.SubtitleMode
-import com.cooper.homelab.ephyra.theme.JellyfinTheme
+import com.cooper.homelab.ephyra.theme.EphyraTheme
 import com.cooper.homelab.ephyra.ui.console.ConsoleFailure
 import com.cooper.homelab.ephyra.ui.console.PlaybackActions
 import com.cooper.homelab.ephyra.ui.console.PlaybackUiState
@@ -37,7 +37,7 @@ class ThisAppPlaybackTest {
     private fun show(
         playback: PlaybackUiState?,
         actions: PlaybackActions = PlaybackActions(),
-    ) = compose.setContent { JellyfinTheme { ThisAppScreen(Actions(), onBack = {}, playback = playback, playbackActions = actions) } }
+    ) = compose.setContent { EphyraTheme { ThisAppScreen(Actions(), onBack = {}, playback = playback, playbackActions = actions) } }
 
     @Test
     fun `a page with no playback state has no playback group`() {

@@ -29,7 +29,7 @@ class BrandColorManifestTest {
     private fun declared(dark: Boolean): Int? {
         val service =
             context.packageManager.getServiceInfo(
-                ComponentName(context, JellyfinCompanionService::class.java),
+                ComponentName(context, EphyraCompanionService::class.java),
                 PackageManager.GET_META_DATA,
             )
         return service.metaData.readBrandColor(dark) { id -> context.getColor(id) }

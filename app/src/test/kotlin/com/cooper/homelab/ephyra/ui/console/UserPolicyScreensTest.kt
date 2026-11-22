@@ -15,7 +15,7 @@ import com.cooper.homelab.ephyra.server.ParentalRating
 import com.cooper.homelab.ephyra.server.ServerDevice
 import com.cooper.homelab.ephyra.server.ServerLibrary
 import com.cooper.homelab.ephyra.server.ServerUser
-import com.cooper.homelab.ephyra.theme.JellyfinTheme
+import com.cooper.homelab.ephyra.theme.EphyraTheme
 import kotlinx.serialization.json.Json
 import kotlinx.serialization.json.JsonObject
 import kotlinx.serialization.json.JsonPrimitive
@@ -46,7 +46,7 @@ class UserPolicyScreensTest {
         val libraries = listOf(ServerLibrary("m", "Movies", "movies", emptyList()), ServerLibrary("s", "Shows", "tvshows", emptyList()))
         val state = UsersUiState.Ready(listOf(sam), libraries, me = "me", open = "sam")
         compose.setContent {
-            JellyfinTheme {
+            EphyraTheme {
                 if (section == null) {
                     UserScreen(state, "sam", actions)
                 } else {

@@ -6,10 +6,10 @@ import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
 import com.android.tools.screenshot.PreviewTest
 import com.binge.designsystem.SaveStatus
-import com.cooper.homelab.ephyra.preview.JellyfinFontScalePreviews
-import com.cooper.homelab.ephyra.preview.JellyfinScreenStateLightPreview
-import com.cooper.homelab.ephyra.preview.JellyfinScreenStatePreview
-import com.cooper.homelab.ephyra.preview.JellyfinSpanishPreviews
+import com.cooper.homelab.ephyra.preview.EphyraFontScalePreviews
+import com.cooper.homelab.ephyra.preview.EphyraScreenStateLightPreview
+import com.cooper.homelab.ephyra.preview.EphyraScreenStatePreview
+import com.cooper.homelab.ephyra.preview.EphyraSpanishPreviews
 import com.cooper.homelab.ephyra.server.Branding
 import com.cooper.homelab.ephyra.server.Country
 import com.cooper.homelab.ephyra.server.Culture
@@ -49,14 +49,14 @@ private const val SPLASH_DISC = 50
 /** The server settings page across the matrix, without the 10.9 splash screen, each dialog, then each other state. */
 class ServerSettingsScreenshotTest {
     @PreviewTest
-    @JellyfinScreenStatePreview
-    @JellyfinFontScalePreviews
-    @JellyfinSpanishPreviews
+    @EphyraScreenStatePreview
+    @EphyraFontScalePreviews
+    @EphyraSpanishPreviews
     @Composable
     fun settings() = ServerSettingsScreen(previewSettings, ServerSettingsActions())
 
     @PreviewTest
-    @JellyfinScreenStatePreview
+    @EphyraScreenStatePreview
     @Composable
     fun beforeSplashscreens() =
         ServerSettingsScreen(
@@ -67,35 +67,35 @@ class ServerSettingsScreenshotTest {
 
     /** Before 10.11: no splash image row, and a note that a branding save can reset an image set in another app. */
     @PreviewTest
-    @JellyfinScreenStatePreview
-    @JellyfinSpanishPreviews
+    @EphyraScreenStatePreview
+    @EphyraSpanishPreviews
     @Composable
     fun before10_11() = ServerSettingsScreen(previewSettings, ServerSettingsActions(), splashImageKnown = false)
 
     @PreviewTest
-    @JellyfinScreenStatePreview
-    @JellyfinSpanishPreviews
-    @JellyfinScreenStateLightPreview
-    @JellyfinFontScalePreviews
+    @EphyraScreenStatePreview
+    @EphyraSpanishPreviews
+    @EphyraScreenStateLightPreview
+    @EphyraFontScalePreviews
     @Composable
     fun editingName() = Surface { TextForm(ServerText.Name, previewSettings, ServerSettingsActions()) }
 
     @PreviewTest
-    @JellyfinScreenStatePreview
-    @JellyfinScreenStateLightPreview
-    @JellyfinFontScalePreviews
+    @EphyraScreenStatePreview
+    @EphyraScreenStateLightPreview
+    @EphyraFontScalePreviews
     @Composable
     fun editingCss() = Surface { TextForm(ServerText.CustomCss, previewSettings, ServerSettingsActions()) }
 
     @PreviewTest
-    @JellyfinScreenStatePreview
-    @JellyfinSpanishPreviews
+    @EphyraScreenStatePreview
+    @EphyraSpanishPreviews
     @Composable
     fun saving() = ServerSettingsScreen(previewSettings.copy(serverSave = SaveProgress(SaveStatus.Saving)), ServerSettingsActions())
 
     @PreviewTest
-    @JellyfinScreenStatePreview
-    @JellyfinSpanishPreviews
+    @EphyraScreenStatePreview
+    @EphyraSpanishPreviews
     @Composable
     fun notSaved() =
         ServerSettingsScreen(
@@ -107,19 +107,19 @@ class ServerSettingsScreenshotTest {
         )
 
     @PreviewTest
-    @JellyfinScreenStatePreview
+    @EphyraScreenStatePreview
     @Composable
     fun loading() = ServerSettingsScreen(ServerSettingsUiState.Loading, ServerSettingsActions())
 
     @PreviewTest
-    @JellyfinScreenStatePreview
+    @EphyraScreenStatePreview
     @Composable
     fun failed() = ServerSettingsScreen(ServerSettingsUiState.Failed(ConsoleFailure.Refused), ServerSettingsActions())
 
     @PreviewTest
-    @JellyfinScreenStatePreview
-    @JellyfinFontScalePreviews
-    @JellyfinSpanishPreviews
+    @EphyraScreenStatePreview
+    @EphyraFontScalePreviews
+    @EphyraSpanishPreviews
     @Composable
     fun splashCustom() =
         Surface {
@@ -132,13 +132,13 @@ class ServerSettingsScreenshotTest {
         }
 
     @PreviewTest
-    @JellyfinScreenStatePreview
+    @EphyraScreenStatePreview
     @Composable
     fun splashDefaultNoPreview() =
         Surface { SplashSheet(custom = false, state = SplashUiState(open = true), actions = ServerSettingsActions(), inWindow = false) }
 
     @PreviewTest
-    @JellyfinScreenStatePreview
+    @EphyraScreenStatePreview
     @Composable
     fun splashRefused() =
         Surface {
@@ -156,8 +156,8 @@ class ServerSettingsScreenshotTest {
         }
 
     @PreviewTest
-    @JellyfinScreenStatePreview
-    @JellyfinSpanishPreviews
+    @EphyraScreenStatePreview
+    @EphyraSpanishPreviews
     @Composable
     fun splashRemoving() = Surface { RemoveSplashDialog(ServerSettingsActions(), inWindow = false) }
 }

@@ -41,7 +41,7 @@ dependencyResolutionManagement {
     }
 }
 
-rootProject.name = "binge-jellyfin"
+rootProject.name = "ephyra"
 
 // The contracts and the SDK come from binge-companions as source, through a git submodule and a
 // composite build. Gradle substitutes `io.github.scottcooper92:binge-companion-contracts` and

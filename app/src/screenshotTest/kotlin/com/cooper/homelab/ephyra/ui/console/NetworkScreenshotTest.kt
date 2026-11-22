@@ -3,10 +3,10 @@ package com.cooper.homelab.ephyra.ui.console
 import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
 import com.android.tools.screenshot.PreviewTest
-import com.cooper.homelab.ephyra.preview.JellyfinFontScalePreviews
-import com.cooper.homelab.ephyra.preview.JellyfinScreenStateLightPreview
-import com.cooper.homelab.ephyra.preview.JellyfinScreenStatePreview
-import com.cooper.homelab.ephyra.preview.JellyfinSpanishPreviews
+import com.cooper.homelab.ephyra.preview.EphyraFontScalePreviews
+import com.cooper.homelab.ephyra.preview.EphyraScreenStateLightPreview
+import com.cooper.homelab.ephyra.preview.EphyraScreenStatePreview
+import com.cooper.homelab.ephyra.preview.EphyraSpanishPreviews
 import com.cooper.homelab.ephyra.server.JellyfinServerProfile
 import com.cooper.homelab.ephyra.server.NetworkImpact
 import com.cooper.homelab.ephyra.server.NetworkSettings
@@ -60,19 +60,19 @@ private val short = NetworkUiState.Ready(NetworkSettings(present = setOf("Intern
 /** Networking: the page across the matrix, an older server's, a change not yet saved, the confirm, each sheet, then the other states. */
 class NetworkScreenshotTest {
     @PreviewTest
-    @JellyfinScreenStatePreview
-    @JellyfinFontScalePreviews
-    @JellyfinSpanishPreviews
+    @EphyraScreenStatePreview
+    @EphyraFontScalePreviews
+    @EphyraSpanishPreviews
     @Composable
     fun network() = NetworkScreen(ready, NetworkActions())
 
     @PreviewTest
-    @JellyfinScreenStatePreview
+    @EphyraScreenStatePreview
     @Composable
     fun olderServer() = NetworkScreen(NetworkUiState.Ready(preview.copy(present = everyKey - "EnableUPnP"), oldest), NetworkActions())
 
     @PreviewTest
-    @JellyfinScreenStatePreview
+    @EphyraScreenStatePreview
     @Composable
     fun unsaved() =
         NetworkScreen(
@@ -81,31 +81,31 @@ class NetworkScreenshotTest {
         )
 
     @PreviewTest
-    @JellyfinScreenStatePreview
+    @EphyraScreenStatePreview
     @Composable
     fun committing() = NetworkScreen(ready.copy(draft = setOf("RequireHttps"), committing = true), NetworkActions())
 
     @PreviewTest
-    @JellyfinScreenStatePreview
+    @EphyraScreenStatePreview
     @Composable
     fun restart() = NetworkScreen(short.copy(restartNeeded = true), NetworkActions())
 
     @PreviewTest
-    @JellyfinScreenStatePreview
+    @EphyraScreenStatePreview
     @Composable
     fun restartReconnect() = NetworkScreen(short.copy(restartNeeded = true, reconnect = true), NetworkActions())
 
     @PreviewTest
-    @JellyfinScreenStatePreview
-    @JellyfinSpanishPreviews
+    @EphyraScreenStatePreview
+    @EphyraSpanishPreviews
     @Composable
     fun passwordSheet() = Surface { NetworkPasswordSheet(NetworkActions(), inWindow = false) }
 
     @PreviewTest
-    @JellyfinScreenStatePreview
-    @JellyfinSpanishPreviews
-    @JellyfinScreenStateLightPreview
-    @JellyfinFontScalePreviews
+    @EphyraScreenStatePreview
+    @EphyraSpanishPreviews
+    @EphyraScreenStateLightPreview
+    @EphyraFontScalePreviews
     @Composable
     fun confirmSevere() =
         Surface {
@@ -118,41 +118,41 @@ class NetworkScreenshotTest {
         }
 
     @PreviewTest
-    @JellyfinScreenStatePreview
+    @EphyraScreenStatePreview
     @Composable
     fun confirmSoft() =
         Surface { NetworkConfirm(setOf(NetworkImpact.RemoteAccess), "https://media.example", NetworkActions(), inWindow = false) }
 
     @PreviewTest
-    @JellyfinScreenStatePreview
-    @JellyfinSpanishPreviews
-    @JellyfinScreenStateLightPreview
-    @JellyfinFontScalePreviews
+    @EphyraScreenStatePreview
+    @EphyraSpanishPreviews
+    @EphyraScreenStateLightPreview
+    @EphyraFontScalePreviews
     @Composable
     fun portSheet() = Surface { NetworkNumberSheet(NetworkNumber.HttpPort, ready, NetworkActions(), inWindow = false) }
 
     @PreviewTest
-    @JellyfinScreenStatePreview
+    @EphyraScreenStatePreview
     @Composable
     fun baseUrlSheet() = Surface { NetworkTextSheet(NetworkText.BaseUrl, preview, NetworkActions(), inWindow = false) }
 
     @PreviewTest
-    @JellyfinScreenStatePreview
+    @EphyraScreenStatePreview
     @Composable
     fun bindSheet() = Surface { NetworkItemsSheet(NetworkList.BindAddresses, preview, NetworkActions(), inWindow = false) }
 
     @PreviewTest
-    @JellyfinScreenStatePreview
+    @EphyraScreenStatePreview
     @Composable
     fun subnetsSheet() = Surface { NetworkItemsSheet(NetworkList.LocalSubnets, preview, NetworkActions(), inWindow = false) }
 
     @PreviewTest
-    @JellyfinScreenStatePreview
+    @EphyraScreenStatePreview
     @Composable
     fun loading() = NetworkScreen(NetworkUiState.Loading, NetworkActions())
 
     @PreviewTest
-    @JellyfinScreenStatePreview
+    @EphyraScreenStatePreview
     @Composable
     fun failed() = NetworkScreen(NetworkUiState.Failed(ConsoleFailure.Refused), NetworkActions())
 }

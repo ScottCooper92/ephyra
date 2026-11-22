@@ -3,9 +3,9 @@ package com.cooper.homelab.ephyra.ui.console
 import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
 import com.android.tools.screenshot.PreviewTest
-import com.cooper.homelab.ephyra.preview.JellyfinFontScalePreviews
-import com.cooper.homelab.ephyra.preview.JellyfinScreenStatePreview
-import com.cooper.homelab.ephyra.preview.JellyfinSpanishPreviews
+import com.cooper.homelab.ephyra.preview.EphyraFontScalePreviews
+import com.cooper.homelab.ephyra.preview.EphyraScreenStatePreview
+import com.cooper.homelab.ephyra.preview.EphyraSpanishPreviews
 import com.cooper.homelab.ephyra.server.ActivityEntry
 import com.cooper.homelab.ephyra.server.LibraryStorage
 import com.cooper.homelab.ephyra.server.ServerInfo
@@ -33,17 +33,17 @@ private val previewReady = ServerUiState.Ready(previewInfo)
 /** The server: its info across the matrix, then waiting on an update and a restart, each restart state, and the read states. */
 class ServerScreenshotTest {
     @PreviewTest
-    @JellyfinScreenStatePreview
-    @JellyfinFontScalePreviews
-    @JellyfinSpanishPreviews
+    @EphyraScreenStatePreview
+    @EphyraFontScalePreviews
+    @EphyraSpanishPreviews
     @Composable
     fun server() = ServerScreen(previewReady, ServerActions())
 
     /** The space of the server's folders and a library's, with one disk nearly full, and the server's paths. */
     @PreviewTest
-    @JellyfinScreenStatePreview
-    @JellyfinFontScalePreviews
-    @JellyfinSpanishPreviews
+    @EphyraScreenStatePreview
+    @EphyraFontScalePreviews
+    @EphyraSpanishPreviews
     @Composable
     fun storageAndPaths() =
         ServerScreen(
@@ -64,9 +64,9 @@ class ServerScreenshotTest {
 
     /** The recent alerts, a warning beside an error with and without a line of detail, and the calm row when there are none. */
     @PreviewTest
-    @JellyfinScreenStatePreview
-    @JellyfinFontScalePreviews
-    @JellyfinSpanishPreviews
+    @EphyraScreenStatePreview
+    @EphyraFontScalePreviews
+    @EphyraSpanishPreviews
     @Composable
     fun alerts() =
         Surface {
@@ -95,72 +95,72 @@ class ServerScreenshotTest {
         }
 
     @PreviewTest
-    @JellyfinScreenStatePreview
-    @JellyfinSpanishPreviews
+    @EphyraScreenStatePreview
+    @EphyraSpanishPreviews
     @Composable
     fun noAlerts() = Surface { AlertsGroup(emptyList(), zone = ZoneOffset.UTC) }
 
     /** A pull in progress: the page stays, with the pull spinner over it. */
     @PreviewTest
-    @JellyfinScreenStatePreview
-    @JellyfinSpanishPreviews
+    @EphyraScreenStatePreview
+    @EphyraSpanishPreviews
     @Composable
     fun refreshing() = ServerScreen(previewReady.copy(refreshing = true), ServerActions())
 
     @PreviewTest
-    @JellyfinScreenStatePreview
-    @JellyfinSpanishPreviews
+    @EphyraScreenStatePreview
+    @EphyraSpanishPreviews
     @Composable
     fun waiting() = ServerScreen(ServerUiState.Ready(previewInfo.copy(updateAvailable = true, restartPending = true)), ServerActions())
 
     @PreviewTest
-    @JellyfinScreenStatePreview
-    @JellyfinSpanishPreviews
+    @EphyraScreenStatePreview
+    @EphyraSpanishPreviews
     @Composable
     fun confirming() = Surface { RestartDialog(previewInfo, ServerActions(), inWindow = false) }
 
     @PreviewTest
-    @JellyfinScreenStatePreview
-    @JellyfinSpanishPreviews
+    @EphyraScreenStatePreview
+    @EphyraSpanishPreviews
     @Composable
     fun restarting() = ServerScreen(previewReady.copy(restart = Restart.Restarting), ServerActions())
 
     @PreviewTest
-    @JellyfinScreenStatePreview
+    @EphyraScreenStatePreview
     @Composable
     fun restarted() = ServerScreen(previewReady.copy(restart = Restart.Restarted), ServerActions())
 
     @PreviewTest
-    @JellyfinScreenStatePreview
-    @JellyfinSpanishPreviews
+    @EphyraScreenStatePreview
+    @EphyraSpanishPreviews
     @Composable
     fun confirmingShutdown() = Surface { ShutdownDialog(previewInfo, ServerActions(), inWindow = false) }
 
     @PreviewTest
-    @JellyfinScreenStatePreview
-    @JellyfinSpanishPreviews
-    @JellyfinFontScalePreviews
+    @EphyraScreenStatePreview
+    @EphyraSpanishPreviews
+    @EphyraFontScalePreviews
     @Composable
     fun restartNotBack() = Surface { RestartNotBackDialog(ServerActions(), inWindow = false) }
 
     @PreviewTest
-    @JellyfinScreenStatePreview
-    @JellyfinSpanishPreviews
+    @EphyraScreenStatePreview
+    @EphyraSpanishPreviews
     @Composable
     fun shutDown() = ServerScreen(previewReady.copy(shutdown = Shutdown.ShutDown), ServerActions())
 
     @PreviewTest
-    @JellyfinScreenStatePreview
+    @EphyraScreenStatePreview
     @Composable
     fun cantRestart() = ServerScreen(ServerUiState.Ready(previewInfo.copy(canRestart = false, operatingSystem = "")), ServerActions())
 
     @PreviewTest
-    @JellyfinScreenStatePreview
+    @EphyraScreenStatePreview
     @Composable
     fun loading() = ServerScreen(ServerUiState.Loading, ServerActions())
 
     @PreviewTest
-    @JellyfinScreenStatePreview
+    @EphyraScreenStatePreview
     @Composable
     fun failed() = ServerScreen(ServerUiState.Failed(ConsoleFailure.Refused), ServerActions())
 }

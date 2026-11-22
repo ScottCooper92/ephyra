@@ -13,7 +13,7 @@ import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.performClick
 import com.binge.designsystem.testing.createTakeDownAndroidComposeRule
 import com.cooper.homelab.ephyra.auth.JellyfinSession
-import com.cooper.homelab.ephyra.theme.JellyfinTheme
+import com.cooper.homelab.ephyra.theme.EphyraTheme
 import org.junit.Assert.assertEquals
 import org.junit.Rule
 import org.junit.Test
@@ -36,7 +36,7 @@ class TakeBackChipTest {
         consentHost: String?,
         taken: MutableList<Unit> = mutableListOf(),
     ) = compose.setContent {
-        JellyfinTheme {
+        EphyraTheme {
             val session = JellyfinSession(baseUrl, "Server", "a1", "10.11.6", "u1", "sam", "not-a-token")
             ServerHomeCard(UiState.SignedIn(session, consentHost = consentHost), onTakeBack = { taken += Unit })
         }

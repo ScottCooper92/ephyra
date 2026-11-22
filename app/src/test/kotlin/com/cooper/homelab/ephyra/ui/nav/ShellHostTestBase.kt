@@ -23,7 +23,7 @@ import com.cooper.homelab.core.uiandroid.shell.RestartOnGateChange
 import com.cooper.homelab.core.uiandroid.shell.RestartOnSessionEnd
 import com.cooper.homelab.core.uiandroid.shell.TabShellState
 import com.cooper.homelab.ephyra.browse.ItemKind
-import com.cooper.homelab.ephyra.theme.JellyfinTheme
+import com.cooper.homelab.ephyra.theme.EphyraTheme
 import com.cooper.homelab.ephyra.ui.console.ConsolePage
 import org.junit.Rule
 
@@ -52,7 +52,7 @@ abstract class ShellHostTestBase {
         player: @Composable (PlayerRoute) -> Unit = {},
     ) {
         compose.setContent {
-            JellyfinTheme {
+            EphyraTheme {
                 val backStack = rememberNavBackStack(HomeRoute)
                 val shell = rememberEphyraTabs()
                 stack = backStack

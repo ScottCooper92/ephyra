@@ -35,7 +35,7 @@ check "a raw resource (keep.xml)"   "true true true"    app/src/main/res/raw/kee
 check "the client module's res/xml" "true true true"    client/src/main/res/xml/x.xml
 check "tests only"                 "true false false"  app/src/test/kotlin/x/YTest.kt
 check "the data module's tests"     "true false false"  data/src/test/kotlin/x/YTest.kt data/src/testFixtures/kotlin/x/Fake.kt
-check "the exported Service"       "true false false"  "$K/service/JellyfinCompanionService.kt"
+check "the exported Service"       "true false false"  "$K/service/EphyraCompanionService.kt"
 check "notifications"              "true true false"   "$K/notifications/NotificationPrefs.kt"
 check "the bug report URL"         "true true false"   "$K/feedback/BugReport.kt"
 check "hashes only"                "true false false"  translation-hashes.txt

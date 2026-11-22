@@ -5,7 +5,7 @@ import android.content.Context
 import android.content.Intent
 import androidx.datastore.preferences.core.booleanPreferencesKey
 import androidx.datastore.preferences.core.edit
-import com.cooper.homelab.ephyra.JellyfinApp
+import com.cooper.homelab.ephyra.EphyraApp
 import com.cooper.homelab.ephyra.SEARCH_TOGGLES_SWITCH
 import com.cooper.homelab.ephyra.SERVER_REGISTRY_SWITCH
 import kotlinx.coroutines.CoroutineScope
@@ -33,7 +33,7 @@ class ServerRegistrySwitchReceiver : BroadcastReceiver() {
                 else -> SERVER_REGISTRY_SWITCH
             }
         val key = booleanPreferencesKey(name)
-        val switches = (context.applicationContext as JellyfinApp).graph.debugSwitches
+        val switches = (context.applicationContext as EphyraApp).graph.debugSwitches
         CoroutineScope(Dispatchers.IO).launch {
             try {
                 switches.edit { if (enabled == null) it.remove(key) else it[key] = enabled }

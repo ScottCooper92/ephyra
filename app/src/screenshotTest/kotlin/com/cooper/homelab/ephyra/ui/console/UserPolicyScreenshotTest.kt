@@ -3,9 +3,9 @@ package com.cooper.homelab.ephyra.ui.console
 import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
 import com.android.tools.screenshot.PreviewTest
-import com.cooper.homelab.ephyra.preview.JellyfinFontScalePreviews
-import com.cooper.homelab.ephyra.preview.JellyfinScreenStatePreview
-import com.cooper.homelab.ephyra.preview.JellyfinSpanishPreviews
+import com.cooper.homelab.ephyra.preview.EphyraFontScalePreviews
+import com.cooper.homelab.ephyra.preview.EphyraScreenStatePreview
+import com.cooper.homelab.ephyra.preview.EphyraSpanishPreviews
 import com.cooper.homelab.ephyra.server.AccessSchedule
 import com.cooper.homelab.ephyra.server.JellyfinServerProfile
 import com.cooper.homelab.ephyra.server.LiveChannel
@@ -55,54 +55,54 @@ private val choices =
 /** A user's settings: their page with the sections, then each section, the older releases, the loading and failed lists, and the forms. */
 class UserPolicyScreenshotTest {
     @PreviewTest
-    @JellyfinScreenStatePreview
-    @JellyfinSpanishPreviews
+    @EphyraScreenStatePreview
+    @EphyraSpanishPreviews
     @Composable
     fun sections() = UserScreen(ready(), "sam", UsersActions())
 
     @PreviewTest
-    @JellyfinScreenStatePreview
-    @JellyfinFontScalePreviews
-    @JellyfinSpanishPreviews
+    @EphyraScreenStatePreview
+    @EphyraFontScalePreviews
+    @EphyraSpanishPreviews
     @Composable
     fun access() = UserSectionScreen(ready(), "sam", UserSection.Access, choices, newest, UsersActions())
 
     @PreviewTest
-    @JellyfinScreenStatePreview
-    @JellyfinFontScalePreviews
+    @EphyraScreenStatePreview
+    @EphyraFontScalePreviews
     @Composable
     fun playback() = UserSectionScreen(ready(), "sam", UserSection.Playback, choices, newest, UsersActions())
 
     @PreviewTest
-    @JellyfinScreenStatePreview
+    @EphyraScreenStatePreview
     @Composable
     fun content() = UserSectionScreen(ready(), "sam", UserSection.Content, choices, newest, UsersActions())
 
     @PreviewTest
-    @JellyfinScreenStatePreview
+    @EphyraScreenStatePreview
     @Composable
     fun contentBefore109() =
         UserSectionScreen(ready(), "sam", UserSection.Content, choices, JellyfinServerProfile.from("10.8.13"), UsersActions())
 
     @PreviewTest
-    @JellyfinScreenStatePreview
+    @EphyraScreenStatePreview
     @Composable
     fun control() = UserSectionScreen(ready(), "sam", UserSection.Control, choices, newest, UsersActions())
 
     @PreviewTest
-    @JellyfinScreenStatePreview
-    @JellyfinSpanishPreviews
+    @EphyraScreenStatePreview
+    @EphyraSpanishPreviews
     @Composable
     fun liveTv() = UserSectionScreen(ready(), "sam", UserSection.LiveTv, choices, newest, UsersActions())
 
     @PreviewTest
-    @JellyfinScreenStatePreview
+    @EphyraScreenStatePreview
     @Composable
     fun liveTvLoading() =
         UserSectionScreen(ready(), "sam", UserSection.LiveTv, UserChoices(channels = Loaded.Loading), newest, UsersActions())
 
     @PreviewTest
-    @JellyfinScreenStatePreview
+    @EphyraScreenStatePreview
     @Composable
     fun liveTvFailed() =
         UserSectionScreen(
@@ -115,25 +115,25 @@ class UserPolicyScreenshotTest {
         )
 
     @PreviewTest
-    @JellyfinScreenStatePreview
+    @EphyraScreenStatePreview
     @Composable
     fun devices() = UserSectionScreen(ready(), "sam", UserSection.Devices, choices, newest, UsersActions())
 
     @PreviewTest
-    @JellyfinScreenStatePreview
-    @JellyfinFontScalePreviews
-    @JellyfinSpanishPreviews
+    @EphyraScreenStatePreview
+    @EphyraFontScalePreviews
+    @EphyraSpanishPreviews
     @Composable
     fun parental() = UserSectionScreen(ready(), "sam", UserSection.Parental, choices, newest, UsersActions())
 
     @PreviewTest
-    @JellyfinScreenStatePreview
+    @EphyraScreenStatePreview
     @Composable
     fun parentalBefore1011() =
         UserSectionScreen(ready(), "sam", UserSection.Parental, choices, JellyfinServerProfile.from("10.10.7"), UsersActions())
 
     @PreviewTest
-    @JellyfinScreenStatePreview
+    @EphyraScreenStatePreview
     @Composable
     fun parentalFailed() =
         UserSectionScreen(
@@ -146,29 +146,29 @@ class UserPolicyScreenshotTest {
         )
 
     @PreviewTest
-    @JellyfinScreenStatePreview
+    @EphyraScreenStatePreview
     @Composable
     fun newTag() = Surface { TagForm("BlockedTags", UsersActions(), {}) }
 
     @PreviewTest
-    @JellyfinScreenStatePreview
-    @JellyfinSpanishPreviews
+    @EphyraScreenStatePreview
+    @EphyraSpanishPreviews
     @Composable
     fun scheduleDay() = Surface { ScheduleForm(UsersActions(), {}) }
 
     @PreviewTest
-    @JellyfinScreenStatePreview
+    @EphyraScreenStatePreview
     @Composable
     fun scheduleStart() = Surface { ScheduleForm(UsersActions(), {}, startStep = 1, startDay = "Weekday") }
 
     @PreviewTest
-    @JellyfinScreenStatePreview
+    @EphyraScreenStatePreview
     @Composable
     fun scheduleEnd() = Surface { ScheduleForm(UsersActions(), {}, startStep = 2, startDay = "Weekday", startHour = 8) }
 
     @PreviewTest
-    @JellyfinScreenStatePreview
-    @JellyfinFontScalePreviews
+    @EphyraScreenStatePreview
+    @EphyraFontScalePreviews
     @Composable
     fun scheduleEdit() = Surface { ScheduleForm(UsersActions(), {}, original = AccessSchedule("Weekday", 9.5, 17.75), is24Hour = true) }
 }

@@ -13,7 +13,7 @@ import androidx.compose.ui.test.performClick
 import androidx.compose.ui.test.performTextInput
 import com.binge.designsystem.testing.createTakeDownAndroidComposeRule
 import com.cooper.homelab.ephyra.server.DisplayList
-import com.cooper.homelab.ephyra.theme.JellyfinTheme
+import com.cooper.homelab.ephyra.theme.EphyraTheme
 import kotlinx.serialization.json.JsonObject
 import org.junit.Assert.assertEquals
 import org.junit.Rule
@@ -52,7 +52,7 @@ class StepFormsBackTest {
     @Test
     fun `every step of the add library sheet keeps a handle that offers to close the sheet`() {
         compose.setContent {
-            JellyfinTheme {
+            EphyraTheme {
                 AddLibrarySheet(
                     names = emptyList(),
                     saving = false,
@@ -78,7 +78,7 @@ class StepFormsBackTest {
     @Test
     fun `adding a library steps back through its steps and closes from the name`() {
         compose.setContent {
-            JellyfinTheme {
+            EphyraTheme {
                 AddLibrarySheet(
                     names = emptyList(),
                     saving = false,
@@ -115,7 +115,7 @@ class StepFormsBackTest {
     @Test
     fun `adding a repository steps back from its address to its name, keeping the name`() {
         compose.setContent {
-            JellyfinTheme {
+            EphyraTheme {
                 AddRepositorySheet(saving = false, actions = RepositoriesActions(onAskAdd = { closed += "repository $it" }))
             }
         }
@@ -135,7 +135,7 @@ class StepFormsBackTest {
     @Test
     fun `the second half of a substitution steps back to the first, keeping it`() {
         compose.setContent {
-            JellyfinTheme {
+            EphyraTheme {
                 DisplaySheets(
                     LibraryDisplayUiState.Ready(JsonObject(emptyMap()), sheet = DisplaySheet.NewEntry),
                     LibraryDisplayActions(onSheet = { closed += "sheet $it" }),

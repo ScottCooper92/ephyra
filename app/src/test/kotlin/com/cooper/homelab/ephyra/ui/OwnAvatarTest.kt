@@ -10,7 +10,7 @@ import com.binge.designsystem.testing.createTakeDownAndroidComposeRule
 import com.cooper.homelab.ephyra.auth.JellyfinSession
 import com.cooper.homelab.ephyra.server.JellyfinAccount
 import com.cooper.homelab.ephyra.server.ServerUser
-import com.cooper.homelab.ephyra.theme.JellyfinTheme
+import com.cooper.homelab.ephyra.theme.EphyraTheme
 import com.cooper.homelab.ephyra.ui.console.LocalUserPictures
 import com.cooper.homelab.ephyra.ui.console.UserPictureSource
 import kotlinx.serialization.json.Json
@@ -53,7 +53,7 @@ class OwnAvatarTest {
     private fun show() =
         compose.setContent {
             CompositionLocalProvider(LocalUserPictures provides pictures) {
-                JellyfinTheme { JellyfinRoot(current, Actions()) }
+                EphyraTheme { EphyraRoot(current, Actions()) }
             }
         }
 
@@ -79,7 +79,7 @@ class OwnAvatarTest {
 
     @Test
     fun `without a picture source the home shows initials and does not fail`() {
-        compose.setContent { JellyfinTheme { JellyfinRoot(current, Actions()) } }
+        compose.setContent { EphyraTheme { EphyraRoot(current, Actions()) } }
         compose.waitForIdle()
         assertEquals(emptyList<Pair<String, String?>>(), reads)
     }

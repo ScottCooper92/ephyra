@@ -14,7 +14,7 @@ import com.cooper.homelab.ephyra.server.ServerDevice
 import com.cooper.homelab.ephyra.server.ServerTask
 import com.cooper.homelab.ephyra.server.ServerUser
 import com.cooper.homelab.ephyra.server.TunerHostSummary
-import com.cooper.homelab.ephyra.theme.JellyfinTheme
+import com.cooper.homelab.ephyra.theme.EphyraTheme
 import kotlinx.serialization.json.JsonObject
 import org.junit.Rule
 import org.junit.Test
@@ -38,7 +38,7 @@ class ListSkeletonGeometryTest {
         assertSkeletonReservesGeometry(
             listOf(LayoutAnchors.section(LayoutAnchors.Collection.FIRST_ITEM)),
             checkStartEdge = true,
-        ) { resolved -> JellyfinTheme { page(resolved) } }
+        ) { resolved -> EphyraTheme { page(resolved) } }
 
     @Test
     fun `api keys`() =

@@ -12,9 +12,9 @@ import com.cooper.homelab.ephyra.client.home.HomeScreen
 import com.cooper.homelab.ephyra.client.home.HomeUiState
 import com.cooper.homelab.ephyra.client.home.homeRow
 import com.cooper.homelab.ephyra.client.home.homeState
-import com.cooper.homelab.ephyra.preview.JellyfinFontScalePreviews
-import com.cooper.homelab.ephyra.preview.JellyfinScreenStatePreview
-import com.cooper.homelab.ephyra.preview.JellyfinSpanishPreviews
+import com.cooper.homelab.ephyra.preview.EphyraFontScalePreviews
+import com.cooper.homelab.ephyra.preview.EphyraScreenStatePreview
+import com.cooper.homelab.ephyra.preview.EphyraSpanishPreviews
 import com.cooper.homelab.ephyra.server.TICKS_PER_HOUR
 
 /**
@@ -70,29 +70,29 @@ class ClientHomeScreenshotTest {
     private fun Home(state: HomeUiState) = HomeScreen(state, imageUrl = { _, _ -> null }, onOpen = {}, onResume = {}, onRetry = {})
 
     @PreviewTest
-    @JellyfinScreenStatePreview
-    @JellyfinFontScalePreviews
-    @JellyfinSpanishPreviews
+    @EphyraScreenStatePreview
+    @EphyraFontScalePreviews
+    @EphyraSpanishPreviews
     @Composable
     fun loaded() = Home(homeState(listOf(resume, nextUp, latest), pending = 0))
 
     @PreviewTest
-    @JellyfinScreenStatePreview
+    @EphyraScreenStatePreview
     @Composable
     fun loading() = Home(HomeUiState.Loading)
 
     @PreviewTest
-    @JellyfinScreenStatePreview
+    @EphyraScreenStatePreview
     @Composable
     fun partlyFailed() = Home(homeState(listOf(latest), pending = 1))
 
     @PreviewTest
-    @JellyfinScreenStatePreview
+    @EphyraScreenStatePreview
     @Composable
     fun allFailed() = Home(HomeUiState.Error(ServerFailure.Unreachable()))
 
     @PreviewTest
-    @JellyfinScreenStatePreview
+    @EphyraScreenStatePreview
     @Composable
     fun empty() = Home(HomeUiState.Empty)
 }

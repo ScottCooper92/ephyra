@@ -25,9 +25,9 @@ import com.cooper.homelab.ephyra.client.title.TitleFacts
 import com.cooper.homelab.ephyra.client.title.TitleImage
 import com.cooper.homelab.ephyra.client.title.TrackUi
 import com.cooper.homelab.ephyra.client.title.VersionUi
-import com.cooper.homelab.ephyra.preview.JellyfinFontScalePreviews
-import com.cooper.homelab.ephyra.preview.JellyfinScreenStatePreview
-import com.cooper.homelab.ephyra.preview.JellyfinSpanishPreviews
+import com.cooper.homelab.ephyra.preview.EphyraFontScalePreviews
+import com.cooper.homelab.ephyra.preview.EphyraScreenStatePreview
+import com.cooper.homelab.ephyra.preview.EphyraSpanishPreviews
 
 /**
  * The movie page (`:client`) in the states the issue names: loaded, resuming a film with several files, watched and a favourite, loading,
@@ -107,9 +107,9 @@ class ClientMovieScreenshotTest {
         )
 
     @PreviewTest
-    @JellyfinScreenStatePreview
-    @JellyfinFontScalePreviews
-    @JellyfinSpanishPreviews
+    @EphyraScreenStatePreview
+    @EphyraFontScalePreviews
+    @EphyraSpanishPreviews
     @Composable
     fun loaded() = Movie(MovieUiState.Ready(movie))
 
@@ -119,13 +119,13 @@ class ClientMovieScreenshotTest {
     fun details() = Movie(MovieUiState.Ready(movie))
 
     @PreviewTest
-    @JellyfinScreenStatePreview
+    @EphyraScreenStatePreview
     @Composable
     fun resumeWatchedFavourite() =
         Movie(MovieUiState.Ready(movie.copy(play = PlayAction(PlayKind.Resume, 42), watched = true, favourite = true)))
 
     @PreviewTest
-    @JellyfinScreenStatePreview
+    @EphyraScreenStatePreview
     @Composable
     fun sparse() =
         Movie(
@@ -151,12 +151,12 @@ class ClientMovieScreenshotTest {
         )
 
     @PreviewTest
-    @JellyfinScreenStatePreview
+    @EphyraScreenStatePreview
     @Composable
     fun loading() = Movie(MovieUiState.Loading)
 
     @PreviewTest
-    @JellyfinScreenStatePreview
+    @EphyraScreenStatePreview
     @Composable
     fun failed() = Movie(MovieUiState.Failed(ServerFailure.Unreachable()))
 
@@ -181,14 +181,14 @@ class ClientMovieScreenshotTest {
         )
 
     @PreviewTest
-    @JellyfinScreenStatePreview
-    @JellyfinFontScalePreviews
-    @JellyfinSpanishPreviews
+    @EphyraScreenStatePreview
+    @EphyraFontScalePreviews
+    @EphyraSpanishPreviews
     @Composable
     fun mediaInfo() = MovieMediaInfo(detailed)
 
     @PreviewTest
-    @JellyfinScreenStatePreview
+    @EphyraScreenStatePreview
     @Composable
     fun mediaInfoSparse() = MovieMediaInfo(version("v1").copy(resolution = null, sizeBytes = null))
 }

@@ -13,9 +13,9 @@ import com.cooper.homelab.ephyra.client.title.PersonScreen
 import com.cooper.homelab.ephyra.client.title.PersonUiState
 import com.cooper.homelab.ephyra.client.title.TitleCard
 import com.cooper.homelab.ephyra.client.title.TitleImage
-import com.cooper.homelab.ephyra.preview.JellyfinFontScalePreviews
-import com.cooper.homelab.ephyra.preview.JellyfinScreenStatePreview
-import com.cooper.homelab.ephyra.preview.JellyfinSpanishPreviews
+import com.cooper.homelab.ephyra.preview.EphyraFontScalePreviews
+import com.cooper.homelab.ephyra.preview.EphyraScreenStatePreview
+import com.cooper.homelab.ephyra.preview.EphyraSpanishPreviews
 
 /**
  * The person page (`:client`) in the states the issue names: loaded with their titles, a next page being read, a next page that failed,
@@ -60,40 +60,40 @@ class ClientPersonScreenshotTest {
     private fun ready(page: PersonPageUi) = PersonUiState.Ready(page)
 
     @PreviewTest
-    @JellyfinScreenStatePreview
-    @JellyfinFontScalePreviews
-    @JellyfinSpanishPreviews
+    @EphyraScreenStatePreview
+    @EphyraFontScalePreviews
+    @EphyraSpanishPreviews
     @Composable
     fun loaded() = Person(ready(person))
 
     @PreviewTest
-    @JellyfinScreenStatePreview
+    @EphyraScreenStatePreview
     @Composable
     fun nextPageLoading() = Person(ready(person.copy(credits = credits.take(2), creditsState = CreditsState.Loading)))
 
     @PreviewTest
-    @JellyfinScreenStatePreview
+    @EphyraScreenStatePreview
     @Composable
     fun nextPageFailed() =
         Person(ready(person.copy(credits = credits.take(2), creditsState = CreditsState.Failed(ServerFailure.Unreachable()))))
 
     @PreviewTest
-    @JellyfinScreenStatePreview
+    @EphyraScreenStatePreview
     @Composable
     fun creditsLoading() = Person(ready(person.copy(credits = emptyList(), creditsState = CreditsState.Loading)))
 
     @PreviewTest
-    @JellyfinScreenStatePreview
+    @EphyraScreenStatePreview
     @Composable
     fun creditsFailed() = Person(ready(person.copy(credits = emptyList(), creditsState = CreditsState.Failed(ServerFailure.Unreachable()))))
 
     @PreviewTest
-    @JellyfinScreenStatePreview
+    @EphyraScreenStatePreview
     @Composable
     fun noCredits() = Person(ready(person.copy(credits = emptyList(), creditsState = CreditsState.Ready(hasMore = false))))
 
     @PreviewTest
-    @JellyfinScreenStatePreview
+    @EphyraScreenStatePreview
     @Composable
     fun sparse() =
         Person(
@@ -108,17 +108,17 @@ class ClientPersonScreenshotTest {
         )
 
     @PreviewTest
-    @JellyfinScreenStatePreview
+    @EphyraScreenStatePreview
     @Composable
     fun diedWithoutBirthplace() = Person(ready(person.copy(facts = PersonFacts("1931-01-02", "2009-06-30", null))))
 
     @PreviewTest
-    @JellyfinScreenStatePreview
+    @EphyraScreenStatePreview
     @Composable
     fun loading() = Person(PersonUiState.Loading)
 
     @PreviewTest
-    @JellyfinScreenStatePreview
+    @EphyraScreenStatePreview
     @Composable
     fun failed() = Person(PersonUiState.Failed(ServerFailure.Unreachable()))
 }

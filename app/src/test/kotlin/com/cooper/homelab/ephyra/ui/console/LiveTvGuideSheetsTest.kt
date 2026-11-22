@@ -8,7 +8,7 @@ import androidx.compose.ui.test.performTextInput
 import com.binge.designsystem.testing.createTakeDownAndroidComposeRule
 import com.cooper.homelab.ephyra.server.GuideProviderSummary
 import com.cooper.homelab.ephyra.server.LiveTvSummary
-import com.cooper.homelab.ephyra.theme.JellyfinTheme
+import com.cooper.homelab.ephyra.theme.EphyraTheme
 import org.junit.Assert.assertEquals
 import org.junit.Rule
 import org.junit.Test
@@ -27,12 +27,12 @@ class LiveTvGuideSheetsTest {
     private val summary = LiveTvSummary(providers = listOf(xmltv, schedulesDirect))
 
     private fun page(actions: LiveTvGuideActions) =
-        compose.setContent { JellyfinTheme { LiveTvScreen(LiveTvUiState.Ready(summary), LiveTvActions(), guideActions = actions) } }
+        compose.setContent { EphyraTheme { LiveTvScreen(LiveTvUiState.Ready(summary), LiveTvActions(), guideActions = actions) } }
 
     private fun form(
         form: GuideForm,
         actions: LiveTvGuideActions = LiveTvGuideActions(),
-    ) = compose.setContent { JellyfinTheme { GuideFormContent(form, false, actions) } }
+    ) = compose.setContent { EphyraTheme { GuideFormContent(form, false, actions) } }
 
     @Test
     fun `Add guide data and each provider's row open their forms`() {
@@ -82,7 +82,7 @@ class LiveTvGuideSheetsTest {
         var xml = 0
         var sd = 0
         compose.setContent {
-            JellyfinTheme {
+            EphyraTheme {
                 ChooseGuideContent(
                     LiveTvGuideActions(onAddXmlTv = { xml++ }, onAddSchedulesDirect = { sd++ }),
                 )
@@ -110,7 +110,7 @@ class LiveTvGuideSheetsTest {
     @Test
     fun `a user without Live TV access is not offered Finish setup`() {
         compose.setContent {
-            JellyfinTheme {
+            EphyraTheme {
                 GuideFormContent(
                     GuideForm("g2", type = "SchedulesDirect", name = "alice", lineupPending = true),
                     false,
@@ -135,7 +135,7 @@ class LiveTvGuideSheetsTest {
     @Test
     fun `a user without Live TV access cannot change a lineup, and an XMLTV provider has none`() {
         compose.setContent {
-            JellyfinTheme {
+            EphyraTheme {
                 GuideFormContent(
                     GuideForm("g2", type = "SchedulesDirect", name = "alice"),
                     false,
@@ -161,7 +161,7 @@ class LiveTvGuideSheetsTest {
     @Test
     fun `an unfinished account and a user without Live TV access can still change a login`() {
         compose.setContent {
-            JellyfinTheme {
+            EphyraTheme {
                 GuideFormContent(
                     GuideForm("g2", type = "SchedulesDirect", name = "alice", lineupPending = true),
                     false,
@@ -188,7 +188,7 @@ class LiveTvGuideSheetsTest {
     @Test
     fun `a provider with no lineup says so in its row`() {
         compose.setContent {
-            JellyfinTheme {
+            EphyraTheme {
                 LiveTvScreen(
                     LiveTvUiState.Ready(
                         LiveTvSummary(providers = listOf(GuideProviderSummary("g2", "SchedulesDirect", "alice", lineupPending = true))),

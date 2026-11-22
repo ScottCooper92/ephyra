@@ -16,7 +16,7 @@ import androidx.test.core.app.ApplicationProvider
 import com.binge.designsystem.testing.createTakeDownAndroidComposeRule
 import com.cooper.homelab.core.telemetry.AnalyticsConsent
 import com.cooper.homelab.core.uiandroid.consent.ConsentGate
-import com.cooper.homelab.ephyra.theme.JellyfinTheme
+import com.cooper.homelab.ephyra.theme.EphyraTheme
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertTrue
 import org.junit.Rule
@@ -34,7 +34,7 @@ class ConsentGateTest {
     private fun gate(
         consent: AnalyticsConsent?,
         answers: MutableList<Boolean> = mutableListOf(),
-    ) = compose.setContent { JellyfinTheme { ConsentGate(consent, { answers += it }) { Text("the app") } } }
+    ) = compose.setContent { EphyraTheme { ConsentGate(consent, { answers += it }) { Text("the app") } } }
 
     @Test
     fun `while the stored answer is read neither the question nor the app shows`() {
@@ -70,7 +70,7 @@ class ConsentGateTest {
     fun `the This app group reports each switch flipped`() {
         val calls = mutableListOf<String>()
         compose.setContent {
-            JellyfinTheme {
+            EphyraTheme {
                 Column {
                     AppGroup(
                         AppSettings(shareUsageData = false, sendCrashReports = true),
@@ -90,7 +90,7 @@ class ConsentGateTest {
         val calls = mutableListOf<String>()
         var settings by mutableStateOf(AppSettings(client = null))
         compose.setContent {
-            JellyfinTheme { Column { AppGroup(settings, Actions(onClient = { calls += "client:$it" })) } }
+            EphyraTheme { Column { AppGroup(settings, Actions(onClient = { calls += "client:$it" })) } }
         }
         compose.onNodeWithText("Browse and play").assertDoesNotExist()
         settings = AppSettings(client = true)
@@ -100,7 +100,7 @@ class ConsentGateTest {
 
     @Test
     fun `Report a bug opens the app-feedback bug form with the device filled in`() {
-        compose.setContent { JellyfinTheme { Column { AppGroup(AppSettings(), Actions()) } } }
+        compose.setContent { EphyraTheme { Column { AppGroup(AppSettings(), Actions()) } } }
         compose.onNodeWithText("Report a bug").performClick()
         val opened = shadowOf(ApplicationProvider.getApplicationContext<Application>()).nextStartedActivity
         assertEquals(Intent.ACTION_VIEW, opened.action)

@@ -14,7 +14,7 @@ import com.cooper.homelab.ephyra.server.Culture
 import com.cooper.homelab.ephyra.server.PublicServerInfo
 import com.cooper.homelab.ephyra.server.StartupConfiguration
 import com.cooper.homelab.ephyra.server.UiLanguage
-import com.cooper.homelab.ephyra.theme.JellyfinTheme
+import com.cooper.homelab.ephyra.theme.EphyraTheme
 import com.cooper.homelab.ephyra.ui.console.ConsoleFailure
 import kotlinx.serialization.json.Json
 import kotlinx.serialization.json.jsonObject
@@ -63,7 +63,7 @@ class StartupScreenTest {
         phase: StartupPhase,
         actions: StartupActions = StartupActions(),
     ) = compose.setContent {
-        JellyfinTheme { JellyfinRoot(UiState.Startup("http://192.168.1.20:8096", server, phase), Actions(startup = actions)) }
+        EphyraTheme { EphyraRoot(UiState.Startup("http://192.168.1.20:8096", server, phase), Actions(startup = actions)) }
     }
 
     @Test
@@ -176,8 +176,8 @@ class StartupScreenTest {
     fun `the notice offers to set the server up`() {
         val calls = mutableListOf<String>()
         compose.setContent {
-            JellyfinTheme {
-                JellyfinRoot(
+            EphyraTheme {
+                EphyraRoot(
                     UiState.SignIn("http://192.168.1.20:8096", server),
                     Actions(startup = StartupActions(onOpen = { calls += "open" })),
                 )

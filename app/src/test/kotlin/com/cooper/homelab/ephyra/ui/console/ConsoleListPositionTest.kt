@@ -15,7 +15,7 @@ import com.cooper.homelab.ephyra.server.ServerDevice
 import com.cooper.homelab.ephyra.server.ServerTask
 import com.cooper.homelab.ephyra.server.TICKS_PER_MINUTE
 import com.cooper.homelab.ephyra.server.TaskTrigger
-import com.cooper.homelab.ephyra.theme.JellyfinTheme
+import com.cooper.homelab.ephyra.theme.EphyraTheme
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertTrue
 import org.junit.Rule
@@ -69,7 +69,7 @@ class ConsoleListPositionTest {
 
     @Test
     fun `the devices list keeps its place through a reload that shows the skeleton`() {
-        compose.setContent { JellyfinTheme { DevicesScreen(devicesState, DevicesActions()) } }
+        compose.setContent { EphyraTheme { DevicesScreen(devicesState, DevicesActions()) } }
         val scrolled = scrollDown()
         devicesState = DevicesUiState.Loading
         compose.waitForIdle()
@@ -80,7 +80,7 @@ class ConsoleListPositionTest {
 
     @Test
     fun `the API keys list keeps its place through a reload that shows the skeleton`() {
-        compose.setContent { JellyfinTheme { ApiKeysScreen(keysState, ApiKeysActions()) } }
+        compose.setContent { EphyraTheme { ApiKeysScreen(keysState, ApiKeysActions()) } }
         val scrolled = scrollDown()
         keysState = ApiKeysUiState.Loading
         compose.waitForIdle()
@@ -91,7 +91,7 @@ class ConsoleListPositionTest {
 
     @Test
     fun `a task's triggers keep their place through a reload that shows the skeleton`() {
-        compose.setContent { JellyfinTheme { TaskScreen(tasksState, "t1", TasksActions()) } }
+        compose.setContent { EphyraTheme { TaskScreen(tasksState, "t1", TasksActions()) } }
         val scrolled = scrollDown()
         tasksState = TasksUiState.Loading
         compose.waitForIdle()

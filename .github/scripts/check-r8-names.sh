@@ -20,7 +20,7 @@ if [ "$#" -gt 0 ]; then
 else
   sentinels=(
     com.cooper.homelab.ephyra.AppGraph
-    com.cooper.homelab.ephyra.ui.JellyfinViewModel
+    com.cooper.homelab.ephyra.ui.EphyraViewModel
     com.cooper.homelab.ephyra.server.JellyfinClient
   )
 fi

@@ -9,7 +9,7 @@ import com.binge.designsystem.testing.createTakeDownAndroidComposeRule
 import com.cooper.homelab.ephyra.server.GuideProviderSummary
 import com.cooper.homelab.ephyra.server.LiveTvSummary
 import com.cooper.homelab.ephyra.server.TunerHostSummary
-import com.cooper.homelab.ephyra.theme.JellyfinTheme
+import com.cooper.homelab.ephyra.theme.EphyraTheme
 import org.junit.Assert.assertEquals
 import org.junit.Rule
 import org.junit.Test
@@ -33,7 +33,7 @@ class LiveTvScreenTest {
     private fun show(
         state: LiveTvUiState,
         actions: LiveTvActions = LiveTvActions(),
-    ) = compose.setContent { JellyfinTheme { LiveTvScreen(state, actions, now = NOW) } }
+    ) = compose.setContent { EphyraTheme { LiveTvScreen(state, actions, now = NOW) } }
 
     @Test
     fun `the tuners and guide data are listed, each by its kind, and a tuner's account is not on the page`() {

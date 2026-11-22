@@ -3,11 +3,11 @@ package com.cooper.homelab.ephyra.ui.console
 import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
 import com.android.tools.screenshot.PreviewTest
-import com.cooper.homelab.ephyra.preview.JellyfinFontScalePreviews
-import com.cooper.homelab.ephyra.preview.JellyfinScreenStatePreview
-import com.cooper.homelab.ephyra.preview.JellyfinSpanishPreviews
-import com.cooper.homelab.ephyra.preview.JellyfinWidePreview
-import com.cooper.homelab.ephyra.preview.JellyfinWideSpanishPreview
+import com.cooper.homelab.ephyra.preview.EphyraFontScalePreviews
+import com.cooper.homelab.ephyra.preview.EphyraScreenStatePreview
+import com.cooper.homelab.ephyra.preview.EphyraSpanishPreviews
+import com.cooper.homelab.ephyra.preview.EphyraWidePreview
+import com.cooper.homelab.ephyra.preview.EphyraWideSpanishPreview
 import com.cooper.homelab.ephyra.server.LIBRARY_SCAN_TASK
 import com.cooper.homelab.ephyra.server.ServerFolder
 import com.cooper.homelab.ephyra.server.ServerLibrary
@@ -43,22 +43,22 @@ private val previewReady = LibrariesUiState.Ready(previewLibraries, TaskBoard(li
 /** Libraries: idle across the matrix, then one scanning beside one done, everything scanning, a failed start, and the read states. */
 class LibrariesScreenshotTest {
     @PreviewTest
-    @JellyfinScreenStatePreview
-    @JellyfinFontScalePreviews
-    @JellyfinSpanishPreviews
+    @EphyraScreenStatePreview
+    @EphyraFontScalePreviews
+    @EphyraSpanishPreviews
     @Composable
     fun libraries() = LibrariesScreen(previewReady, LibrariesActions(), now = NOW)
 
     /** A pull in progress: the list stays, with the pull spinner over it. */
     @PreviewTest
-    @JellyfinScreenStatePreview
-    @JellyfinSpanishPreviews
+    @EphyraScreenStatePreview
+    @EphyraSpanishPreviews
     @Composable
     fun refreshing() = LibrariesScreen(previewReady.copy(refreshing = true), LibrariesActions(), now = NOW)
 
     @PreviewTest
-    @JellyfinScreenStatePreview
-    @JellyfinSpanishPreviews
+    @EphyraScreenStatePreview
+    @EphyraSpanishPreviews
     @Composable
     fun scanningOne() =
         LibrariesScreen(
@@ -68,8 +68,8 @@ class LibrariesScreenshotTest {
         )
 
     @PreviewTest
-    @JellyfinScreenStatePreview
-    @JellyfinSpanishPreviews
+    @EphyraScreenStatePreview
+    @EphyraSpanishPreviews
     @Composable
     fun scanningAll() =
         LibrariesScreen(
@@ -79,7 +79,7 @@ class LibrariesScreenshotTest {
         )
 
     @PreviewTest
-    @JellyfinScreenStatePreview
+    @EphyraScreenStatePreview
     @Composable
     fun scanFailed() =
         LibrariesScreen(
@@ -89,23 +89,23 @@ class LibrariesScreenshotTest {
         )
 
     @PreviewTest
-    @JellyfinScreenStatePreview
+    @EphyraScreenStatePreview
     @Composable
     fun loading() = LibrariesScreen(LibrariesUiState.Loading, LibrariesActions())
 
     @PreviewTest
-    @JellyfinScreenStatePreview
+    @EphyraScreenStatePreview
     @Composable
     fun failed() = LibrariesScreen(LibrariesUiState.Failed(ConsoleFailure.Refused), LibrariesActions())
 
     @PreviewTest
-    @JellyfinScreenStatePreview
-    @JellyfinSpanishPreviews
+    @EphyraScreenStatePreview
+    @EphyraSpanishPreviews
     @Composable
     fun empty() = LibrariesScreen(LibrariesUiState.Ready(emptyList(), TaskBoard(emptyList())), LibrariesActions())
 
     @PreviewTest
-    @JellyfinScreenStatePreview
+    @EphyraScreenStatePreview
     @Composable
     fun newLibraryName() =
         Surface {
@@ -113,7 +113,7 @@ class LibrariesScreenshotTest {
         }
 
     @PreviewTest
-    @JellyfinScreenStatePreview
+    @EphyraScreenStatePreview
     @Composable
     fun newLibraryNameTaken() =
         Surface {
@@ -122,8 +122,8 @@ class LibrariesScreenshotTest {
         }
 
     @PreviewTest
-    @JellyfinScreenStatePreview
-    @JellyfinSpanishPreviews
+    @EphyraScreenStatePreview
+    @EphyraSpanishPreviews
     @Composable
     fun newLibraryKind() =
         Surface {
@@ -140,7 +140,7 @@ class LibrariesScreenshotTest {
         }
 
     @PreviewTest
-    @JellyfinScreenStatePreview
+    @EphyraScreenStatePreview
     @Composable
     fun newLibraryFolder() =
         Surface {
@@ -157,7 +157,7 @@ class LibrariesScreenshotTest {
         }
 
     @PreviewTest
-    @JellyfinScreenStatePreview
+    @EphyraScreenStatePreview
     @Composable
     fun newLibraryPath() =
         Surface {
@@ -171,7 +171,7 @@ class LibrariesScreenshotTest {
         }
 
     @PreviewTest
-    @JellyfinScreenStatePreview
+    @EphyraScreenStatePreview
     @Composable
     fun newLibraryPathMissing() =
         Surface {
@@ -192,8 +192,8 @@ class LibrariesScreenshotTest {
 /** The page on a landscape tablet, where a library opens in a third pane: the invitation to pick one while none is. */
 class LibrariesPaneScreenshotTest {
     @PreviewTest
-    @JellyfinWidePreview
-    @JellyfinWideSpanishPreview
+    @EphyraWidePreview
+    @EphyraWideSpanishPreview
     @Composable
     fun placeholder() = Surface { LibrariesPlaceholder() }
 }

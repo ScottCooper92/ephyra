@@ -6,9 +6,9 @@ import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
 import com.android.tools.screenshot.PreviewTest
 import com.binge.designsystem.SaveStatus
-import com.cooper.homelab.ephyra.preview.JellyfinFontScalePreviews
-import com.cooper.homelab.ephyra.preview.JellyfinScreenStatePreview
-import com.cooper.homelab.ephyra.preview.JellyfinSpanishPreviews
+import com.cooper.homelab.ephyra.preview.EphyraFontScalePreviews
+import com.cooper.homelab.ephyra.preview.EphyraScreenStatePreview
+import com.cooper.homelab.ephyra.preview.EphyraSpanishPreviews
 import com.cooper.homelab.ephyra.server.AvailableFetcher
 import com.cooper.homelab.ephyra.server.AvailableProviders
 import com.cooper.homelab.ephyra.server.Country
@@ -149,50 +149,50 @@ private fun fetchersReady() =
 class LibraryScreenshotTest {
     /** The bottom of the library page, without the explanation repeated above its action. */
     @PreviewTest
-    @JellyfinScreenStatePreview
-    @JellyfinFontScalePreviews
-    @JellyfinSpanishPreviews
+    @EphyraScreenStatePreview
+    @EphyraFontScalePreviews
+    @EphyraSpanishPreviews
     @Composable
     fun removeAction() = Surface { LibraryRemoveAction(ready(), LibraryActions()) }
 
     @PreviewTest
-    @JellyfinScreenStatePreview
-    @JellyfinFontScalePreviews
-    @JellyfinSpanishPreviews
+    @EphyraScreenStatePreview
+    @EphyraFontScalePreviews
+    @EphyraSpanishPreviews
     @Composable
     fun library() = LibraryScreen(ready(), LibraryActions(), newest)
 
     /** The metadata group: embedded titles for extras, and a switch for each metadata saver. They sit below the page frame's first screen. */
     @PreviewTest
-    @JellyfinScreenStatePreview
-    @JellyfinFontScalePreviews
-    @JellyfinSpanishPreviews
+    @EphyraScreenStatePreview
+    @EphyraFontScalePreviews
+    @EphyraSpanishPreviews
     @Composable
     fun metadata() = Surface { Column { MetadataGroup(ready(), LibraryActions(), newest) {} } }
 
     /** The subtitles group, with the embedded subtitle types the library offers. It sits below the page frame's first screen. */
     @PreviewTest
-    @JellyfinScreenStatePreview
-    @JellyfinSpanishPreviews
+    @EphyraScreenStatePreview
+    @EphyraSpanishPreviews
     @Composable
     fun subtitles() = Surface { Column { VideoGroups(ready(), LibraryActions(), newest) {} } }
 
     @PreviewTest
-    @JellyfinScreenStatePreview
-    @JellyfinFontScalePreviews
-    @JellyfinSpanishPreviews
+    @EphyraScreenStatePreview
+    @EphyraFontScalePreviews
+    @EphyraSpanishPreviews
     @Composable
     fun languages() = LibraryScreen(ready(), LibraryActions(), newest, page = LibraryPage.Languages)
 
     @PreviewTest
-    @JellyfinScreenStatePreview
-    @JellyfinFontScalePreviews
+    @EphyraScreenStatePreview
+    @EphyraFontScalePreviews
     @Composable
     fun languagesSearch() = Surface { LanguagesBody(ready(), LibraryActions(), PaddingValues(), "French", {}) }
 
     @PreviewTest
-    @JellyfinScreenStatePreview
-    @JellyfinFontScalePreviews
+    @EphyraScreenStatePreview
+    @EphyraFontScalePreviews
     @Composable
     fun languagesRail() =
         LibraryScreen(
@@ -203,18 +203,18 @@ class LibraryScreenshotTest {
         )
 
     @PreviewTest
-    @JellyfinScreenStatePreview
+    @EphyraScreenStatePreview
     @Composable
     fun languagesNoMatch() = Surface { LanguagesBody(ready(), LibraryActions(), PaddingValues(), "Klingon", {}) }
 
     @PreviewTest
-    @JellyfinScreenStatePreview
+    @EphyraScreenStatePreview
     @Composable
     fun languagesNone() = LibraryScreen(ready().copy(cultures = emptyList()), LibraryActions(), newest, page = LibraryPage.Languages)
 
     @PreviewTest
-    @JellyfinScreenStatePreview
-    @JellyfinSpanishPreviews
+    @EphyraScreenStatePreview
+    @EphyraSpanishPreviews
     @Composable
     fun shows() =
         LibraryScreen(
@@ -224,7 +224,7 @@ class LibraryScreenshotTest {
         )
 
     @PreviewTest
-    @JellyfinScreenStatePreview
+    @EphyraScreenStatePreview
     @Composable
     fun music() =
         LibraryScreen(
@@ -235,73 +235,73 @@ class LibraryScreenshotTest {
 
     /** The audio tag options of a music library. They sit below the page frame's first screen. */
     @PreviewTest
-    @JellyfinScreenStatePreview
-    @JellyfinFontScalePreviews
-    @JellyfinSpanishPreviews
+    @EphyraScreenStatePreview
+    @EphyraFontScalePreviews
+    @EphyraSpanishPreviews
     @Composable
     fun audioTags() = Surface { Column { AudioTagsGroup(ready("music", "Music", MUSIC_OPTIONS), LibraryActions(), newest) } }
 
     @PreviewTest
-    @JellyfinScreenStatePreview
-    @JellyfinSpanishPreviews
+    @EphyraScreenStatePreview
+    @EphyraSpanishPreviews
     @Composable
     fun tagDelimiters() = Surface { TagDelimitersForm("/|;", LibraryActions()) }
 
     @PreviewTest
-    @JellyfinScreenStatePreview
-    @JellyfinSpanishPreviews
+    @EphyraScreenStatePreview
+    @EphyraSpanishPreviews
     @Composable
     fun delimiterWhitelist() = Surface { DelimiterWhitelistForm("AC/DC\nBack in Black", LibraryActions()) }
 
     @PreviewTest
-    @JellyfinScreenStatePreview
+    @EphyraScreenStatePreview
     @Composable
     fun homeVideos() = LibraryScreen(ready("homevideos", "Home videos", """{"EnablePhotos":true}"""), LibraryActions(), newest)
 
     @PreviewTest
-    @JellyfinScreenStatePreview
+    @EphyraScreenStatePreview
     @Composable
     fun olderServer() = LibraryScreen(ready(), LibraryActions(), JellyfinServerProfile.from("10.8.13"))
 
     @PreviewTest
-    @JellyfinScreenStatePreview
+    @EphyraScreenStatePreview
     @Composable
     fun saving() = LibraryScreen(ready().copy(save = SaveProgress(SaveStatus.Saving)), LibraryActions(), newest)
 
     @PreviewTest
-    @JellyfinScreenStatePreview
-    @JellyfinSpanishPreviews
+    @EphyraScreenStatePreview
+    @EphyraSpanishPreviews
     @Composable
     fun fetchersRows() = Surface { Column { MetadataGroup(fetchersReady(), LibraryActions(), newest) {} } }
 
     @PreviewTest
-    @JellyfinScreenStatePreview
-    @JellyfinSpanishPreviews
+    @EphyraScreenStatePreview
+    @EphyraSpanishPreviews
     @Composable
     fun metadataFetchers() = LibraryScreen(fetchersReady(), LibraryActions(), newest, page = LibraryPage.Fetchers(FetcherKind.Metadata))
 
     @PreviewTest
-    @JellyfinScreenStatePreview
-    @JellyfinSpanishPreviews
+    @EphyraScreenStatePreview
+    @EphyraSpanishPreviews
     @Composable
     fun imageFetchers() = LibraryScreen(fetchersReady(), LibraryActions(), newest, page = LibraryPage.Fetchers(FetcherKind.Images))
 
     /** The sheet for one image type: how many to keep and the narrowest accepted. */
     @PreviewTest
-    @JellyfinScreenStatePreview
-    @JellyfinSpanishPreviews
+    @EphyraScreenStatePreview
+    @EphyraSpanishPreviews
     @Composable
     fun imageOptions() = Surface { ImageOptionsContent(ImageSlot("Backdrop", 3, 1280)) {} }
 
     @PreviewTest
-    @JellyfinScreenStatePreview
-    @JellyfinSpanishPreviews
+    @EphyraScreenStatePreview
+    @EphyraSpanishPreviews
     @Composable
     fun fetcher() =
         LibraryScreen(fetchersReady(), LibraryActions(), newest, page = LibraryPage.Fetcher(FetcherKind.Metadata, "Series", "TheTVDB"))
 
     @PreviewTest
-    @JellyfinScreenStatePreview
+    @EphyraScreenStatePreview
     @Composable
     fun fetcherOffAndLast() =
         LibraryScreen(
@@ -312,51 +312,51 @@ class LibraryScreenshotTest {
         )
 
     @PreviewTest
-    @JellyfinScreenStatePreview
-    @JellyfinSpanishPreviews
+    @EphyraScreenStatePreview
+    @EphyraSpanishPreviews
     @Composable
     fun providersList() = LibraryScreen(ready(), LibraryActions(), newest, page = LibraryPage.Providers(ProviderGroup.Subtitles))
 
     @PreviewTest
-    @JellyfinScreenStatePreview
+    @EphyraScreenStatePreview
     @Composable
     fun provider() = LibraryScreen(ready(), LibraryActions(), newest, page = LibraryPage.One(ProviderGroup.Subtitles, "Podnapisi"))
 
     @PreviewTest
-    @JellyfinScreenStatePreview
+    @EphyraScreenStatePreview
     @Composable
     fun providerLast() = LibraryScreen(ready(), LibraryActions(), newest, page = LibraryPage.One(ProviderGroup.Subtitles, "Legendas"))
 
     @PreviewTest
-    @JellyfinScreenStatePreview
-    @JellyfinSpanishPreviews
+    @EphyraScreenStatePreview
+    @EphyraSpanishPreviews
     @Composable
     fun rename() = Surface { RenameForm("Movies", saving = false, taken = false, LibraryActions()) }
 
     @PreviewTest
-    @JellyfinScreenStatePreview
+    @EphyraScreenStatePreview
     @Composable
     fun renameTaken() = Surface { RenameForm("Movies", saving = false, taken = true, LibraryActions()) }
 
     @PreviewTest
-    @JellyfinScreenStatePreview
+    @EphyraScreenStatePreview
     @Composable
     fun specialsName() = Surface { SeasonZeroForm("Extras", LibraryActions()) }
 
     @PreviewTest
-    @JellyfinScreenStatePreview
-    @JellyfinSpanishPreviews
+    @EphyraScreenStatePreview
+    @EphyraSpanishPreviews
     @Composable
     fun removeLibrary() = Surface { RemoveLibraryDialog("Movies", LibraryActions(), inWindow = false) }
 
     @PreviewTest
-    @JellyfinScreenStatePreview
+    @EphyraScreenStatePreview
     @Composable
     fun removeFolder() = Surface { RemoveFolderDialog("/mnt/more/movies", LibraryActions(), inWindow = false) }
 
     @PreviewTest
-    @JellyfinScreenStatePreview
-    @JellyfinSpanishPreviews
+    @EphyraScreenStatePreview
+    @EphyraSpanishPreviews
     @Composable
     fun addFolder() =
         Surface {
@@ -372,7 +372,7 @@ class LibraryScreenshotTest {
         }
 
     @PreviewTest
-    @JellyfinScreenStatePreview
+    @EphyraScreenStatePreview
     @Composable
     fun addFolderFromTheDrives() =
         Surface {
@@ -385,7 +385,7 @@ class LibraryScreenshotTest {
         }
 
     @PreviewTest
-    @JellyfinScreenStatePreview
+    @EphyraScreenStatePreview
     @Composable
     fun addFolderEmpty() =
         Surface {
@@ -398,7 +398,7 @@ class LibraryScreenshotTest {
         }
 
     @PreviewTest
-    @JellyfinScreenStatePreview
+    @EphyraScreenStatePreview
     @Composable
     fun addFolderFailed() =
         Surface {
@@ -411,13 +411,13 @@ class LibraryScreenshotTest {
         }
 
     @PreviewTest
-    @JellyfinScreenStatePreview
+    @EphyraScreenStatePreview
     @Composable
     fun addFolderLoading() =
         Surface { AddFolderForm(ready().copy(busy = true), FolderBrowseState.Loading, FolderActions(), LibraryActions()) }
 
     @PreviewTest
-    @JellyfinScreenStatePreview
+    @EphyraScreenStatePreview
     @Composable
     fun addFolderTyped() =
         Surface {
@@ -431,12 +431,12 @@ class LibraryScreenshotTest {
         }
 
     @PreviewTest
-    @JellyfinScreenStatePreview
+    @EphyraScreenStatePreview
     @Composable
     fun loading() = LibraryScreen(LibraryUiState.Loading, LibraryActions(), newest)
 
     @PreviewTest
-    @JellyfinScreenStatePreview
+    @EphyraScreenStatePreview
     @Composable
     fun failed() = LibraryScreen(LibraryUiState.Failed(ConsoleFailure.Refused), LibraryActions(), newest)
 }

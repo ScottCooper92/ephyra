@@ -9,9 +9,9 @@ import com.cooper.homelab.core.foundation.LogLevel
 import com.cooper.homelab.core.presentation.diagnostics.DiagnosticsEmpty
 import com.cooper.homelab.core.presentation.diagnostics.DiagnosticsState
 import com.cooper.homelab.core.uiandroid.diagnostics.DiagnosticsScreen
-import com.cooper.homelab.ephyra.preview.JellyfinFontScalePreviews
-import com.cooper.homelab.ephyra.preview.JellyfinScreenStatePreview
-import com.cooper.homelab.ephyra.preview.JellyfinSpanishPreviews
+import com.cooper.homelab.ephyra.preview.EphyraFontScalePreviews
+import com.cooper.homelab.ephyra.preview.EphyraScreenStatePreview
+import com.cooper.homelab.ephyra.preview.EphyraSpanishPreviews
 import kotlin.time.Instant
 
 private val preamble = listOf("App: 1.0.0 (1)", "Android: 15 (API 35)", "Device: Google Pixel 9")
@@ -25,9 +25,9 @@ private fun entry(
 /** The Diagnostics page over the app's own log: the lines above the log, then the entries newest first, and the empty state. */
 class DiagnosticsScreenshotTest {
     @PreviewTest
-    @JellyfinScreenStatePreview
-    @JellyfinFontScalePreviews
-    @JellyfinSpanishPreviews
+    @EphyraScreenStatePreview
+    @EphyraFontScalePreviews
+    @EphyraSpanishPreviews
     @Composable
     fun diagnosticsLog() =
         page(
@@ -43,7 +43,7 @@ class DiagnosticsScreenshotTest {
         )
 
     @PreviewTest
-    @JellyfinScreenStatePreview
+    @EphyraScreenStatePreview
     @Composable
     fun diagnosticsEmpty() = page(DiagnosticsState.Empty(DiagnosticsEmpty.NothingLogged, LogLevel.Info, preamble))
 

@@ -18,9 +18,9 @@ import com.cooper.homelab.ephyra.client.title.PlayKind
 import com.cooper.homelab.ephyra.client.title.Resolution
 import com.cooper.homelab.ephyra.client.title.TitleImage
 import com.cooper.homelab.ephyra.client.title.VersionUi
-import com.cooper.homelab.ephyra.preview.JellyfinFontScalePreviews
-import com.cooper.homelab.ephyra.preview.JellyfinScreenStatePreview
-import com.cooper.homelab.ephyra.preview.JellyfinSpanishPreviews
+import com.cooper.homelab.ephyra.preview.EphyraFontScalePreviews
+import com.cooper.homelab.ephyra.preview.EphyraScreenStatePreview
+import com.cooper.homelab.ephyra.preview.EphyraSpanishPreviews
 
 /**
  * The episode page (`:client`) in the states the issue names: loaded with its season's other episodes, resuming a watched favourite, the
@@ -82,34 +82,34 @@ class ClientEpisodeScreenshotTest {
     private fun ready(page: EpisodePageUi) = EpisodeUiState.Ready(page)
 
     @PreviewTest
-    @JellyfinScreenStatePreview
-    @JellyfinFontScalePreviews
-    @JellyfinSpanishPreviews
+    @EphyraScreenStatePreview
+    @EphyraFontScalePreviews
+    @EphyraSpanishPreviews
     @Composable
     fun loaded() = Episode(ready(episode))
 
     @PreviewTest
-    @JellyfinTallPreview
+    @EphyraTallPreview
     @Composable
     fun loadedTall() = Episode(ready(episode))
 
     @PreviewTest
-    @JellyfinScreenStatePreview
+    @EphyraScreenStatePreview
     @Composable
     fun resumeWatchedFavourite() = Episode(ready(episode.copy(play = PlayAction(PlayKind.Resume, 28), watched = true, favourite = true)))
 
     @PreviewTest
-    @JellyfinTallPreview
+    @EphyraTallPreview
     @Composable
     fun seasonLoading() = Episode(ready(episode.copy(season = EpisodesState.Loading)))
 
     @PreviewTest
-    @JellyfinTallPreview
+    @EphyraTallPreview
     @Composable
     fun seasonFailed() = Episode(ready(episode.copy(season = EpisodesState.Failed(ServerFailure.Unreachable()))))
 
     @PreviewTest
-    @JellyfinTallPreview
+    @EphyraTallPreview
     @Composable
     fun sparseNoSeason() =
         Episode(
@@ -131,12 +131,12 @@ class ClientEpisodeScreenshotTest {
         )
 
     @PreviewTest
-    @JellyfinScreenStatePreview
+    @EphyraScreenStatePreview
     @Composable
     fun loading() = Episode(EpisodeUiState.Loading)
 
     @PreviewTest
-    @JellyfinScreenStatePreview
+    @EphyraScreenStatePreview
     @Composable
     fun failed() = Episode(EpisodeUiState.Failed(ServerFailure.Unreachable()))
 }

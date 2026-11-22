@@ -3,9 +3,9 @@ package com.cooper.homelab.ephyra.ui.console
 import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
 import com.android.tools.screenshot.PreviewTest
-import com.cooper.homelab.ephyra.preview.JellyfinFontScalePreviews
-import com.cooper.homelab.ephyra.preview.JellyfinScreenStatePreview
-import com.cooper.homelab.ephyra.preview.JellyfinSpanishPreviews
+import com.cooper.homelab.ephyra.preview.EphyraFontScalePreviews
+import com.cooper.homelab.ephyra.preview.EphyraScreenStatePreview
+import com.cooper.homelab.ephyra.preview.EphyraSpanishPreviews
 import com.cooper.homelab.ephyra.server.LIBRARY_SCAN_TASK
 import com.cooper.homelab.ephyra.server.ServerTask
 import com.cooper.homelab.ephyra.server.TICKS_PER_HOUR
@@ -47,64 +47,64 @@ private fun open(
 /** One task's triggers across the matrix, with none, saving and failed, then the new trigger form for each kind. */
 class TaskTriggersScreenshotTest {
     @PreviewTest
-    @JellyfinScreenStatePreview
-    @JellyfinFontScalePreviews
-    @JellyfinSpanishPreviews
+    @EphyraScreenStatePreview
+    @EphyraFontScalePreviews
+    @EphyraSpanishPreviews
     @Composable
     fun triggers() = TaskScreen(open(), "scan", TasksActions())
 
     /** A task open after a process restore, while the view model loads the board again under its screen. */
     @PreviewTest
-    @JellyfinScreenStatePreview
+    @EphyraScreenStatePreview
     @Composable
     fun taskLoading() = TaskScreen(TasksUiState.Loading, "scan", TasksActions())
 
     /** The same reload, failed: the error screen with Retry under the task's own bar. */
     @PreviewTest
-    @JellyfinScreenStatePreview
-    @JellyfinSpanishPreviews
+    @EphyraScreenStatePreview
+    @EphyraSpanishPreviews
     @Composable
     fun taskFailed() = TaskScreen(TasksUiState.Failed(ConsoleFailure.Unreachable), "scan", TasksActions())
 
     @PreviewTest
-    @JellyfinScreenStatePreview
-    @JellyfinSpanishPreviews
+    @EphyraScreenStatePreview
+    @EphyraSpanishPreviews
     @Composable
     fun none() = TaskScreen(open(emptyList()), "scan", TasksActions())
 
     @PreviewTest
-    @JellyfinScreenStatePreview
+    @EphyraScreenStatePreview
     @Composable
     fun saving() = TaskScreen(open(saving = true), "scan", TasksActions())
 
     @PreviewTest
-    @JellyfinScreenStatePreview
-    @JellyfinFontScalePreviews
-    @JellyfinSpanishPreviews
+    @EphyraScreenStatePreview
+    @EphyraFontScalePreviews
+    @EphyraSpanishPreviews
     @Composable
     fun newTrigger() = Surface { AddTriggerForm(TasksActions()) }
 
     @PreviewTest
-    @JellyfinScreenStatePreview
-    @JellyfinFontScalePreviews
+    @EphyraScreenStatePreview
+    @EphyraFontScalePreviews
     @Composable
     fun newWeeklyTrigger() = Surface { AddTriggerForm(TasksActions(), TriggerKind.Weekly) }
 
     @PreviewTest
-    @JellyfinScreenStatePreview
-    @JellyfinFontScalePreviews
+    @EphyraScreenStatePreview
+    @EphyraFontScalePreviews
     @Composable
     fun newIntervalTrigger() = Surface { AddTriggerForm(TasksActions(), TriggerKind.Interval) }
 
     @PreviewTest
-    @JellyfinScreenStatePreview
-    @JellyfinFontScalePreviews
+    @EphyraScreenStatePreview
+    @EphyraFontScalePreviews
     @Composable
     fun newStartupTrigger() = Surface { AddTriggerForm(TasksActions(), TriggerKind.Startup) }
 
     @PreviewTest
-    @JellyfinScreenStatePreview
-    @JellyfinFontScalePreviews
+    @EphyraScreenStatePreview
+    @EphyraFontScalePreviews
     @Composable
     fun newTriggerTwentyFourHour() = Surface { AddTriggerForm(TasksActions(), is24Hour = true) }
 }

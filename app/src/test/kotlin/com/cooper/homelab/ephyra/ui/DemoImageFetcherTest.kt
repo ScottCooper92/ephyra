@@ -86,7 +86,7 @@ class DemoImageFetcherTest {
     fun `the image loader the app builds carries the fetcher and still has the default ones`() {
         val loader =
             com.cooper.homelab.ephyra
-                .JellyfinApp()
+                .EphyraApp()
                 .newImageLoader(context)
         assertTrue(loader.components.fetcherFactories.any { it.first is DemoImageFetcher.Factory })
         assertTrue(loader.components.fetcherFactories.size > 1)

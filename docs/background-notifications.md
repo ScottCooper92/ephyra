@@ -31,4 +31,4 @@ would show nothing (notifications off for the app, or the permission refused).
 
 `notifications/`: `ActivityChecker` (one run), `PollReactor` (what a result does), `NotificationPlanner` (the schedule),
 `NotificationPrefs` (its own DataStore, `notifications`), `AndroidNotifier`, `BackgroundAccess`. The worker is built by
-`NotificationWorkerFactory`; WorkManager's default initialiser is removed in the manifest so `JellyfinApp`'s configuration is used.
+`NotificationWorkerFactory`; WorkManager's default initialiser is removed in the manifest so `EphyraApp`'s configuration is used.

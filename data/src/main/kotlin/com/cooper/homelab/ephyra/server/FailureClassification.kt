@@ -6,7 +6,7 @@ import com.cooper.homelab.core.server.network.JvmTransportFailures
 import com.cooper.homelab.core.server.network.NoBody
 import com.cooper.homelab.core.server.network.RequestFacts
 
-/** A call that did not get an answer is read by the shared library: a cleartext block, a local-network denial, an untrusted certificate, an unreadable answer, a client-certificate request, a timeout, or a plain connect failure. */
+/** A call that did not get an answer is read by the shared library: a cleartext block, a local-network denial, an unreadable answer, a client-certificate request, a timeout, or a plain connect failure. */
 private val mapper = FailureMapper(JvmTransportFailures)
 
 /**

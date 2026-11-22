@@ -30,6 +30,7 @@ class JellyfinClientTest {
     fun `an address without a scheme is http, and junk is not an address`() {
         assertEquals("http://192.168.1.10:8096/", JellyfinClient.parseBaseUrl(" 192.168.1.10:8096/ ").toString())
         assertEquals("https://jf.example.com/", JellyfinClient.parseBaseUrl("https://jf.example.com").toString())
+        assertEquals("https://jf.example.com/", JellyfinClient.parseBaseUrl("jf.example.com").toString())
         assertNull(JellyfinClient.parseBaseUrl(""))
         assertNull(JellyfinClient.parseBaseUrl("http://"))
     }

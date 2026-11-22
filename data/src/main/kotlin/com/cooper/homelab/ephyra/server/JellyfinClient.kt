@@ -2,6 +2,7 @@ package com.cooper.homelab.ephyra.server
 
 import com.binge.companion.sdk.attempt
 import com.cooper.homelab.core.foundation.Logger
+import com.cooper.homelab.core.server.address.ServerAddress
 import com.cooper.homelab.core.server.network.UnreadableAnswerException
 import com.cooper.homelab.ephyra.demo.DemoTransport
 import com.cooper.homelab.ephyra.demo.isDemo
@@ -258,13 +259,11 @@ class JellyfinClient(
         private val JSON = "application/json".toMediaType()
         private val PARSER = Json { ignoreUnknownKeys = true }
 
-        /** [raw] as a server base URL, adding http:// when no scheme was typed; null when it is not a URL. */
-        fun parseBaseUrl(raw: String): HttpUrl? {
-            val trimmed = raw.trim()
-            if (trimmed.isEmpty()) return null
-            val withScheme = if ("://" in trimmed) trimmed else "http://$trimmed"
-            return withScheme.toHttpUrlOrNull()
-        }
+        /**
+         * [raw] as a server base URL, read the way every server app reads a typed address ([ServerAddress.parse]): a scheme left
+         * off is http for a local or private host and https otherwise. Null when it is not an http or https address.
+         */
+        fun parseBaseUrl(raw: String): HttpUrl? = ServerAddress.parse(raw)?.url?.toHttpUrlOrNull()
     }
 }
 

@@ -58,7 +58,7 @@ fun serverKey(
     val url =
         text
             .takeIf { it.isNotEmpty() && it.length <= MAX_ADDRESS_CHARS && ("://" in it || assumeHttp) }
-            ?.let { JellyfinClient.parseBaseUrl(it) }
+            ?.let { JellyfinClient.parseBaseUrl(if ("://" in it) it else "http://$it") }
     return url?.let { "${it.scheme}://${it.host}:${it.port}${it.encodedPath.trimEnd('/')}" }
 }
 

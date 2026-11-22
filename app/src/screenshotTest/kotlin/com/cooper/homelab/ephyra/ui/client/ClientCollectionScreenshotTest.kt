@@ -12,9 +12,9 @@ import com.cooper.homelab.ephyra.client.title.CollectionScreen
 import com.cooper.homelab.ephyra.client.title.CollectionUiState
 import com.cooper.homelab.ephyra.client.title.TitleCard
 import com.cooper.homelab.ephyra.client.title.TitleImage
-import com.cooper.homelab.ephyra.preview.JellyfinFontScalePreviews
-import com.cooper.homelab.ephyra.preview.JellyfinScreenStatePreview
-import com.cooper.homelab.ephyra.preview.JellyfinSpanishPreviews
+import com.cooper.homelab.ephyra.preview.EphyraFontScalePreviews
+import com.cooper.homelab.ephyra.preview.EphyraScreenStatePreview
+import com.cooper.homelab.ephyra.preview.EphyraSpanishPreviews
 
 /**
  * The collection page (`:client`) in the states the issue names: loaded, all watched, a sparse one, an empty collection, loading, and failed. No picture is loaded, so each frame shows the
@@ -58,36 +58,36 @@ class ClientCollectionScreenshotTest {
     private fun ready(page: CollectionPageUi) = CollectionUiState.Ready(page)
 
     @PreviewTest
-    @JellyfinScreenStatePreview
-    @JellyfinFontScalePreviews
-    @JellyfinSpanishPreviews
+    @EphyraScreenStatePreview
+    @EphyraFontScalePreviews
+    @EphyraSpanishPreviews
     @Composable
     fun loaded() = Collection(ready(collection))
 
     @PreviewTest
-    @JellyfinScreenStatePreview
+    @EphyraScreenStatePreview
     @Composable
     fun allWatched() =
         Collection(ready(collection.copy(parts = parts.map { it.copy(card = it.card.copy(played = true)) }, watchedCount = 5)))
 
     @PreviewTest
-    @JellyfinScreenStatePreview
+    @EphyraScreenStatePreview
     @Composable
     fun sparse() =
         Collection(ready(collection.copy(overview = null, backdrop = null, poster = null, parts = parts.take(2), watchedCount = 0)))
 
     @PreviewTest
-    @JellyfinScreenStatePreview
+    @EphyraScreenStatePreview
     @Composable
     fun empty() = Collection(ready(collection.copy(parts = emptyList(), watchedCount = 0)))
 
     @PreviewTest
-    @JellyfinScreenStatePreview
+    @EphyraScreenStatePreview
     @Composable
     fun loading() = Collection(CollectionUiState.Loading)
 
     @PreviewTest
-    @JellyfinScreenStatePreview
+    @EphyraScreenStatePreview
     @Composable
     fun failed() = Collection(CollectionUiState.Failed(ServerFailure.Unreachable()))
 }

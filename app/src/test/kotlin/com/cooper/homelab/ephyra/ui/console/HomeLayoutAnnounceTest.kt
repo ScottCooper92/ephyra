@@ -9,7 +9,7 @@ import androidx.compose.runtime.setValue
 import com.binge.designsystem.testing.createTakeDownAndroidComposeRule
 import com.cooper.homelab.ephyra.server.HomeLayout
 import com.cooper.homelab.ephyra.server.UserView
-import com.cooper.homelab.ephyra.theme.JellyfinTheme
+import com.cooper.homelab.ephyra.theme.EphyraTheme
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertTrue
 import org.junit.Rule
@@ -39,7 +39,7 @@ class HomeLayoutAnnounceTest {
     fun `a move says the new position, and opening the page says nothing`() {
         val manager = compose.activity.getSystemService(AccessibilityManager::class.java)
         shadowOf(manager).setEnabled(true)
-        compose.setContent { JellyfinTheme { HomeLayoutLibraryScreen(state, "b", HomeLayoutActions()) } }
+        compose.setContent { EphyraTheme { HomeLayoutLibraryScreen(state, "b", HomeLayoutActions()) } }
         compose.waitForIdle()
         assertTrue(announcements().isEmpty())
         state = state.copy(layout = HomeLayout(order = listOf("b", "a", "c")))

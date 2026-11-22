@@ -20,7 +20,7 @@ import com.cooper.homelab.ephyra.server.TrickplaySettings
 import com.cooper.homelab.ephyra.server.UserView
 import com.cooper.homelab.ephyra.server.networkKeys
 import com.cooper.homelab.ephyra.server.networkSettings
-import com.cooper.homelab.ephyra.theme.JellyfinTheme
+import com.cooper.homelab.ephyra.theme.EphyraTheme
 import kotlinx.serialization.json.Json
 import kotlinx.serialization.json.jsonObject
 import org.junit.Rule
@@ -43,7 +43,7 @@ class SettingsSkeletonGeometryTest {
         assertSkeletonReservesGeometry(
             listOf(LayoutAnchors.section(LayoutAnchors.Collection.FIRST_ITEM)),
             checkStartEdge = true,
-        ) { resolved -> JellyfinTheme { page(resolved) } }
+        ) { resolved -> EphyraTheme { page(resolved) } }
 
     @Test
     fun `trickplay`() =

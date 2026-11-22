@@ -11,7 +11,7 @@ import androidx.compose.ui.test.performClick
 import com.binge.designsystem.component.ItemGroup
 import com.binge.designsystem.testing.createTakeDownAndroidComposeRule
 import com.cooper.homelab.ephyra.auth.JellyfinSession
-import com.cooper.homelab.ephyra.theme.JellyfinTheme
+import com.cooper.homelab.ephyra.theme.EphyraTheme
 import org.junit.Assert.assertEquals
 import org.junit.Rule
 import org.junit.Test
@@ -58,7 +58,7 @@ class ReleaseNotesTest {
         canOpen: (String) -> Boolean = { true },
         opened: MutableList<String> = mutableListOf(),
     ) = compose.setContent {
-        JellyfinTheme {
+        EphyraTheme {
             ItemGroup(title = null, rows = releaseNotesItems(version, canOpen = canOpen, open = { opened += it }))
         }
     }
@@ -88,7 +88,7 @@ class ReleaseNotesTest {
         canOpen: (String) -> Boolean = { true },
         opened: MutableList<String> = mutableListOf(),
     ) = compose.setContent {
-        JellyfinTheme {
+        EphyraTheme {
             val state = UiState.SignedIn(session, card = ServerCardState(updateAvailable = update))
             ServerHomeCard(state, canOpen = canOpen, open = { opened += it })
         }

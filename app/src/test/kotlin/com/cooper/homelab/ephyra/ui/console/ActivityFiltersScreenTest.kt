@@ -19,7 +19,7 @@ import com.cooper.homelab.ephyra.server.ActivityFilter
 import com.cooper.homelab.ephyra.server.ActivityTimePreset
 import com.cooper.homelab.ephyra.server.ActivityWho
 import com.cooper.homelab.ephyra.server.Severity
-import com.cooper.homelab.ephyra.theme.JellyfinTheme
+import com.cooper.homelab.ephyra.theme.EphyraTheme
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertTrue
 import org.junit.Rule
@@ -51,7 +51,7 @@ class ActivityFiltersScreenTest {
         actions: ActivityFilterActions = ActivityFilterActions(),
         extended: Boolean = true,
     ) = compose.setContent {
-        JellyfinTheme { ActivityScreen(state, ActivityActions(), filters = filters, filterActions = actions, extendedFilters = extended) }
+        EphyraTheme { ActivityScreen(state, ActivityActions(), filters = filters, filterActions = actions, extendedFilters = extended) }
     }
 
     @Test
@@ -142,7 +142,7 @@ class ActivityFiltersScreenTest {
         var state by mutableStateOf<ActivityUiState>(ActivityUiState.Ready(listOf(entry), 1))
         var filters by mutableStateOf(ActivityFilters())
         compose.setContent {
-            JellyfinTheme { ActivityScreen(state, ActivityActions(), filters = filters, extendedFilters = true) }
+            EphyraTheme { ActivityScreen(state, ActivityActions(), filters = filters, extendedFilters = true) }
         }
         compose.waitForIdle()
         // The filter is applied the way the view model's two flows deliver it: the filters first, with the old list still showing for a

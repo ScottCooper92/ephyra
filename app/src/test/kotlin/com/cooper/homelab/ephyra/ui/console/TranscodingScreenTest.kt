@@ -11,7 +11,7 @@ import androidx.compose.ui.test.performScrollTo
 import com.binge.designsystem.testing.createTakeDownAndroidComposeRule
 import com.cooper.homelab.ephyra.FakeJellyfin
 import com.cooper.homelab.ephyra.server.JellyfinServerProfile
-import com.cooper.homelab.ephyra.theme.JellyfinTheme
+import com.cooper.homelab.ephyra.theme.EphyraTheme
 import kotlinx.serialization.json.Json
 import kotlinx.serialization.json.JsonObject
 import kotlinx.serialization.json.JsonPrimitive
@@ -44,7 +44,7 @@ class TranscodingScreenTest {
     ) {
         val config = JsonObject(encoding(type) + ("EncodingThreadCount" to JsonPrimitive(threads)))
         val state = TranscodingUiState.Ready(config, server)
-        compose.setContent { JellyfinTheme { TranscodingScreen(state, actions, JellyfinServerProfile.from(version)) } }
+        compose.setContent { EphyraTheme { TranscodingScreen(state, actions, JellyfinServerProfile.from(version)) } }
     }
 
     @Test
@@ -244,7 +244,7 @@ class TranscodingScreenTest {
     fun `a server that never saved the page leaves out the folders, and both rows still show`() {
         val fresh = JsonObject(encoding("none") - "TranscodingTempPath" - "FallbackFontPath")
         compose.setContent {
-            JellyfinTheme {
+            EphyraTheme {
                 TranscodingScreen(
                     TranscodingUiState.Ready(fresh, server),
                     TranscodingActions(),

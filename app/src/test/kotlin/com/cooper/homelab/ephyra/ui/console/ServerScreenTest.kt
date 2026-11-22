@@ -5,7 +5,7 @@ import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.performClick
 import com.binge.designsystem.testing.createTakeDownAndroidComposeRule
 import com.cooper.homelab.ephyra.server.ServerInfo
-import com.cooper.homelab.ephyra.theme.JellyfinTheme
+import com.cooper.homelab.ephyra.theme.EphyraTheme
 import org.junit.Assert.assertEquals
 import org.junit.Rule
 import org.junit.Test
@@ -25,7 +25,7 @@ class ServerScreenTest {
     private var dismissed = 0
 
     private fun show(state: ServerUiState.Ready) {
-        compose.setContent { JellyfinTheme { ServerScreen(state, ServerActions(onDismissRestart = { dismissed++ })) } }
+        compose.setContent { EphyraTheme { ServerScreen(state, ServerActions(onDismissRestart = { dismissed++ })) } }
     }
 
     @Test

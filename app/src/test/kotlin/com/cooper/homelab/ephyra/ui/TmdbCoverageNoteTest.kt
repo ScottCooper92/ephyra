@@ -10,7 +10,7 @@ import com.cooper.homelab.core.flags.Flags
 import com.cooper.homelab.core.flags.SharedFlags
 import com.cooper.homelab.core.uiandroid.flags.LocalFlags
 import com.cooper.homelab.ephyra.server.TmdbCoverage
-import com.cooper.homelab.ephyra.theme.JellyfinTheme
+import com.cooper.homelab.ephyra.theme.EphyraTheme
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -26,7 +26,7 @@ class TmdbCoverageNoteTest {
         coverage: TmdbCoverage?,
         flags: Flags = Flags(),
     ) {
-        compose.setContent { CompositionLocalProvider(LocalFlags provides flags) { JellyfinTheme { TmdbCoverageNote(coverage) } } }
+        compose.setContent { CompositionLocalProvider(LocalFlags provides flags) { EphyraTheme { TmdbCoverageNote(coverage) } } }
     }
 
     @Test

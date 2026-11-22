@@ -26,18 +26,18 @@ import com.cooper.homelab.ephyra.client.title.SeriesUiState
 import com.cooper.homelab.ephyra.client.title.TitleCard
 import com.cooper.homelab.ephyra.client.title.TitleFacts
 import com.cooper.homelab.ephyra.client.title.TitleImage
-import com.cooper.homelab.ephyra.preview.JellyfinFontScalePreviews
-import com.cooper.homelab.ephyra.preview.JellyfinScreenStatePreview
-import com.cooper.homelab.ephyra.preview.JellyfinScreenshotThemeWrapper
-import com.cooper.homelab.ephyra.preview.JellyfinSpanishPreviews
+import com.cooper.homelab.ephyra.preview.EphyraFontScalePreviews
+import com.cooper.homelab.ephyra.preview.EphyraScreenStatePreview
+import com.cooper.homelab.ephyra.preview.EphyraScreenshotThemeWrapper
+import com.cooper.homelab.ephyra.preview.EphyraSpanishPreviews
 
 /** A phone window tall enough to hold the whole page, for the frames that show the episodes below the fold. */
-@PreviewWrapper(JellyfinScreenshotThemeWrapper::class)
+@PreviewWrapper(EphyraScreenshotThemeWrapper::class)
 @Preview(name = "tall", device = "spec:width=411dp,height=2400dp,dpi=420", uiMode = UI_MODE_NIGHT_YES, locale = SOURCE_LOCALE)
-annotation class JellyfinTallPreview
+annotation class EphyraTallPreview
 
 /** A window tall enough to hold the page down to the end of its Details, in English and in Spanish. */
-@PreviewWrapper(JellyfinScreenshotThemeWrapper::class)
+@PreviewWrapper(EphyraScreenshotThemeWrapper::class)
 @Preview(name = "details", device = "spec:width=411dp,height=3600dp,dpi=420", uiMode = UI_MODE_NIGHT_YES, locale = SOURCE_LOCALE)
 @Preview(name = "detailses", device = "spec:width=411dp,height=3600dp,dpi=420", uiMode = UI_MODE_NIGHT_YES, locale = "es")
 annotation class JellyfinDetailsPreviews
@@ -145,14 +145,14 @@ class ClientSeriesScreenshotTest {
         )
 
     @PreviewTest
-    @JellyfinScreenStatePreview
-    @JellyfinFontScalePreviews
-    @JellyfinSpanishPreviews
+    @EphyraScreenStatePreview
+    @EphyraFontScalePreviews
+    @EphyraSpanishPreviews
     @Composable
     fun loaded() = Series(SeriesUiState.Ready(series))
 
     @PreviewTest
-    @JellyfinScreenStatePreview
+    @EphyraScreenStatePreview
     @Composable
     fun resumeWatchedFavourite() =
         Series(
@@ -162,12 +162,12 @@ class ClientSeriesScreenshotTest {
         )
 
     @PreviewTest
-    @JellyfinTallPreview
+    @EphyraTallPreview
     @Composable
     fun loadedTall() = Series(SeriesUiState.Ready(series))
 
     @PreviewTest
-    @JellyfinScreenStatePreview
+    @EphyraScreenStatePreview
     @Composable
     fun allWatched() =
         Series(
@@ -177,7 +177,7 @@ class ClientSeriesScreenshotTest {
         )
 
     @PreviewTest
-    @JellyfinTallPreview
+    @EphyraTallPreview
     @Composable
     fun singleSeasonSparse() =
         Series(
@@ -219,22 +219,22 @@ class ClientSeriesScreenshotTest {
     fun endedDetails() = Series(SeriesUiState.Ready(series))
 
     @PreviewTest
-    @JellyfinTallPreview
+    @EphyraTallPreview
     @Composable
     fun episodesLoading() = Series(SeriesUiState.Ready(series.copy(episodes = EpisodesState.Loading)))
 
     @PreviewTest
-    @JellyfinTallPreview
+    @EphyraTallPreview
     @Composable
     fun episodesFailed() = Series(SeriesUiState.Ready(series.copy(episodes = EpisodesState.Failed(ServerFailure.Unreachable()))))
 
     @PreviewTest
-    @JellyfinScreenStatePreview
+    @EphyraScreenStatePreview
     @Composable
     fun loading() = Series(SeriesUiState.Loading)
 
     @PreviewTest
-    @JellyfinScreenStatePreview
+    @EphyraScreenStatePreview
     @Composable
     fun failed() = Series(SeriesUiState.Failed(ServerFailure.Unreachable()))
 }

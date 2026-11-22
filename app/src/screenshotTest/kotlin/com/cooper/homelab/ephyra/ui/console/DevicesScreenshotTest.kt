@@ -3,10 +3,10 @@ package com.cooper.homelab.ephyra.ui.console
 import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
 import com.android.tools.screenshot.PreviewTest
-import com.cooper.homelab.ephyra.preview.JellyfinFontScalePreviews
-import com.cooper.homelab.ephyra.preview.JellyfinScreenStateLightPreview
-import com.cooper.homelab.ephyra.preview.JellyfinScreenStatePreview
-import com.cooper.homelab.ephyra.preview.JellyfinSpanishPreviews
+import com.cooper.homelab.ephyra.preview.EphyraFontScalePreviews
+import com.cooper.homelab.ephyra.preview.EphyraScreenStateLightPreview
+import com.cooper.homelab.ephyra.preview.EphyraScreenStatePreview
+import com.cooper.homelab.ephyra.preview.EphyraSpanishPreviews
 import com.cooper.homelab.ephyra.server.ServerDevice
 
 private const val NOW = 1_793_534_400_000L // 31 Oct 2026, 12:00 UTC
@@ -25,30 +25,30 @@ private val previewReady = DevicesUiState.Ready(previewDevices, thisDevice = "me
 /** Devices: the list across the matrix, then renaming, removing, a change in flight and failed, and the read states. */
 class DevicesScreenshotTest {
     @PreviewTest
-    @JellyfinScreenStatePreview
-    @JellyfinFontScalePreviews
-    @JellyfinSpanishPreviews
+    @EphyraScreenStatePreview
+    @EphyraFontScalePreviews
+    @EphyraSpanishPreviews
     @Composable
     fun devices() = DevicesScreen(previewReady, DevicesActions(), now = NOW)
 
     @PreviewTest
-    @JellyfinScreenStatePreview
-    @JellyfinSpanishPreviews
-    @JellyfinScreenStateLightPreview
-    @JellyfinFontScalePreviews
+    @EphyraScreenStatePreview
+    @EphyraSpanishPreviews
+    @EphyraScreenStateLightPreview
+    @EphyraFontScalePreviews
     @Composable
     fun renaming() = Surface { RenameSheet(previewDevices.first(), DevicesActions(), inWindow = false) }
 
     @PreviewTest
-    @JellyfinScreenStatePreview
+    @EphyraScreenStatePreview
     @Composable
     fun renamingSubmitting() = Surface { RenameSheet(previewDevices.first(), DevicesActions(), submitting = true, inWindow = false) }
 
     /** The form stays open with what was typed, and says why in its own error slot. */
     @PreviewTest
-    @JellyfinScreenStatePreview
-    @JellyfinScreenStateLightPreview
-    @JellyfinFontScalePreviews
+    @EphyraScreenStatePreview
+    @EphyraScreenStateLightPreview
+    @EphyraFontScalePreviews
     @Composable
     fun renamingFailed() =
         Surface {
@@ -56,44 +56,44 @@ class DevicesScreenshotTest {
         }
 
     @PreviewTest
-    @JellyfinScreenStatePreview
-    @JellyfinSpanishPreviews
+    @EphyraScreenStatePreview
+    @EphyraSpanishPreviews
     @Composable
     fun removing() = Surface { RemoveDialog(previewDevices[2], DevicesActions(), inWindow = false) }
 
     @PreviewTest
-    @JellyfinScreenStatePreview
+    @EphyraScreenStatePreview
     @Composable
     fun changing() = DevicesScreen(previewReady.copy(busy = setOf("kodi")), DevicesActions(), now = NOW)
 
     /** A pull in progress: the list stays, with the pull spinner over it. */
     @PreviewTest
-    @JellyfinScreenStatePreview
-    @JellyfinSpanishPreviews
+    @EphyraScreenStatePreview
+    @EphyraSpanishPreviews
     @Composable
     fun refreshing() = DevicesScreen(previewReady.copy(refreshing = true), DevicesActions(), now = NOW)
 
     /** The server listed no devices, which it can when every item it sent was one this app could not read. */
     @PreviewTest
-    @JellyfinScreenStatePreview
-    @JellyfinScreenStateLightPreview
-    @JellyfinSpanishPreviews
+    @EphyraScreenStatePreview
+    @EphyraScreenStateLightPreview
+    @EphyraSpanishPreviews
     @Composable
     fun empty() = DevicesScreen(previewReady.copy(devices = emptyList()), DevicesActions(), now = NOW)
 
     @PreviewTest
-    @JellyfinScreenStatePreview
+    @EphyraScreenStatePreview
     @Composable
     fun loading() = DevicesScreen(DevicesUiState.Loading, DevicesActions())
 
     @PreviewTest
-    @JellyfinScreenStatePreview
+    @EphyraScreenStatePreview
     @Composable
     fun failed() = DevicesScreen(DevicesUiState.Failed(ConsoleFailure.Refused), DevicesActions())
 
     /** The failure screen at 1.5x and 2x font. Its layout is the design system's, so one page stands for all of them. */
     @PreviewTest
-    @JellyfinFontScalePreviews
+    @EphyraFontScalePreviews
     @Composable
     fun failedLargeText() = DevicesScreen(DevicesUiState.Failed(ConsoleFailure.Refused), DevicesActions())
 }

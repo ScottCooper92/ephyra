@@ -14,7 +14,7 @@ import com.cooper.homelab.ephyra.server.ServerInfo
 import com.cooper.homelab.ephyra.server.ServerLibrary
 import com.cooper.homelab.ephyra.server.ServerPlugin
 import com.cooper.homelab.ephyra.server.ServerUser
-import com.cooper.homelab.ephyra.theme.JellyfinTheme
+import com.cooper.homelab.ephyra.theme.EphyraTheme
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -33,7 +33,7 @@ class RefusedActionMessageTest {
     fun `a device change the server refused says so`() {
         val kodi = ServerDevice("k", "Kodi", null, "Kodi", "ana", null)
         compose.setContent {
-            JellyfinTheme {
+            EphyraTheme {
                 DevicesScreen(
                     DevicesUiState.Ready(listOf(kodi), "me", actionFailed = ConsoleFailure.Refused),
                     DevicesActions(),
@@ -47,7 +47,7 @@ class RefusedActionMessageTest {
     fun `a stream the server wouldn't stop says so`() {
         val stream = NowPlaying("s", "ana", "TV", "Jellyfin", "Sintel", null, 0L, null, false, PlayMethod.DirectPlay, emptyList())
         compose.setContent {
-            JellyfinTheme {
+            EphyraTheme {
                 NowPlayingSessionScreen(
                     NowPlayingUiState.Ready(listOf(stream), stopFailed = ConsoleFailure.Unreachable),
                     stream.sessionId,
@@ -60,13 +60,13 @@ class RefusedActionMessageTest {
 
     @Test
     fun `a restart the server didn't take is a message, and one under way stays on the page`() {
-        compose.setContent { JellyfinTheme { ServerScreen(ServerUiState.Ready(info, restart = Restart.Failed), ServerActions()) } }
+        compose.setContent { EphyraTheme { ServerScreen(ServerUiState.Ready(info, restart = Restart.Failed), ServerActions()) } }
         compose.onNodeWithText("The server didn't take the restart. Try again.").assertExists()
     }
 
     @Test
     fun `a restart under way is said on the page, not as a message that comes and goes`() {
-        compose.setContent { JellyfinTheme { ServerScreen(ServerUiState.Ready(info, restart = Restart.Restarting), ServerActions()) } }
+        compose.setContent { EphyraTheme { ServerScreen(ServerUiState.Ready(info, restart = Restart.Restarting), ServerActions()) } }
         compose.onNodeWithText("Restarting… This page carries on when the server is back.").assertExists()
         compose.onAllNodesWithText("The server didn't take the restart. Try again.").assertCountEquals(0)
     }
@@ -74,7 +74,7 @@ class RefusedActionMessageTest {
     @Test
     fun `an API key change the server refused says so`() {
         compose.setContent {
-            JellyfinTheme {
+            EphyraTheme {
                 ApiKeysScreen(
                     ApiKeysUiState.Ready(listOf(ApiKey("0f3a9c2e", "Sonarr", null)), actionFailed = ConsoleFailure.Refused),
                     ApiKeysActions(),
@@ -88,7 +88,7 @@ class RefusedActionMessageTest {
     fun `a scan that didn't start says so`() {
         val libraries = listOf(ServerLibrary("m", "Movies", "movies", listOf("/media/movies")))
         compose.setContent {
-            JellyfinTheme {
+            EphyraTheme {
                 LibrariesScreen(
                     LibrariesUiState.Ready(libraries, TaskBoard(emptyList()), actionFailed = ConsoleFailure.Refused),
                     LibrariesActions(),
@@ -102,7 +102,7 @@ class RefusedActionMessageTest {
     fun `a plugin change the server refused says so, on the plugin's screen`() {
         val plugin = ServerPlugin("a", "AniDB", "1.2.3.4", "", PluginStatus.Active, canUninstall = true, hasSettings = false)
         compose.setContent {
-            JellyfinTheme {
+            EphyraTheme {
                 PluginScreen(
                     PluginsUiState.Ready(listOf(plugin), actionFailed = ConsoleFailure.Refused),
                     "a",
@@ -118,7 +118,7 @@ class RefusedActionMessageTest {
     fun `the plugins list does not say a plugin's refusal, since its own screen does`() {
         val plugin = ServerPlugin("a", "AniDB", "1.2.3.4", "", PluginStatus.Active, canUninstall = true, hasSettings = false)
         compose.setContent {
-            JellyfinTheme {
+            EphyraTheme {
                 PluginsScreen(
                     PluginsUiState.Ready(listOf(plugin), actionFailed = ConsoleFailure.Refused),
                     CatalogUiState.Loading,
@@ -137,7 +137,7 @@ class RefusedActionMessageTest {
     fun `a user change the server refused says so, on the user's screen`() {
         val ana = ServerUser("ana", "Ana", true, null, kotlinx.serialization.json.JsonObject(emptyMap()))
         compose.setContent {
-            JellyfinTheme {
+            EphyraTheme {
                 UserScreen(
                     UsersUiState.Ready(listOf(ana), emptyList(), me = "me", actionFailed = ConsoleFailure.Refused),
                     "ana",
@@ -152,7 +152,7 @@ class RefusedActionMessageTest {
     fun `the users list does not say a user's refusal, since their own screen does`() {
         val ana = ServerUser("ana", "Ana", true, null, kotlinx.serialization.json.JsonObject(emptyMap()))
         compose.setContent {
-            JellyfinTheme {
+            EphyraTheme {
                 UsersScreen(UsersUiState.Ready(listOf(ana), emptyList(), me = "me", actionFailed = ConsoleFailure.Refused), UsersActions())
             }
         }
@@ -163,7 +163,7 @@ class RefusedActionMessageTest {
     fun `a user added is said in a message`() {
         val ana = ServerUser("ana", "Ana", true, null, kotlinx.serialization.json.JsonObject(emptyMap()))
         compose.setContent {
-            JellyfinTheme { UsersScreen(UsersUiState.Ready(listOf(ana), emptyList(), me = "me", done = UserDone.Created), UsersActions()) }
+            EphyraTheme { UsersScreen(UsersUiState.Ready(listOf(ana), emptyList(), me = "me", done = UserDone.Created), UsersActions()) }
         }
         compose.onNodeWithText("User added.").assertExists()
     }

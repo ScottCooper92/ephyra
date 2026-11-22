@@ -13,8 +13,8 @@ import com.binge.designsystem.tv.component.TvButton
 import com.cooper.homelab.core.flags.Flags
 import com.cooper.homelab.core.flags.SharedFlags
 import com.cooper.homelab.core.uiandroid.flags.LocalFlags
-import com.cooper.homelab.ephyra.preview.JellyfinTvScreenPreviews
-import com.cooper.homelab.ephyra.preview.JellyfinTvStressPreviews
+import com.cooper.homelab.ephyra.preview.EphyraTvScreenPreviews
+import com.cooper.homelab.ephyra.preview.EphyraTvStressPreviews
 import com.cooper.homelab.ephyra.server.Culture
 import com.cooper.homelab.ephyra.server.ForgotPasswordAction
 import com.cooper.homelab.ephyra.server.PlaybackPreferences
@@ -58,109 +58,109 @@ import com.cooper.homelab.ephyra.ui.tv.TvUserPicture
 /** The television's screens: each step's main state in Spanish and at large fonts too, every other state once. */
 class TvJellyfinScreenshotTest {
     @PreviewTest
-    @JellyfinTvScreenPreviews
-    @JellyfinTvStressPreviews
+    @EphyraTvScreenPreviews
+    @EphyraTvStressPreviews
     @Composable
-    fun serverFound() = TvJellyfinRoot(previewEnterServerFound, Actions())
+    fun serverFound() = TvEphyraRoot(previewEnterServerFound, Actions())
 
     /** The address error is one line on TV, so its longest wording is checked in Spanish and at large fonts. */
     @PreviewTest
-    @JellyfinTvScreenPreviews
-    @JellyfinTvStressPreviews
+    @EphyraTvScreenPreviews
+    @EphyraTvStressPreviews
     @Composable
-    fun serverNotJellyfin() = TvJellyfinRoot(previewEnterServerNotJellyfin, Actions())
+    fun serverNotJellyfin() = TvEphyraRoot(previewEnterServerNotJellyfin, Actions())
 
     @PreviewTest
-    @JellyfinTvScreenPreviews
-    @JellyfinTvStressPreviews
+    @EphyraTvScreenPreviews
+    @EphyraTvStressPreviews
     @Composable
-    fun serverUnreachable() = TvJellyfinRoot(previewEnterServerError, Actions())
+    fun serverUnreachable() = TvEphyraRoot(previewEnterServerError, Actions())
 
     /** A public plain-HTTP address: the agreement under the field, with its reason beside it. */
     @PreviewTest
-    @JellyfinTvScreenPreviews
-    @JellyfinTvStressPreviews
+    @EphyraTvScreenPreviews
+    @EphyraTvStressPreviews
     @Composable
-    fun serverInsecure() = TvJellyfinRoot(previewEnterServerInsecure, Actions())
+    fun serverInsecure() = TvEphyraRoot(previewEnterServerInsecure, Actions())
 
     /** The refusal's wording is the longest address error on TV, so it is checked in Spanish and at large fonts. */
     @PreviewTest
-    @JellyfinTvScreenPreviews
-    @JellyfinTvStressPreviews
+    @EphyraTvScreenPreviews
+    @EphyraTvStressPreviews
     @Composable
-    fun serverCleartextRefused() = TvJellyfinRoot(previewEnterServerCleartextRefused, Actions())
+    fun serverCleartextRefused() = TvEphyraRoot(previewEnterServerCleartextRefused, Actions())
 
     @PreviewTest
-    @JellyfinTvScreenPreviews
-    @JellyfinTvStressPreviews
+    @EphyraTvScreenPreviews
+    @EphyraTvStressPreviews
     @Composable
-    fun serverClientCertificate() = TvJellyfinRoot(previewEnterServerClientCertificate, Actions())
+    fun serverClientCertificate() = TvEphyraRoot(previewEnterServerClientCertificate, Actions())
 
     @PreviewTest
-    @JellyfinTvScreenPreviews
+    @EphyraTvScreenPreviews
     @Composable
-    fun loading() = TvJellyfinRoot(UiState.Loading, Actions())
+    fun loading() = TvEphyraRoot(UiState.Loading, Actions())
 
     @PreviewTest
-    @JellyfinTvScreenPreviews
+    @EphyraTvScreenPreviews
     @Composable
-    fun serverSearching() = TvJellyfinRoot(previewEnterServerSearching, Actions())
+    fun serverSearching() = TvEphyraRoot(previewEnterServerSearching, Actions())
 
     @PreviewTest
-    @JellyfinTvScreenPreviews
-    @JellyfinTvStressPreviews
+    @EphyraTvScreenPreviews
+    @EphyraTvStressPreviews
     @Composable
-    fun quickConnectCode() = TvJellyfinRoot(previewQuickConnect, Actions())
+    fun quickConnectCode() = TvEphyraRoot(previewQuickConnect, Actions())
 
     @PreviewTest
-    @JellyfinTvScreenPreviews
-    @JellyfinTvStressPreviews
+    @EphyraTvScreenPreviews
+    @EphyraTvStressPreviews
     @Composable
-    fun setupIncomplete() = TvJellyfinRoot(previewSetupIncomplete, Actions())
+    fun setupIncomplete() = TvEphyraRoot(previewSetupIncomplete, Actions())
 
     @PreviewTest
-    @JellyfinTvScreenPreviews
+    @EphyraTvScreenPreviews
     @Composable
-    fun quickConnectGetting() = TvJellyfinRoot(previewQuickConnectGetting, Actions())
+    fun quickConnectGetting() = TvEphyraRoot(previewQuickConnectGetting, Actions())
 
     @PreviewTest
-    @JellyfinTvScreenPreviews
+    @EphyraTvScreenPreviews
     @Composable
-    fun quickConnectAfterWrongPassword() = TvJellyfinRoot(previewSignInWrongPassword, Actions())
+    fun quickConnectAfterWrongPassword() = TvEphyraRoot(previewSignInWrongPassword, Actions())
 
     /** A code the server let go of: its own wording, with Try again where the code was. */
     @PreviewTest
-    @JellyfinTvScreenPreviews
-    @JellyfinTvStressPreviews
+    @EphyraTvScreenPreviews
+    @EphyraTvStressPreviews
     @Composable
-    fun quickConnectExpired() = TvJellyfinRoot(previewQuickConnectExpired, Actions())
+    fun quickConnectExpired() = TvEphyraRoot(previewQuickConnectExpired, Actions())
 
     @PreviewTest
-    @JellyfinTvScreenPreviews
+    @EphyraTvScreenPreviews
     @Composable
-    fun quickConnectOff() = TvJellyfinRoot(previewQuickConnectOff, Actions())
+    fun quickConnectOff() = TvEphyraRoot(previewQuickConnectOff, Actions())
 
     /** Quick Connect is off on the server, so the step opens on the password with no code behind it. */
     @PreviewTest
-    @JellyfinTvScreenPreviews
+    @EphyraTvScreenPreviews
     @Composable
-    fun quickConnectNotOffered() = TvJellyfinRoot(previewQuickConnectNotOffered, Actions())
+    fun quickConnectNotOffered() = TvEphyraRoot(previewQuickConnectNotOffered, Actions())
 
     @PreviewTest
-    @JellyfinTvScreenPreviews
-    @JellyfinTvStressPreviews
+    @EphyraTvScreenPreviews
+    @EphyraTvStressPreviews
     @Composable
     fun password() = TvSignInPage(previewSignIn, Actions(), startWithPassword = true)
 
     @PreviewTest
-    @JellyfinTvScreenPreviews
-    @JellyfinTvStressPreviews
+    @EphyraTvScreenPreviews
+    @EphyraTvStressPreviews
     @Composable
     fun passwordWithUsers() = TvSignInPage(previewSignInUsers, Actions(), startWithPassword = true)
 
     @PreviewTest
-    @JellyfinTvScreenPreviews
-    @JellyfinTvStressPreviews
+    @EphyraTvScreenPreviews
+    @EphyraTvStressPreviews
     @Composable
     fun passwordWithPictures() = TvSignInPage(previewSignInUsersPictures, Actions(), startWithPassword = true)
 
@@ -169,8 +169,8 @@ class TvJellyfinScreenshotTest {
      * leading slot holds, and at large fonts too.
      */
     @PreviewTest
-    @JellyfinTvScreenPreviews
-    @JellyfinTvStressPreviews
+    @EphyraTvScreenPreviews
+    @EphyraTvStressPreviews
     @Composable
     fun accountButtonFocused() =
         Column(modifier = Modifier.padding(48.dp), verticalArrangement = Arrangement.spacedBy(24.dp)) {
@@ -181,13 +181,13 @@ class TvJellyfinScreenshotTest {
         }
 
     @PreviewTest
-    @JellyfinTvScreenPreviews
+    @EphyraTvScreenPreviews
     @Composable
     fun passwordWrong() = TvSignInPage(previewSignInWrongPassword, Actions(), startWithPassword = true)
 
     @PreviewTest
-    @JellyfinTvScreenPreviews
-    @JellyfinTvStressPreviews
+    @EphyraTvScreenPreviews
+    @EphyraTvStressPreviews
     @Composable
     fun forgotContactAdmin() =
         TvSignInPage(
@@ -197,7 +197,7 @@ class TvJellyfinScreenshotTest {
         )
 
     @PreviewTest
-    @JellyfinTvScreenPreviews
+    @EphyraTvScreenPreviews
     @Composable
     fun forgotInNetworkRequired() =
         TvSignInPage(
@@ -207,8 +207,8 @@ class TvJellyfinScreenshotTest {
         )
 
     @PreviewTest
-    @JellyfinTvScreenPreviews
-    @JellyfinTvStressPreviews
+    @EphyraTvScreenPreviews
+    @EphyraTvStressPreviews
     @Composable
     fun forgotPin() =
         TvSignInPage(
@@ -218,7 +218,7 @@ class TvJellyfinScreenshotTest {
         )
 
     @PreviewTest
-    @JellyfinTvScreenPreviews
+    @EphyraTvScreenPreviews
     @Composable
     fun forgotPinWrong() =
         TvSignInPage(
@@ -228,69 +228,69 @@ class TvJellyfinScreenshotTest {
         )
 
     @PreviewTest
-    @JellyfinTvScreenPreviews
+    @EphyraTvScreenPreviews
     @Composable
     fun forgotFailed() = TvSignInPage(previewSignIn.copy(forgot = ForgotPasswordStep.Failed), Actions(), startWithPassword = true)
 
     @PreviewTest
-    @JellyfinTvScreenPreviews
+    @EphyraTvScreenPreviews
     @Composable
     fun forgotDone() =
         TvSignInPage(previewSignIn.copy(forgot = ForgotPasswordStep.Done, password = "A1B2-C3D4"), Actions(), startWithPassword = true)
 
     @PreviewTest
-    @JellyfinTvScreenPreviews
-    @JellyfinTvStressPreviews
+    @EphyraTvScreenPreviews
+    @EphyraTvStressPreviews
     @Composable
-    fun signedIn() = TvJellyfinRoot(previewSignedIn, Actions())
+    fun signedIn() = TvEphyraRoot(previewSignedIn, Actions())
 
     @PreviewTest
-    @JellyfinTvScreenPreviews
+    @EphyraTvScreenPreviews
     @Composable
     fun signedInChecking() =
         CompositionLocalProvider(LocalFlags provides Flags.of(SharedFlags.BingePromotion to true)) {
-            TvJellyfinRoot(previewSignedInChecking, Actions())
+            TvEphyraRoot(previewSignedInChecking, Actions())
         }
 
     /** The saved server has not answered yet: its row says it is checking, and only the way out is offered. */
     @PreviewTest
-    @JellyfinTvScreenPreviews
+    @EphyraTvScreenPreviews
     @Composable
     fun signedInWaiting() =
         CompositionLocalProvider(LocalFlags provides Flags.of(SharedFlags.BingePromotion to true)) {
-            TvJellyfinRoot(previewSignedInWaiting, Actions())
+            TvEphyraRoot(previewSignedInWaiting, Actions())
         }
 
     @PreviewTest
-    @JellyfinTvScreenPreviews
+    @EphyraTvScreenPreviews
     @Composable
     fun signedInFailed() =
         CompositionLocalProvider(LocalFlags provides Flags.of(SharedFlags.BingePromotion to true)) {
-            TvJellyfinRoot(previewSignedInFailed, Actions())
+            TvEphyraRoot(previewSignedInFailed, Actions())
         }
 
     @PreviewTest
-    @JellyfinTvScreenPreviews
+    @EphyraTvScreenPreviews
     @Composable
-    fun signedInCouldNotLoad() = TvJellyfinRoot(previewSignedInCouldNotLoad, Actions())
+    fun signedInCouldNotLoad() = TvEphyraRoot(previewSignedInCouldNotLoad, Actions())
 
     @PreviewTest
-    @JellyfinTvScreenPreviews
+    @EphyraTvScreenPreviews
     @Composable
-    fun signedInClientCertificate() = TvJellyfinRoot(previewSignedInClientCertificate, Actions())
+    fun signedInClientCertificate() = TvEphyraRoot(previewSignedInClientCertificate, Actions())
 
     @PreviewTest
-    @JellyfinTvScreenPreviews
+    @EphyraTvScreenPreviews
     @Composable
-    fun signedInLocalNetworkDenied() = TvJellyfinRoot(previewSignedInLocalNetworkDenied, Actions())
+    fun signedInLocalNetworkDenied() = TvEphyraRoot(previewSignedInLocalNetworkDenied, Actions())
 
     /** With the Binge flag on: the library check, with what Binge can see, leads the page. */
     @PreviewTest
-    @JellyfinTvScreenPreviews
+    @EphyraTvScreenPreviews
     @Composable
     fun signedInPromoted() =
         CompositionLocalProvider(LocalFlags provides Flags.of(SharedFlags.BingePromotion to true)) {
-            TvJellyfinRoot(previewSignedIn, Actions())
+            TvEphyraRoot(previewSignedIn, Actions())
         }
 
     private val cultures = listOf(Culture("English", "en", listOf("eng")), Culture("French", "fr", listOf("fre", "fra")))
@@ -301,45 +301,45 @@ class TvJellyfinScreenshotTest {
         playback: PlaybackUiState,
         describing: String = ACCOUNT_KEY,
         changed: String? = null,
-    ) = TvJellyfinRoot(previewSignedIn, Actions(), playback = TvPlayback(playback, PlaybackActions(), changed), describing = describing)
+    ) = TvEphyraRoot(previewSignedIn, Actions(), playback = TvPlayback(playback, PlaybackActions(), changed), describing = describing)
 
     /** The user's own playback settings follow the account on the signed-in page. */
     @PreviewTest
-    @JellyfinTvScreenPreviews
-    @JellyfinTvStressPreviews
+    @EphyraTvScreenPreviews
+    @EphyraTvStressPreviews
     @Composable
     fun playback() = withPlayback(PlaybackUiState.Ready(prefs, cultures))
 
     @PreviewTest
-    @JellyfinTvScreenPreviews
+    @EphyraTvScreenPreviews
     @Composable
     fun playbackSaved() = withPlayback(PlaybackUiState.Ready(prefs, cultures, SaveProgress(SaveStatus.Saved)), AUDIO_KEY, AUDIO_KEY)
 
     @PreviewTest
-    @JellyfinTvScreenPreviews
+    @EphyraTvScreenPreviews
     @Composable
     fun playbackSaveFailed() = withPlayback(PlaybackUiState.Ready(prefs, cultures, SaveProgress(failed = true)), AUDIO_KEY, AUDIO_KEY)
 
     /** A language row's pane: Any language, then the languages, the one in use ticked. */
     @PreviewTest
-    @JellyfinTvScreenPreviews
-    @JellyfinTvStressPreviews
+    @EphyraTvScreenPreviews
+    @EphyraTvStressPreviews
     @Composable
     fun playbackLanguages() = withPlayback(PlaybackUiState.Ready(prefs, cultures), AUDIO_KEY)
 
     /** A switch's pane: its one option, ticked while it is on. */
     @PreviewTest
-    @JellyfinTvScreenPreviews
+    @EphyraTvScreenPreviews
     @Composable
     fun playbackSwitch() = withPlayback(PlaybackUiState.Ready(prefs, cultures), AUTOPLAY_KEY)
 
     @PreviewTest
-    @JellyfinTvScreenPreviews
+    @EphyraTvScreenPreviews
     @Composable
     fun playbackLoading() = withPlayback(PlaybackUiState.Loading)
 
     @PreviewTest
-    @JellyfinTvScreenPreviews
+    @EphyraTvScreenPreviews
     @Composable
     fun playbackFailed() = withPlayback(PlaybackUiState.Failed(ConsoleFailure.Unreachable))
 }

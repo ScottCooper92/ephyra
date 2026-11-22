@@ -7,8 +7,8 @@ import android.graphics.Paint
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import com.android.tools.screenshot.PreviewTest
-import com.cooper.homelab.ephyra.preview.JellyfinFontScalePreviews
-import com.cooper.homelab.ephyra.preview.JellyfinScreenStatePreview
+import com.cooper.homelab.ephyra.preview.EphyraFontScalePreviews
+import com.cooper.homelab.ephyra.preview.EphyraScreenStatePreview
 import com.cooper.homelab.ephyra.server.ServerUser
 import com.cooper.homelab.ephyra.ui.console.LocalUserPictures
 import com.cooper.homelab.ephyra.ui.console.UserPictureSource
@@ -39,16 +39,16 @@ class JellyfinOwnPictureScreenshotTest {
 
     @Composable
     private fun Home(state: UiState.SignedIn) =
-        CompositionLocalProvider(LocalUserPictures provides pictures) { JellyfinRoot(state, Actions()) }
+        CompositionLocalProvider(LocalUserPictures provides pictures) { EphyraRoot(state, Actions()) }
 
     @PreviewTest
-    @JellyfinScreenStatePreview
-    @JellyfinFontScalePreviews
+    @EphyraScreenStatePreview
+    @EphyraFontScalePreviews
     @Composable
     fun adminWithPicture() = Home(previewSignedInAdminPicture)
 
     @PreviewTest
-    @JellyfinScreenStatePreview
+    @EphyraScreenStatePreview
     @Composable
     fun userWithPicture() = Home(previewSignedInPicture)
 

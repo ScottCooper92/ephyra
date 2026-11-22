@@ -18,7 +18,7 @@ import com.binge.designsystem.PaneEdge
 import com.binge.designsystem.testing.createTakeDownAndroidComposeRule
 import com.cooper.homelab.ephyra.auth.JellyfinSession
 import com.cooper.homelab.ephyra.server.JellyfinAccount
-import com.cooper.homelab.ephyra.theme.JellyfinTheme
+import com.cooper.homelab.ephyra.theme.EphyraTheme
 import com.cooper.homelab.ephyra.ui.console.ConsolePage
 import kotlinx.serialization.json.Json
 import kotlinx.serialization.json.jsonObject
@@ -50,7 +50,7 @@ class HomeAccountTest {
 
     @Test
     fun `an administrator's home has the avatar and the server's own sections, and none of the account's rows`() {
-        compose.setContent { JellyfinTheme { JellyfinRoot(state(admin = true), Actions()) } }
+        compose.setContent { EphyraTheme { EphyraRoot(state(admin = true), Actions()) } }
         compose.onNodeWithContentDescription("Your account").assertExists()
         scrollTo("Libraries")
         compose.onNodeWithText("Libraries").assertExists()
@@ -61,7 +61,7 @@ class HomeAccountTest {
 
     private fun thisAppRowOpensItsPage(admin: Boolean) {
         var opened: ConsolePage? = null
-        compose.setContent { JellyfinTheme { JellyfinRoot(state(admin), Actions(onOpenPage = { opened = it })) } }
+        compose.setContent { EphyraTheme { EphyraRoot(state(admin), Actions(onOpenPage = { opened = it })) } }
         scrollTo("This app")
         compose.onNodeWithText("Preferences, feedback and more").performClick()
         assertEquals(ConsolePage.ThisApp, opened)
@@ -76,14 +76,14 @@ class HomeAccountTest {
     @Test
     fun `the home starts with a search that opens the search page`() {
         var opened: ConsolePage? = null
-        compose.setContent { JellyfinTheme { JellyfinRoot(state(admin = true), Actions(onOpenPage = { opened = it })) } }
+        compose.setContent { EphyraTheme { EphyraRoot(state(admin = true), Actions(onOpenPage = { opened = it })) } }
         compose.onNodeWithText("Search settings").performClick()
         assertEquals(ConsolePage.Search, opened)
     }
 
     @Test
     fun `an administrator's home lists every section's pages, reached by scrolling`() {
-        compose.setContent { JellyfinTheme { JellyfinRoot(state(admin = true), Actions()) } }
+        compose.setContent { EphyraTheme { EphyraRoot(state(admin = true), Actions()) } }
         val pages =
             listOf(
                 "Users",
@@ -104,7 +104,7 @@ class HomeAccountTest {
     @Test
     fun `the avatar opens the account`() {
         val opened = mutableListOf<ConsolePage>()
-        compose.setContent { JellyfinTheme { JellyfinRoot(state(admin = true), Actions(onOpenPage = { opened += it })) } }
+        compose.setContent { EphyraTheme { EphyraRoot(state(admin = true), Actions(onOpenPage = { opened += it })) } }
         compose.onNodeWithContentDescription("Your account").performClick()
         assertEquals(listOf(ConsolePage.Account), opened)
     }
@@ -113,7 +113,7 @@ class HomeAccountTest {
     fun `anyone else has the account's rows inline, Sign out last, and no avatar`() {
         val asked = mutableListOf<String>()
         compose.setContent {
-            JellyfinTheme { JellyfinRoot(state(admin = false), Actions(onAskSignOut = { asked += "ask" })) }
+            EphyraTheme { EphyraRoot(state(admin = false), Actions(onAskSignOut = { asked += "ask" })) }
         }
         compose.onAllNodesWithContentDescription("Your account").assertCountEquals(0)
         scrollTo("Approve a sign-in code")
@@ -134,7 +134,7 @@ class HomeAccountTest {
         val calls = mutableListOf<String>()
         val signedIn = state(admin = true)
         compose.setContent {
-            JellyfinTheme {
+            EphyraTheme {
                 AccountScreen(signedIn, Actions(onAskSignOut = { calls += "ask" }, onOpenPage = { calls += it.name }), onBack = {})
             }
         }
@@ -148,7 +148,7 @@ class HomeAccountTest {
 
     @Test
     fun `the account page shows the sign-out confirm when it is asked`() {
-        compose.setContent { JellyfinTheme { AccountScreen(state(admin = true).copy(confirmingSignOut = true), Actions(), onBack = {}) } }
+        compose.setContent { EphyraTheme { AccountScreen(state(admin = true).copy(confirmingSignOut = true), Actions(), onBack = {}) } }
         compose.onNodeWithText("Sign out of Jellyfin?").assertExists()
     }
 
@@ -156,9 +156,9 @@ class HomeAccountTest {
         beside: Boolean,
         selected: ConsolePage,
     ) = compose.setContent {
-        JellyfinTheme {
+        EphyraTheme {
             CompositionLocalProvider(LocalIsSinglePaneNav provides !beside) {
-                PaneContent(innerEdge = PaneEdge.End) { JellyfinRoot(state(admin = true), Actions(selectedPage = selected)) }
+                PaneContent(innerEdge = PaneEdge.End) { EphyraRoot(state(admin = true), Actions(selectedPage = selected)) }
             }
         }
     }

@@ -10,7 +10,7 @@ import androidx.compose.ui.test.performClick
 import com.binge.designsystem.testing.createTakeDownAndroidComposeRule
 import com.cooper.homelab.ephyra.server.PlaybackPreferences
 import com.cooper.homelab.ephyra.server.SubtitleMode
-import com.cooper.homelab.ephyra.theme.JellyfinTheme
+import com.cooper.homelab.ephyra.theme.EphyraTheme
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertNull
 import org.junit.Rule
@@ -30,7 +30,7 @@ class SaveAsMadeStatusTest {
     fun `a change that could not be sent offers Retry, which sends it again`() {
         var retries = 0
         compose.setContent {
-            JellyfinTheme { PlaybackScreen(ready.copy(save = SaveProgress(failed = true)), PlaybackActions(onRetrySave = { retries++ })) }
+            EphyraTheme { PlaybackScreen(ready.copy(save = SaveProgress(failed = true)), PlaybackActions(onRetrySave = { retries++ })) }
         }
         compose.onNodeWithText("Retry").performClick()
         assertEquals(1, retries)
@@ -38,7 +38,7 @@ class SaveAsMadeStatusTest {
 
     @Test
     fun `a refused change says why it went back`() {
-        compose.setContent { JellyfinTheme { PlaybackScreen(ready.copy(refused = ConsoleFailure.Refused), PlaybackActions()) } }
+        compose.setContent { EphyraTheme { PlaybackScreen(ready.copy(refused = ConsoleFailure.Refused), PlaybackActions()) } }
         compose.onNodeWithText("Not saved. Something went wrong. Try again.").assertExists()
     }
 
@@ -47,7 +47,7 @@ class SaveAsMadeStatusTest {
         val host = SnackbarHostState()
         var refused by mutableStateOf<ConsoleFailure?>(null)
         compose.setContent {
-            JellyfinTheme {
+            EphyraTheme {
                 RefusedMessage(refused, host)
                 RefusedMessage(ConsoleFailure.Refused, host)
             }

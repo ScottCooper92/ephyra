@@ -7,7 +7,7 @@ import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.performClick
 import com.binge.designsystem.testing.createTakeDownAndroidComposeRule
 import com.cooper.homelab.ephyra.server.PublicServerInfo
-import com.cooper.homelab.ephyra.theme.JellyfinTheme
+import com.cooper.homelab.ephyra.theme.EphyraTheme
 import org.junit.Assert.assertEquals
 import org.junit.Rule
 import org.junit.Test
@@ -40,8 +40,8 @@ class SetupLocalNetworkTest {
     fun `the server step says so and offers to allow it`() {
         val calls = mutableListOf<String>()
         compose.setContent {
-            JellyfinTheme {
-                JellyfinRoot(
+            EphyraTheme {
+                EphyraRoot(
                     UiState.EnterServer(address = "192.168.1.20:8096", error = SetupError.LocalNetworkDenied),
                     Actions(onAllowLocalNetwork = { calls += "allow" }),
                 )
@@ -55,8 +55,8 @@ class SetupLocalNetworkTest {
     @Test
     fun `once it has been asked the server step offers the app's settings`() {
         compose.setContent {
-            JellyfinTheme {
-                JellyfinRoot(
+            EphyraTheme {
+                EphyraRoot(
                     UiState.EnterServer(address = "192.168.1.20:8096", error = SetupError.LocalNetworkDenied),
                     Actions(localNetworkAsked = true),
                 )
@@ -69,7 +69,7 @@ class SetupLocalNetworkTest {
     @Test
     fun `an ordinary unreachable server offers no such button`() {
         compose.setContent {
-            JellyfinTheme { JellyfinRoot(UiState.EnterServer(address = "192.168.1.20:8096", error = SetupError.Unreachable), Actions()) }
+            EphyraTheme { EphyraRoot(UiState.EnterServer(address = "192.168.1.20:8096", error = SetupError.Unreachable), Actions()) }
         }
         compose.onAllNodesWithText("Allow local network access").assertCountEquals(0)
         compose.onAllNodesWithText("Open app settings").assertCountEquals(0)
@@ -78,8 +78,8 @@ class SetupLocalNetworkTest {
     @Test
     fun `sign-in says so under a password failure and under a Quick Connect failure`() {
         compose.setContent {
-            JellyfinTheme {
-                JellyfinRoot(
+            EphyraTheme {
+                EphyraRoot(
                     UiState.SignIn(baseUrl = "http://192.168.1.20:8096", server = server, passwordError = SetupError.LocalNetworkDenied),
                     Actions(),
                 )
@@ -93,8 +93,8 @@ class SetupLocalNetworkTest {
     fun `a server that has not finished its setup says so in place of the sign-in, and can be checked again`() {
         val calls = mutableListOf<String>()
         compose.setContent {
-            JellyfinTheme {
-                JellyfinRoot(
+            EphyraTheme {
+                EphyraRoot(
                     UiState.SignIn(baseUrl = "http://192.168.1.20:8096", server = server.copy(startupWizardCompleted = false)),
                     Actions(onRecheckServer = { calls += "recheck" }),
                 )

@@ -6,7 +6,7 @@ import androidx.compose.ui.test.assertIsDisplayed
 import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.performScrollTo
 import com.binge.designsystem.testing.createTakeDownAndroidComposeRule
-import com.cooper.homelab.ephyra.theme.JellyfinTheme
+import com.cooper.homelab.ephyra.theme.EphyraTheme
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -23,7 +23,7 @@ class ConsoleFieldsFormTest {
     @Test
     fun `the buttons stay docked and the fields scroll when the form is taller than the window`() {
         compose.setContent {
-            JellyfinTheme {
+            EphyraTheme {
                 ConsoleFieldsForm(title = "Edit", body = "A form", submitLabel = "Save", onSubmit = {}, onCancel = {}) {
                     repeat(FIELDS) { Text("Field $it") }
                 }

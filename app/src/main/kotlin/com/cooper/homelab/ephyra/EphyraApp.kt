@@ -9,7 +9,7 @@ import com.cooper.homelab.ephyra.notifications.NotificationWorkerFactory
 import com.cooper.homelab.ephyra.ui.DemoImageFetcher
 
 /** Holds the [AppGraph] for the life of the process. */
-class JellyfinApp :
+class EphyraApp :
     Application(),
     Configuration.Provider,
     SingletonImageLoader.Factory {

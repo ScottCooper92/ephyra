@@ -6,9 +6,9 @@ import androidx.compose.ui.res.stringResource
 import com.android.tools.screenshot.PreviewTest
 import com.binge.designsystem.component.ItemGroup
 import com.cooper.homelab.ephyra.R
-import com.cooper.homelab.ephyra.preview.JellyfinFontScalePreviews
-import com.cooper.homelab.ephyra.preview.JellyfinScreenStatePreview
-import com.cooper.homelab.ephyra.preview.JellyfinSpanishPreviews
+import com.cooper.homelab.ephyra.preview.EphyraFontScalePreviews
+import com.cooper.homelab.ephyra.preview.EphyraScreenStatePreview
+import com.cooper.homelab.ephyra.preview.EphyraSpanishPreviews
 import com.cooper.homelab.ephyra.server.JellyfinServerProfile
 import com.cooper.homelab.ephyra.server.ServerFolder
 import kotlinx.serialization.json.Json
@@ -49,20 +49,20 @@ private fun ready(type: String = "nvenc") = TranscodingUiState.Ready(encoding(ty
 /** Playback and transcoding: the page across the matrix, each acceleration type's options, the older releases, the sheets and the other states. */
 class TranscodingScreenshotTest {
     @PreviewTest
-    @JellyfinScreenStatePreview
-    @JellyfinFontScalePreviews
-    @JellyfinSpanishPreviews
+    @EphyraScreenStatePreview
+    @EphyraFontScalePreviews
+    @EphyraSpanishPreviews
     @Composable
     fun transcoding() = TranscodingScreen(ready(), TranscodingActions(), newest)
 
     @PreviewTest
-    @JellyfinScreenStatePreview
+    @EphyraScreenStatePreview
     @Composable
     fun quickSync() = TranscodingScreen(ready("qsv"), TranscodingActions(), newest)
 
     /** The colour depths a hardware decoder may take, which sit under the codec rows and so below the page frame's first screen. */
     @PreviewTest
-    @JellyfinScreenStatePreview
+    @EphyraScreenStatePreview
     @Composable
     fun colorDepth() =
         Surface {
@@ -74,7 +74,7 @@ class TranscodingScreenshotTest {
 
     /** The hardware encoding switches for Quick Sync: AV1 and both low power encoders. */
     @PreviewTest
-    @JellyfinScreenStatePreview
+    @EphyraScreenStatePreview
     @Composable
     fun encodingSwitches() =
         Surface {
@@ -86,55 +86,55 @@ class TranscodingScreenshotTest {
 
     /** The quality group with its CRFs and the muxing queue, which sit below the page frame's first screen. */
     @PreviewTest
-    @JellyfinScreenStatePreview
-    @JellyfinFontScalePreviews
-    @JellyfinSpanishPreviews
+    @EphyraScreenStatePreview
+    @EphyraFontScalePreviews
+    @EphyraSpanishPreviews
     @Composable
     fun quality() = Surface { QualityGroup(ready("none"), TranscodingActions()) {} }
 
     @PreviewTest
-    @JellyfinScreenStatePreview
+    @EphyraScreenStatePreview
     @Composable
     fun noHardware() = TranscodingScreen(ready("none"), TranscodingActions(), newest)
 
     @PreviewTest
-    @JellyfinScreenStatePreview
+    @EphyraScreenStatePreview
     @Composable
     fun videoToolbox() = TranscodingScreen(ready("videotoolbox"), TranscodingActions(), newest)
 
     @PreviewTest
-    @JellyfinScreenStatePreview
+    @EphyraScreenStatePreview
     @Composable
     fun v4l2() = TranscodingScreen(ready("v4l2m2m"), TranscodingActions(), newest)
 
     @PreviewTest
-    @JellyfinScreenStatePreview
+    @EphyraScreenStatePreview
     @Composable
     fun olderServer() = TranscodingScreen(ready("qsv"), TranscodingActions(), JellyfinServerProfile.from("10.8.13"))
 
     @PreviewTest
-    @JellyfinScreenStatePreview
-    @JellyfinSpanishPreviews
+    @EphyraScreenStatePreview
+    @EphyraSpanishPreviews
     @Composable
     fun bitrate() = Surface { NumberForm(NumberField.BitrateLimit, "8", TranscodingActions()) }
 
     @PreviewTest
-    @JellyfinScreenStatePreview
+    @EphyraScreenStatePreview
     @Composable
     fun percent() = Surface { NumberForm(NumberField.MaxResumePercent, "90", TranscodingActions()) }
 
     @PreviewTest
-    @JellyfinScreenStatePreview
+    @EphyraScreenStatePreview
     @Composable
     fun numberOutOfRange() = Surface { NumberForm(NumberField.ThrottleDelay, "5", TranscodingActions()) }
 
     @PreviewTest
-    @JellyfinScreenStatePreview
+    @EphyraScreenStatePreview
     @Composable
     fun device() = Surface { TextForm(TextField.VaapiDevice, "/dev/dri/renderD128", TranscodingActions()) }
 
     @PreviewTest
-    @JellyfinScreenStatePreview
+    @EphyraScreenStatePreview
     @Composable
     fun tempFolder() =
         Surface {
@@ -150,18 +150,18 @@ class TranscodingScreenshotTest {
         }
 
     @PreviewTest
-    @JellyfinScreenStatePreview
+    @EphyraScreenStatePreview
     @Composable
     fun tempFolderTyped() =
         Surface { TempFolderForm("", FolderBrowseState.Loading, FolderActions(), TranscodingActions(), typePath = TypePath.On) }
 
     @PreviewTest
-    @JellyfinScreenStatePreview
+    @EphyraScreenStatePreview
     @Composable
     fun loading() = TranscodingScreen(TranscodingUiState.Loading, TranscodingActions(), newest)
 
     @PreviewTest
-    @JellyfinScreenStatePreview
+    @EphyraScreenStatePreview
     @Composable
     fun failed() = TranscodingScreen(TranscodingUiState.Failed(ConsoleFailure.Refused), TranscodingActions(), newest)
 }

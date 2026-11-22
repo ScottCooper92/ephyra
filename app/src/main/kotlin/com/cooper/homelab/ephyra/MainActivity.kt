@@ -48,11 +48,11 @@ import com.cooper.homelab.ephyra.openitem.OpenRequestedItem
 import com.cooper.homelab.ephyra.openitem.resolveFor
 import com.cooper.homelab.ephyra.playback.PlayItem
 import com.cooper.homelab.ephyra.telemetry.ReportScreen
-import com.cooper.homelab.ephyra.theme.JellyfinTheme
-import com.cooper.homelab.ephyra.theme.JellyfinTvTheme
+import com.cooper.homelab.ephyra.theme.EphyraTheme
+import com.cooper.homelab.ephyra.theme.EphyraTvTheme
 import com.cooper.homelab.ephyra.ui.Actions
-import com.cooper.homelab.ephyra.ui.JellyfinRoot
-import com.cooper.homelab.ephyra.ui.JellyfinViewModel
+import com.cooper.homelab.ephyra.ui.EphyraRoot
+import com.cooper.homelab.ephyra.ui.EphyraViewModel
 import com.cooper.homelab.ephyra.ui.UiState
 import com.cooper.homelab.ephyra.ui.chooseServer
 import com.cooper.homelab.ephyra.ui.client.CollectionPage
@@ -110,7 +110,7 @@ import com.cooper.homelab.ephyra.ui.pickPublicUser
 import com.cooper.homelab.ephyra.ui.rememberAppSettingsBinding
 import com.cooper.homelab.ephyra.ui.rememberNotificationBinding
 import com.cooper.homelab.ephyra.ui.tv.TvConsentGate
-import com.cooper.homelab.ephyra.ui.tv.TvJellyfinRoot
+import com.cooper.homelab.ephyra.ui.tv.TvEphyraRoot
 import com.cooper.homelab.ephyra.ui.tv.rememberTvPlayback
 import kotlinx.coroutines.launch
 
@@ -151,7 +151,7 @@ class MainActivity : ComponentActivity() {
     private fun jellyfinViewModelFactory(graph: AppGraph) =
         viewModelFactory {
             initializer {
-                JellyfinViewModel(
+                EphyraViewModel(
                     graph.sessions,
                     graph.connection,
                     graph.index,
@@ -173,12 +173,12 @@ class MainActivity : ComponentActivity() {
         installSplashScreen()
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
-        val graph = (application as JellyfinApp).graph
+        val graph = (application as EphyraApp).graph
         val factory = jellyfinViewModelFactory(graph)
         // Fresh Remote Config values for the flags; until they land, the last ones activated are used.
         lifecycleScope.launch { graph.flags.refresh() }
         setContent {
-            val viewModel: JellyfinViewModel = viewModel(factory = factory)
+            val viewModel: EphyraViewModel = viewModel(factory = factory)
             val state by viewModel.state.collectAsStateWithLifecycle()
             // The app's screens: the sign-in steps, then the home with the console pages open over it, the last on top. A
             // page that opens another stays under it, so Back returns to the opener, and to the home from the first.
@@ -249,13 +249,13 @@ class MainActivity : ComponentActivity() {
                 LocalUserPictures provides graph.userPictures,
             ) {
                 if (LocalConfiguration.current.isTelevision()) {
-                    JellyfinTvTheme {
+                    EphyraTvTheme {
                         TvConsentGate(telemetry.consent, telemetry.answerConsent) {
-                            TvJellyfinRoot(state, telemetry.applyTo(actions), playback = rememberTvPlayback(graph.connection, state))
+                            TvEphyraRoot(state, telemetry.applyTo(actions), playback = rememberTvPlayback(graph.connection, state))
                         }
                     }
                 } else {
-                    JellyfinTheme {
+                    EphyraTheme {
                         Surface(modifier = Modifier.fillMaxSize(), color = MaterialTheme.colorScheme.background) {
                             ConsentGate(telemetry.consent, telemetry.answerConsent) {
                                 ConsoleHost(state, backStack, graph, appActions(actions), appActions(homeActions), client)
@@ -333,8 +333,8 @@ internal fun ConsoleHost(
         tabs = tabs.takeIf { clientOn },
         resolved = state !is UiState.Loading,
         onBack = { backStack.closeTop() },
-        signedOut = { JellyfinRoot(state, homeActions) },
-        home = { JellyfinRoot(state, homeActions) },
+        signedOut = { EphyraRoot(state, homeActions) },
+        home = { EphyraRoot(state, homeActions) },
         // Home's rows come from the user's own server, so the tab needs a session. A card opens its title page and Continue watching
         // resumes it through PlayStartHost.
         homeTab =
@@ -519,7 +519,7 @@ private fun RefreshGatesWhenHomeReturns(
 }
 
 /** What the sign-in step asks of the view model: the account, its password, the picks and resets around it, and Quick Connect. */
-private fun JellyfinViewModel.signInActions() =
+private fun EphyraViewModel.signInActions() =
     Actions(
         onUsername = ::onUsername,
         onPassword = ::onPassword,

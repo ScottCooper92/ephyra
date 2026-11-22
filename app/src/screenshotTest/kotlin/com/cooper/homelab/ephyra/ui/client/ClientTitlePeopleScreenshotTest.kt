@@ -11,9 +11,9 @@ import com.cooper.homelab.ephyra.client.title.TitlePeopleActions
 import com.cooper.homelab.ephyra.client.title.TitlePeopleScreen
 import com.cooper.homelab.ephyra.client.title.TitlePeopleUi
 import com.cooper.homelab.ephyra.client.title.TitlePeopleUiState
-import com.cooper.homelab.ephyra.preview.JellyfinFontScalePreviews
-import com.cooper.homelab.ephyra.preview.JellyfinScreenStatePreview
-import com.cooper.homelab.ephyra.preview.JellyfinSpanishPreviews
+import com.cooper.homelab.ephyra.preview.EphyraFontScalePreviews
+import com.cooper.homelab.ephyra.preview.EphyraScreenStatePreview
+import com.cooper.homelab.ephyra.preview.EphyraSpanishPreviews
 
 /**
  * A title's cast and crew page (`:client`) on the Cast tab and on the Crew tab, in English and Spanish and at larger fonts, loading, failed,
@@ -66,35 +66,35 @@ class ClientTitlePeopleScreenshotTest {
     )
 
     @PreviewTest
-    @JellyfinScreenStatePreview
-    @JellyfinFontScalePreviews
-    @JellyfinSpanishPreviews
+    @EphyraScreenStatePreview
+    @EphyraFontScalePreviews
+    @EphyraSpanishPreviews
     @Composable
     fun cast() = People(TitlePeopleUiState.Ready(people))
 
     @PreviewTest
-    @JellyfinScreenStatePreview
-    @JellyfinSpanishPreviews
+    @EphyraScreenStatePreview
+    @EphyraSpanishPreviews
     @Composable
     fun crew() = People(TitlePeopleUiState.Ready(people), tab = 1)
 
     @PreviewTest
-    @JellyfinScreenStatePreview
+    @EphyraScreenStatePreview
     @Composable
     fun noCrew() = People(TitlePeopleUiState.Ready(people.copy(crew = emptyList())), tab = 1)
 
     @PreviewTest
-    @JellyfinScreenStatePreview
+    @EphyraScreenStatePreview
     @Composable
     fun noCast() = People(TitlePeopleUiState.Ready(people.copy(cast = emptyList())))
 
     @PreviewTest
-    @JellyfinScreenStatePreview
+    @EphyraScreenStatePreview
     @Composable
     fun loading() = People(TitlePeopleUiState.Loading)
 
     @PreviewTest
-    @JellyfinScreenStatePreview
+    @EphyraScreenStatePreview
     @Composable
     fun failed() = People(TitlePeopleUiState.Failed(ServerFailure.Unreachable()))
 }

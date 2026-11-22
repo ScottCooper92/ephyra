@@ -26,7 +26,7 @@ on:
       - 'app/build.gradle.kts'
       - 'app/src/main/AndroidManifest.xml'
       - 'app/src/main/kotlin/com/cooper/homelab/ephyra/AppGraph.kt'
-      - 'app/src/main/kotlin/com/cooper/homelab/ephyra/JellyfinApp.kt'
+      - 'app/src/main/kotlin/com/cooper/homelab/ephyra/EphyraApp.kt'
       - 'data/build.gradle.kts'
       - 'data/src/main/**'
       - 'client/build.gradle.kts'

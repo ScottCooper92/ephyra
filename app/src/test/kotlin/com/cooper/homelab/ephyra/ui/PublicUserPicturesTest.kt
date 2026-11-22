@@ -53,10 +53,10 @@ class PublicUserPicturesTest {
         return ByteArrayOutputStream().also { bitmap.compress(Bitmap.CompressFormat.JPEG, 90, it) }.toByteArray()
     }
 
-    private fun signInStep(): Pair<JellyfinViewModel, UiState.SignIn> {
+    private fun signInStep(): Pair<EphyraViewModel, UiState.SignIn> {
         val tracked =
             teardown.made(
-                JellyfinViewModel(
+                EphyraViewModel(
                     sessions,
                     connection,
                     LibraryIndex(),
@@ -72,7 +72,7 @@ class PublicUserPicturesTest {
     }
 
     private fun await(
-        vm: JellyfinViewModel,
+        vm: EphyraViewModel,
         matches: (UiState) -> Boolean,
     ): UiState.SignIn = runBlocking { withTimeout(10_000) { vm.state.first(matches) as UiState.SignIn } }
 

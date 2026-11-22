@@ -7,7 +7,7 @@ import androidx.compose.ui.test.performClick
 import androidx.compose.ui.test.performTouchInput
 import com.binge.designsystem.testing.createTakeDownAndroidComposeRule
 import com.cooper.homelab.ephyra.server.LIVE_TV_PRE_PADDING
-import com.cooper.homelab.ephyra.theme.JellyfinTheme
+import com.cooper.homelab.ephyra.theme.EphyraTheme
 import kotlinx.serialization.json.JsonElement
 import kotlinx.serialization.json.JsonPrimitive
 import org.junit.Assert.assertEquals
@@ -26,7 +26,7 @@ class RecordingPaddingSliderTest {
 
     private fun show(current: Int) {
         compose.setContent {
-            JellyfinTheme {
+            EphyraTheme {
                 RecordingPaddingSlider(
                     RecordingNumber.PrePadding,
                     current,

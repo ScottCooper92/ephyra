@@ -2,9 +2,9 @@ package com.cooper.homelab.ephyra.ui
 
 import androidx.compose.runtime.Composable
 import com.android.tools.screenshot.PreviewTest
-import com.cooper.homelab.ephyra.preview.JellyfinFontScalePreviews
-import com.cooper.homelab.ephyra.preview.JellyfinScreenStatePreview
-import com.cooper.homelab.ephyra.preview.JellyfinSpanishPreviews
+import com.cooper.homelab.ephyra.preview.EphyraFontScalePreviews
+import com.cooper.homelab.ephyra.preview.EphyraScreenStatePreview
+import com.cooper.homelab.ephyra.preview.EphyraSpanishPreviews
 import com.cooper.homelab.ephyra.server.Culture
 import com.cooper.homelab.ephyra.server.PlaybackPreferences
 import com.cooper.homelab.ephyra.server.SubtitleMode
@@ -22,9 +22,9 @@ class ThisAppPlaybackScreenshotTest {
     private val clientOn = Actions(appSettings = AppSettings(client = true))
 
     @PreviewTest
-    @JellyfinScreenStatePreview
-    @JellyfinFontScalePreviews
-    @JellyfinSpanishPreviews
+    @EphyraScreenStatePreview
+    @EphyraFontScalePreviews
+    @EphyraSpanishPreviews
     @Composable
     fun chosen() =
         ThisAppScreen(
@@ -38,7 +38,7 @@ class ThisAppPlaybackScreenshotTest {
         )
 
     @PreviewTest
-    @JellyfinScreenStatePreview
+    @EphyraScreenStatePreview
     @Composable
     fun anyLanguage() =
         ThisAppScreen(

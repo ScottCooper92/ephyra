@@ -7,7 +7,7 @@ import androidx.compose.ui.test.onFirst
 import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.performClick
 import com.binge.designsystem.testing.createTakeDownAndroidComposeRule
-import com.cooper.homelab.ephyra.theme.JellyfinTheme
+import com.cooper.homelab.ephyra.theme.EphyraTheme
 import kotlinx.serialization.json.JsonObject
 import org.junit.Assert.assertEquals
 import org.junit.Rule
@@ -31,7 +31,7 @@ class FolderSheetBackTest {
 
     private fun show() =
         compose.setContent {
-            JellyfinTheme {
+            EphyraTheme {
                 RecordingSheets(
                     LiveTvRecordingUiState.Ready(JsonObject(emptyMap()), sheet = RecordingSheet.Folder(RecordingFolder.Movies)),
                     LiveTvRecordingActions(onSheet = { closed += it }),

@@ -3,12 +3,12 @@ package com.cooper.homelab.ephyra.ui.console
 import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
 import com.android.tools.screenshot.PreviewTest
-import com.cooper.homelab.ephyra.preview.JellyfinFontScalePreviews
-import com.cooper.homelab.ephyra.preview.JellyfinScreenStateLightPreview
-import com.cooper.homelab.ephyra.preview.JellyfinScreenStatePreview
-import com.cooper.homelab.ephyra.preview.JellyfinSpanishPreviews
-import com.cooper.homelab.ephyra.preview.JellyfinWidePreview
-import com.cooper.homelab.ephyra.preview.JellyfinWideSpanishPreview
+import com.cooper.homelab.ephyra.preview.EphyraFontScalePreviews
+import com.cooper.homelab.ephyra.preview.EphyraScreenStateLightPreview
+import com.cooper.homelab.ephyra.preview.EphyraScreenStatePreview
+import com.cooper.homelab.ephyra.preview.EphyraSpanishPreviews
+import com.cooper.homelab.ephyra.preview.EphyraWidePreview
+import com.cooper.homelab.ephyra.preview.EphyraWideSpanishPreview
 import com.cooper.homelab.ephyra.server.ServerLibrary
 import com.cooper.homelab.ephyra.server.ServerUser
 import kotlinx.serialization.json.Json
@@ -46,9 +46,9 @@ private val previewReady = UsersUiState.Ready(previewUsers, previewLibraries, me
 /** Users: the list across the matrix, a user's page and mine, the dialogs, and the read states. */
 class UsersScreenshotTest {
     @PreviewTest
-    @JellyfinScreenStatePreview
-    @JellyfinFontScalePreviews
-    @JellyfinSpanishPreviews
+    @EphyraScreenStatePreview
+    @EphyraFontScalePreviews
+    @EphyraSpanishPreviews
     @Composable
     fun users() =
         UsersScreen(
@@ -60,55 +60,55 @@ class UsersScreenshotTest {
 
     /** A pull in progress: the list stays, with the pull spinner over it. */
     @PreviewTest
-    @JellyfinScreenStatePreview
-    @JellyfinSpanishPreviews
+    @EphyraScreenStatePreview
+    @EphyraSpanishPreviews
     @Composable
     fun refreshing() = UsersScreen(previewReady.copy(refreshing = true), UsersActions(), now = NOW)
 
     @PreviewTest
-    @JellyfinScreenStatePreview
-    @JellyfinFontScalePreviews
-    @JellyfinSpanishPreviews
+    @EphyraScreenStatePreview
+    @EphyraFontScalePreviews
+    @EphyraSpanishPreviews
     @Composable
     fun userPage() = UserScreen(previewReady.copy(open = "kids", done = UserDone.PasswordSet), "kids", UsersActions())
 
     @PreviewTest
-    @JellyfinScreenStatePreview
-    @JellyfinSpanishPreviews
+    @EphyraScreenStatePreview
+    @EphyraSpanishPreviews
     @Composable
     fun myPage() = UserScreen(previewReady.copy(open = "me"), "me", UsersActions())
 
     @PreviewTest
-    @JellyfinScreenStatePreview
-    @JellyfinSpanishPreviews
-    @JellyfinScreenStateLightPreview
-    @JellyfinFontScalePreviews
+    @EphyraScreenStatePreview
+    @EphyraSpanishPreviews
+    @EphyraScreenStateLightPreview
+    @EphyraFontScalePreviews
     @Composable
     fun adding() = Surface { CreateSheet(UsersActions(), inWindow = false) }
 
     @PreviewTest
-    @JellyfinScreenStatePreview
+    @EphyraScreenStatePreview
     @Composable
     fun addingSubmitting() = Surface { CreateSheet(UsersActions(), submitting = true, inWindow = false) }
 
     /** The form stays open with what was typed, and says why in its own error slot. */
     @PreviewTest
-    @JellyfinScreenStatePreview
-    @JellyfinScreenStateLightPreview
-    @JellyfinFontScalePreviews
+    @EphyraScreenStatePreview
+    @EphyraScreenStateLightPreview
+    @EphyraFontScalePreviews
     @Composable
     fun addingFailed() = Surface { CreateSheet(UsersActions(), error = "Not changed. Something went wrong. Try again.", inWindow = false) }
 
     @PreviewTest
-    @JellyfinScreenStatePreview
+    @EphyraScreenStatePreview
     @Composable
     fun settingPasswordSubmitting() = Surface { PasswordSheet(previewUsers.first(), UsersActions(), submitting = true, inWindow = false) }
 
     /** The form stays open with what was typed, and says why in its own error slot. */
     @PreviewTest
-    @JellyfinScreenStatePreview
-    @JellyfinScreenStateLightPreview
-    @JellyfinFontScalePreviews
+    @EphyraScreenStatePreview
+    @EphyraScreenStateLightPreview
+    @EphyraFontScalePreviews
     @Composable
     fun settingPasswordFailed() =
         Surface {
@@ -116,25 +116,25 @@ class UsersScreenshotTest {
         }
 
     @PreviewTest
-    @JellyfinScreenStatePreview
-    @JellyfinScreenStateLightPreview
-    @JellyfinFontScalePreviews
+    @EphyraScreenStatePreview
+    @EphyraScreenStateLightPreview
+    @EphyraFontScalePreviews
     @Composable
     fun settingPassword() = Surface { PasswordSheet(previewUsers.first(), UsersActions(), inWindow = false) }
 
     @PreviewTest
-    @JellyfinScreenStatePreview
-    @JellyfinSpanishPreviews
+    @EphyraScreenStatePreview
+    @EphyraSpanishPreviews
     @Composable
     fun deleting() = Surface { DeleteDialog(previewUsers.last(), UsersActions(), inWindow = false) }
 
     @PreviewTest
-    @JellyfinScreenStatePreview
+    @EphyraScreenStatePreview
     @Composable
     fun loading() = UsersScreen(UsersUiState.Loading, UsersActions())
 
     @PreviewTest
-    @JellyfinScreenStatePreview
+    @EphyraScreenStatePreview
     @Composable
     fun failed() = UsersScreen(UsersUiState.Failed(ConsoleFailure.Refused), UsersActions())
 }
@@ -142,8 +142,8 @@ class UsersScreenshotTest {
 /** The users page on a landscape tablet, where a user opens in a third pane: the invitation to pick one while none is. */
 class UsersPaneScreenshotTest {
     @PreviewTest
-    @JellyfinWidePreview
-    @JellyfinWideSpanishPreview
+    @EphyraWidePreview
+    @EphyraWideSpanishPreview
     @Composable
     fun placeholder() = Surface { UserPlaceholder() }
 }

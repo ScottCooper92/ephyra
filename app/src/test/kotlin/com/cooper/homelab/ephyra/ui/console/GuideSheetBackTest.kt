@@ -9,7 +9,7 @@ import androidx.compose.ui.test.onAllNodesWithText
 import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.performClick
 import com.binge.designsystem.testing.createTakeDownAndroidComposeRule
-import com.cooper.homelab.ephyra.theme.JellyfinTheme
+import com.cooper.homelab.ephyra.theme.EphyraTheme
 import org.junit.Assert.assertEquals
 import org.junit.Rule
 import org.junit.Test
@@ -51,7 +51,7 @@ class GuideSheetBackTest {
             },
         )
 
-    private fun show() = compose.setContent { JellyfinTheme { GuideSheet(state, actions) } }
+    private fun show() = compose.setContent { EphyraTheme { GuideSheet(state, actions) } }
 
     private fun systemBack() {
         compose.runOnUiThread { ShadowDialog.getLatestDialog().onBackPressed() }

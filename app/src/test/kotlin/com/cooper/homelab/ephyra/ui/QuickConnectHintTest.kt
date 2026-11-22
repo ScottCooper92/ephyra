@@ -6,7 +6,7 @@ import androidx.compose.ui.test.onAllNodesWithText
 import androidx.compose.ui.test.onNodeWithText
 import com.binge.designsystem.testing.createTakeDownAndroidComposeRule
 import com.cooper.homelab.ephyra.server.PublicServerInfo
-import com.cooper.homelab.ephyra.theme.JellyfinTheme
+import com.cooper.homelab.ephyra.theme.EphyraTheme
 import okhttp3.HttpUrl
 import org.junit.Rule
 import org.junit.Test
@@ -50,7 +50,7 @@ class QuickConnectHintTest {
         quickConnectSelected = selected,
     )
 
-    private fun show(state: UiState.SignIn) = compose.setContent { JellyfinTheme { JellyfinRoot(state, Actions()) } }
+    private fun show(state: UiState.SignIn) = compose.setContent { EphyraTheme { EphyraRoot(state, Actions()) } }
 
     @Test
     fun `it is said on the Quick Connect tab`() {

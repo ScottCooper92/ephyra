@@ -8,7 +8,7 @@ import androidx.compose.runtime.remember
 import androidx.navigation3.runtime.NavBackStack
 import androidx.navigation3.runtime.NavKey
 import com.android.tools.screenshot.PreviewTest
-import com.cooper.homelab.ephyra.preview.JellyfinWidePreview
+import com.cooper.homelab.ephyra.preview.EphyraWidePreview
 import com.cooper.homelab.ephyra.ui.nav.EphyraNavHost
 import com.cooper.homelab.ephyra.ui.nav.HubRoute
 import com.cooper.homelab.ephyra.ui.nav.openFromHome
@@ -40,22 +40,22 @@ class ConsoleNavHostScreenshotTest {
         }
 
     @PreviewTest
-    @JellyfinWidePreview
+    @EphyraWidePreview
     @Composable
     fun defaultPage() = Console()
 
     @PreviewTest
-    @JellyfinWidePreview
+    @EphyraWidePreview
     @Composable
     fun pageOpen() = Console { openFromHome(ConsolePage.Activity) }
 
     @PreviewTest
-    @JellyfinWidePreview
+    @EphyraWidePreview
     @Composable
     fun itemPageNothingOpen() = Console { openFromHome(ConsolePage.Tasks) }
 
     @PreviewTest
-    @JellyfinWidePreview
+    @EphyraWidePreview
     @Composable
     fun itemOpen() =
         Console {

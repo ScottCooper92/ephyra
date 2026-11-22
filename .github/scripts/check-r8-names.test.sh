@@ -7,7 +7,7 @@ trap 'rm -rf "$tmp"' EXIT
 failed=0
 
 A=com.cooper.homelab.ephyra.AppGraph
-V=com.cooper.homelab.ephyra.ui.JellyfinViewModel
+V=com.cooper.homelab.ephyra.ui.EphyraViewModel
 C=com.cooper.homelab.ephyra.server.JellyfinClient
 
 mapping() { # a mapping with the three sentinels, each class line as given

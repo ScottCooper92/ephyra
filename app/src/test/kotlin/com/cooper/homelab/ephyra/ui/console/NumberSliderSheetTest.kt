@@ -19,7 +19,7 @@ import androidx.compose.ui.test.performClick
 import androidx.compose.ui.test.performTouchInput
 import com.binge.designsystem.testing.assertNoTextClipped
 import com.binge.designsystem.testing.createTakeDownAndroidComposeRule
-import com.cooper.homelab.ephyra.theme.JellyfinTheme
+import com.cooper.homelab.ephyra.theme.EphyraTheme
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertTrue
 import org.junit.Rule
@@ -38,7 +38,7 @@ class NumberSliderSheetTest {
 
     private fun show(value: Int?) =
         compose.setContent {
-            JellyfinTheme {
+            EphyraTheme {
                 Surface {
                     NumberSliderContent(
                         title = "Refresh metadata",
@@ -120,7 +120,7 @@ class NumberSliderSheetTest {
         value: Int?,
         auto: Boolean,
     ) = compose.setContent {
-        JellyfinTheme {
+        EphyraTheme {
             Surface {
                 NumberSliderContent(
                     title = "Encoding threads",
@@ -168,7 +168,7 @@ class NumberSliderSheetTest {
         compose.setContent {
             var stored by remember { mutableStateOf(start) }
             var auto by remember { mutableStateOf(false) }
-            JellyfinTheme {
+            EphyraTheme {
                 Surface {
                     NumberSliderContent(
                         title = "Encoding threads",

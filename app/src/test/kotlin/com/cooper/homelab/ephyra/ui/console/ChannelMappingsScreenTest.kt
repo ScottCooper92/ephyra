@@ -18,7 +18,7 @@ import com.binge.designsystem.testing.createTakeDownAndroidComposeRule
 import com.cooper.homelab.ephyra.server.ChannelMappingOptions
 import com.cooper.homelab.ephyra.server.ProviderChannel
 import com.cooper.homelab.ephyra.server.TunerChannel
-import com.cooper.homelab.ephyra.theme.JellyfinTheme
+import com.cooper.homelab.ephyra.theme.EphyraTheme
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertTrue
 import org.junit.Rule
@@ -49,7 +49,7 @@ class ChannelMappingsScreenTest {
     private fun show(
         state: ChannelMappingsUiState,
         actions: ChannelMappingsActions = ChannelMappingsActions(),
-    ) = compose.setContent { JellyfinTheme { ChannelMappingsScreen(state, actions) } }
+    ) = compose.setContent { EphyraTheme { ChannelMappingsScreen(state, actions) } }
 
     @Test
     fun `each provider channel shows the tuner channel it is paired with, more than one counted, or that it is not matched`() {
@@ -149,7 +149,7 @@ class ChannelMappingsScreenTest {
     fun `at 1_3 times the font nothing in the open channel is cropped`() {
         // The sheet is a window of its own, so its content is checked as the body it draws.
         compose.setContent {
-            JellyfinTheme {
+            EphyraTheme {
                 Surface {
                     TunerChannelPane(
                         ChannelMappingsUiState.Ready(options, selected = "p1"),
@@ -201,7 +201,7 @@ class ChannelMappingsScreenTest {
     fun `beside the list another channel opens with an empty filter`() {
         var selected by mutableStateOf("p1")
         compose.setContent {
-            JellyfinTheme {
+            EphyraTheme {
                 ChannelMappingsScreen(
                     ChannelMappingsUiState.Ready(options, selected = selected),
                     ChannelMappingsActions(onSelect = { if (it != null) selected = it }),

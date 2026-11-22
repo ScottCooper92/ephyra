@@ -13,9 +13,9 @@ import com.cooper.homelab.ephyra.client.title.SeasonScreen
 import com.cooper.homelab.ephyra.client.title.SeasonUiState
 import com.cooper.homelab.ephyra.client.title.SeriesPlay
 import com.cooper.homelab.ephyra.client.title.TitleImage
-import com.cooper.homelab.ephyra.preview.JellyfinFontScalePreviews
-import com.cooper.homelab.ephyra.preview.JellyfinScreenStatePreview
-import com.cooper.homelab.ephyra.preview.JellyfinSpanishPreviews
+import com.cooper.homelab.ephyra.preview.EphyraFontScalePreviews
+import com.cooper.homelab.ephyra.preview.EphyraScreenStatePreview
+import com.cooper.homelab.ephyra.preview.EphyraSpanishPreviews
 
 /**
  * The season page (`:client`) in the states the issue names: loaded with every episode of the season listed, resuming, all watched, a
@@ -73,25 +73,25 @@ class ClientSeasonScreenshotTest {
     private fun ready(page: SeasonPageUi) = SeasonUiState.Ready(page)
 
     @PreviewTest
-    @JellyfinScreenStatePreview
-    @JellyfinFontScalePreviews
-    @JellyfinSpanishPreviews
+    @EphyraScreenStatePreview
+    @EphyraFontScalePreviews
+    @EphyraSpanishPreviews
     @Composable
     fun loaded() = Season(ready(season))
 
     @PreviewTest
-    @JellyfinTallPreview
+    @EphyraTallPreview
     @Composable
     fun loadedTall() = Season(ready(season))
 
     @PreviewTest
-    @JellyfinScreenStatePreview
+    @EphyraScreenStatePreview
     @Composable
     fun resumeWatched() =
         Season(ready(season.copy(play = SeriesPlay.Episode(PlayKind.Resume, "e3", 1, 3, minutesLeft = 28), watched = true)))
 
     @PreviewTest
-    @JellyfinScreenStatePreview
+    @EphyraScreenStatePreview
     @Composable
     fun allWatched() =
         Season(
@@ -110,7 +110,7 @@ class ClientSeasonScreenshotTest {
         )
 
     @PreviewTest
-    @JellyfinTallPreview
+    @EphyraTallPreview
     @Composable
     fun specialsSparse() =
         Season(
@@ -129,27 +129,27 @@ class ClientSeasonScreenshotTest {
         )
 
     @PreviewTest
-    @JellyfinTallPreview
+    @EphyraTallPreview
     @Composable
     fun episodesLoading() = Season(ready(season.copy(play = null, episodes = EpisodesState.Loading)))
 
     @PreviewTest
-    @JellyfinTallPreview
+    @EphyraTallPreview
     @Composable
     fun episodesFailed() = Season(ready(season.copy(play = null, episodes = EpisodesState.Failed(ServerFailure.Unreachable()))))
 
     @PreviewTest
-    @JellyfinScreenStatePreview
+    @EphyraScreenStatePreview
     @Composable
     fun noEpisodes() = Season(ready(season.copy(play = SeriesPlay.NoEpisodes, episodes = EpisodesState.Ready(emptyList()))))
 
     @PreviewTest
-    @JellyfinScreenStatePreview
+    @EphyraScreenStatePreview
     @Composable
     fun loading() = Season(SeasonUiState.Loading)
 
     @PreviewTest
-    @JellyfinScreenStatePreview
+    @EphyraScreenStatePreview
     @Composable
     fun failed() = Season(SeasonUiState.Failed(ServerFailure.Unreachable()))
 }

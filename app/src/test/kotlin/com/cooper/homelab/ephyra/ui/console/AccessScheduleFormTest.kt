@@ -12,7 +12,7 @@ import com.binge.designsystem.testing.createTakeDownAndroidComposeRule
 import com.cooper.homelab.ephyra.server.AccessSchedule
 import com.cooper.homelab.ephyra.server.asAccessSchedule
 import com.cooper.homelab.ephyra.server.json
-import com.cooper.homelab.ephyra.theme.JellyfinTheme
+import com.cooper.homelab.ephyra.theme.EphyraTheme
 import kotlinx.serialization.json.Json
 import kotlinx.serialization.json.JsonElement
 import kotlinx.serialization.json.jsonObject
@@ -30,7 +30,7 @@ class AccessScheduleFormTest {
     @get:Rule val compose = createTakeDownAndroidComposeRule<ComponentActivity>()
 
     @Test fun `common day groups appear ahead of individual days`() {
-        compose.setContent { JellyfinTheme { ScheduleForm(UsersActions(), {}) } }
+        compose.setContent { EphyraTheme { ScheduleForm(UsersActions(), {}) } }
         val every = compose.onNodeWithText("Every day").getUnclippedBoundsInRoot().top
         val weekdays = compose.onNodeWithText("Weekdays").getUnclippedBoundsInRoot().top
         val weekends = compose.onNodeWithText("Weekends").getUnclippedBoundsInRoot().top
@@ -41,7 +41,7 @@ class AccessScheduleFormTest {
     private fun saved(original: AccessSchedule): List<AccessSchedule> {
         var changed: (List<JsonElement>) -> List<JsonElement> = { it }
         compose.setContent {
-            JellyfinTheme {
+            EphyraTheme {
                 ScheduleForm(UsersActions(onList = { _, change -> changed = change }), {}, original = original, is24Hour = true)
             }
         }
@@ -57,7 +57,7 @@ class AccessScheduleFormTest {
     }
 
     @Test fun `a time row opens the picker, and Cancel closes it without a change`() {
-        compose.setContent { JellyfinTheme { ScheduleForm(UsersActions(), {}, startStep = 1, startHour = 9, is24Hour = true) } }
+        compose.setContent { EphyraTheme { ScheduleForm(UsersActions(), {}, startStep = 1, startHour = 9, is24Hour = true) } }
         compose.onNodeWithText("OK").assertDoesNotExist()
         compose.onNodeWithText("From when?").performClick()
         compose.onNodeWithText("OK").assertExists()
@@ -69,7 +69,7 @@ class AccessScheduleFormTest {
 
     @Test fun `until must be later than from, so Save is off otherwise`() {
         compose.setContent {
-            JellyfinTheme { ScheduleForm(UsersActions(), {}, original = AccessSchedule("Weekday", 17.0, 9.0), is24Hour = true) }
+            EphyraTheme { ScheduleForm(UsersActions(), {}, original = AccessSchedule("Weekday", 17.0, 9.0), is24Hour = true) }
         }
         compose.onNodeWithText("Save").assertIsNotEnabled()
     }

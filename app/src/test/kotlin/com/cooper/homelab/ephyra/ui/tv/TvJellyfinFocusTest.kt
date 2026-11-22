@@ -36,7 +36,7 @@ import com.cooper.homelab.ephyra.server.PlaybackPreferences
 import com.cooper.homelab.ephyra.server.PublicServerInfo
 import com.cooper.homelab.ephyra.server.PublicUser
 import com.cooper.homelab.ephyra.server.SubtitleMode
-import com.cooper.homelab.ephyra.theme.JellyfinTvTheme
+import com.cooper.homelab.ephyra.theme.EphyraTvTheme
 import com.cooper.homelab.ephyra.ui.Actions
 import com.cooper.homelab.ephyra.ui.ConnectionHealth
 import com.cooper.homelab.ephyra.ui.ForgotPasswordStep
@@ -105,7 +105,7 @@ class TvJellyfinFocusTest {
         state = initial
         compose.setContent {
             CompositionLocalProvider(LocalFlags provides if (promoted) Flags.of(SharedFlags.BingePromotion to true) else Flags()) {
-                JellyfinTvTheme { TvJellyfinRoot(state, actions, playback = playback) }
+                EphyraTvTheme { TvEphyraRoot(state, actions, playback = playback) }
             }
         }
         compose.waitForIdle()

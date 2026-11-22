@@ -15,7 +15,7 @@ import com.cooper.homelab.ephyra.server.ServerTask
 import com.cooper.homelab.ephyra.server.ServerUser
 import com.cooper.homelab.ephyra.server.TaskTrigger
 import com.cooper.homelab.ephyra.server.UserView
-import com.cooper.homelab.ephyra.theme.JellyfinTheme
+import com.cooper.homelab.ephyra.theme.EphyraTheme
 import kotlinx.serialization.json.JsonObject
 import org.junit.Rule
 import org.junit.Test
@@ -36,7 +36,7 @@ class SubPageSkeletonGeometryTest {
         assertSkeletonReservesGeometry(
             listOf(LayoutAnchors.section(LayoutAnchors.Collection.FIRST_ITEM)),
             checkStartEdge = true,
-        ) { resolved -> JellyfinTheme { page(resolved) } }
+        ) { resolved -> EphyraTheme { page(resolved) } }
 
     private val sam = ServerUser("sam", "Sam", true, now, JsonObject(emptyMap()))
 

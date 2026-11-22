@@ -15,7 +15,7 @@ import com.cooper.homelab.ephyra.server.Connection
 import com.cooper.homelab.ephyra.server.TUNER_TYPE_HDHOMERUN
 import com.cooper.homelab.ephyra.session
 import com.cooper.homelab.ephyra.testSessionStore
-import com.cooper.homelab.ephyra.theme.JellyfinTheme
+import com.cooper.homelab.ephyra.theme.EphyraTheme
 import com.cooper.homelab.ephyra.ui.ViewModelTeardown
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -65,7 +65,7 @@ class TunerDiscoveryTest {
         val held = server.hold("/LiveTv/Tuners/Discover")
         compose.setContent {
             val state by vm.state.collectAsState()
-            JellyfinTheme {
+            EphyraTheme {
                 (state as? LiveTvUiState.Ready)?.sheet?.let {
                     TunerSheetContent(it, false, LiveTvActions(onDiscover = vm::discover, onForm = vm::form))
                 }

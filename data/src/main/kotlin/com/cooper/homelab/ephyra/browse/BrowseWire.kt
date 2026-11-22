@@ -20,11 +20,10 @@ internal val BrowseJson: Json =
         explicitNulls = false
     }
 
-/** Decodes [element] as [strategy], or throws [UnreadableAnswerException] for [path] when the shape is wrong. */
+/** Decodes [element] as [strategy], or throws [UnreadableAnswerException] when the shape is wrong. */
 internal fun <T> decodeAnswer(
     strategy: DeserializationStrategy<T>,
     element: JsonElement,
-    path: String,
 ): T =
     try {
         BrowseJson.decodeFromJsonElement(strategy, element)

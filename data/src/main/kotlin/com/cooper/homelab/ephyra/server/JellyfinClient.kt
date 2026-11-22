@@ -125,14 +125,14 @@ class JellyfinClient(
     internal suspend fun getObject(
         path: String,
         query: Map<String, String> = emptyMap(),
-    ): JsonObject = get(path, query).asObject(path)
+    ): JsonObject = get(path, query).asObject()
 
     /** [post], for a call whose answer is a JSON object. */
     internal suspend fun postObject(
         path: String,
         body: JsonObject?,
         query: Map<String, String> = emptyMap(),
-    ): JsonObject = post(path, body, query).asObject(path)
+    ): JsonObject = post(path, body, query).asObject()
 
     /**
      * [path] is what is asked for; [label] is what an error names it as. They differ when the path carries
@@ -150,7 +150,7 @@ class JellyfinClient(
      */
     internal suspend fun getObjectFrom(path: String): Pair<JsonObject, HttpUrl> {
         val (json, from) = located(Request.Builder().url(url(path)).get(), path)
-        return json.asObject(path) to from
+        return json.asObject() to from
     }
 
     /**
@@ -294,7 +294,7 @@ private const val REASON_MAX_CHARS = 300
 /** Percent-encoded as a URI component: `%20` for a space, not the form encoding's `+`. */
 private fun String.encoded(): String = URLEncoder.encode(this, "UTF-8").replace("+", "%20")
 
-private fun JsonElement.asObject(path: String): JsonObject = this as? JsonObject ?: throw UnreadableAnswerException()
+private fun JsonElement.asObject(): JsonObject = this as? JsonObject ?: throw UnreadableAnswerException()
 
 /** This client with a longer wait for an answer, for the one call the server answers only when its work is done. */
 fun JellyfinClient.withReadTimeout(millis: Long): JellyfinClient =

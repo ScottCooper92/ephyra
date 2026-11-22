@@ -41,5 +41,5 @@ private suspend fun JellyfinClient.writeUserData(
         }
     val answer = if (on) post(path, null, query) else delete(path, query)
     // A server that answers with no body (a 204, say) did the write: it reads as a change that states nothing.
-    return decodeUserData(if (answer is JsonObject) answer else JsonObject(emptyMap()), itemId, path)
+    return decodeUserData(if (answer is JsonObject) answer else JsonObject(emptyMap()), itemId)
 }

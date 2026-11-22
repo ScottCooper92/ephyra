@@ -80,11 +80,10 @@ internal fun JsonObject.userDataChanges(): List<UserDataChange> {
     }
 }
 
-/** A write's answer: the item's `UserItemDataDto`. A shape that is not one is [UnreadableAnswerException] for [path]. */
+/** A write's answer: the item's `UserItemDataDto`. A shape that is not one is [UnreadableAnswerException]. */
 internal fun decodeUserData(
     element: JsonElement,
     itemId: String,
-    path: String,
 ): UserDataChange =
     try {
         WireJson.decodeFromJsonElement(UserItemDataWire.serializer(), element).toChange(null, itemId)

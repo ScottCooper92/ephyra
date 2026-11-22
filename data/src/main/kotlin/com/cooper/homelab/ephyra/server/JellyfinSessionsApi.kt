@@ -1,5 +1,6 @@
 package com.cooper.homelab.ephyra.server
 
+import com.cooper.homelab.core.server.network.UnreadableAnswerException
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.filter
 import kotlinx.coroutines.flow.map
@@ -47,7 +48,7 @@ data class NowPlaying(
 /** What's playing now, read once. */
 suspend fun JellyfinClient.nowPlaying(): List<NowPlaying> {
     val answer =
-        get(SESSIONS, mapOf("activeWithinSeconds" to ACTIVE_WITHIN_SECONDS)) as? JsonArray ?: throw JellyfinUnreadableAnswer(SESSIONS)
+        get(SESSIONS, mapOf("activeWithinSeconds" to ACTIVE_WITHIN_SECONDS)) as? JsonArray ?: throw UnreadableAnswerException()
     return answer.toNowPlaying()
 }
 
@@ -69,7 +70,7 @@ fun JellyfinClient.nowPlayingFeed(): Flow<List<NowPlaying>> =
 suspend fun JellyfinClient.controllableSessionIds(userId: String): Set<String> {
     val answer =
         get(SESSIONS, mapOf("activeWithinSeconds" to ACTIVE_WITHIN_SECONDS, "controllableByUserId" to userId)) as? JsonArray
-            ?: throw JellyfinUnreadableAnswer(SESSIONS)
+            ?: throw UnreadableAnswerException()
     return answer.mapNotNull { (it as? JsonObject)?.string("Id") }.toSet()
 }
 

@@ -1,5 +1,6 @@
 package com.cooper.homelab.ephyra.server
 
+import com.cooper.homelab.core.server.network.UnreadableAnswerException
 import kotlinx.serialization.json.JsonArray
 import kotlinx.serialization.json.JsonObject
 import kotlinx.serialization.json.JsonPrimitive
@@ -30,14 +31,14 @@ const val ENABLE_ALL_FOLDERS = "EnableAllFolders"
 const val ENABLED_FOLDERS = "EnabledFolders"
 
 suspend fun JellyfinClient.users(): List<ServerUser> {
-    val answer = get(USERS) as? JsonArray ?: throw JellyfinUnreadableAnswer(USERS)
+    val answer = get(USERS) as? JsonArray ?: throw UnreadableAnswerException()
     return answer.mapNotNull { (it as? JsonObject)?.serverUser() }.sortedBy { it.name.lowercase() }
 }
 
 /** [id] as the server holds them now, with the policy a save would replace; a failure, not null, when it cannot be read. */
 suspend fun JellyfinClient.user(id: String): ServerUser {
-    val answer = get("$USERS/$id") as? JsonObject ?: throw JellyfinUnreadableAnswer("$USERS/$id")
-    return answer.serverUser() ?: throw JellyfinUnreadableAnswer("$USERS/$id")
+    val answer = get("$USERS/$id") as? JsonObject ?: throw UnreadableAnswerException()
+    return answer.serverUser() ?: throw UnreadableAnswerException()
 }
 
 /** Creates a user, who can see every library and isn't an administrator, as Jellyfin's own default. */
@@ -46,7 +47,7 @@ suspend fun JellyfinClient.createUser(
     password: String,
 ): ServerUser =
     postObject("Users/New", JsonObject(mapOf("Name" to JsonPrimitive(name), "Password" to JsonPrimitive(password)))).serverUser()
-        ?: throw JellyfinUnreadableAnswer("Users/New")
+        ?: throw UnreadableAnswerException()
 
 /** Replaces [id]'s whole policy. Jellyfin refuses one that would leave the server with no administrator. */
 suspend fun JellyfinClient.savePolicy(

@@ -1,5 +1,6 @@
 package com.cooper.homelab.ephyra.server
 
+import com.cooper.homelab.core.server.network.UnreadableAnswerException
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.mapNotNull
@@ -33,7 +34,7 @@ sealed interface LibraryPush {
 }
 
 suspend fun JellyfinClient.libraries(): List<ServerLibrary> {
-    val answer = get(VIRTUAL_FOLDERS) as? JsonArray ?: throw JellyfinUnreadableAnswer(VIRTUAL_FOLDERS)
+    val answer = get(VIRTUAL_FOLDERS) as? JsonArray ?: throw UnreadableAnswerException()
     return answer.mapNotNull { element ->
         val json = element as? JsonObject ?: return@mapNotNull null
         ServerLibrary(

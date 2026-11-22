@@ -2,19 +2,12 @@ package com.cooper.homelab.ephyra.server
 
 import com.cooper.homelab.core.foundation.ServerFailure
 import com.cooper.homelab.core.server.network.FailureMapper
+import com.cooper.homelab.core.server.network.JvmTransportFailures
 import com.cooper.homelab.core.server.network.NoBody
 import com.cooper.homelab.core.server.network.RequestFacts
-import com.cooper.homelab.core.server.network.TransportFailureReader
-import java.io.IOException
-import java.io.InterruptedIOException
 
-/** A call that did not get an answer: a socket, a name, a timeout, or an answer that was not Jellyfin's. */
-private val transport =
-    TransportFailureReader { failure ->
-        if (failure is IOException) ServerFailure.Unreachable(timedOut = failure is InterruptedIOException) else null
-    }
-
-private val mapper = FailureMapper(transport)
+/** A call that did not get an answer is read by the shared library: a cleartext block, a local-network denial, an untrusted certificate, an unreadable answer, a client-certificate request, a timeout, or a plain connect failure. */
+private val mapper = FailureMapper(JvmTransportFailures)
 
 /**
  * Why a call to the server failed, by the shared library's rules: a 5xx is the server failing (worth another try), a 401 or

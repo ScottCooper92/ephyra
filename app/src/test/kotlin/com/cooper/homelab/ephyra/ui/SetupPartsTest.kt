@@ -9,6 +9,7 @@ import com.cooper.homelab.core.presentation.connect.NotThisServerException
 import com.cooper.homelab.core.presentation.connect.ProbedServer
 import com.cooper.homelab.core.presentation.connect.SignInForm
 import com.cooper.homelab.core.server.address.ServerAddress
+import com.cooper.homelab.core.server.network.UnreadableAnswerException
 import com.cooper.homelab.ephyra.FakeJellyfin
 import com.cooper.homelab.ephyra.auth.JellyfinSession
 import com.cooper.homelab.ephyra.auth.SessionStore
@@ -84,8 +85,7 @@ class SetupPartsTest {
         runBlocking {
             assertEquals(
                 ServerFailure.Unreadable,
-                com.cooper.homelab.ephyra.server
-                    .JellyfinUnreadableAnswer("/x")
+                UnreadableAnswerException()
                     .setupFailure(),
             )
             assertEquals(

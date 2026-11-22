@@ -25,7 +25,7 @@ internal suspend fun JellyfinClient.browseResume(
     library?.let { query["parentId"] = it.id }
     // 10.9 moved the route and put the user in the query; an older server takes it in the path.
     val path = if (profile.hasUserItemRoutes) "UserItems/Resume" else "Users/$userId/Items/Resume"
-    return decodeAnswer(ItemsWire.serializer(), getObject(path, query), path).toPage(startIndex, withTotal)
+    return decodeAnswer(ItemsWire.serializer(), getObject(path, query)).toPage(startIndex, withTotal)
 }
 
 /**
@@ -47,7 +47,7 @@ internal suspend fun JellyfinClient.browseNextUp(
     query["enableResumable"] = "false"
     query["enableRewatching"] = "false"
     library?.let { query["parentId"] = it.id }
-    return decodeAnswer(ItemsWire.serializer(), getObject("Shows/NextUp", query), "Shows/NextUp").toPage(startIndex, withTotal)
+    return decodeAnswer(ItemsWire.serializer(), getObject("Shows/NextUp", query)).toPage(startIndex, withTotal)
 }
 
 /**
@@ -70,5 +70,5 @@ internal suspend fun JellyfinClient.browseLatest(
     query["groupItems"] = groupItems.toString()
     if (hidePlayed) query["isPlayed"] = "false"
     val path = if (profile.hasUserItemRoutes) "Items/Latest" else "Users/$userId/Items/Latest"
-    return decodeAnswer(ListSerializer(ItemWire.serializer()), get(path, query), path).mapNotNull { it.toBrowseItem() }
+    return decodeAnswer(ListSerializer(ItemWire.serializer()), get(path, query)).mapNotNull { it.toBrowseItem() }
 }

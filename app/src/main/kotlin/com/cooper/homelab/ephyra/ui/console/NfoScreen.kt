@@ -32,6 +32,7 @@ import com.binge.designsystem.component.TextEntrySurface
 import com.binge.designsystem.layout.LayoutAnchors
 import com.binge.designsystem.layout.layoutAnchor
 import com.binge.designsystem.template.FormScreen
+import com.binge.designsystem.template.ScreenBar
 import com.binge.designsystem.template.formSaveStatus
 import com.cooper.homelab.ephyra.R
 import com.cooper.homelab.ephyra.server.NFO_EXTRA_THUMBS
@@ -79,6 +80,7 @@ fun NfoScreen(
     val ready = state as? NfoUiState.Ready
     FormScreen(
         title = stringResource(R.string.nfo_title),
+        bar = ScreenBar.Small,
         onBack = actions.onBack,
         snackbarHostState = host,
         saveStatus = ready?.save?.let { formSaveStatus(it.status, it.failed, actions.onRetrySave) },

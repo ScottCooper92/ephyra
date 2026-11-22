@@ -39,6 +39,7 @@ import com.binge.designsystem.layout.LayoutAnchors
 import com.binge.designsystem.layout.layoutAnchor
 import com.binge.designsystem.template.EmptyScreen
 import com.binge.designsystem.template.FormScreen
+import com.binge.designsystem.template.ScreenBar
 import com.binge.designsystem.template.formSaveStatus
 import com.cooper.homelab.ephyra.R
 import com.cooper.homelab.ephyra.server.UserView
@@ -82,6 +83,7 @@ fun HomeLayoutScreen(
     val ready = state as? HomeLayoutUiState.Ready
     FormScreen(
         title = stringResource(R.string.home_layout_title),
+        bar = ScreenBar.Small,
         onBack = actions.onBack,
         snackbarHostState = host,
         saveStatus = ready?.save?.let { formSaveStatus(it.status, it.failed, actions.onRetrySave) },
@@ -121,6 +123,7 @@ fun HomeLayoutLibraryScreen(
     val host = remember { SnackbarHostState() }
     FormScreen(
         title = library?.name ?: stringResource(R.string.home_layout_title),
+        bar = ScreenBar.Small,
         onBack = actions.onBack,
         snackbarHostState = host,
         saveStatus = ready?.save?.let { formSaveStatus(it.status, it.failed, actions.onRetrySave) },

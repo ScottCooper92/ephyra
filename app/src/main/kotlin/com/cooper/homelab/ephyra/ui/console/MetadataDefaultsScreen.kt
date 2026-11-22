@@ -24,6 +24,7 @@ import com.binge.designsystem.layout.LayoutAnchors
 import com.binge.designsystem.layout.layoutAnchor
 import com.binge.designsystem.template.EmptyScreen
 import com.binge.designsystem.template.FormScreen
+import com.binge.designsystem.template.ScreenBar
 import com.binge.designsystem.template.formSaveStatus
 import com.cooper.homelab.ephyra.R
 import com.cooper.homelab.ephyra.server.FetcherKind
@@ -79,6 +80,7 @@ fun MetadataDefaultsScreen(
     val host = remember { SnackbarHostState() }
     FormScreen(
         title = stringResource(R.string.metadata_title),
+        bar = ScreenBar.Small,
         onBack = actions.onBack,
         snackbarHostState = host,
         saveStatus = ready?.save?.let { formSaveStatus(it.status, it.failed, actions.onRetrySave) },
@@ -105,6 +107,7 @@ fun MetadataTypeScreen(
     LaunchedEffect(ready != null && type !in ready.types()) { if (ready != null && type !in ready.types()) actions.onBack() }
     FormScreen(
         title = itemTypeName(type),
+        bar = ScreenBar.Small,
         onBack = actions.onBack,
         snackbarHostState = host,
         saveStatus = ready?.save?.let { formSaveStatus(it.status, it.failed, actions.onRetrySave) },
@@ -131,6 +134,7 @@ fun MetadataFetcherScreen(
     LaunchedEffect(gone) { if (gone) actions.onBack() }
     FormScreen(
         title = fetcher.name,
+        bar = ScreenBar.Small,
         onBack = actions.onBack,
         snackbarHostState = host,
         saveStatus = ready?.save?.let { formSaveStatus(it.status, it.failed, actions.onRetrySave) },

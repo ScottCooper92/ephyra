@@ -227,38 +227,33 @@ class ServerSettingsViewModelTest {
         settled { it is ServerSettingsUiState.Ready && check(it) } as ServerSettingsUiState.Ready
 
     @Test
-    fun `a text sheet stays open while its save runs and closes when the server takes it`() {
+    fun `a text sheet closes at once and the page shows the saved text`() {
         val vm = made(ServerSettingsViewModel(connection, Dispatchers.Default, Dispatchers.IO))
         vm.ready()
         vm.edit(ServerText.Name)
         vm.saveText(ServerText.Name, "Den")
-        assertEquals(ServerText.Name, vm.ready().submitting)
-        assertEquals(ServerText.Name, vm.ready().editing)
-        val closed = vm.sheet { it.editing == null }
-        assertNull(closed.submitting)
-        assertNull(closed.sheetFailed)
-        assertEquals("Den", closed.settings.name)
+        assertNull(vm.ready().editing)
+        assertEquals("Den", vm.ready().settings.name)
+        val saved = vm.sheet { it.serverSave.status == SaveStatus.Saved }
+        assertNull(saved.saveFailed)
+        assertNull(saved.refused)
     }
 
     @Test
-    fun `a text the server refuses stays in its sheet with the reason, and the setting goes back`() {
+    fun `a text the server refuses is reported on the page, and the setting goes back`() {
         val vm = made(ServerSettingsViewModel(connection, Dispatchers.Default, Dispatchers.IO))
         vm.ready()
         jellyfin.status["/System/Configuration/branding"] = 409
         vm.edit(ServerText.CustomCss)
         vm.saveText(ServerText.CustomCss, "body { color: red }")
-        val failed = vm.sheet { it.sheetFailed != null }
-        assertEquals(ConsoleFailure.Refused, failed.sheetFailed)
-        assertEquals(ServerText.CustomCss, failed.editing)
-        assertNull(failed.submitting)
-        // The sheet says it, so the page doesn't, and the saved value is back.
-        assertNull(failed.saveFailed)
-        assertNull(failed.refused)
+        assertNull(vm.ready().editing)
+        val failed = vm.sheet { it.refused != null }
+        assertEquals(ConsoleFailure.Refused, failed.refused)
         assertEquals("", failed.branding.customCss)
     }
 
     @Test
-    fun `a text the server can't be reached for closes its sheet and the change waits on the page`() {
+    fun `a text the server can't be reached for waits unsent on the page`() {
         val vm = made(ServerSettingsViewModel(connection, Dispatchers.Default, Dispatchers.IO))
         vm.ready()
         jellyfin.dropped += "/System/Configuration"
@@ -267,24 +262,7 @@ class ServerSettingsViewModelTest {
         val waiting = vm.sheet { it.saveFailed != null }
         assertEquals(ConsoleFailure.Unreachable, waiting.saveFailed)
         assertNull(waiting.editing)
-        assertNull(waiting.submitting)
         assertEquals("Den", waiting.settings.name)
-    }
-
-    @Test
-    fun `a sheet dismissed before its save is refused reports the refusal on the page`() {
-        val vm = made(ServerSettingsViewModel(connection, Dispatchers.Default, Dispatchers.IO))
-        vm.ready()
-        val held = jellyfin.hold("/System/Configuration", method = "POST")
-        vm.edit(ServerText.Name)
-        vm.saveText(ServerText.Name, "Den")
-        idling { held.awaitArrival() }
-        // The sheet is closed while the call is still running, then the call is refused.
-        vm.edit(null)
-        held.refuse(409)
-        val failed = vm.sheet { it.saveFailed != null }
-        assertEquals(ConsoleFailure.Refused, failed.saveFailed)
-        assertNull(failed.sheetFailed)
     }
 
     @Test
@@ -294,7 +272,6 @@ class ServerSettingsViewModelTest {
         vm.edit(ServerText.Name)
         vm.saveText(ServerText.Name, " truenas ")
         assertNull(vm.ready().editing)
-        assertNull(vm.ready().submitting)
         assertEquals(0, jellyfin.requests.count { it.method == "POST" && it.url.encodedPath.startsWith("/System/Configuration") })
     }
 

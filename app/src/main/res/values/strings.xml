@@ -191,6 +191,7 @@
     <string name="playback_quality_mobile">Maximum quality on mobile data</string>
     <string name="playback_quality_auto">Auto</string>
     <string name="settings_not_saved">Not saved. %1$s</string>
+    <string name="settings_done">Done</string>
     <string name="subtitle_mode_default">Follow the file</string>
     <string name="subtitle_mode_default_detail">The subtitles the file marks as default or forced</string>
     <string name="subtitle_mode_smart">Smart</string>
@@ -496,7 +497,6 @@
     <string name="logs_retention_unsent">Not saved yet. Tap to try again.</string>
     <string name="logs_retention_body">How long to keep log files other than the server\'s own daily logs (the ones named log_…), such as transcoding logs. The server\'s Clean log files task deletes older ones. The daily logs follow the server\'s logging settings and are not removed by this.</string>
     <string name="logs_retention_invalid">Enter a whole number of days from %1$d to %2$d.</string>
-    <string name="logs_retention_save">Save</string>
     <string name="console_logs_detail">The server\'s log files</string>
     <string name="logs_select_title">No log selected</string>
     <string name="logs_select">Select a log to read it.</string>
@@ -711,7 +711,6 @@
     <string name="server_settings_splash_no_preview">Nothing to show. The server serves no splash image while the splash screen is off, or before it has made one.</string>
     <string name="server_settings_branding_reset_note">Saving here resets a custom splash image set in another app.</string>
     <string name="server_settings_splash_not_changed">Splash image not changed. %1$s</string>
-    <string name="server_settings_save">Save</string>
     <string name="server_shutdown">Shut down server</string>
     <string name="server_shutdown_title">Shut down %1$s?</string>
     <string name="server_shutdown_body">Everyone using it is cut off, this app included. If it doesn\'t come back by itself, someone has to start it where it runs.</string>
@@ -1039,7 +1038,6 @@
     <string name="trickplay_qscale">Quality scale</string>
     <string name="trickplay_qscale_body">ffmpeg\'s quality scale, from 2 to 31. Lower is better, and larger.</string>
     <string name="trickplay_number_invalid">Enter a whole number from %1$d to %2$d.</string>
-    <string name="trickplay_save">Save</string>
     <string name="tasks_triggers_empty_title">No triggers</string>
     <string name="plugins_title">Plugins</string>
     <string name="console_plugins_detail">Installed, the catalog and repositories</string>
@@ -1169,7 +1167,6 @@
         <item quantity="other">%1$d applications</item>
     </plurals>
     <string name="advanced_number_invalid">Enter a whole number from %1$d to %2$d.</string>
-    <string name="advanced_save">Save</string>
     <string name="network_title">Networking</string>
     <string name="console_network_detail">Ports, HTTPS, addresses and access</string>
     <string name="network_body">How the server is reached. Most of these decide who can connect, this app included. Change them with care: a wrong value can leave every app unable to connect until you change it on the server itself.</string>

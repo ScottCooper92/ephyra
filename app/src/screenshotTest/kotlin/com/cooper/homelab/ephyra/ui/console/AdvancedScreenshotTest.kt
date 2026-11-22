@@ -81,17 +81,17 @@ class AdvancedScreenshotTest {
     @JellyfinScreenStateLightPreview
     @JellyfinFontScalePreviews
     @Composable
-    fun number() = Surface { NumberSheet(AdvancedNumber.RetentionDays, previewSettings, AdvancedActions(), inWindow = false) }
+    fun number() = Surface { NumberForm(AdvancedNumber.RetentionDays, previewSettings, AdvancedActions()) }
 
     @PreviewTest
     @JellyfinScreenStatePreview
     @Composable
-    fun hosts() = Surface { ListSheet(AdvancedList.CorsHosts, previewSettings, AdvancedActions(), inWindow = false) }
+    fun hosts() = Surface { ListForm(AdvancedList.CorsHosts, previewSettings, AdvancedActions()) }
 
     @PreviewTest
     @JellyfinScreenStatePreview
     @Composable
-    fun castReceivers() = Surface { ListSheet(AdvancedList.CastReceivers, previewSettings, AdvancedActions(), inWindow = false) }
+    fun castReceivers() = Surface { ListForm(AdvancedList.CastReceivers, previewSettings, AdvancedActions()) }
 
     @PreviewTest
     @JellyfinScreenStatePreview

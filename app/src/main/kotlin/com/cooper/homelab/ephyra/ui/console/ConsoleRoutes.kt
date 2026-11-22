@@ -129,7 +129,7 @@ private fun ApproveCodeRoute(
     val approve: ApproveCodeViewModel =
         viewModel(factory = viewModelFactory { initializer { ApproveCodeViewModel(graph.connection, graph.reviewPrompt) } })
     val state by approve.state.collectAsStateWithLifecycle()
-    ApproveCodeScreen(state, ApproveActions(onCode = approve::onCode, onApprove = approve::approve, onBack = onBack))
+    ApproveCodeScreen(state, ApproveActions(onCode = approve::onCode, onApprove = approve::approve, onBack = onBack), approve.events)
 }
 
 /** The playback page with its own view model, which reads the user's configuration when it opens. */
@@ -237,6 +237,7 @@ private fun PasswordRoute(
             onChange = password::change,
             onBack = onBack,
         ),
+        password.events,
     )
 }
 

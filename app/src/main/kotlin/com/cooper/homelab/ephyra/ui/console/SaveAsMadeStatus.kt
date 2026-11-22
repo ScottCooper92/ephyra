@@ -6,10 +6,13 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.rememberUpdatedState
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import com.cooper.homelab.ephyra.R
+import kotlinx.coroutines.flow.Flow
 
 /**
  * The longest server reason a snackbar carries. "Not saved. " and a reason of this length is about 50 characters: two lines at
@@ -59,4 +62,21 @@ internal fun SnackbarMessage(
     host: SnackbarHostState,
 ) {
     LaunchedEffect(message) { if (message != null) host.showSnackbar(message) }
+}
+
+/**
+ * Shows each event of a one-shot stream as a snackbar, once. [events] is a view model's `Channel(Channel.BUFFERED).receiveAsFlow()`:
+ * an event is taken by whoever collects it, so a screen recreated by a rotation, a dark-mode switch or a resize collects only what comes
+ * next and never shows an old result again, which state read by [SnackbarMessage] would. One that arrives while nothing collects waits
+ * for the next collector. [text] names the sentence for an event.
+ */
+@Composable
+internal fun <T> SnackbarEvents(
+    events: Flow<T>,
+    host: SnackbarHostState,
+    text: (T) -> Int,
+) {
+    val context = LocalContext.current
+    val sentence by rememberUpdatedState(text)
+    LaunchedEffect(events) { events.collect { host.showSnackbar(context.getString(sentence(it))) } }
 }

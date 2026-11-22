@@ -1,7 +1,7 @@
 package com.cooper.homelab.ephyra.auth
 
 import android.util.Base64
-import com.binge.companion.kit.KeystoreSecretCipher
+import com.cooper.homelab.core.server.connection.KeystoreSecretCipher
 import org.junit.After
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertNull

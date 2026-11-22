@@ -48,7 +48,7 @@ class SearchModelTest {
         var peopleFailure: Throwable? = null,
     ) : SearchRepository {
         val titleReads = mutableListOf<Triple<String, Set<ItemKind>, Int>>()
-        val peopleReads = mutableListOf<String>()
+        val peopleReads = mutableListOf<Pair<String, Int>>()
 
         override suspend fun titles(
             term: String,
@@ -59,7 +59,8 @@ class SearchModelTest {
         ): Page<BrowseItem> {
             titleReads += Triple(term, kinds, startIndex)
             failure?.let { throw it }
-            return Page(titles.drop(startIndex).take(limit), total = titles.size, startIndex = startIndex)
+            val found = titles.filter { it.kind in kinds }
+            return Page(found.drop(startIndex).take(limit), total = found.size, startIndex = startIndex)
         }
 
         override suspend fun people(
@@ -67,7 +68,7 @@ class SearchModelTest {
             startIndex: Int,
             limit: Int,
         ): Page<PersonResult> {
-            peopleReads += term
+            peopleReads += term to startIndex
             peopleFailure?.let { throw it }
             return Page(people.drop(startIndex).take(limit), total = people.size, startIndex = startIndex)
         }
@@ -133,15 +134,92 @@ class SearchModelTest {
     }
 
     @Test
-    fun `a type narrows what has loaded, and a new query starts on All again`() {
+    fun `a chip reads its own type from the server, once, and a revisit reads nothing`() {
+        val model = model()
+        model.setText("heat")
+        assertEquals(1, search.titleReads.size)
+        model.selectType(SearchType.Movies)
+        assertEquals(SearchType.Movies, model.state.value.type)
+        assertEquals(listOf("Movie:m1"), model.ready().hits.map(::searchHitKey))
+        assertEquals(setOf(ItemKind.Movie), search.titleReads.last().second)
+        assertEquals(2, search.titleReads.size)
+        model.selectType(SearchType.All)
+        model.selectType(SearchType.Movies)
+        assertEquals(2, search.titleReads.size)
+    }
+
+    @Test
+    fun `a chip nobody opens reads nothing`() {
+        val model = model()
+        model.setText("heat")
+        model.selectType(SearchType.Series)
+        assertEquals(setOf(ItemKind.Movie, ItemKind.Series, ItemKind.Episode), search.titleReads.first().second)
+        assertEquals(setOf(ItemKind.Series), search.titleReads.last().second)
+        assertEquals(2, search.titleReads.size)
+        assertEquals(1, search.peopleReads.size)
+    }
+
+    @Test
+    fun `the people chip reads people from the server`() {
         val model = model()
         model.setText("heat")
         model.selectType(SearchType.People)
-        assertEquals(SearchType.People, model.state.value.type)
         assertEquals(listOf("Person:p1"), model.ready().hits.map(::searchHitKey))
-        assertEquals(3, model.ready().loaded)
+        assertEquals(listOf("heat" to 0, "heat" to 0), search.peopleReads)
+    }
+
+    @Test
+    fun `a new query starts on All, and a chip reads the new query only when it is next shown`() {
+        val model = model()
+        model.setText("heat")
+        model.selectType(SearchType.Movies)
+        val reads = search.titleReads.size
         model.setText("heat wave")
         assertEquals(SearchType.All, model.state.value.type)
+        assertEquals(reads + 1, search.titleReads.size)
+        model.selectType(SearchType.Movies)
+        assertEquals("heat wave", search.titleReads.last().first)
+        assertEquals(setOf(ItemKind.Movie), search.titleReads.last().second)
+    }
+
+    @Test
+    fun `a chip pages by itself`() {
+        search.titles = List(5) { BrowseItem("m$it", "Movie $it", ItemKind.Movie) } + series
+        val model = model()
+        model.setText("movie")
+        model.selectType(SearchType.Movies)
+        assertEquals(PAGE, model.ready().hits.size)
+        assertTrue(model.ready().hasMore)
+        model.loadMore()
+        assertEquals(2 * PAGE, model.ready().hits.size)
+        assertEquals(setOf(ItemKind.Movie), search.titleReads.last().second)
+        assertEquals(2 * PAGE, search.titleReads.last().third + PAGE)
+        model.loadMore()
+        assertEquals(5, model.ready().hits.size)
+        assertFalse(model.ready().hasMore)
+    }
+
+    @Test
+    fun `a chip with nothing of its type keeps the chips and says nothing is here`() {
+        search.titles = listOf(movie)
+        val model = model()
+        model.setText("heat")
+        model.selectType(SearchType.Episodes)
+        val ready = model.ready()
+        assertTrue(ready.hits.isEmpty())
+        assertFalse(ready.hasMore)
+    }
+
+    @Test
+    fun `a failed chip is a failure, and retry reads that chip again`() {
+        val model = model()
+        model.setText("heat")
+        search.failure = IOException("down")
+        model.selectType(SearchType.Series)
+        assertEquals(SearchBody.Failed(ServerFailure.Unreachable()), model.body())
+        search.failure = null
+        model.retry()
+        assertEquals(listOf("Series:s1"), model.ready().hits.map(::searchHitKey))
     }
 
     @Test

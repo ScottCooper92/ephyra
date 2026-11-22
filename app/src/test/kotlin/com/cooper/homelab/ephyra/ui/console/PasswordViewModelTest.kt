@@ -22,6 +22,7 @@ import okhttp3.OkHttpClient
 import org.junit.After
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertFalse
+import org.junit.Assert.assertNull
 import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -66,15 +67,27 @@ class PasswordViewModelTest {
         return this
     }
 
-    private fun PasswordViewModel.resultOfChange(): PasswordUiState {
+    /** What a change left: the form, and the snackbar's one-shot outcome (none where a field says what was wrong). */
+    private data class Result(
+        val state: PasswordUiState,
+        val outcome: PasswordOutcome?,
+    )
+
+    private fun PasswordViewModel.resultOfChange(): Result {
         change()
-        return runBlocking { withTimeout(TIMEOUT_MILLIS) { state.first { it.result != null } } }
+        return runBlocking {
+            withTimeout(TIMEOUT_MILLIS) {
+                val done = state.first { !it.changing }
+                Result(done, if (done.fieldError != null) null else events.first())
+            }
+        }
     }
 
     @Test
     fun `a change works, for this user, and empties the form`() {
         val after = made(PasswordViewModel(connection)).fill("old-secret", "new-secret").resultOfChange()
-        assertEquals(PasswordUiState(result = PasswordResult.Changed), after)
+        assertEquals(PasswordUiState(), after.state)
+        assertEquals(PasswordOutcome.Changed, after.outcome)
         assertEquals("new-secret", jellyfin.password)
         assertEquals(
             "user-1",
@@ -88,16 +101,17 @@ class PasswordViewModelTest {
     @Test
     fun `a wrong current password is refused in place, the form kept`() {
         val after = made(PasswordViewModel(connection)).fill("guess", "new-secret").resultOfChange()
-        assertEquals(PasswordResult.WrongCurrent, after.result)
-        assertEquals("guess", after.current)
-        assertFalse(after.changing)
+        assertEquals(PasswordFieldError.WrongCurrent, after.state.fieldError)
+        assertNull(after.outcome)
+        assertEquals("guess", after.state.current)
+        assertFalse(after.state.changing)
         assertEquals("old-secret", jellyfin.password)
     }
 
     @Test
     fun `new passwords that don't match never reach the server`() {
         val after = made(PasswordViewModel(connection)).fill("old-secret", "new-secret", "new-secert").resultOfChange()
-        assertEquals(PasswordResult.Mismatch, after.result)
+        assertEquals(PasswordFieldError.Mismatch, after.state.fieldError)
         assertEquals(0, jellyfin.hits("/Users/Password"))
     }
 
@@ -108,18 +122,18 @@ class PasswordViewModelTest {
         vm.change()
         assertEquals(0, jellyfin.hits("/Users/Password"))
         vm.onConfirm("other")
-        assertEquals(PasswordResult.Mismatch, vm.resultOfChange().result)
+        assertEquals(PasswordFieldError.Mismatch, vm.resultOfChange().state.fieldError)
         vm.onConfirm("new-secret")
-        assertEquals(null, vm.state.value.result)
+        assertNull(vm.state.value.fieldError)
     }
 
     @Test
     fun `a server failure and an unreachable one say which`() {
         jellyfin.status["/Users/Password"] = 500
-        assertEquals(PasswordResult.Refused, made(PasswordViewModel(connection)).fill("old-secret", "n").resultOfChange().result)
+        assertEquals(PasswordOutcome.Refused, made(PasswordViewModel(connection)).fill("old-secret", "n").resultOfChange().outcome)
         runBlocking { sessions.clear() }
         val signedOut = watching(Connection(OkHttpClient(), sessions, "Jellyfin Companion", "Test", "1.0", Dispatchers.IO, DiscardLogger))
-        assertEquals(PasswordResult.Unreachable, made(PasswordViewModel(signedOut)).fill("old-secret", "n").resultOfChange().result)
+        assertEquals(PasswordOutcome.Unreachable, made(PasswordViewModel(signedOut)).fill("old-secret", "n").resultOfChange().outcome)
     }
 
     @Test

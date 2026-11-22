@@ -10,9 +10,12 @@ import com.cooper.homelab.ephyra.server.removeUserImage
 import com.cooper.homelab.ephyra.server.setUserImage
 import com.cooper.homelab.ephyra.server.userImage
 import kotlinx.coroutines.CoroutineDispatcher
+import kotlinx.coroutines.channels.Channel
+import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
@@ -26,13 +29,12 @@ sealed interface ProfilePictureUiState {
 
     /**
      * [picture] is null when the user has none. [busy] is an upload or a removal on its way. [refused] is why the last change
-     * didn't take, and the picture is then still the old one; [unreadable] is a file that is not an image this device can read.
+     * didn't take, and the picture is then still the old one.
      */
     data class Ready(
         val picture: Bitmap? = null,
         val busy: Boolean = false,
         val refused: ConsoleFailure? = null,
-        val unreadable: Boolean = false,
         val confirmingRemove: Boolean = false,
     ) : ProfilePictureUiState
 }
@@ -52,6 +54,11 @@ class ProfilePictureViewModel(
 ) : ViewModel() {
     private val _state = MutableStateFlow<ProfilePictureUiState>(ProfilePictureUiState.Loading)
     val state: StateFlow<ProfilePictureUiState> = _state.asStateFlow()
+
+    private val _unreadable = Channel<Unit>(Channel.BUFFERED)
+
+    /** One item each time a picked file is not an image this device can read; said once, so a recreated page does not say it again. */
+    val unreadable: Flow<Unit> = _unreadable.receiveAsFlow()
 
     init {
         load()
@@ -81,12 +88,13 @@ class ProfilePictureViewModel(
     fun choose(pick: () -> ByteArray?) {
         val ready = _state.value as? ProfilePictureUiState.Ready ?: return
         if (ready.busy) return
-        _state.value = ready.copy(busy = true, unreadable = false, refused = null)
+        _state.value = ready.copy(busy = true, refused = null)
         // On the connection's scope: an upload already sent must finish if the page closes.
         connection.launchSave {
             val jpeg = withContext(io) { pick() }?.let { file -> withContext(work) { prepare(file) } }
             if (jpeg == null) {
-                _state.update { (it as? ProfilePictureUiState.Ready)?.copy(busy = false, unreadable = true) ?: it }
+                _state.update { (it as? ProfilePictureUiState.Ready)?.copy(busy = false) ?: it }
+                _unreadable.trySend(Unit)
                 return@launchSave
             }
             val sent = connection.consoleCall(TAG) { session, client -> client.setUserImage(userId ?: session.userId, jpeg, newRoute) }
@@ -107,7 +115,7 @@ class ProfilePictureViewModel(
     fun remove() {
         val ready = _state.value as? ProfilePictureUiState.Ready ?: return
         if (ready.busy) return
-        _state.value = ready.copy(busy = true, confirmingRemove = false, unreadable = false, refused = null)
+        _state.value = ready.copy(busy = true, confirmingRemove = false, refused = null)
         connection.launchSave {
             val removed = connection.consoleCall(TAG) { session, client -> client.removeUserImage(userId ?: session.userId, newRoute) }
             _state.update { current ->

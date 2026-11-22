@@ -32,7 +32,6 @@ dependencies {
     // that runs between it and the server is tested on the JVM. api: the screens above this module name its types.
     api("com.cooper.homelab:player-api")
     implementation(libs.binge.companion.sdk)
-    implementation(libs.binge.companion.kit)
     implementation(libs.binge.companion.contracts)
     implementation(libs.homelab.appservices)
     implementation(libs.homelab.server)
@@ -49,7 +48,6 @@ dependencies {
     testImplementation(libs.homelab.testing)
     testFixturesImplementation(libs.okhttp)
     testFixturesImplementation(libs.okhttp.mockwebserver)
-    testFixturesImplementation(libs.binge.companion.kit)
     testFixturesImplementation(libs.homelab.appservices)
     testFixturesApi(libs.homelab.server)
     testFixturesImplementation(libs.kotlinx.coroutines.android)

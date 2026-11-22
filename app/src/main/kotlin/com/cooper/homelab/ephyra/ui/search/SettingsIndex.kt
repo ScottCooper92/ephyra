@@ -3,50 +3,50 @@ package com.cooper.homelab.ephyra.ui.search
 import android.content.res.Resources
 import androidx.annotation.StringRes
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.outlined.Analytics
-import androidx.compose.material.icons.outlined.Backup
-import androidx.compose.material.icons.outlined.BarChart
-import androidx.compose.material.icons.outlined.Bolt
-import androidx.compose.material.icons.outlined.BugReport
-import androidx.compose.material.icons.outlined.Build
-import androidx.compose.material.icons.outlined.CalendarMonth
-import androidx.compose.material.icons.outlined.Category
-import androidx.compose.material.icons.outlined.CollectionsBookmark
-import androidx.compose.material.icons.outlined.ContentCopy
-import androidx.compose.material.icons.outlined.Dashboard
-import androidx.compose.material.icons.outlined.Description
-import androidx.compose.material.icons.outlined.Devices
-import androidx.compose.material.icons.outlined.Extension
-import androidx.compose.material.icons.outlined.Folder
-import androidx.compose.material.icons.outlined.GraphicEq
-import androidx.compose.material.icons.outlined.Group
-import androidx.compose.material.icons.outlined.Healing
-import androidx.compose.material.icons.outlined.HideSource
-import androidx.compose.material.icons.outlined.History
-import androidx.compose.material.icons.outlined.Image
-import androidx.compose.material.icons.outlined.Key
-import androidx.compose.material.icons.outlined.LiveTv
-import androidx.compose.material.icons.outlined.Lock
-import androidx.compose.material.icons.outlined.Memory
-import androidx.compose.material.icons.outlined.NewReleases
-import androidx.compose.material.icons.outlined.Notifications
-import androidx.compose.material.icons.outlined.Password
-import androidx.compose.material.icons.outlined.Person
-import androidx.compose.material.icons.outlined.PlayCircle
-import androidx.compose.material.icons.outlined.QrCode2
-import androidx.compose.material.icons.outlined.Restore
-import androidx.compose.material.icons.outlined.Router
-import androidx.compose.material.icons.outlined.Schedule
-import androidx.compose.material.icons.outlined.SettingsApplications
-import androidx.compose.material.icons.outlined.SkipNext
-import androidx.compose.material.icons.outlined.Storage
-import androidx.compose.material.icons.outlined.SwapHoriz
-import androidx.compose.material.icons.outlined.Translate
-import androidx.compose.material.icons.outlined.Tune
-import androidx.compose.material.icons.outlined.Videocam
-import androidx.compose.material.icons.outlined.ViewModule
-import androidx.compose.material.icons.outlined.Warning
-import androidx.compose.material.icons.outlined.WarningAmber
+import androidx.compose.material.icons.filled.Analytics
+import androidx.compose.material.icons.filled.Backup
+import androidx.compose.material.icons.filled.BarChart
+import androidx.compose.material.icons.filled.Bolt
+import androidx.compose.material.icons.filled.BugReport
+import androidx.compose.material.icons.filled.Build
+import androidx.compose.material.icons.filled.CalendarMonth
+import androidx.compose.material.icons.filled.Category
+import androidx.compose.material.icons.filled.CollectionsBookmark
+import androidx.compose.material.icons.filled.ContentCopy
+import androidx.compose.material.icons.filled.Dashboard
+import androidx.compose.material.icons.filled.Description
+import androidx.compose.material.icons.filled.Devices
+import androidx.compose.material.icons.filled.Extension
+import androidx.compose.material.icons.filled.Folder
+import androidx.compose.material.icons.filled.GraphicEq
+import androidx.compose.material.icons.filled.Group
+import androidx.compose.material.icons.filled.Healing
+import androidx.compose.material.icons.filled.HideSource
+import androidx.compose.material.icons.filled.History
+import androidx.compose.material.icons.filled.Image
+import androidx.compose.material.icons.filled.Key
+import androidx.compose.material.icons.filled.LiveTv
+import androidx.compose.material.icons.filled.Lock
+import androidx.compose.material.icons.filled.Memory
+import androidx.compose.material.icons.filled.NewReleases
+import androidx.compose.material.icons.filled.Notifications
+import androidx.compose.material.icons.filled.Password
+import androidx.compose.material.icons.filled.Person
+import androidx.compose.material.icons.filled.PlayCircle
+import androidx.compose.material.icons.filled.QrCode2
+import androidx.compose.material.icons.filled.Restore
+import androidx.compose.material.icons.filled.Router
+import androidx.compose.material.icons.filled.Schedule
+import androidx.compose.material.icons.filled.SettingsApplications
+import androidx.compose.material.icons.filled.SkipNext
+import androidx.compose.material.icons.filled.Storage
+import androidx.compose.material.icons.filled.SwapHoriz
+import androidx.compose.material.icons.filled.Translate
+import androidx.compose.material.icons.filled.Tune
+import androidx.compose.material.icons.filled.Videocam
+import androidx.compose.material.icons.filled.ViewModule
+import androidx.compose.material.icons.filled.Warning
+import androidx.compose.material.icons.filled.WarningAmber
 import androidx.compose.ui.graphics.vector.ImageVector
 import com.cooper.homelab.core.presentation.search.SettingEntry
 import com.cooper.homelab.ephyra.R
@@ -131,36 +131,36 @@ private fun Resources.indexPart1(): List<SettingEntry<SearchTarget>> =
         page(
             ConsolePage.ApproveCode,
             R.string.approve_title,
-            Icons.Outlined.QrCode2,
+            Icons.Filled.QrCode2,
             R.string.console_account_title,
             R.string.kw_quick_connect,
         ),
         page(
             ConsolePage.Playback,
             R.string.playback_title,
-            Icons.Outlined.Translate,
+            Icons.Filled.Translate,
             R.string.console_account_title,
             R.string.kw_playback,
         ),
-        page(ConsolePage.HomeLayout, R.string.home_layout_title, Icons.Outlined.Dashboard, R.string.console_account_title),
+        page(ConsolePage.HomeLayout, R.string.home_layout_title, Icons.Filled.Dashboard, R.string.console_account_title),
         page(
             ConsolePage.ProfilePicture,
             R.string.profile_picture_title,
-            Icons.Outlined.Image,
+            Icons.Filled.Image,
             R.string.console_account_title,
             R.string.kw_picture,
         ),
         page(
             ConsolePage.Password,
             R.string.password_title,
-            Icons.Outlined.Password,
+            Icons.Filled.Password,
             R.string.console_account_title,
             R.string.kw_password,
         ),
         setting(
             ConsolePage.Playback,
             R.string.playback_subtitles,
-            Icons.Outlined.Translate,
+            Icons.Filled.Translate,
             R.string.console_account_title,
             R.string.playback_title,
         ),
@@ -168,32 +168,32 @@ private fun Resources.indexPart1(): List<SettingEntry<SearchTarget>> =
         page(
             ConsolePage.NowPlaying,
             R.string.now_playing_title,
-            Icons.Outlined.PlayCircle,
+            Icons.Filled.PlayCircle,
             R.string.settings_server,
             R.string.kw_now_playing,
         ),
-        page(ConsolePage.LiveTv, R.string.live_tv_title, Icons.Outlined.LiveTv, R.string.settings_server, R.string.kw_live_tv),
-        page(ConsolePage.Users, R.string.users_title, Icons.Outlined.Group, R.string.settings_server, R.string.kw_users),
-        page(ConsolePage.Libraries, R.string.libraries_title, Icons.Outlined.Folder, R.string.settings_server, R.string.kw_libraries),
+        page(ConsolePage.LiveTv, R.string.live_tv_title, Icons.Filled.LiveTv, R.string.settings_server, R.string.kw_live_tv),
+        page(ConsolePage.Users, R.string.users_title, Icons.Filled.Group, R.string.settings_server, R.string.kw_users),
+        page(ConsolePage.Libraries, R.string.libraries_title, Icons.Filled.Folder, R.string.settings_server, R.string.kw_libraries),
         page(
             ConsolePage.Transcoding,
             R.string.transcoding_title,
-            Icons.Outlined.Memory,
+            Icons.Filled.Memory,
             R.string.settings_server,
             R.string.kw_transcoding,
         ),
-        page(ConsolePage.ServerSettings, R.string.server_settings_title, Icons.Outlined.Tune, R.string.settings_server),
+        page(ConsolePage.ServerSettings, R.string.server_settings_title, Icons.Filled.Tune, R.string.settings_server),
         page(
             ConsolePage.LibraryDisplay,
             R.string.display_title,
-            Icons.Outlined.ViewModule,
+            Icons.Filled.ViewModule,
             R.string.settings_server,
             R.string.kw_metadata,
         ),
         page(
             ConsolePage.MetadataDefaults,
             R.string.metadata_title,
-            Icons.Outlined.Category,
+            Icons.Filled.Category,
             R.string.settings_server,
             R.string.kw_metadata,
         ),
@@ -201,11 +201,11 @@ private fun Resources.indexPart1(): List<SettingEntry<SearchTarget>> =
 
 private fun Resources.indexPart2(): List<SettingEntry<SearchTarget>> =
     listOf(
-        page(ConsolePage.Nfo, R.string.nfo_title, Icons.Outlined.Description, R.string.settings_server, R.string.kw_nfo),
+        page(ConsolePage.Nfo, R.string.nfo_title, Icons.Filled.Description, R.string.settings_server, R.string.kw_nfo),
         setting(
             ConsolePage.Nfo,
             R.string.nfo_user,
-            Icons.Outlined.Person,
+            Icons.Filled.Person,
             R.string.settings_server,
             R.string.nfo_title,
             R.string.kw_nfo_user,
@@ -213,7 +213,7 @@ private fun Resources.indexPart2(): List<SettingEntry<SearchTarget>> =
         setting(
             ConsolePage.Nfo,
             R.string.nfo_date_format,
-            Icons.Outlined.CalendarMonth,
+            Icons.Filled.CalendarMonth,
             R.string.settings_server,
             R.string.nfo_title,
             R.string.kw_nfo_date,
@@ -221,7 +221,7 @@ private fun Resources.indexPart2(): List<SettingEntry<SearchTarget>> =
         setting(
             ConsolePage.Nfo,
             R.string.nfo_image_paths,
-            Icons.Outlined.Image,
+            Icons.Filled.Image,
             R.string.settings_server,
             R.string.nfo_title,
             R.string.kw_nfo_images,
@@ -230,7 +230,7 @@ private fun Resources.indexPart2(): List<SettingEntry<SearchTarget>> =
         setting(
             ConsolePage.Nfo,
             R.string.nfo_path_substitution,
-            Icons.Outlined.SwapHoriz,
+            Icons.Filled.SwapHoriz,
             R.string.settings_server,
             R.string.nfo_title,
             R.string.kw_nfo_paths,
@@ -239,33 +239,33 @@ private fun Resources.indexPart2(): List<SettingEntry<SearchTarget>> =
         setting(
             ConsolePage.Nfo,
             R.string.nfo_extra_thumbs,
-            Icons.Outlined.ContentCopy,
+            Icons.Filled.ContentCopy,
             R.string.settings_server,
             R.string.nfo_title,
             R.string.kw_nfo_thumbs,
             row = SettingRows.nfo(NFO_EXTRA_THUMBS),
         ),
-        page(ConsolePage.Trickplay, R.string.trickplay_title, Icons.Outlined.Image, R.string.settings_server, R.string.kw_trickplay),
-        page(ConsolePage.Plugins, R.string.plugins_title, Icons.Outlined.Extension, R.string.settings_server, R.string.kw_plugins),
-        page(ConsolePage.Devices, R.string.devices_title, Icons.Outlined.Devices, R.string.devices_title),
-        page(ConsolePage.Activity, R.string.activity_title, Icons.Outlined.History, R.string.devices_title, R.string.kw_activity),
-        page(ConsolePage.Tasks, R.string.tasks_title, Icons.Outlined.Schedule, R.string.advanced_title, R.string.kw_tasks),
-        page(ConsolePage.Logs, R.string.logs_title, Icons.Outlined.Description, R.string.advanced_title),
-        page(ConsolePage.Network, R.string.network_title, Icons.Outlined.Router, R.string.advanced_title, R.string.kw_network),
-        page(ConsolePage.ApiKeys, R.string.api_keys_title, Icons.Outlined.Key, R.string.advanced_title),
-        page(ConsolePage.Backups, R.string.backups_title, Icons.Outlined.Backup, R.string.advanced_title),
-        page(ConsolePage.Advanced, R.string.advanced_title, Icons.Outlined.Build, R.string.advanced_title),
+        page(ConsolePage.Trickplay, R.string.trickplay_title, Icons.Filled.Image, R.string.settings_server, R.string.kw_trickplay),
+        page(ConsolePage.Plugins, R.string.plugins_title, Icons.Filled.Extension, R.string.settings_server, R.string.kw_plugins),
+        page(ConsolePage.Devices, R.string.devices_title, Icons.Filled.Devices, R.string.devices_title),
+        page(ConsolePage.Activity, R.string.activity_title, Icons.Filled.History, R.string.devices_title, R.string.kw_activity),
+        page(ConsolePage.Tasks, R.string.tasks_title, Icons.Filled.Schedule, R.string.advanced_title, R.string.kw_tasks),
+        page(ConsolePage.Logs, R.string.logs_title, Icons.Filled.Description, R.string.advanced_title),
+        page(ConsolePage.Network, R.string.network_title, Icons.Filled.Router, R.string.advanced_title, R.string.kw_network),
+        page(ConsolePage.ApiKeys, R.string.api_keys_title, Icons.Filled.Key, R.string.advanced_title),
+        page(ConsolePage.Backups, R.string.backups_title, Icons.Filled.Backup, R.string.advanced_title),
+        page(ConsolePage.Advanced, R.string.advanced_title, Icons.Filled.Build, R.string.advanced_title),
         page(
             ConsolePage.Server,
             R.string.server_title,
-            Icons.Outlined.SettingsApplications,
+            Icons.Filled.SettingsApplications,
             R.string.advanced_title,
             R.string.kw_restart,
         ),
         setting(
             ConsolePage.Server,
             R.string.server_alerts,
-            Icons.Outlined.WarningAmber,
+            Icons.Filled.WarningAmber,
             R.string.advanced_title,
             R.string.server_title,
             R.string.kw_alerts,
@@ -277,7 +277,7 @@ private fun Resources.indexPart3(): List<SettingEntry<SearchTarget>> =
         setting(
             ConsolePage.Server,
             R.string.server_storage,
-            Icons.Outlined.Storage,
+            Icons.Filled.Storage,
             R.string.advanced_title,
             R.string.server_title,
             R.string.kw_storage,
@@ -286,7 +286,7 @@ private fun Resources.indexPart3(): List<SettingEntry<SearchTarget>> =
         setting(
             ConsolePage.Server,
             R.string.server_paths,
-            Icons.Outlined.Folder,
+            Icons.Filled.Folder,
             R.string.advanced_title,
             R.string.server_title,
             R.string.kw_paths,
@@ -295,7 +295,7 @@ private fun Resources.indexPart3(): List<SettingEntry<SearchTarget>> =
         setting(
             ConsolePage.Plugins,
             R.string.catalog_versions_search,
-            Icons.Outlined.History,
+            Icons.Filled.History,
             R.string.settings_server,
             R.string.plugins_title,
             R.string.kw_plugin_versions,
@@ -303,7 +303,7 @@ private fun Resources.indexPart3(): List<SettingEntry<SearchTarget>> =
         setting(
             ConsolePage.Libraries,
             R.string.library_image_limits,
-            Icons.Outlined.Image,
+            Icons.Filled.Image,
             R.string.settings_server,
             R.string.libraries_title,
             R.string.kw_image_limits,
@@ -311,7 +311,7 @@ private fun Resources.indexPart3(): List<SettingEntry<SearchTarget>> =
         setting(
             ConsolePage.ServerSettings,
             R.string.server_settings_name,
-            Icons.Outlined.Tune,
+            Icons.Filled.Tune,
             R.string.settings_server,
             R.string.server_settings_title,
             row = SettingRows.SERVER_NAME,
@@ -319,7 +319,7 @@ private fun Resources.indexPart3(): List<SettingEntry<SearchTarget>> =
         setting(
             ConsolePage.ServerSettings,
             R.string.server_settings_quick_connect,
-            Icons.Outlined.QrCode2,
+            Icons.Filled.QrCode2,
             R.string.settings_server,
             R.string.server_settings_title,
             R.string.kw_quick_connect,
@@ -328,7 +328,7 @@ private fun Resources.indexPart3(): List<SettingEntry<SearchTarget>> =
         setting(
             ConsolePage.Transcoding,
             R.string.transcoding_hardware,
-            Icons.Outlined.Memory,
+            Icons.Filled.Memory,
             R.string.settings_server,
             R.string.transcoding_title,
             R.string.kw_hardware,
@@ -337,7 +337,7 @@ private fun Resources.indexPart3(): List<SettingEntry<SearchTarget>> =
         setting(
             ConsolePage.Transcoding,
             R.string.transcoding_hevc,
-            Icons.Outlined.Memory,
+            Icons.Filled.Memory,
             R.string.settings_server,
             R.string.transcoding_title,
             R.string.kw_codecs,
@@ -350,7 +350,7 @@ private fun Resources.indexPart4(): List<SettingEntry<SearchTarget>> =
         setting(
             ConsolePage.Transcoding,
             R.string.transcoding_av1,
-            Icons.Outlined.Memory,
+            Icons.Filled.Memory,
             R.string.settings_server,
             R.string.transcoding_title,
             R.string.kw_codecs,
@@ -360,7 +360,7 @@ private fun Resources.indexPart4(): List<SettingEntry<SearchTarget>> =
         setting(
             ConsolePage.Network,
             R.string.network_http_port,
-            Icons.Outlined.Router,
+            Icons.Filled.Router,
             R.string.advanced_title,
             R.string.network_title,
             R.string.kw_port,
@@ -369,7 +369,7 @@ private fun Resources.indexPart4(): List<SettingEntry<SearchTarget>> =
         setting(
             ConsolePage.Network,
             R.string.network_https_port,
-            Icons.Outlined.Router,
+            Icons.Filled.Router,
             R.string.advanced_title,
             R.string.network_title,
             R.string.kw_port,
@@ -378,7 +378,7 @@ private fun Resources.indexPart4(): List<SettingEntry<SearchTarget>> =
         setting(
             ConsolePage.Network,
             R.string.network_enable_https,
-            Icons.Outlined.Router,
+            Icons.Filled.Router,
             R.string.advanced_title,
             R.string.network_title,
             R.string.kw_https,
@@ -387,7 +387,7 @@ private fun Resources.indexPart4(): List<SettingEntry<SearchTarget>> =
         setting(
             ConsolePage.Network,
             R.string.network_remote_access,
-            Icons.Outlined.Router,
+            Icons.Filled.Router,
             R.string.advanced_title,
             R.string.network_title,
             R.string.kw_remote,
@@ -396,7 +396,7 @@ private fun Resources.indexPart4(): List<SettingEntry<SearchTarget>> =
         setting(
             ConsolePage.Network,
             R.string.network_base_url,
-            Icons.Outlined.Router,
+            Icons.Filled.Router,
             R.string.advanced_title,
             R.string.network_title,
             R.string.kw_proxy,
@@ -405,7 +405,7 @@ private fun Resources.indexPart4(): List<SettingEntry<SearchTarget>> =
         setting(
             ConsolePage.Advanced,
             R.string.advanced_cache,
-            Icons.Outlined.Build,
+            Icons.Filled.Build,
             R.string.advanced_title,
             R.string.advanced_title,
             shown = { profile, _ -> profile.hasCacheAndLegacyAuth },
@@ -418,19 +418,19 @@ private fun Resources.indexPart5(): List<SettingEntry<SearchTarget>> =
         setting(
             ConsolePage.Logs,
             R.string.logs_retention_title,
-            Icons.Outlined.Description,
+            Icons.Filled.Description,
             R.string.advanced_title,
             R.string.logs_title,
             row = SettingRows.LOGS_RETENTION,
         ),
-        setting(ConsolePage.Users, R.string.users_remote_access, Icons.Outlined.Group, R.string.settings_server, R.string.users_title),
-        setting(ConsolePage.Users, R.string.users_downloading, Icons.Outlined.Group, R.string.settings_server, R.string.users_title),
+        setting(ConsolePage.Users, R.string.users_remote_access, Icons.Filled.Group, R.string.settings_server, R.string.users_title),
+        setting(ConsolePage.Users, R.string.users_downloading, Icons.Filled.Group, R.string.settings_server, R.string.users_title),
         // This app.
-        page(ConsolePage.ThisApp, R.string.settings_group_app, Icons.Outlined.Tune, R.string.settings_group_app, R.string.kw_this_app),
+        page(ConsolePage.ThisApp, R.string.settings_group_app, Icons.Filled.Tune, R.string.settings_group_app, R.string.kw_this_app),
         setting(
             ConsolePage.ThisApp,
             R.string.settings_share_usage_data,
-            Icons.Outlined.BarChart,
+            Icons.Filled.BarChart,
             R.string.settings_group_app,
             R.string.settings_group_app,
             R.string.kw_privacy,
@@ -439,7 +439,7 @@ private fun Resources.indexPart5(): List<SettingEntry<SearchTarget>> =
         setting(
             ConsolePage.ThisApp,
             R.string.settings_send_crash_reports,
-            Icons.Outlined.Healing,
+            Icons.Filled.Healing,
             R.string.settings_group_app,
             R.string.settings_group_app,
             R.string.kw_privacy,
@@ -448,7 +448,7 @@ private fun Resources.indexPart5(): List<SettingEntry<SearchTarget>> =
         setting(
             ConsolePage.ThisApp,
             R.string.settings_report_bug,
-            Icons.Outlined.Healing,
+            Icons.Filled.Healing,
             R.string.settings_group_app,
             R.string.settings_group_app,
             R.string.kw_feedback,
@@ -457,18 +457,18 @@ private fun Resources.indexPart5(): List<SettingEntry<SearchTarget>> =
         setting(
             ConsolePage.ThisApp,
             R.string.notifications_switch,
-            Icons.Outlined.Notifications,
+            Icons.Filled.Notifications,
             R.string.settings_group_app,
             R.string.settings_group_app,
             R.string.kw_notifications,
             shown = { _, account -> account.isAdministrator },
             row = SettingRows.THIS_APP_NOTIFICATIONS,
         ),
-        page(ConsolePage.Licences, R.string.licences_title, Icons.Outlined.Description, R.string.settings_group_app),
+        page(ConsolePage.Licences, R.string.licences_title, Icons.Filled.Description, R.string.settings_group_app),
         page(
             ConsolePage.Diagnostics,
             CoreR.string.diagnostics_title,
-            Icons.Outlined.BugReport,
+            Icons.Filled.BugReport,
             R.string.settings_group_app,
             R.string.kw_diagnostics,
         ),
@@ -480,7 +480,7 @@ private fun Resources.indexSwitches(): List<SettingEntry<SearchTarget>> =
         setting(
             ConsolePage.Playback,
             R.string.playback_default_audio,
-            Icons.Outlined.GraphicEq,
+            Icons.Filled.GraphicEq,
             R.string.console_account_title,
             R.string.playback_title,
             row = SettingRows.PLAYBACK_DEFAULT_AUDIO,
@@ -488,7 +488,7 @@ private fun Resources.indexSwitches(): List<SettingEntry<SearchTarget>> =
         setting(
             ConsolePage.Playback,
             R.string.playback_remember_audio,
-            Icons.Outlined.History,
+            Icons.Filled.History,
             R.string.console_account_title,
             R.string.playback_title,
             row = SettingRows.PLAYBACK_REMEMBER_AUDIO,
@@ -496,7 +496,7 @@ private fun Resources.indexSwitches(): List<SettingEntry<SearchTarget>> =
         setting(
             ConsolePage.Playback,
             R.string.playback_remember_subtitles,
-            Icons.Outlined.Restore,
+            Icons.Filled.Restore,
             R.string.console_account_title,
             R.string.playback_title,
             row = SettingRows.PLAYBACK_REMEMBER_SUBTITLES,
@@ -504,7 +504,7 @@ private fun Resources.indexSwitches(): List<SettingEntry<SearchTarget>> =
         setting(
             ConsolePage.Playback,
             R.string.playback_autoplay,
-            Icons.Outlined.SkipNext,
+            Icons.Filled.SkipNext,
             R.string.console_account_title,
             R.string.playback_title,
             row = SettingRows.PLAYBACK_AUTOPLAY,
@@ -512,7 +512,7 @@ private fun Resources.indexSwitches(): List<SettingEntry<SearchTarget>> =
         setting(
             ConsolePage.HomeLayout,
             R.string.home_layout_hide_played,
-            Icons.Outlined.NewReleases,
+            Icons.Filled.NewReleases,
             R.string.console_account_title,
             R.string.home_layout_title,
             row = SettingRows.HOME_HIDE_PLAYED,
@@ -520,7 +520,7 @@ private fun Resources.indexSwitches(): List<SettingEntry<SearchTarget>> =
         setting(
             ConsolePage.HomeLayout,
             R.string.home_layout_missing,
-            Icons.Outlined.HideSource,
+            Icons.Filled.HideSource,
             R.string.console_account_title,
             R.string.home_layout_title,
             row = SettingRows.HOME_MISSING_EPISODES,
@@ -528,7 +528,7 @@ private fun Resources.indexSwitches(): List<SettingEntry<SearchTarget>> =
         setting(
             ConsolePage.HomeLayout,
             R.string.home_layout_collections,
-            Icons.Outlined.CollectionsBookmark,
+            Icons.Filled.CollectionsBookmark,
             R.string.console_account_title,
             R.string.home_layout_title,
             row = SettingRows.HOME_COLLECTIONS,
@@ -541,7 +541,7 @@ private fun Resources.indexServerSwitches(): List<SettingEntry<SearchTarget>> =
         setting(
             ConsolePage.Trickplay,
             R.string.trickplay_hw_acceleration,
-            Icons.Outlined.Memory,
+            Icons.Filled.Memory,
             R.string.settings_server,
             R.string.trickplay_title,
             R.string.kw_trickplay,
@@ -550,7 +550,7 @@ private fun Resources.indexServerSwitches(): List<SettingEntry<SearchTarget>> =
         setting(
             ConsolePage.Trickplay,
             R.string.trickplay_hw_encoding,
-            Icons.Outlined.Videocam,
+            Icons.Filled.Videocam,
             R.string.settings_server,
             R.string.trickplay_title,
             R.string.kw_trickplay,
@@ -559,7 +559,7 @@ private fun Resources.indexServerSwitches(): List<SettingEntry<SearchTarget>> =
         setting(
             ConsolePage.Trickplay,
             R.string.trickplay_key_frames,
-            Icons.Outlined.Bolt,
+            Icons.Filled.Bolt,
             R.string.settings_server,
             R.string.trickplay_title,
             R.string.kw_trickplay,
@@ -569,7 +569,7 @@ private fun Resources.indexServerSwitches(): List<SettingEntry<SearchTarget>> =
         setting(
             ConsolePage.Advanced,
             R.string.advanced_slow_warning,
-            Icons.Outlined.Warning,
+            Icons.Filled.Warning,
             R.string.advanced_title,
             R.string.advanced_title,
             row = SettingRows.ADVANCED_SLOW_WARNING,
@@ -577,7 +577,7 @@ private fun Resources.indexServerSwitches(): List<SettingEntry<SearchTarget>> =
         setting(
             ConsolePage.Advanced,
             R.string.advanced_client_logs,
-            Icons.Outlined.BugReport,
+            Icons.Filled.BugReport,
             R.string.advanced_title,
             R.string.advanced_title,
             row = SettingRows.ADVANCED_CLIENT_LOGS,
@@ -585,7 +585,7 @@ private fun Resources.indexServerSwitches(): List<SettingEntry<SearchTarget>> =
         setting(
             ConsolePage.Advanced,
             R.string.advanced_metrics,
-            Icons.Outlined.Analytics,
+            Icons.Filled.Analytics,
             R.string.advanced_title,
             R.string.advanced_title,
             row = SettingRows.ADVANCED_METRICS,
@@ -593,7 +593,7 @@ private fun Resources.indexServerSwitches(): List<SettingEntry<SearchTarget>> =
         setting(
             ConsolePage.Advanced,
             R.string.advanced_legacy_auth,
-            Icons.Outlined.Lock,
+            Icons.Filled.Lock,
             R.string.advanced_title,
             R.string.advanced_title,
             shown = { profile, _ -> profile.hasCacheAndLegacyAuth },

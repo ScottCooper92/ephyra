@@ -9,10 +9,10 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.outlined.CheckCircle
-import androidx.compose.material.icons.outlined.Download
-import androidx.compose.material.icons.outlined.Extension
-import androidx.compose.material.icons.outlined.Info
+import androidx.compose.material.icons.filled.CheckCircle
+import androidx.compose.material.icons.filled.Download
+import androidx.compose.material.icons.filled.Extension
+import androidx.compose.material.icons.filled.Info
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Text
@@ -116,10 +116,10 @@ private fun CatalogPackage.row(
             else -> null
         }
     return ListItem(
-        icon = Icons.Outlined.Extension,
+        icon = Icons.Filled.Extension,
         label = name,
         detail = description.ifBlank { null },
-        note = note?.let { ListItemNote(it, icon = if (name in state.installing) Icons.Outlined.Download else Icons.Outlined.CheckCircle) },
+        note = note?.let { ListItemNote(it, icon = if (name in state.installing) Icons.Filled.Download else Icons.Filled.CheckCircle) },
         selected = open,
         onClick = { actions.onOpen(name) },
     )
@@ -153,7 +153,7 @@ fun PackageScreen(
             val installed = ready != null && pkg != null && pkg.name in ready.installed
             CreateFooter(
                 label = stringResource(if (installed) R.string.catalog_installed else R.string.catalog_install),
-                icon = if (installed) Icons.Outlined.CheckCircle else Icons.Outlined.Download,
+                icon = if (installed) Icons.Filled.CheckCircle else Icons.Filled.Download,
                 onClick = { pkg?.let { actions.onInstall(it, null) } },
                 // Always there once the package is known, so the page never moves under a tap: disabled while the install
                 // runs and once the plugin is installed, where it reads "Installed".
@@ -184,7 +184,7 @@ internal fun PluginPlaceholder() {
     EmptyScreen(
         message = stringResource(R.string.plugins_select),
         title = stringResource(R.string.plugins_select_title),
-        icon = Icons.Outlined.Extension,
+        icon = Icons.Filled.Extension,
     )
 }
 
@@ -213,14 +213,14 @@ private fun PackageContent(
                     listOfNotNull(
                         pkg.owner.takeIf { it.isNotBlank() }?.let {
                             ListItem(
-                                icon = Icons.Outlined.Info,
+                                icon = Icons.Filled.Info,
                                 label = stringResource(R.string.catalog_owner),
                                 detail = it,
                                 clickable = false,
                             )
                         },
                         ListItem(
-                            icon = Icons.Outlined.Download,
+                            icon = Icons.Filled.Download,
                             label = stringResource(R.string.catalog_version),
                             detail =
                                 version?.let { listOf(it.version, it.repositoryName).filter(String::isNotBlank).joinToString(" · ") }
@@ -245,7 +245,7 @@ private fun PackageContent(
                     BingeFilledButton(
                         label = stringResource(R.string.catalog_install),
                         onClick = { actions.onInstall(pkg, null) },
-                        leadingIcon = Icons.Outlined.Download,
+                        leadingIcon = Icons.Filled.Download,
                         modifier = Modifier.fillMaxWidth(),
                     )
             }
@@ -297,7 +297,7 @@ private fun VersionsGroup(
                 val installedNow = installedVersion != null && compareVersions(installedVersion, version.version) == 0
                 val fits = version.fits(state.server)
                 ListItem(
-                    icon = if (installedNow) Icons.Outlined.CheckCircle else Icons.Outlined.Download,
+                    icon = if (installedNow) Icons.Filled.CheckCircle else Icons.Filled.Download,
                     label = version.version,
                     detail =
                         if (fits) {
@@ -309,7 +309,7 @@ private fun VersionsGroup(
                         if (installedNow) {
                             ListItemNote(
                                 stringResource(R.string.catalog_installed),
-                                icon = Icons.Outlined.CheckCircle,
+                                icon = Icons.Filled.CheckCircle,
                             )
                         } else {
                             null
@@ -407,7 +407,7 @@ internal fun VersionContent(
         BingeFilledButton(
             label = stringResource(R.string.catalog_install),
             onClick = onInstall,
-            leadingIcon = Icons.Outlined.Download,
+            leadingIcon = Icons.Filled.Download,
             enabled = canInstall,
             modifier = Modifier.fillMaxWidth(),
         )

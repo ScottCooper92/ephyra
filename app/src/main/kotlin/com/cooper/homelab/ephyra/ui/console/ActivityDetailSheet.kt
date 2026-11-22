@@ -7,10 +7,10 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.outlined.Notes
-import androidx.compose.material.icons.outlined.Person
-import androidx.compose.material.icons.outlined.Schedule
-import androidx.compose.material.icons.outlined.Sell
+import androidx.compose.material.icons.filled.Notes
+import androidx.compose.material.icons.filled.Person
+import androidx.compose.material.icons.filled.Schedule
+import androidx.compose.material.icons.filled.Sell
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -61,14 +61,14 @@ internal fun ActivityDetailContent(
         listOfNotNull(
             entry.dateMillis?.let {
                 ListItem(
-                    icon = Icons.Outlined.Schedule,
+                    icon = Icons.Filled.Schedule,
                     label = stringResource(R.string.activity_detail_time),
                     detail = Instant.ofEpochMilli(it).let { at -> "${day.format(at)} · ${clock.format(at)}" },
                     clickable = false,
                 )
             },
             entry.type.takeIf { it.isNotBlank() }?.let {
-                ListItem(icon = Icons.Outlined.Sell, label = stringResource(R.string.activity_detail_type), detail = it, clickable = false)
+                ListItem(icon = Icons.Filled.Sell, label = stringResource(R.string.activity_detail_type), detail = it, clickable = false)
             },
             entry.overview?.let { detailRow(R.string.activity_detail_summary, it) },
             entry.longOverview?.let { detailRow(R.string.activity_detail_more, it) },
@@ -100,7 +100,7 @@ private fun openUserRow(
         null
     } else {
         ListItem(
-            icon = Icons.Outlined.Person,
+            icon = Icons.Filled.Person,
             label = stringResource(R.string.activity_detail_user),
             destination = ListItemDestination.Action,
             onClick = {
@@ -116,7 +116,7 @@ private fun detailRow(
     text: String,
 ): ListItem =
     ListItem(
-        icon = Icons.Outlined.Notes,
+        icon = Icons.Filled.Notes,
         label = stringResource(label),
         detail = text,
         supportingMaxLines = DETAIL_LINES,

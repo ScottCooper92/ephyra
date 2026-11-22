@@ -3,10 +3,10 @@ package com.cooper.homelab.ephyra.ui.search
 import android.content.res.Resources
 import androidx.annotation.StringRes
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.outlined.Audiotrack
-import androidx.compose.material.icons.outlined.Description
-import androidx.compose.material.icons.outlined.Image
-import androidx.compose.material.icons.outlined.VideoLibrary
+import androidx.compose.material.icons.filled.Audiotrack
+import androidx.compose.material.icons.filled.Description
+import androidx.compose.material.icons.filled.Image
+import androidx.compose.material.icons.filled.VideoLibrary
 import androidx.compose.ui.graphics.vector.ImageVector
 import com.cooper.homelab.core.presentation.search.SettingEntry
 import com.cooper.homelab.ephyra.R
@@ -35,10 +35,10 @@ internal val LIVE_TV_SPECS: Map<String, SwitchSpec> =
 
 internal fun Resources.indexLiveTvSwitches(): List<SettingEntry<SearchTarget>> =
     listOf(
-        liveTvEntry(R.string.live_tv_recording_subfolders, Icons.Outlined.VideoLibrary, LIVE_TV_SUBFOLDERS),
-        liveTvEntry(R.string.live_tv_recording_original_audio, Icons.Outlined.Audiotrack, LIVE_TV_ORIGINAL_AUDIO),
-        liveTvEntry(R.string.live_tv_recording_nfo, Icons.Outlined.Description, LIVE_TV_SAVE_NFO),
-        liveTvEntry(R.string.live_tv_recording_images, Icons.Outlined.Image, LIVE_TV_SAVE_IMAGES),
+        liveTvEntry(R.string.live_tv_recording_subfolders, Icons.Filled.VideoLibrary, LIVE_TV_SUBFOLDERS),
+        liveTvEntry(R.string.live_tv_recording_original_audio, Icons.Filled.Audiotrack, LIVE_TV_ORIGINAL_AUDIO),
+        liveTvEntry(R.string.live_tv_recording_nfo, Icons.Filled.Description, LIVE_TV_SAVE_NFO),
+        liveTvEntry(R.string.live_tv_recording_images, Icons.Filled.Image, LIVE_TV_SAVE_IMAGES),
     )
 
 private fun Resources.liveTvEntry(

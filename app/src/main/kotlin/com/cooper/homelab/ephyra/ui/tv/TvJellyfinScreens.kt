@@ -10,16 +10,16 @@ import androidx.compose.foundation.layout.ColumnScope
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.size
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.automirrored.outlined.Logout
-import androidx.compose.material.icons.outlined.BarChart
-import androidx.compose.material.icons.outlined.BugReport
-import androidx.compose.material.icons.outlined.Dns
-import androidx.compose.material.icons.outlined.Healing
-import androidx.compose.material.icons.outlined.LockOpen
-import androidx.compose.material.icons.outlined.Password
-import androidx.compose.material.icons.outlined.QrCode2
-import androidx.compose.material.icons.outlined.Refresh
-import androidx.compose.material.icons.outlined.Router
+import androidx.compose.material.icons.automirrored.filled.Logout
+import androidx.compose.material.icons.filled.BarChart
+import androidx.compose.material.icons.filled.BugReport
+import androidx.compose.material.icons.filled.Dns
+import androidx.compose.material.icons.filled.Healing
+import androidx.compose.material.icons.filled.LockOpen
+import androidx.compose.material.icons.filled.Password
+import androidx.compose.material.icons.filled.QrCode2
+import androidx.compose.material.icons.filled.Refresh
+import androidx.compose.material.icons.filled.Router
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -61,11 +61,12 @@ import com.binge.designsystem.tv.template.TvTwoPanePage
 import com.binge.designsystem.tv.template.TvTwoPaneStyle
 import com.binge.designsystem.tv.theme.TvButtonStyle
 import com.cooper.homelab.core.flags.bingePromotion
+import com.cooper.homelab.core.foundation.ServerVersion
 import com.cooper.homelab.core.uiandroid.flags.LocalFlags
 import com.cooper.homelab.ephyra.R
 import com.cooper.homelab.ephyra.feedback.installBugReportUrl
 import com.cooper.homelab.ephyra.server.ForgotPasswordAction
-import com.cooper.homelab.ephyra.server.JellyfinVersion
+import com.cooper.homelab.ephyra.server.knownRelease
 import com.cooper.homelab.ephyra.ui.Actions
 import com.cooper.homelab.ephyra.ui.ConnectionAutoRetry
 import com.cooper.homelab.ephyra.ui.ConnectionHealth
@@ -195,7 +196,7 @@ private fun ColumnScope.TvFoundServers(
             supportingText = if (cleartext) stringResource(R.string.server_detail_cleartext, server.address) else server.address,
             // The address is what the user judges a discovered server by, so it wraps rather than shrinking at large fonts.
             supportingLines = ADDRESS_LINES,
-            icon = if (cleartext) Icons.Outlined.LockOpen else Icons.Outlined.Dns,
+            icon = if (cleartext) Icons.Filled.LockOpen else Icons.Filled.Dns,
             selected = false,
             onClick = { actions.onChooseServer(server) },
         )
@@ -321,14 +322,14 @@ private fun ColumnScope.TvQuickConnectPanel(
         TvButton(
             label = stringResource(R.string.tv_try_again),
             onClick = actions.onQuickConnect,
-            leadingIcon = Icons.Outlined.QrCode2,
+            leadingIcon = Icons.Filled.QrCode2,
             modifier = Modifier.focusRequester(retry),
         )
     }
     TvButton(
         label = stringResource(R.string.tv_use_password),
         onClick = onUsePassword,
-        leadingIcon = Icons.Outlined.Password,
+        leadingIcon = Icons.Filled.Password,
         modifier = Modifier.focusRequester(entry),
     )
 }
@@ -414,7 +415,7 @@ private fun ColumnScope.TvPasswordPanel(
         loading = state.forgot == ForgotPasswordStep.Asking,
     )
     if (onUseQuickConnect != null) {
-        TvButton(label = stringResource(R.string.setup_quick_connect), onClick = onUseQuickConnect, leadingIcon = Icons.Outlined.QrCode2)
+        TvButton(label = stringResource(R.string.setup_quick_connect), onClick = onUseQuickConnect, leadingIcon = Icons.Filled.QrCode2)
     }
 }
 
@@ -532,7 +533,7 @@ private fun TvSignedInPage(
                             titles == null -> stringResource(R.string.settings_titles_checking)
                             else -> pluralStringResource(R.plurals.tv_titles_count, titles, titles)
                         },
-                    icon = Icons.Outlined.Refresh,
+                    icon = Icons.Filled.Refresh,
                     loading = state.refreshing,
                     options =
                         listOf(
@@ -540,21 +541,21 @@ private fun TvSignedInPage(
                                 label = stringResource(R.string.settings_refresh),
                                 action = true,
                                 onSelect = actions.onRefresh,
-                                icon = Icons.Outlined.Refresh,
+                                icon = Icons.Filled.Refresh,
                             ),
                         ),
                 ).takeIf { promoted && settled },
                 TvPaneRow(
                     key = SIGN_OUT_KEY,
                     label = stringResource(R.string.settings_sign_out),
-                    icon = Icons.AutoMirrored.Outlined.Logout,
+                    icon = Icons.AutoMirrored.Filled.Logout,
                     options =
                         listOf(
                             TvPaneOption(
                                 label = stringResource(R.string.settings_sign_out),
                                 action = true,
                                 onSelect = actions.onAskSignOut,
-                                icon = Icons.AutoMirrored.Outlined.Logout,
+                                icon = Icons.AutoMirrored.Filled.Logout,
                             ),
                         ),
                 ),
@@ -563,7 +564,7 @@ private fun TvSignedInPage(
         listOfNotNull(
             TvPaneGroup(title = stringResource(R.string.settings_signed_in_as), rows = accountRows),
             playback?.takeIf { settled }?.let { playbackGroup(it) },
-            appGroup(actions, JellyfinVersion.parse(state.session.serverVersion)),
+            appGroup(actions, knownRelease(state.session.serverVersion)),
         )
     TvListPaneBoard(
         title = stringResource(R.string.app_label),
@@ -609,7 +610,7 @@ private fun serverRows(
                 } else {
                     stringResource(R.string.server_detail, session.baseUrl, session.serverVersion)
                 },
-            icon = Icons.Outlined.Dns,
+            icon = Icons.Filled.Dns,
         )
     return listOf(server) + connectionRows(state, actions)
 }
@@ -642,11 +643,11 @@ private fun connectionRows(
                 stringResource(
                     if (actions.localNetworkAsked) R.string.connection_open_settings else R.string.connection_allow_local_network_short,
                 )
-            tvActionRow(RETRY_KEY, label, Icons.Outlined.Router, actions.onAllowLocalNetwork)
+            tvActionRow(RETRY_KEY, label, Icons.Filled.Router, actions.onAllowLocalNetwork)
         } else {
-            tvActionRow(RETRY_KEY, stringResource(R.string.connection_retry), Icons.Outlined.Refresh, actions.onRefresh, state.refreshing)
+            tvActionRow(RETRY_KEY, stringResource(R.string.connection_retry), Icons.Filled.Refresh, actions.onRefresh, state.refreshing)
         },
-        tvActionRow(EDIT_SERVER_KEY, stringResource(R.string.connection_edit_server), Icons.Outlined.Dns, actions.onChangeServer),
+        tvActionRow(EDIT_SERVER_KEY, stringResource(R.string.connection_edit_server), Icons.Filled.Dns, actions.onChangeServer),
     )
 }
 
@@ -681,7 +682,7 @@ private const val ADDRESS_LINES = 2
 @Composable
 private fun appGroup(
     actions: Actions,
-    serverVersion: JellyfinVersion?,
+    serverVersion: ServerVersion?,
 ): TvPaneGroup {
     val settings = actions.appSettings
 
@@ -711,7 +712,7 @@ private fun appGroup(
                     USAGE_DATA_KEY,
                     R.string.settings_share_usage_data,
                     R.string.settings_share_usage_data_caption,
-                    Icons.Outlined.BarChart,
+                    Icons.Filled.BarChart,
                     settings.shareUsageData,
                     actions.onShareUsageData,
                 ),
@@ -719,7 +720,7 @@ private fun appGroup(
                     CRASH_REPORTS_KEY,
                     R.string.settings_send_crash_reports,
                     R.string.settings_send_crash_reports_caption,
-                    Icons.Outlined.Healing,
+                    Icons.Filled.Healing,
                     settings.sendCrashReports,
                     actions.onSendCrashReports,
                 ),
@@ -732,7 +733,7 @@ private fun appGroup(
  * link fills in this install's app version and device, and the server's release when it is known.
  */
 @Composable
-private fun bugReportRow(serverVersion: JellyfinVersion?): TvPaneRow {
+private fun bugReportRow(serverVersion: ServerVersion?): TvPaneRow {
     val url = remember(serverVersion) { installBugReportUrl(serverVersion) }
     val codeSize = dimensionResource(R.dimen.tv_bug_report_code_size)
     val description = stringResource(R.string.tv_settings_report_bug_code_description)
@@ -740,7 +741,7 @@ private fun bugReportRow(serverVersion: JellyfinVersion?): TvPaneRow {
         key = REPORT_BUG_KEY,
         label = stringResource(R.string.settings_report_bug),
         body = stringResource(R.string.tv_settings_report_bug_scan),
-        icon = Icons.Outlined.BugReport,
+        icon = Icons.Filled.BugReport,
         hero = { TvQrCode(content = url, contentDescription = description, modifier = Modifier.size(codeSize)) },
     )
 }

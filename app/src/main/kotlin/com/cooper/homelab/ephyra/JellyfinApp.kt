@@ -17,7 +17,7 @@ class JellyfinApp :
 
     /** WorkManager starts through this, so the notification poll's worker is built with the graph's runner. */
     override val workManagerConfiguration: Configuration
-        get() = Configuration.Builder().setWorkerFactory(NotificationWorkerFactory { graph.pollRunner }).build()
+        get() = Configuration.Builder().setWorkerFactory(NotificationWorkerFactory({ graph.pollRunner }, { graph.logger })).build()
 
     /**
      * The image loader the design system draws every picture with. It is Coil's default, with one fetcher added that answers the demo

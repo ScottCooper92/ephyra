@@ -1,5 +1,6 @@
 package com.cooper.homelab.ephyra.server
 
+import com.cooper.homelab.core.foundation.ServerVersion
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertFalse
 import org.junit.Assert.assertNull
@@ -9,18 +10,18 @@ import org.junit.Test
 class JellyfinServerProfileTest {
     @Test
     fun `versions parse from what servers report`() {
-        assertEquals(JellyfinVersion(10, 11, 2), JellyfinVersion.parse("10.11.2"))
-        assertEquals(JellyfinVersion(10, 10, 0), JellyfinVersion.parse("10.10"))
-        assertEquals(JellyfinVersion(10, 9, 11), JellyfinVersion.parse("10.9.11-unstable"))
-        assertNull(JellyfinVersion.parse("unknown"))
-        assertNull(JellyfinVersion.parse(""))
-        assertNull(JellyfinVersion.parse(null))
+        assertEquals(ServerVersion.of(10, 11, 2), knownRelease("10.11.2"))
+        assertEquals(ServerVersion.of(10, 10, 0), knownRelease("10.10"))
+        assertEquals(ServerVersion.of(10, 9, 11), knownRelease("10.9.11-unstable"))
+        assertNull(knownRelease("unknown"))
+        assertNull(knownRelease(""))
+        assertNull(knownRelease(null))
     }
 
     @Test
     fun `versions order by their numbers, not their text`() {
-        assertTrue(JellyfinVersion(10, 10, 0) > JellyfinVersion(10, 9, 11))
-        assertTrue(JellyfinVersion(10, 11, 0) > JellyfinVersion(10, 10, 7))
+        assertTrue(ServerVersion.of(10, 10, 0) > ServerVersion.of(10, 9, 11))
+        assertTrue(ServerVersion.of(10, 11, 0) > ServerVersion.of(10, 10, 7))
     }
 
     @Test

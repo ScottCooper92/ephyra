@@ -10,15 +10,15 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.outlined.AddPhotoAlternate
-import androidx.compose.material.icons.outlined.Code
-import androidx.compose.material.icons.outlined.Dns
-import androidx.compose.material.icons.outlined.Gavel
-import androidx.compose.material.icons.outlined.Image
-import androidx.compose.material.icons.outlined.Public
-import androidx.compose.material.icons.outlined.QrCode2
-import androidx.compose.material.icons.outlined.Translate
-import androidx.compose.material.icons.outlined.Wallpaper
+import androidx.compose.material.icons.filled.AddPhotoAlternate
+import androidx.compose.material.icons.filled.Code
+import androidx.compose.material.icons.filled.Dns
+import androidx.compose.material.icons.filled.Gavel
+import androidx.compose.material.icons.filled.Image
+import androidx.compose.material.icons.filled.Public
+import androidx.compose.material.icons.filled.QrCode2
+import androidx.compose.material.icons.filled.Translate
+import androidx.compose.material.icons.filled.Wallpaper
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Text
@@ -148,14 +148,14 @@ private fun ServerSettingsBody(
             rows =
                 listOf(
                     ListItem(
-                        icon = Icons.Outlined.Dns,
+                        icon = Icons.Filled.Dns,
                         label = stringResource(R.string.server_settings_name),
                         key = SettingRows.SERVER_NAME,
                         detail = settings.name.ifBlank { notSet },
                         onClick = { actions.onEdit(ServerText.Name) },
                     ),
                     ListItem(
-                        icon = Icons.Outlined.Translate,
+                        icon = Icons.Filled.Translate,
                         label = stringResource(R.string.server_settings_metadata_language),
                         detail =
                             state.cultures.firstOrNull { it.twoLetter.equals(settings.metadataLanguage, true) }?.displayName
@@ -163,7 +163,7 @@ private fun ServerSettingsBody(
                         onClick = { onPick(ServerPicker.MetadataLanguage) },
                     ),
                     ListItem(
-                        icon = Icons.Outlined.Public,
+                        icon = Icons.Filled.Public,
                         label = stringResource(R.string.server_settings_metadata_country),
                         detail =
                             state.countries.firstOrNull { it.code.equals(settings.metadataCountry, true) }?.displayName
@@ -171,7 +171,7 @@ private fun ServerSettingsBody(
                         onClick = { onPick(ServerPicker.MetadataCountry) },
                     ),
                     ListItem(
-                        icon = Icons.Outlined.QrCode2,
+                        icon = Icons.Filled.QrCode2,
                         label = stringResource(R.string.server_settings_quick_connect),
                         key = SettingRows.SERVER_QUICK_CONNECT,
                         detail = stringResource(R.string.server_settings_quick_connect_detail),
@@ -220,13 +220,13 @@ private fun LoginScreenRows(
         rows =
             listOfNotNull(
                 ListItem(
-                    icon = Icons.Outlined.Gavel,
+                    icon = Icons.Filled.Gavel,
                     label = stringResource(R.string.server_settings_disclaimer),
                     detail = branding.loginDisclaimer.ifBlank { stringResource(R.string.server_settings_none) },
                     onClick = { actions.onEdit(ServerText.LoginDisclaimer) },
                 ),
                 ListItem(
-                    icon = Icons.Outlined.Code,
+                    icon = Icons.Filled.Code,
                     label = stringResource(R.string.server_settings_css),
                     detail =
                         branding.customCss.lines().count(String::isNotBlank).let { lines ->
@@ -241,7 +241,7 @@ private fun LoginScreenRows(
                     onClick = { actions.onEdit(ServerText.CustomCss) },
                 ),
                 ListItem(
-                    icon = Icons.Outlined.Wallpaper,
+                    icon = Icons.Filled.Wallpaper,
                     label = stringResource(R.string.server_settings_splashscreen),
                     detail = stringResource(R.string.server_settings_splashscreen_detail),
                     supportingMaxLines = SETTINGS_DETAIL_LINES,
@@ -250,7 +250,7 @@ private fun LoginScreenRows(
                     onClick = { actions.onSplashscreen(!branding.splashscreen) },
                 ).takeIf { splashscreenAvailable },
                 ListItem(
-                    icon = Icons.Outlined.Image,
+                    icon = Icons.Filled.Image,
                     label = stringResource(R.string.server_settings_splash_image),
                     detail =
                         if (branding.customSplashscreen) {
@@ -399,7 +399,7 @@ internal fun SplashSheet(
                 rows =
                     listOf(
                         ListItem(
-                            icon = Icons.Outlined.AddPhotoAlternate,
+                            icon = Icons.Filled.AddPhotoAlternate,
                             label = stringResource(R.string.server_settings_splash_choose),
                             destination = ListItemDestination.Action,
                             loading = state.busy,

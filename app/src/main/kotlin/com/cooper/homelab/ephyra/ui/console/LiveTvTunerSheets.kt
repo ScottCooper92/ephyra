@@ -8,17 +8,17 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.outlined.Delete
-import androidx.compose.material.icons.outlined.Dns
-import androidx.compose.material.icons.outlined.LiveTv
-import androidx.compose.material.icons.outlined.Memory
-import androidx.compose.material.icons.outlined.Repeat
-import androidx.compose.material.icons.outlined.Search
-import androidx.compose.material.icons.outlined.Share
-import androidx.compose.material.icons.outlined.Speed
-import androidx.compose.material.icons.outlined.Star
-import androidx.compose.material.icons.outlined.Timer
-import androidx.compose.material.icons.outlined.VideoFile
+import androidx.compose.material.icons.filled.Delete
+import androidx.compose.material.icons.filled.Dns
+import androidx.compose.material.icons.filled.LiveTv
+import androidx.compose.material.icons.filled.Memory
+import androidx.compose.material.icons.filled.Repeat
+import androidx.compose.material.icons.filled.Search
+import androidx.compose.material.icons.filled.Share
+import androidx.compose.material.icons.filled.Speed
+import androidx.compose.material.icons.filled.Star
+import androidx.compose.material.icons.filled.Timer
+import androidx.compose.material.icons.filled.VideoFile
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.SnackbarHostState
@@ -99,20 +99,20 @@ private fun ChooseTuner(actions: LiveTvActions) {
             rows =
                 listOf(
                     ListItem(
-                        icon = Icons.Outlined.LiveTv,
+                        icon = Icons.Filled.LiveTv,
                         label = stringResource(R.string.live_tv_type_hdhomerun),
                         detail = stringResource(R.string.live_tv_pick_hdhomerun_detail),
                         onClick = { actions.onForm(TunerDraft(TUNER_TYPE_HDHOMERUN)) },
                     ),
                     ListItem(
-                        icon = Icons.Outlined.Dns,
+                        icon = Icons.Filled.Dns,
                         label = stringResource(R.string.live_tv_type_m3u),
                         detail = stringResource(R.string.live_tv_pick_m3u_detail),
                         supportingMaxLines = DETAIL_LINES,
                         onClick = { actions.onForm(TunerDraft(TUNER_TYPE_M3U)) },
                     ),
                     ListItem(
-                        icon = Icons.Outlined.Search,
+                        icon = Icons.Filled.Search,
                         label = stringResource(R.string.live_tv_find),
                         detail = stringResource(R.string.live_tv_find_detail),
                         supportingMaxLines = DETAIL_LINES,
@@ -158,7 +158,7 @@ private fun TunerDiscovery(
                     rows =
                         devices.map { device ->
                             ListItem(
-                                icon = Icons.Outlined.LiveTv,
+                                icon = Icons.Filled.LiveTv,
                                 label = device.name.ifBlank { device.url.withoutSecrets() },
                                 detail = device.url.withoutSecrets().takeIf { device.name.isNotBlank() },
                                 supportingMaxLines = DETAIL_LINES,
@@ -337,13 +337,13 @@ private fun TunerSwitches(
         rows =
             listOfNotNull(
                 ListItem(
-                    icon = Icons.Outlined.Star,
+                    icon = Icons.Filled.Star,
                     label = stringResource(R.string.live_tv_favorites_only),
                     toggled = favorites,
                     onClick = { onFavorites(!favorites) },
                 ).takeIf { draft.isHdHomeRun },
                 ListItem(
-                    icon = Icons.Outlined.Memory,
+                    icon = Icons.Filled.Memory,
                     label = stringResource(R.string.live_tv_hw_transcoding),
                     toggled = hardware,
                     onClick = { onHardware(!hardware) },
@@ -376,11 +376,11 @@ internal fun StreamOptions(
 
 private fun streamOption(key: String): Triple<Int, Int, ImageVector> =
     when (key) {
-        TUNER_FMP4 -> Triple(R.string.live_tv_opt_fmp4, R.string.live_tv_opt_fmp4_detail, Icons.Outlined.VideoFile)
-        TUNER_STREAM_SHARING -> Triple(R.string.live_tv_opt_sharing, R.string.live_tv_opt_sharing_detail, Icons.Outlined.Share)
-        TUNER_STREAM_LOOPING -> Triple(R.string.live_tv_opt_looping, R.string.live_tv_opt_looping_detail, Icons.Outlined.Repeat)
-        TUNER_IGNORE_DTS -> Triple(R.string.live_tv_opt_dts, R.string.live_tv_opt_dts_detail, Icons.Outlined.Timer)
-        else -> Triple(R.string.live_tv_opt_framerate, R.string.live_tv_opt_framerate_detail, Icons.Outlined.Speed)
+        TUNER_FMP4 -> Triple(R.string.live_tv_opt_fmp4, R.string.live_tv_opt_fmp4_detail, Icons.Filled.VideoFile)
+        TUNER_STREAM_SHARING -> Triple(R.string.live_tv_opt_sharing, R.string.live_tv_opt_sharing_detail, Icons.Filled.Share)
+        TUNER_STREAM_LOOPING -> Triple(R.string.live_tv_opt_looping, R.string.live_tv_opt_looping_detail, Icons.Filled.Repeat)
+        TUNER_IGNORE_DTS -> Triple(R.string.live_tv_opt_dts, R.string.live_tv_opt_dts_detail, Icons.Filled.Timer)
+        else -> Triple(R.string.live_tv_opt_framerate, R.string.live_tv_opt_framerate_detail, Icons.Filled.Speed)
     }
 
 @Composable
@@ -393,7 +393,7 @@ private fun RemoveRow(
         rows =
             listOf(
                 ListItem(
-                    icon = Icons.Outlined.Delete,
+                    icon = Icons.Filled.Delete,
                     iconTint = MaterialTheme.colorScheme.error,
                     label = stringResource(R.string.live_tv_remove_tuner),
                     onClick = { actions.onAskRemove(id) },

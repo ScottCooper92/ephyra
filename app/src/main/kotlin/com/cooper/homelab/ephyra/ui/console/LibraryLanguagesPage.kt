@@ -9,7 +9,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.outlined.Translate
+import androidx.compose.material.icons.filled.Translate
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
@@ -97,11 +97,11 @@ internal fun LanguagesBody(
                 item(key = INTRO_KEY) { PageIntro(stringResource(R.string.library_download_languages_body)) }
                 if (state.cultures.isEmpty()) {
                     item(key = EMPTY_KEY) {
-                        ConsoleEmptyScreen(stringResource(R.string.library_download_languages_unknown), Icons.Outlined.Translate)
+                        ConsoleEmptyScreen(stringResource(R.string.library_download_languages_unknown), Icons.Filled.Translate)
                     }
                 } else if (matching.isEmpty()) {
                     item(key = EMPTY_KEY) {
-                        ConsoleEmptyScreen(stringResource(R.string.library_languages_no_match), Icons.Outlined.Translate)
+                        ConsoleEmptyScreen(stringResource(R.string.library_languages_no_match), Icons.Filled.Translate)
                     }
                 }
                 if (selected.isNotEmpty()) {
@@ -139,7 +139,7 @@ private fun Culture.row(
 ): ListItem {
     val checked = on.any { it.equals(code, ignoreCase = true) }
     return ListItem(
-        icon = Icons.Outlined.Translate,
+        icon = Icons.Filled.Translate,
         label = displayName,
         toggled = checked,
         onClick = { actions.onJson(LIBRARY_DOWNLOAD_LANGUAGES, state.options.languagesWith(code, !checked)) },

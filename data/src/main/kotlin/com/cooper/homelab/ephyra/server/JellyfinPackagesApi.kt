@@ -1,5 +1,7 @@
 package com.cooper.homelab.ephyra.server
 
+import com.cooper.homelab.core.foundation.ServerVersion
+import com.cooper.homelab.core.server.network.UnreadableAnswerException
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.mapNotNull
 import kotlinx.serialization.json.JsonArray
@@ -23,8 +25,8 @@ data class PackageVersion(
      * Whether this version was built for [server] or an older release, as the server itself checks. A version
      * with no target, or a server whose version can't be read, fits: the server's own answer stays the backstop.
      */
-    fun fits(server: JellyfinVersion?): Boolean {
-        val abi = JellyfinVersion.parse(targetAbi?.takeIf { it.isNotBlank() }) ?: return true
+    fun fits(server: ServerVersion?): Boolean {
+        val abi = knownRelease(targetAbi?.takeIf { it.isNotBlank() }) ?: return true
         return server == null || abi <= server
     }
 }
@@ -40,14 +42,14 @@ data class CatalogPackage(
     val versions: List<PackageVersion>,
 ) {
     /** The newest version built for [server] or older: what Install offers. Null when none fits. */
-    fun installable(server: JellyfinVersion?): PackageVersion? =
+    fun installable(server: ServerVersion?): PackageVersion? =
         versions.filter { it.fits(server) }.maxWithOrNull { a, b -> compareVersions(a.version, b.version) }
 
     /** Every version the catalog lists, the newest first. */
     fun history(): List<PackageVersion> = versions.sortedWith { a, b -> compareVersions(b.version, a.version) }
 }
 
-/** Plugin versions are `a.b.c.d`, so unlike [JellyfinVersion] every numeric part counts; a part that isn't a number reads as 0. */
+/** Plugin versions are `a.b.c.d`, so unlike [ServerVersion] every numeric part counts; a part that isn't a number reads as 0. */
 fun compareVersions(
     a: String,
     b: String,
@@ -69,7 +71,7 @@ fun compareVersions(
 
 /** The catalog, by name. Admin only. */
 suspend fun JellyfinClient.packages(): List<CatalogPackage> {
-    val answer = get(PACKAGES) as? JsonArray ?: throw JellyfinUnreadableAnswer(PACKAGES)
+    val answer = get(PACKAGES) as? JsonArray ?: throw UnreadableAnswerException()
     return answer.mapNotNull { (it as? JsonObject)?.packageOrNull() }.sortedBy { it.name.lowercase() }
 }
 
@@ -173,7 +175,7 @@ data class PluginRepository(
 
 /** The repositories the server fetches its catalog from. Admin only. */
 suspend fun JellyfinClient.repositories(): List<PluginRepository> {
-    val answer = get(REPOSITORIES) as? JsonArray ?: throw JellyfinUnreadableAnswer(REPOSITORIES)
+    val answer = get(REPOSITORIES) as? JsonArray ?: throw UnreadableAnswerException()
     return answer.mapNotNull { element ->
         val json = element as? JsonObject ?: return@mapNotNull null
         val url = json.string("Url") ?: return@mapNotNull null

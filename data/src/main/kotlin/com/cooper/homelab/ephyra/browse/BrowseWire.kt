@@ -1,6 +1,6 @@
 package com.cooper.homelab.ephyra.browse
 
-import com.cooper.homelab.ephyra.server.JellyfinUnreadableAnswer
+import com.cooper.homelab.core.server.network.UnreadableAnswerException
 import kotlinx.serialization.DeserializationStrategy
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
@@ -20,18 +20,17 @@ internal val BrowseJson: Json =
         explicitNulls = false
     }
 
-/** Decodes [element] as [strategy], or throws [JellyfinUnreadableAnswer] for [path] when the shape is wrong. */
+/** Decodes [element] as [strategy], or throws [UnreadableAnswerException] when the shape is wrong. */
 internal fun <T> decodeAnswer(
     strategy: DeserializationStrategy<T>,
     element: JsonElement,
-    path: String,
 ): T =
     try {
         BrowseJson.decodeFromJsonElement(strategy, element)
     } catch (_: SerializationException) {
-        throw JellyfinUnreadableAnswer(path)
+        throw UnreadableAnswerException()
     } catch (_: IllegalArgumentException) {
-        throw JellyfinUnreadableAnswer(path)
+        throw UnreadableAnswerException()
     }
 
 @Serializable

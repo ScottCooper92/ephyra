@@ -4,11 +4,11 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.outlined.CalendarMonth
-import androidx.compose.material.icons.outlined.ContentCopy
-import androidx.compose.material.icons.outlined.Image
-import androidx.compose.material.icons.outlined.Person
-import androidx.compose.material.icons.outlined.SwapHoriz
+import androidx.compose.material.icons.filled.CalendarMonth
+import androidx.compose.material.icons.filled.ContentCopy
+import androidx.compose.material.icons.filled.Image
+import androidx.compose.material.icons.filled.Person
+import androidx.compose.material.icons.filled.SwapHoriz
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -116,7 +116,7 @@ private fun NfoBody(
                     userRow(state, actions),
                     config.string(NFO_RELEASE_DATE_FORMAT)?.let { format ->
                         ListItem(
-                            icon = Icons.Outlined.CalendarMonth,
+                            icon = Icons.Filled.CalendarMonth,
                             label = stringResource(R.string.nfo_date_format),
                             detail = format,
                             onClick = { actions.onSheet(NfoSheet.DateFormat) },
@@ -126,7 +126,7 @@ private fun NfoBody(
                         config,
                         actions,
                         NFO_SAVE_IMAGE_PATHS,
-                        Icons.Outlined.Image,
+                        Icons.Filled.Image,
                         R.string.nfo_image_paths,
                         R.string.nfo_image_paths_detail,
                     ),
@@ -134,7 +134,7 @@ private fun NfoBody(
                         config,
                         actions,
                         NFO_PATH_SUBSTITUTION,
-                        Icons.Outlined.SwapHoriz,
+                        Icons.Filled.SwapHoriz,
                         R.string.nfo_path_substitution,
                         R.string.nfo_path_substitution_detail,
                     ),
@@ -142,7 +142,7 @@ private fun NfoBody(
                         config,
                         actions,
                         NFO_EXTRA_THUMBS,
-                        Icons.Outlined.ContentCopy,
+                        Icons.Filled.ContentCopy,
                         R.string.nfo_extra_thumbs,
                         R.string.nfo_extra_thumbs_detail,
                     ),
@@ -160,7 +160,7 @@ private fun userRow(
     val id = state.config.nfoUserId()
     val name = id?.let { wanted -> state.users?.firstOrNull { it.id.equals(wanted, ignoreCase = true) }?.name }
     return ListItem(
-        icon = Icons.Outlined.Person,
+        icon = Icons.Filled.Person,
         label = stringResource(R.string.nfo_user),
         detail = name ?: stringResource(if (id == null) R.string.nfo_user_none else R.string.nfo_user_other),
         onClick = { actions.onSheet(NfoSheet.User) },
@@ -208,7 +208,7 @@ private fun NfoUserSheet(
     state: NfoUiState.Ready,
     actions: NfoActions,
 ) {
-    val none = BingeChoice(NO_USER, stringResource(R.string.nfo_user_none), icon = Icons.Outlined.Person)
+    val none = BingeChoice(NO_USER, stringResource(R.string.nfo_user_none), icon = Icons.Filled.Person)
     val users = state.users
     val choices: BingeChoiceList<String> =
         if (users == null) {
@@ -222,7 +222,7 @@ private fun NfoUserSheet(
                 )
             }
         } else {
-            BingeChoiceList.Ready(listOf(none) + users.map { BingeChoice(it.id, it.name, icon = Icons.Outlined.Person) })
+            BingeChoiceList.Ready(listOf(none) + users.map { BingeChoice(it.id, it.name, icon = Icons.Filled.Person) })
         }
     BingeChoiceSheet(
         title = stringResource(R.string.nfo_user),

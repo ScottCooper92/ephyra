@@ -6,14 +6,14 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.lifecycle.viewmodel.initializer
 import androidx.lifecycle.viewmodel.viewModelFactory
+import com.cooper.homelab.core.foundation.ServerVersion
 import com.cooper.homelab.ephyra.AppGraph
-import com.cooper.homelab.ephyra.server.JellyfinVersion
 
 /** The backups page with its own view model, kept while the page is open and new for each opening. */
 @Composable
 internal fun BackupsRoute(
     graph: AppGraph,
-    serverVersion: JellyfinVersion?,
+    serverVersion: ServerVersion?,
     onBack: () -> Unit,
 ) {
     val backups: BackupsViewModel = viewModel(factory = viewModelFactory { initializer { BackupsViewModel(graph.connection) } })

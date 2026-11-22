@@ -10,8 +10,8 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.outlined.AddPhotoAlternate
-import androidx.compose.material.icons.outlined.Person
+import androidx.compose.material.icons.filled.AddPhotoAlternate
+import androidx.compose.material.icons.filled.Person
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.SnackbarHostState
@@ -88,7 +88,7 @@ fun ProfilePictureScreen(
                     rows =
                         listOf(
                             ListItem(
-                                icon = Icons.Outlined.AddPhotoAlternate,
+                                icon = Icons.Filled.AddPhotoAlternate,
                                 label = stringResource(R.string.profile_picture_choose),
                                 destination = ListItemDestination.Action,
                                 loading = ready.busy,
@@ -156,7 +156,7 @@ internal fun Picture(
                 contentAlignment = Alignment.Center,
             ) {
                 Icon(
-                    Icons.Outlined.Person,
+                    Icons.Filled.Person,
                     contentDescription = stringResource(R.string.profile_picture_none),
                     tint = MaterialTheme.colorScheme.onSurfaceVariant,
                     modifier = Modifier.size(PICTURE_SIZE / 2),

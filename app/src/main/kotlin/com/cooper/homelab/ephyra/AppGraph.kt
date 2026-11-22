@@ -40,10 +40,13 @@ import com.cooper.homelab.core.server.connection.DeviceIdentity
 import com.cooper.homelab.core.server.connection.KeystoreSecretCipher
 import com.cooper.homelab.core.server.connection.SecretCipher
 import com.cooper.homelab.core.server.connection.ServerRegistry
+import com.cooper.homelab.core.server.network.AndroidLocalNetworkPermission
 import com.cooper.homelab.core.server.network.CleartextConsent
 import com.cooper.homelab.core.server.network.CleartextGate
 import com.cooper.homelab.core.server.network.CleartextGuard
 import com.cooper.homelab.core.server.network.DataStoreCleartextConsent
+import com.cooper.homelab.core.server.network.LocalNetworkInterceptor
+import com.cooper.homelab.core.server.network.LocalNetworkPermission
 import com.cooper.homelab.core.telemetry.Analytics
 import com.cooper.homelab.core.telemetry.AnalyticsConsentGate
 import com.cooper.homelab.core.telemetry.CrashReportingSwitch
@@ -141,11 +144,16 @@ class AppGraph(
      */
     val searchTogglesEnabled: Boolean by lazy { debugSwitch(SEARCH_TOGGLES_SWITCH) }
 
+    /** Whether the platform lets this app reach the local network: always before SDK 37, the runtime permission from then on. */
+    val localNetwork: LocalNetworkPermission by lazy { AndroidLocalNetworkPermission(appContext) }
+
     val http: OkHttpClient by lazy {
         OkHttpClient
             .Builder()
             // Answers the demo server's address from memory and passes every other host through.
             .addInterceptor(DemoTransport())
+            // A call to a local-network host is refused by name while the permission is not granted, so it reads as that and not as a server that is down.
+            .addInterceptor(LocalNetworkInterceptor(localNetwork))
             .connectTimeout(10, TimeUnit.SECONDS)
             .readTimeout(30, TimeUnit.SECONDS)
             // A network interceptor, so it judges every hop, a redirect down to HTTP included. The demo never reaches it.
@@ -243,20 +251,14 @@ class AppGraph(
     /** Whether the user wants the client surfaces, in a store of its own. On until turned off. */
     private val clientPrefs: BooleanPreference by lazy {
         clientPreference(
-            PreferenceDataStoreFactory.create(
-                corruptionHandler = ReplaceFileCorruptionHandler { emptyPreferences() },
-                produceFile = { appContext.preferencesDataStoreFile("client") },
-            ),
+            dataStore("client"),
         )
     }
 
     /** The most the user lets a play stream, on Wi-Fi and on mobile data, in a store of its own. Auto until chosen. */
     val streamingQualityPrefs: StreamingQualityPrefs by lazy {
         StreamingQualityPrefs(
-            PreferenceDataStoreFactory.create(
-                corruptionHandler = ReplaceFileCorruptionHandler { emptyPreferences() },
-                produceFile = { appContext.preferencesDataStoreFile("streaming_quality") },
-            ),
+            dataStore("streaming_quality"),
         )
     }
 
@@ -271,10 +273,7 @@ class AppGraph(
     /** The user's answers about usage data and crash reports, in a store of their own. */
     val telemetryPrefs: TelemetryPrefs by lazy {
         TelemetryPrefs(
-            PreferenceDataStoreFactory.create(
-                corruptionHandler = ReplaceFileCorruptionHandler { emptyPreferences() },
-                produceFile = { appContext.preferencesDataStoreFile("telemetry") },
-            ),
+            dataStore("telemetry"),
             // Crash reporting is opt-in here: it is off until the user agrees on the first-run screen or in Settings.
             crashReportingDefault = false,
         )
@@ -294,10 +293,7 @@ class AppGraph(
     /** The settings search's last few results, kept on this device alone. */
     val recentSearches: LocalRecentSearches by lazy {
         LocalRecentSearches(
-            PreferenceDataStoreFactory.create(
-                corruptionHandler = ReplaceFileCorruptionHandler { emptyPreferences() },
-                produceFile = { appContext.preferencesDataStoreFile("recent_searches") },
-            ),
+            dataStore("recent_searches"),
         )
     }
 
@@ -346,10 +342,7 @@ class AppGraph(
         ReviewPrompt(
             store =
                 ReviewSignalStore(
-                    PreferenceDataStoreFactory.create(
-                        corruptionHandler = ReplaceFileCorruptionHandler { emptyPreferences() },
-                        produceFile = { appContext.preferencesDataStoreFile("review") },
-                    ),
+                    dataStore("review"),
                 ),
             launcher = PlayReviewPromptLauncher(appContext, AppDispatchers.platform()),
             isEnabled = { flags.flags.value[SharedFlags.ReviewPrompt] },

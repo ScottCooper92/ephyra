@@ -1,5 +1,6 @@
 package com.cooper.homelab.ephyra.server
 
+import com.cooper.homelab.core.server.network.UnreadableAnswerException
 import kotlinx.serialization.json.JsonArray
 import kotlinx.serialization.json.JsonObject
 import kotlinx.serialization.json.JsonPrimitive
@@ -92,7 +93,7 @@ private const val HTTP_NOT_FOUND = 404
 
 /** The accounts the server's owner has not hidden from the login screen; empty when there are none. */
 suspend fun JellyfinClient.publicUsers(): List<PublicUser> {
-    val answer = get(PUBLIC_USERS) as? JsonArray ?: throw JellyfinUnreadableAnswer(PUBLIC_USERS)
+    val answer = get(PUBLIC_USERS) as? JsonArray ?: throw UnreadableAnswerException()
     return answer.mapNotNull { element ->
         val json = element as? JsonObject ?: return@mapNotNull null
         val name = json.string("Name")?.takeIf { it.isNotBlank() } ?: return@mapNotNull null

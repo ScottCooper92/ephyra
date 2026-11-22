@@ -4,9 +4,9 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.outlined.Add
-import androidx.compose.material.icons.outlined.Delete
-import androidx.compose.material.icons.outlined.ListAlt
+import androidx.compose.material.icons.filled.Add
+import androidx.compose.material.icons.filled.Delete
+import androidx.compose.material.icons.filled.ListAlt
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -196,13 +196,13 @@ internal fun ListEditor(
                     .entries(list)
                     .mapIndexed { index, entry ->
                         ListItem(
-                            icon = Icons.Outlined.ListAlt,
+                            icon = Icons.Filled.ListAlt,
                             label = entry.shown(),
                             clickable = false,
                             trailingContent = {
                                 ExpressiveIconButton(
                                     onClick = { actions.onRemove(list, index) },
-                                    icon = Icons.Outlined.Delete,
+                                    icon = Icons.Filled.Delete,
                                     contentDescription = stringResource(R.string.display_remove),
                                     tint = MaterialTheme.colorScheme.error,
                                 )
@@ -210,11 +210,11 @@ internal fun ListEditor(
                         )
                     }.ifEmpty {
                         listOf(
-                            ListItem(icon = Icons.Outlined.ListAlt, label = stringResource(R.string.display_list_empty), clickable = false),
+                            ListItem(icon = Icons.Filled.ListAlt, label = stringResource(R.string.display_list_empty), clickable = false),
                         )
                     } +
                     ListItem(
-                        icon = Icons.Outlined.Add,
+                        icon = Icons.Filled.Add,
                         label = stringResource(R.string.display_add),
                         destination = ListItemDestination.Action,
                         onClick = { actions.onSheet(DisplaySheet.NewEntry) },

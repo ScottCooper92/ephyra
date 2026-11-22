@@ -1,5 +1,7 @@
 package com.cooper.homelab.ephyra.browse
 
+import com.cooper.homelab.core.foundation.ServerVersion
+import com.cooper.homelab.core.server.network.UnreadableAnswerException
 import com.cooper.homelab.ephyra.FakeJellyfin
 import com.cooper.homelab.ephyra.FakeTitle
 import com.cooper.homelab.ephyra.server.ClientIdentity
@@ -7,8 +9,6 @@ import com.cooper.homelab.ephyra.server.DiscardLogger
 import com.cooper.homelab.ephyra.server.JellyfinClient
 import com.cooper.homelab.ephyra.server.JellyfinHttpException
 import com.cooper.homelab.ephyra.server.JellyfinServerProfile
-import com.cooper.homelab.ephyra.server.JellyfinUnreadableAnswer
-import com.cooper.homelab.ephyra.server.JellyfinVersion
 import com.cooper.homelab.ephyra.server.UserDataChange
 import com.cooper.homelab.ephyra.server.sameItem
 import kotlinx.coroutines.Dispatchers
@@ -35,8 +35,8 @@ class UserDataTest {
     private val client =
         JellyfinClient(OkHttpClient(), jellyfin.baseUrl.toHttpUrl(), identity, Dispatchers.IO, logger = DiscardLogger)
             .withToken("token-1")
-    private val latest = JellyfinServerProfile(JellyfinVersion(10, 11, 6))
-    private val floor = JellyfinServerProfile(JellyfinVersion(10, 8, 13))
+    private val latest = JellyfinServerProfile(ServerVersion.of(10, 11, 6))
+    private val floor = JellyfinServerProfile(ServerVersion.of(10, 8, 13))
     private val socket = MutableSharedFlow<List<UserDataChange>>(extraBufferCapacity = 8)
     private val data = JellyfinUserDataRepository(client, "user-1", latest, socket)
 
@@ -122,7 +122,7 @@ class UserDataTest {
     fun `an answer that is not user data is unreadable`() {
         movie()
         jellyfin.notJson += "/UserPlayedItems/m1"
-        assertThrows(JellyfinUnreadableAnswer::class.java) { runBlocking { data.setPlayed("m1", true) } }
+        assertThrows(UnreadableAnswerException::class.java) { runBlocking { data.setPlayed("m1", true) } }
     }
 
     @Test

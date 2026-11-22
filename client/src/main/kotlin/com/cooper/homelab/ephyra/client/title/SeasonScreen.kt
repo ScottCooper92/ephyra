@@ -2,10 +2,10 @@ package com.cooper.homelab.ephyra.client.title
 
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.CheckCircle
+import androidx.compose.material.icons.filled.CheckCircleOutline
 import androidx.compose.material.icons.filled.PlayArrow
 import androidx.compose.material.icons.filled.Tv
 import androidx.compose.material.icons.filled.VideoLibrary
-import androidx.compose.material.icons.outlined.CheckCircleOutline
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -190,7 +190,7 @@ private fun seasonRoundActions(
     return buildList {
         add(
             DetailRoundAction(
-                icon = if (season.watched) Icons.Filled.CheckCircle else Icons.Outlined.CheckCircleOutline,
+                icon = if (season.watched) Icons.Filled.CheckCircle else Icons.Filled.CheckCircleOutline,
                 label = stringResource(R.string.client_title_watched),
                 onClick = actions.onToggleWatched,
                 contentDescription = markWatched,

@@ -1,5 +1,6 @@
 package com.cooper.homelab.ephyra.demo
 
+import com.cooper.homelab.core.foundation.ServerVersion
 import com.cooper.homelab.ephyra.browse.ImageKind
 import com.cooper.homelab.ephyra.browse.ItemFilters
 import com.cooper.homelab.ephyra.browse.ItemKind
@@ -15,7 +16,6 @@ import com.cooper.homelab.ephyra.server.ClientIdentity
 import com.cooper.homelab.ephyra.server.DiscardLogger
 import com.cooper.homelab.ephyra.server.JellyfinClient
 import com.cooper.homelab.ephyra.server.JellyfinServerProfile
-import com.cooper.homelab.ephyra.server.JellyfinVersion
 import com.cooper.homelab.ephyra.server.TICKS_PER_MINUTE
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.runBlocking
@@ -43,8 +43,8 @@ class DemoClientDataTest {
             DEMO_TOKEN,
             DiscardLogger,
         )
-    private val before12 = JellyfinServerProfile(JellyfinVersion(10, 11, 4))
-    private val from12 = JellyfinServerProfile(JellyfinVersion(12, 4, 0))
+    private val before12 = JellyfinServerProfile(ServerVersion.of(10, 11, 4))
+    private val from12 = JellyfinServerProfile(ServerVersion.of(12, 4, 0))
     private val titles = JellyfinTitleRepository(client, "demo-user", before12)
     private val items = JellyfinItemsRepository(client, "demo-user")
     private val people = JellyfinPersonRepository(client, "demo-user", before12)

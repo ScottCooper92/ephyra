@@ -3,8 +3,8 @@ package com.cooper.homelab.ephyra.ui.console
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.outlined.ArrowDownward
-import androidx.compose.material.icons.outlined.ArrowUpward
+import androidx.compose.material.icons.filled.ArrowDownward
+import androidx.compose.material.icons.filled.ArrowUpward
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.dimensionResource
@@ -41,7 +41,7 @@ internal fun OrderedSettingsPage(
                 listOfNotNull(
                     position,
                     ListItem(
-                        icon = Icons.Outlined.ArrowUpward,
+                        icon = Icons.Filled.ArrowUpward,
                         label = stringResource(R.string.home_layout_move_up),
                         detail = firstDetail.takeIf { place == 0 },
                         enabled = place != null && place > 0,
@@ -49,7 +49,7 @@ internal fun OrderedSettingsPage(
                         onClick = { onMove(-1) },
                     ),
                     ListItem(
-                        icon = Icons.Outlined.ArrowDownward,
+                        icon = Icons.Filled.ArrowDownward,
                         label = stringResource(R.string.home_layout_move_down),
                         detail = lastDetail.takeIf { place == size - 1 },
                         enabled = place != null && place < size - 1,

@@ -8,21 +8,21 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.outlined.AddPhotoAlternate
-import androidx.compose.material.icons.outlined.ChildCare
-import androidx.compose.material.icons.outlined.Devices
-import androidx.compose.material.icons.outlined.LiveTv
-import androidx.compose.material.icons.outlined.Lock
-import androidx.compose.material.icons.outlined.Movie
-import androidx.compose.material.icons.outlined.People
-import androidx.compose.material.icons.outlined.PlayCircle
-import androidx.compose.material.icons.outlined.Public
-import androidx.compose.material.icons.outlined.Repeat
-import androidx.compose.material.icons.outlined.Settings
-import androidx.compose.material.icons.outlined.SettingsRemote
-import androidx.compose.material.icons.outlined.Speed
-import androidx.compose.material.icons.outlined.Sync
-import androidx.compose.material.icons.outlined.VisibilityOff
+import androidx.compose.material.icons.filled.AddPhotoAlternate
+import androidx.compose.material.icons.filled.ChildCare
+import androidx.compose.material.icons.filled.Devices
+import androidx.compose.material.icons.filled.LiveTv
+import androidx.compose.material.icons.filled.Lock
+import androidx.compose.material.icons.filled.Movie
+import androidx.compose.material.icons.filled.People
+import androidx.compose.material.icons.filled.PlayCircle
+import androidx.compose.material.icons.filled.Public
+import androidx.compose.material.icons.filled.Repeat
+import androidx.compose.material.icons.filled.Settings
+import androidx.compose.material.icons.filled.SettingsRemote
+import androidx.compose.material.icons.filled.Speed
+import androidx.compose.material.icons.filled.Sync
+import androidx.compose.material.icons.filled.VisibilityOff
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -94,13 +94,13 @@ internal fun UserSection.title(): Int =
 
 private fun UserSection.icon(): ImageVector =
     when (this) {
-        UserSection.Access -> Icons.Outlined.Lock
-        UserSection.Playback -> Icons.Outlined.PlayCircle
-        UserSection.Content -> Icons.Outlined.Movie
-        UserSection.Control -> Icons.Outlined.SettingsRemote
-        UserSection.LiveTv -> Icons.Outlined.LiveTv
-        UserSection.Devices -> Icons.Outlined.Devices
-        UserSection.Parental -> Icons.Outlined.ChildCare
+        UserSection.Access -> Icons.Filled.Lock
+        UserSection.Playback -> Icons.Filled.PlayCircle
+        UserSection.Content -> Icons.Filled.Movie
+        UserSection.Control -> Icons.Filled.SettingsRemote
+        UserSection.LiveTv -> Icons.Filled.LiveTv
+        UserSection.Devices -> Icons.Filled.Devices
+        UserSection.Parental -> Icons.Filled.ChildCare
     }
 
 /** The keys a section reads: it is offered when the server sent any of them. */
@@ -141,7 +141,7 @@ internal fun sectionRows(
             } else {
                 rows +
                     ListItem(
-                        icon = Icons.Outlined.AddPhotoAlternate,
+                        icon = Icons.Filled.AddPhotoAlternate,
                         label = stringResource(R.string.profile_picture_title),
                         onClick = actions.onPicture,
                     )
@@ -248,27 +248,27 @@ private fun accessRows(
     listOfNotNull(
         policy.switchRow(
             POLICY_REMOTE_ACCESS,
-            Icons.Outlined.Public,
+            Icons.Filled.Public,
             R.string.users_remote_access,
             actions,
             R.string.users_remote_access_detail,
         ),
-        policy.switchRow(POLICY_HIDDEN, Icons.Outlined.VisibilityOff, R.string.users_hidden, actions, R.string.users_hidden_detail),
+        policy.switchRow(POLICY_HIDDEN, Icons.Filled.VisibilityOff, R.string.users_hidden, actions, R.string.users_hidden_detail),
         policy.switchRow(
             POLICY_PREFERENCE_ACCESS,
-            Icons.Outlined.Settings,
+            Icons.Filled.Settings,
             R.string.users_preferences,
             actions,
             R.string.users_preferences_detail,
         ),
         ListItem(
-            icon = Icons.Outlined.Lock,
+            icon = Icons.Filled.Lock,
             label = stringResource(R.string.users_lockout),
             detail = lockoutLabel(policy.int(POLICY_LOCKOUT) ?: 0),
             onClick = { onPick(PolicyPicker.Lockout) },
         ).takeIf { policy.has(POLICY_LOCKOUT) },
         ListItem(
-            icon = Icons.Outlined.People,
+            icon = Icons.Filled.People,
             label = stringResource(R.string.users_max_sessions),
             detail = sessionsLabel(policy.int(POLICY_MAX_SESSIONS) ?: 0),
             onClick = { onPick(PolicyPicker.Sessions) },
@@ -282,19 +282,19 @@ private fun playbackRows(
     onPick: (PolicyPicker) -> Unit,
 ): List<ListItem> =
     listOfNotNull(
-        policy.switchRow(POLICY_PLAYBACK, Icons.Outlined.PlayCircle, R.string.users_playback, actions),
-        policy.switchRow(POLICY_AUDIO_TRANSCODING, Icons.Outlined.Sync, R.string.users_audio_transcoding, actions),
-        policy.switchRow(POLICY_VIDEO_TRANSCODING, Icons.Outlined.Sync, R.string.users_video_transcoding, actions),
-        policy.switchRow(POLICY_REMUXING, Icons.Outlined.Repeat, R.string.users_remuxing, actions, R.string.users_remuxing_detail),
+        policy.switchRow(POLICY_PLAYBACK, Icons.Filled.PlayCircle, R.string.users_playback, actions),
+        policy.switchRow(POLICY_AUDIO_TRANSCODING, Icons.Filled.Sync, R.string.users_audio_transcoding, actions),
+        policy.switchRow(POLICY_VIDEO_TRANSCODING, Icons.Filled.Sync, R.string.users_video_transcoding, actions),
+        policy.switchRow(POLICY_REMUXING, Icons.Filled.Repeat, R.string.users_remuxing, actions, R.string.users_remuxing_detail),
         policy.switchRow(
             POLICY_FORCE_REMOTE_TRANSCODING,
-            Icons.Outlined.Sync,
+            Icons.Filled.Sync,
             R.string.users_force_remote,
             actions,
             R.string.users_force_remote_detail,
         ),
         ListItem(
-            icon = Icons.Outlined.Speed,
+            icon = Icons.Filled.Speed,
             label = stringResource(R.string.users_bitrate),
             detail = bitrateLabel(policy.int(POLICY_BITRATE_LIMIT) ?: 0),
             onClick = { onPick(PolicyPicker.Bitrate) },
@@ -310,20 +310,20 @@ private fun controlRows(
     listOfNotNull(
         policy.switchRow(
             POLICY_REMOTE_CONTROL,
-            Icons.Outlined.SettingsRemote,
+            Icons.Filled.SettingsRemote,
             R.string.users_remote_control,
             actions,
             R.string.users_remote_control_detail,
         ),
         policy.switchRow(
             POLICY_SHARED_DEVICE_CONTROL,
-            Icons.Outlined.Devices,
+            Icons.Filled.Devices,
             R.string.users_shared_devices,
             actions,
             R.string.users_shared_devices_detail,
         ),
         ListItem(
-            icon = Icons.Outlined.People,
+            icon = Icons.Filled.People,
             label = stringResource(R.string.users_sync_play),
             detail = syncPlayLabel(policy.string(POLICY_SYNC_PLAY).orEmpty()),
             onClick = { onPick(PolicyPicker.SyncPlay) },

@@ -5,11 +5,11 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.outlined.CalendarToday
-import androidx.compose.material.icons.outlined.Description
-import androidx.compose.material.icons.outlined.Dns
-import androidx.compose.material.icons.outlined.Inventory2
-import androidx.compose.material.icons.outlined.RestoreFromTrash
+import androidx.compose.material.icons.filled.CalendarToday
+import androidx.compose.material.icons.filled.Description
+import androidx.compose.material.icons.filled.Dns
+import androidx.compose.material.icons.filled.Inventory2
+import androidx.compose.material.icons.filled.RestoreFromTrash
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -20,11 +20,12 @@ import com.binge.designsystem.component.BingeTextButton
 import com.binge.designsystem.component.ItemGroup
 import com.binge.designsystem.component.ListItem
 import com.binge.designsystem.formatRelativeOrAbsolute
+import com.cooper.homelab.core.foundation.ServerVersion
 import com.cooper.homelab.ephyra.R
 import com.cooper.homelab.ephyra.server.BackupCreation
 import com.cooper.homelab.ephyra.server.BackupOptions
-import com.cooper.homelab.ephyra.server.JellyfinVersion
 import com.cooper.homelab.ephyra.server.ServerBackup
+import com.cooper.homelab.ephyra.server.knownRelease
 import com.binge.designsystem.R as DesR
 
 /** The sheets and the confirm over the backups page, for whichever is open. */
@@ -32,7 +33,7 @@ import com.binge.designsystem.R as DesR
 internal fun BackupsOverlays(
     state: BackupsUiState.Ready,
     actions: BackupsActions,
-    serverVersion: JellyfinVersion?,
+    serverVersion: ServerVersion?,
     now: Long,
 ) {
     state.choosing?.let { CreateBackupSheet(it, actions) }
@@ -91,7 +92,7 @@ internal fun CreateBackupSheet(
                 rows =
                     listOf(
                         ListItem(
-                            icon = Icons.Outlined.Inventory2,
+                            icon = Icons.Filled.Inventory2,
                             label = stringResource(R.string.backups_database),
                             detail = stringResource(R.string.backups_database_detail),
                             supportingMaxLines = DETAIL_LINES,
@@ -99,7 +100,7 @@ internal fun CreateBackupSheet(
                             onClick = { actions.onChoose(options.copy(database = !options.database)) },
                         ),
                         ListItem(
-                            icon = Icons.Outlined.Description,
+                            icon = Icons.Filled.Description,
                             label = stringResource(R.string.backups_metadata),
                             detail = stringResource(R.string.backups_metadata_detail),
                             supportingMaxLines = DETAIL_LINES,
@@ -107,7 +108,7 @@ internal fun CreateBackupSheet(
                             onClick = { actions.onChoose(options.copy(metadata = !options.metadata)) },
                         ),
                         ListItem(
-                            icon = Icons.Outlined.Description,
+                            icon = Icons.Filled.Description,
                             label = stringResource(R.string.backups_subtitles),
                             detail = stringResource(R.string.backups_subtitles_detail),
                             supportingMaxLines = DETAIL_LINES,
@@ -115,7 +116,7 @@ internal fun CreateBackupSheet(
                             onClick = { actions.onChoose(options.copy(subtitles = !options.subtitles)) },
                         ),
                         ListItem(
-                            icon = Icons.Outlined.Description,
+                            icon = Icons.Filled.Description,
                             label = stringResource(R.string.trickplay_title),
                             detail = stringResource(R.string.backups_trickplay_detail),
                             supportingMaxLines = DETAIL_LINES,
@@ -132,7 +133,7 @@ internal fun CreateBackupSheet(
 @Composable
 internal fun BackupSheet(
     backup: ServerBackup,
-    serverVersion: JellyfinVersion?,
+    serverVersion: ServerVersion?,
     actions: BackupsActions,
     now: Long,
     inWindow: Boolean = true,
@@ -152,29 +153,29 @@ internal fun BackupSheet(
                 rows =
                     listOf(
                         ListItem(
-                            icon = Icons.Outlined.CalendarToday,
+                            icon = Icons.Filled.CalendarToday,
                             label = formatRelativeOrAbsolute(backup.createdMillis, now) ?: stringResource(R.string.backups_date_unknown),
                             clickable = false,
                         ),
                         ListItem(
-                            icon = Icons.Outlined.Dns,
+                            icon = Icons.Filled.Dns,
                             label = stringResource(R.string.backups_made_by, backup.serverVersion),
                             detail = backup.versionNote(serverVersion),
                             supportingMaxLines = DETAIL_LINES,
                             clickable = false,
                         ),
                         ListItem(
-                            icon = Icons.Outlined.Inventory2,
+                            icon = Icons.Filled.Inventory2,
                             label = backup.options.summary(),
                             clickable = false,
                         ),
-                        ListItem(icon = Icons.Outlined.Description, label = backup.fileName, clickable = false),
+                        ListItem(icon = Icons.Filled.Description, label = backup.fileName, clickable = false),
                     ),
             )
             BingeTextButton(
                 label = stringResource(R.string.backups_restore),
                 onClick = { actions.onAskRestore(backup) },
-                leadingIcon = Icons.Outlined.RestoreFromTrash,
+                leadingIcon = Icons.Filled.RestoreFromTrash,
                 destructive = true,
                 modifier = Modifier.fillMaxWidth(),
             )
@@ -189,7 +190,7 @@ internal fun BackupSheet(
 @Composable
 internal fun RestoreDialog(
     backup: ServerBackup,
-    serverVersion: JellyfinVersion?,
+    serverVersion: ServerVersion?,
     actions: BackupsActions,
     inWindow: Boolean = true,
 ) {
@@ -210,10 +211,10 @@ internal fun RestoreDialog(
 
 /** Says so when the backup was made by another release than the running server's; null when the same or unknown. */
 @Composable
-private fun ServerBackup.versionNote(running: JellyfinVersion?): String? {
-    val made = JellyfinVersion.parse(serverVersion) ?: return null
+private fun ServerBackup.versionNote(running: ServerVersion?): String? {
+    val made = knownRelease(serverVersion) ?: return null
     return if (running != null && made != running) {
-        stringResource(R.string.backups_version_differs, "${running.major}.${running.minor}.${running.patch}")
+        stringResource(R.string.backups_version_differs, "$running")
     } else {
         null
     }

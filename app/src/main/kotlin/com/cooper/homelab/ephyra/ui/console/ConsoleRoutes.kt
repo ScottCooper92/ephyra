@@ -15,9 +15,9 @@ import androidx.lifecycle.viewmodel.initializer
 import androidx.lifecycle.viewmodel.viewModelFactory
 import com.binge.companion.sdk.attempt
 import com.binge.designsystem.component.ProvideRowFocus
+import com.cooper.homelab.core.foundation.ServerVersion
 import com.cooper.homelab.ephyra.AppGraph
 import com.cooper.homelab.ephyra.server.JellyfinServerProfile
-import com.cooper.homelab.ephyra.server.JellyfinVersion
 import com.cooper.homelab.ephyra.ui.AccountScreen
 import com.cooper.homelab.ephyra.ui.Actions
 import com.cooper.homelab.ephyra.ui.ThisAppScreen
@@ -449,7 +449,7 @@ private fun LogsRoute(
 private fun ThisAppRoute(
     graph: AppGraph,
     actions: Actions,
-    serverVersion: JellyfinVersion?,
+    serverVersion: ServerVersion?,
     onBack: () -> Unit,
 ) {
     val holder: TipHolder = viewModel(factory = viewModelFactory { initializer { TipHolder(graph.tipBilling, graph.reviewPrompt) } })

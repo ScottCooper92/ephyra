@@ -8,12 +8,12 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.outlined.Delete
-import androidx.compose.material.icons.outlined.Devices
-import androidx.compose.material.icons.outlined.Info
-import androidx.compose.material.icons.outlined.Language
-import androidx.compose.material.icons.outlined.PhoneAndroid
-import androidx.compose.material.icons.outlined.Tv
+import androidx.compose.material.icons.filled.Delete
+import androidx.compose.material.icons.filled.Devices
+import androidx.compose.material.icons.filled.Info
+import androidx.compose.material.icons.filled.Language
+import androidx.compose.material.icons.filled.PhoneAndroid
+import androidx.compose.material.icons.filled.Tv
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.runtime.Composable
@@ -119,7 +119,7 @@ private fun Devices(
     ) {
         item { PageIntro(stringResource(R.string.devices_body)) }
         if (state.devices.isEmpty()) {
-            item { ConsoleEmptyScreen(stringResource(R.string.devices_empty), Icons.Outlined.Devices) }
+            item { ConsoleEmptyScreen(stringResource(R.string.devices_empty), Icons.Filled.Devices) }
         } else {
             item {
                 ItemGroup(
@@ -176,7 +176,7 @@ private fun ServerDevice.row(
         detail = listOfNotNull(user.ifBlank { null }, app.ifBlank { null }, seen).joinToString(" · "),
         // Who, which app and when: three short facts, so at large fonts the time still fits.
         supportingMaxLines = DETAIL_LINES,
-        note = if (mine) ListItemNote(stringResource(R.string.devices_this_one), icon = Icons.Outlined.Info) else null,
+        note = if (mine) ListItemNote(stringResource(R.string.devices_this_one), icon = Icons.Filled.Info) else null,
         loading = id in state.busy,
         onClick = { actions.onAskRename(this) },
         trailingContent =
@@ -186,7 +186,7 @@ private fun ServerDevice.row(
                 {
                     ExpressiveIconButton(
                         onClick = { actions.onAskRemove(this) },
-                        icon = Icons.Outlined.Delete,
+                        icon = Icons.Filled.Delete,
                         contentDescription = stringResource(R.string.devices_remove),
                         tint = MaterialTheme.colorScheme.error,
                     )
@@ -228,10 +228,10 @@ internal fun deviceIcon(
 ): ImageVector {
     val both = "$app $name".lowercase()
     return when {
-        listOf("tv", "shield", "streamer", "roku", "fire tv", "firetv", "tizen", "webos").any { it in both } -> Icons.Outlined.Tv
-        listOf("web", "chrome", "firefox", "safari", "edge").any { it in both } -> Icons.Outlined.Language
-        listOf("android", "iphone", "ios", "pixel", "phone", "fold", "galaxy").any { it in both } -> Icons.Outlined.PhoneAndroid
-        else -> Icons.Outlined.Devices
+        listOf("tv", "shield", "streamer", "roku", "fire tv", "firetv", "tizen", "webos").any { it in both } -> Icons.Filled.Tv
+        listOf("web", "chrome", "firefox", "safari", "edge").any { it in both } -> Icons.Filled.Language
+        listOf("android", "iphone", "ios", "pixel", "phone", "fold", "galaxy").any { it in both } -> Icons.Filled.PhoneAndroid
+        else -> Icons.Filled.Devices
     }
 }
 

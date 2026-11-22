@@ -4,10 +4,10 @@ import androidx.lifecycle.ViewModel
 import com.cooper.homelab.ephyra.FakeJellyfin
 import com.cooper.homelab.ephyra.server.Connection
 import com.cooper.homelab.ephyra.server.DiscardLogger
-import com.cooper.homelab.ephyra.server.JellyfinVersion
 import com.cooper.homelab.ephyra.server.PluginStatus
 import com.cooper.homelab.ephyra.server.ServerPlugin
 import com.cooper.homelab.ephyra.server.compareVersions
+import com.cooper.homelab.ephyra.server.knownRelease
 import com.cooper.homelab.ephyra.session
 import com.cooper.homelab.ephyra.testSessionStore
 import com.cooper.homelab.ephyra.ui.ViewModelTeardown
@@ -50,7 +50,7 @@ class CatalogViewModelTest {
     @After
     fun close() = teardown.close(jellyfin)
 
-    private val server = JellyfinVersion.parse("10.10.7")
+    private val server = knownRelease("10.10.7")
 
     private fun CatalogViewModel.ready(check: (CatalogUiState.Ready) -> Boolean = { true }) =
         runBlocking { withTimeout(TIMEOUT_MILLIS) { state.first { it is CatalogUiState.Ready && check(it) } } } as CatalogUiState.Ready

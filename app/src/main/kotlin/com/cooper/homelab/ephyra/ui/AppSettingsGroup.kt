@@ -89,6 +89,7 @@ internal fun AppGroup(
                     label = stringResource(R.string.settings_report_bug),
                     detail = stringResource(R.string.settings_report_bug_caption),
                     supportingMaxLines = CAPTION_LINES,
+                    destination = ListItemDestination.External,
                     onClick = { context.openInBrowser(installBugReportUrl(serverVersion)) },
                     key = SettingRows.THIS_APP_REPORT_BUG,
                 ),

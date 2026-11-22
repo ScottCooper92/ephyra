@@ -16,6 +16,7 @@ import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.ImeAction
 import com.binge.designsystem.component.BingeFilledButton
+import com.binge.designsystem.component.BingeTextField
 import com.binge.designsystem.component.PageIntro
 import com.binge.designsystem.template.BingeScreenScaffold
 import com.binge.designsystem.template.ScreenBar
@@ -57,7 +58,7 @@ fun PasswordScreen(
                 verticalArrangement = Arrangement.spacedBy(dimensionResource(DesR.dimen.padding_l)),
             ) {
                 PageIntro(stringResource(R.string.password_body))
-                ConsoleTextField(
+                BingeTextField(
                     value = state.current,
                     onValueChange = actions.onCurrent,
                     label = stringResource(R.string.password_current),
@@ -65,20 +66,21 @@ fun PasswordScreen(
                     secret = true,
                     imeAction = ImeAction.Next,
                 )
-                ConsoleTextField(
+                BingeTextField(
                     value = state.new,
                     onValueChange = actions.onNew,
                     label = stringResource(R.string.password_new),
                     secret = true,
                     imeAction = ImeAction.Next,
                 )
-                ConsoleTextField(
+                BingeTextField(
                     value = state.confirm,
                     onValueChange = actions.onConfirm,
                     label = stringResource(R.string.password_confirm),
                     isError = state.result == PasswordResult.Mismatch,
                     secret = true,
                     onDone = actions.onChange,
+                    imeAction = ImeAction.Done,
                 )
                 Text(
                     text = state.result?.let { stringResource(it.message) }.orEmpty(),

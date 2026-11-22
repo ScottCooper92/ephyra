@@ -24,12 +24,12 @@ import com.binge.designsystem.component.BingeChoice
 import com.binge.designsystem.component.BingeChoiceList
 import com.binge.designsystem.component.BingeChoiceSheet
 import com.binge.designsystem.component.BingeFilledButton
+import com.binge.designsystem.component.BingeTextField
 import com.binge.designsystem.component.ItemGroup
 import com.binge.designsystem.component.ListItem
 import com.cooper.homelab.ephyra.R
 import com.cooper.homelab.ephyra.ui.console.ConsoleFailureScreen
 import com.cooper.homelab.ephyra.ui.console.ConsoleLoading
-import com.cooper.homelab.ephyra.ui.console.ConsoleTextField
 
 /** Which choice of the wizard's first step is open in its sheet. */
 private enum class StartupPicker { UiLanguage, MetadataLanguage, MetadataCountry }
@@ -67,11 +67,12 @@ private fun ConfiguringStep(
     Text(stringResource(R.string.startup_body), style = MaterialTheme.typography.bodyMedium)
     // An older server may not send a name: it gets no field, and is sent back as it came.
     if (configuration.hasServerName) {
-        ConsoleTextField(
+        BingeTextField(
             value = configuration.serverName,
             onValueChange = startup.onName,
             label = stringResource(R.string.server_settings_name),
             enabled = !step.busy,
+            imeAction = ImeAction.Done,
         )
     }
     val languageName = step.uiLanguages.firstOrNull { it.value.equals(configuration.uiCulture, ignoreCase = true) }?.name
@@ -177,14 +178,14 @@ private fun AccountStep(
 ) {
     Text(stringResource(R.string.startup_account_title), style = MaterialTheme.typography.headlineSmall)
     Text(stringResource(R.string.startup_account_body), style = MaterialTheme.typography.bodyMedium)
-    ConsoleTextField(
+    BingeTextField(
         value = step.name,
         onValueChange = startup.onAccountName,
         label = stringResource(R.string.setup_username),
         enabled = !step.busy,
         imeAction = ImeAction.Next,
     )
-    ConsoleTextField(
+    BingeTextField(
         value = step.password,
         onValueChange = startup.onPassword,
         label = stringResource(R.string.setup_password),
@@ -192,7 +193,7 @@ private fun AccountStep(
         enabled = !step.busy,
         imeAction = ImeAction.Next,
     )
-    ConsoleTextField(
+    BingeTextField(
         value = step.confirmation,
         onValueChange = startup.onConfirmation,
         label = stringResource(R.string.startup_password_again),

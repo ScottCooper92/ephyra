@@ -1,11 +1,6 @@
 package com.cooper.homelab.ephyra
 
-import android.content.Intent
-import android.content.pm.PackageManager
-import android.net.Uri
-import android.os.Build
 import android.os.Bundle
-import android.provider.Settings
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
@@ -19,7 +14,6 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalConfiguration
@@ -35,8 +29,9 @@ import androidx.navigation3.runtime.NavBackStack
 import androidx.navigation3.runtime.NavKey
 import androidx.navigation3.runtime.rememberNavBackStack
 import com.binge.companion.kit.isTelevision
-import com.binge.companion.sdk.attempt
 import com.cooper.homelab.core.server.network.AndroidLocalNetworkPermission
+import com.cooper.homelab.core.server.network.LOCAL_NETWORK_PERMISSION
+import com.cooper.homelab.core.uiandroid.connect.rememberAllowLocalNetwork
 import com.cooper.homelab.core.uiandroid.consent.ConsentGate
 import com.cooper.homelab.core.uiandroid.flags.LocalFlags
 import com.cooper.homelab.core.uiandroid.review.ReviewPromptOnReturnToRoot
@@ -130,21 +125,12 @@ class MainActivity : ComponentActivity() {
      * Refused, [then] still runs: the search finds nothing and the typed address is the way in.
      */
     private fun withLocalNetwork(then: () -> Unit) {
-        val granted =
-            Build.VERSION.SDK_INT < LOCAL_NETWORK_SDK ||
-                checkSelfPermission(ACCESS_LOCAL_NETWORK) == PackageManager.PERMISSION_GRANTED
-        if (granted) {
+        if (AndroidLocalNetworkPermission(applicationContext).isGranted()) {
             then()
         } else {
             afterLocalNetwork = then
-            localNetwork.launch(ACCESS_LOCAL_NETWORK)
+            localNetwork.launch(LOCAL_NETWORK_PERMISSION)
         }
-    }
-
-    /** This app's own Settings page, where the permission can be switched on. A device with no such page does nothing. */
-    private fun openAppSettings() {
-        val intent = Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS, Uri.fromParts("package", packageName, null))
-        attempt { startActivity(intent) }
     }
 
     /** The view model's factory: the graph's objects, and the permission check the connection failures read. */
@@ -184,8 +170,8 @@ class MainActivity : ComponentActivity() {
             // page that opens another stays under it, so Back returns to the opener, and to the home from the first.
             // Leaving SignedIn takes the stack back to the sign-in steps.
             val backStack = rememberNavBackStack(HomeRoute)
-            // The permission is asked for once; after that the way to it is the app's settings, as the prompt may not come back.
-            var askedLocalNetwork by rememberSaveable { mutableStateOf(false) }
+            // Asks once; after that the way to the permission is the app's settings, as the prompt may not come back.
+            val allowLocalNetwork = rememberAllowLocalNetwork(viewModel::localNetworkAnswered)
             // A page the server or the user lost (Quick Connect turned off, admin rights taken away) closes,
             // once the refresh has read what they now allow; Back skips it.
             (state as? UiState.SignedIn)?.let { gated ->
@@ -219,15 +205,7 @@ class MainActivity : ComponentActivity() {
                         backStack.closeTop()
                         backStack.openFromHome(page, row)
                     },
-                    onAllowLocalNetwork = {
-                        if (askedLocalNetwork) {
-                            openAppSettings()
-                        } else {
-                            askedLocalNetwork = true
-                            withLocalNetwork(viewModel::localNetworkAnswered)
-                        }
-                    },
-                    localNetworkAsked = askedLocalNetwork,
+                    localNetwork = allowLocalNetwork,
                 )
             // Beside a page the home stays on screen, so what it opens replaces the page that is open.
             // Now playing is what shows beside it while none is open.
@@ -265,12 +243,6 @@ class MainActivity : ComponentActivity() {
                 }
             }
         }
-    }
-
-    private companion object {
-        /** Android 17, where reaching the local network became a permission of its own. */
-        const val LOCAL_NETWORK_SDK = 37
-        const val ACCESS_LOCAL_NETWORK = "android.permission.ACCESS_LOCAL_NETWORK"
     }
 }
 

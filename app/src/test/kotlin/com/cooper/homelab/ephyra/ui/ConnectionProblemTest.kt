@@ -13,6 +13,7 @@ import androidx.compose.ui.test.onNodeWithContentDescription
 import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.performClick
 import com.binge.designsystem.testing.createTakeDownAndroidComposeRule
+import com.cooper.homelab.core.uiandroid.connect.AllowLocalNetwork
 import com.cooper.homelab.ephyra.auth.JellyfinSession
 import com.cooper.homelab.ephyra.server.JellyfinAccount
 import com.cooper.homelab.ephyra.theme.EphyraTheme
@@ -23,6 +24,7 @@ import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.robolectric.RobolectricTestRunner
+import com.cooper.homelab.core.uiandroid.R as CoreR
 
 /** A saved server that cannot be reached or read takes the home's place, with Try again, Edit server details and Sign out. */
 @RunWith(RobolectricTestRunner::class)
@@ -133,7 +135,23 @@ class ConnectionProblemTest {
             EphyraTheme {
                 EphyraRoot(
                     state(ConnectionHealth.LocalNetworkDenied),
-                    Actions(onAllowLocalNetwork = { calls += "allow" }, localNetworkAsked = asked),
+                    Actions(
+                        localNetwork =
+                            if (asked) {
+                                AllowLocalNetwork(
+                                    CoreR.string.connect_local_network_open_settings,
+                                    CoreR.string.connect_local_network_open_settings,
+                                ) {}
+                            } else {
+                                AllowLocalNetwork(
+                                    CoreR.string.connect_local_network_allow,
+                                    CoreR.string.connect_local_network_allow_short,
+                                ) {
+                                    calls +=
+                                        "allow"
+                                }
+                            },
+                    ),
                 )
             }
         }
@@ -144,7 +162,7 @@ class ConnectionProblemTest {
         assertEquals(listOf("allow"), calls)
         asked = true
         compose.waitForIdle()
-        compose.onNodeWithText("Open app settings").assertExists()
+        compose.onNodeWithText("Open settings").assertExists()
         compose.onAllNodesWithText("Allow local network access").assertCountEquals(0)
     }
 

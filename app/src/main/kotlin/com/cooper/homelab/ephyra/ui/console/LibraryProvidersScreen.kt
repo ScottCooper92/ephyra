@@ -3,8 +3,8 @@ package com.cooper.homelab.ephyra.ui.console
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.outlined.Extension
-import androidx.compose.material.icons.outlined.PowerSettingsNew
+import androidx.compose.material.icons.filled.Extension
+import androidx.compose.material.icons.filled.PowerSettingsNew
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.stringResource
@@ -40,7 +40,7 @@ internal fun ProvidersPage(
             rows =
                 all.map { provider ->
                     ListItem(
-                        icon = Icons.Outlined.Extension,
+                        icon = Icons.Filled.Extension,
                         label = provider.name,
                         detail = stringResource(if (provider.enabled) R.string.library_provider_on else R.string.library_provider_off),
                         onClick = { actions.onPage(LibraryPage.One(group, provider.name)) },
@@ -66,7 +66,7 @@ internal fun ProviderPage(
             switches =
                 listOf(
                     ListItem(
-                        icon = Icons.Outlined.PowerSettingsNew,
+                        icon = Icons.Filled.PowerSettingsNew,
                         label = stringResource(R.string.library_provider_use),
                         toggled = provider.enabled,
                         onClick = { actions.onProvider(page.group, provider.name, !provider.enabled) },

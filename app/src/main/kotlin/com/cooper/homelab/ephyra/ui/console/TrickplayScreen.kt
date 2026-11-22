@@ -6,18 +6,18 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.outlined.AspectRatio
-import androidx.compose.material.icons.outlined.Bolt
-import androidx.compose.material.icons.outlined.HighQuality
-import androidx.compose.material.icons.outlined.LowPriority
-import androidx.compose.material.icons.outlined.Memory
-import androidx.compose.material.icons.outlined.Speed
-import androidx.compose.material.icons.outlined.Sync
-import androidx.compose.material.icons.outlined.Timer
-import androidx.compose.material.icons.outlined.Tune
-import androidx.compose.material.icons.outlined.Videocam
-import androidx.compose.material.icons.outlined.ViewAgenda
-import androidx.compose.material.icons.outlined.ViewColumn
+import androidx.compose.material.icons.filled.AspectRatio
+import androidx.compose.material.icons.filled.Bolt
+import androidx.compose.material.icons.filled.HighQuality
+import androidx.compose.material.icons.filled.LowPriority
+import androidx.compose.material.icons.filled.Memory
+import androidx.compose.material.icons.filled.Speed
+import androidx.compose.material.icons.filled.Sync
+import androidx.compose.material.icons.filled.Timer
+import androidx.compose.material.icons.filled.Tune
+import androidx.compose.material.icons.filled.Videocam
+import androidx.compose.material.icons.filled.ViewAgenda
+import androidx.compose.material.icons.filled.ViewColumn
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -144,7 +144,7 @@ private fun ProcessingGroup(
         rows =
             listOfNotNull(
                 ListItem(
-                    icon = Icons.Outlined.Memory,
+                    icon = Icons.Filled.Memory,
                     label = stringResource(R.string.trickplay_hw_acceleration),
                     detail = stringResource(R.string.trickplay_hw_acceleration_detail),
                     supportingMaxLines = DETAIL_LINES,
@@ -153,7 +153,7 @@ private fun ProcessingGroup(
                     key = SettingRows.TRICKPLAY_HW_ACCELERATION,
                 ),
                 ListItem(
-                    icon = Icons.Outlined.Videocam,
+                    icon = Icons.Filled.Videocam,
                     label = stringResource(R.string.trickplay_hw_encoding),
                     detail = stringResource(R.string.trickplay_hw_encoding_detail),
                     supportingMaxLines = DETAIL_LINES,
@@ -162,7 +162,7 @@ private fun ProcessingGroup(
                     key = SettingRows.TRICKPLAY_HW_ENCODING,
                 ),
                 ListItem(
-                    icon = Icons.Outlined.Bolt,
+                    icon = Icons.Filled.Bolt,
                     label = stringResource(R.string.trickplay_key_frames),
                     detail = stringResource(R.string.trickplay_key_frames_detail),
                     supportingMaxLines = DETAIL_LINES,
@@ -171,19 +171,19 @@ private fun ProcessingGroup(
                     key = SettingRows.TRICKPLAY_KEY_FRAMES,
                 ).takeIf { keyFrameOnlyAvailable },
                 ListItem(
-                    icon = Icons.Outlined.Sync,
+                    icon = Icons.Filled.Sync,
                     label = stringResource(R.string.trickplay_scan),
                     detail = scanLabel(settings.scanBehavior),
                     onClick = { onPick(TrickplayPicker.Scan) },
                 ),
                 ListItem(
-                    icon = Icons.Outlined.LowPriority,
+                    icon = Icons.Filled.LowPriority,
                     label = stringResource(R.string.trickplay_priority),
                     detail = priorityLabel(settings.processPriority),
                     onClick = { onPick(TrickplayPicker.Priority) },
                 ),
                 ListItem(
-                    icon = Icons.Outlined.Speed,
+                    icon = Icons.Filled.Speed,
                     label = stringResource(R.string.trickplay_threads),
                     detail =
                         if (settings.threads == 0) {
@@ -208,37 +208,37 @@ private fun ImagesGroup(
         rows =
             listOf(
                 ListItem(
-                    icon = Icons.Outlined.Timer,
+                    icon = Icons.Filled.Timer,
                     label = stringResource(R.string.trickplay_interval),
                     detail = intervalLabel(settings.intervalMillis),
                     onClick = { onPick(TrickplayPicker.Interval) },
                 ),
                 ListItem(
-                    icon = Icons.Outlined.AspectRatio,
+                    icon = Icons.Filled.AspectRatio,
                     label = stringResource(R.string.trickplay_widths),
                     detail = settings.widths.map { stringResource(R.string.trickplay_pixels, it) }.joinToString(", "),
                     onClick = { actions.onEdit(TrickplayField.Widths) },
                 ),
                 ListItem(
-                    icon = Icons.Outlined.ViewColumn,
+                    icon = Icons.Filled.ViewColumn,
                     label = stringResource(R.string.trickplay_tile_width),
                     detail = pluralStringResource(R.plurals.trickplay_images_count, settings.tileWidth, settings.tileWidth),
                     onClick = { actions.onEdit(TrickplayField.TileWidth) },
                 ),
                 ListItem(
-                    icon = Icons.Outlined.ViewAgenda,
+                    icon = Icons.Filled.ViewAgenda,
                     label = stringResource(R.string.trickplay_tile_height),
                     detail = pluralStringResource(R.plurals.trickplay_images_count, settings.tileHeight, settings.tileHeight),
                     onClick = { actions.onEdit(TrickplayField.TileHeight) },
                 ),
                 ListItem(
-                    icon = Icons.Outlined.HighQuality,
+                    icon = Icons.Filled.HighQuality,
                     label = stringResource(R.string.trickplay_jpeg_quality),
                     detail = settings.jpegQuality.toString(),
                     onClick = { actions.onEdit(TrickplayField.JpegQuality) },
                 ),
                 ListItem(
-                    icon = Icons.Outlined.Tune,
+                    icon = Icons.Filled.Tune,
                     label = stringResource(R.string.trickplay_qscale),
                     detail = settings.qscale.toString(),
                     onClick = { actions.onEdit(TrickplayField.Qscale) },

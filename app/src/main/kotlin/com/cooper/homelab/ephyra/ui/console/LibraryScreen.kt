@@ -5,11 +5,11 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.outlined.Add
-import androidx.compose.material.icons.outlined.Delete
-import androidx.compose.material.icons.outlined.Folder
-import androidx.compose.material.icons.outlined.Label
-import androidx.compose.material.icons.outlined.Power
+import androidx.compose.material.icons.filled.Add
+import androidx.compose.material.icons.filled.Delete
+import androidx.compose.material.icons.filled.Folder
+import androidx.compose.material.icons.filled.Label
+import androidx.compose.material.icons.filled.Power
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.runtime.Composable
@@ -165,7 +165,7 @@ internal fun LibraryRemoveAction(
     BingeTextButton(
         label = stringResource(R.string.library_remove),
         onClick = { actions.onAsk(LibraryDialog.Remove) },
-        leadingIcon = Icons.Outlined.Delete,
+        leadingIcon = Icons.Filled.Delete,
         enabled = !state.busy,
         destructive = true,
         modifier = Modifier.fillMaxWidth(),
@@ -181,14 +181,14 @@ private fun libraryRows(
     val enabled = state.options.bool(LIBRARY_ENABLED) ?: true
     return listOfNotNull(
         ListItem(
-            icon = Icons.Outlined.Label,
+            icon = Icons.Filled.Label,
             label = stringResource(R.string.library_name),
             detail = state.library.name,
             enabled = !state.busy,
             onClick = { actions.onAsk(LibraryDialog.Rename) },
         ),
         ListItem(
-            icon = Icons.Outlined.Power,
+            icon = Icons.Filled.Power,
             label = stringResource(R.string.library_enabled),
             detail = stringResource(R.string.library_enabled_detail),
             supportingMaxLines = LIBRARY_DETAIL_LINES,
@@ -208,13 +208,13 @@ private fun FoldersGroup(
         rows =
             state.library.folders.map { path ->
                 ListItem(
-                    icon = Icons.Outlined.Folder,
+                    icon = Icons.Filled.Folder,
                     label = path,
                     clickable = false,
                     trailingContent = {
                         ExpressiveIconButton(
                             onClick = { actions.onAsk(LibraryDialog.RemoveFolder(path)) },
-                            icon = Icons.Outlined.Delete,
+                            icon = Icons.Filled.Delete,
                             contentDescription = stringResource(R.string.library_folder_remove),
                             enabled = !state.busy,
                             tint = MaterialTheme.colorScheme.error,
@@ -223,7 +223,7 @@ private fun FoldersGroup(
                 )
             } +
                 ListItem(
-                    icon = Icons.Outlined.Add,
+                    icon = Icons.Filled.Add,
                     label = stringResource(R.string.library_folder_add),
                     destination = ListItemDestination.Action,
                     enabled = !state.busy,

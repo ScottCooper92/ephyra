@@ -3,8 +3,8 @@ package com.cooper.homelab.ephyra.ui
 import androidx.annotation.StringRes
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.outlined.CloudOff
-import androidx.compose.material.icons.outlined.HourglassEmpty
+import androidx.compose.material.icons.filled.CloudOff
+import androidx.compose.material.icons.filled.HourglassEmpty
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
@@ -35,7 +35,7 @@ internal fun ConnectionProblem(
         modifier = modifier,
         headline = stringResource(connectionHeadline(health)),
         body = stringResource(connectionBody(health)),
-        icon = if (health == ConnectionHealth.CouldNotLoad) Icons.Outlined.HourglassEmpty else Icons.Outlined.CloudOff,
+        icon = if (health == ConnectionHealth.CouldNotLoad) Icons.Filled.HourglassEmpty else Icons.Filled.CloudOff,
         actions = {
             if (health == ConnectionHealth.LocalNetworkDenied) {
                 BingeFilledButton(

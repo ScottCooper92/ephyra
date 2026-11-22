@@ -3,10 +3,10 @@ package com.cooper.homelab.ephyra.ui.search
 import android.content.res.Resources
 import androidx.annotation.StringRes
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.outlined.Language
-import androidx.compose.material.icons.outlined.Router
-import androidx.compose.material.icons.outlined.Sync
-import androidx.compose.material.icons.outlined.Wifi
+import androidx.compose.material.icons.filled.Language
+import androidx.compose.material.icons.filled.Router
+import androidx.compose.material.icons.filled.Sync
+import androidx.compose.material.icons.filled.Wifi
 import androidx.compose.ui.graphics.vector.ImageVector
 import com.cooper.homelab.core.presentation.search.SettingEntry
 import com.cooper.homelab.ephyra.R
@@ -55,10 +55,10 @@ internal val NETWORK_SPECS: Map<String, SwitchSpec> =
 
 internal fun Resources.indexNetworkSwitches(): List<SettingEntry<SearchTarget>> =
     listOf(
-        networkEntry(R.string.network_discovery, Icons.Outlined.Sync, NETWORK_AUTO_DISCOVERY),
-        networkEntry(R.string.network_upnp, Icons.Outlined.Router, NETWORK_UPNP) { profile, _ -> networkKeys(profile).upnp },
-        networkEntry(R.string.network_published_request, Icons.Outlined.Language, NETWORK_PUBLISHED_BY_REQUEST),
-        networkEntry(R.string.network_ignore_virtual, Icons.Outlined.Wifi, NETWORK_IGNORE_VIRTUAL),
+        networkEntry(R.string.network_discovery, Icons.Filled.Sync, NETWORK_AUTO_DISCOVERY),
+        networkEntry(R.string.network_upnp, Icons.Filled.Router, NETWORK_UPNP) { profile, _ -> networkKeys(profile).upnp },
+        networkEntry(R.string.network_published_request, Icons.Filled.Language, NETWORK_PUBLISHED_BY_REQUEST),
+        networkEntry(R.string.network_ignore_virtual, Icons.Filled.Wifi, NETWORK_IGNORE_VIRTUAL),
     )
 
 private fun Resources.networkEntry(

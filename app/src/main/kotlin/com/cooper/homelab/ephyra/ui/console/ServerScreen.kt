@@ -12,17 +12,17 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.outlined.CheckCircle
-import androidx.compose.material.icons.outlined.Dns
-import androidx.compose.material.icons.outlined.ErrorOutline
-import androidx.compose.material.icons.outlined.Folder
-import androidx.compose.material.icons.outlined.Info
-import androidx.compose.material.icons.outlined.Memory
-import androidx.compose.material.icons.outlined.NewReleases
-import androidx.compose.material.icons.outlined.PowerSettingsNew
-import androidx.compose.material.icons.outlined.RestartAlt
-import androidx.compose.material.icons.outlined.Storage
-import androidx.compose.material.icons.outlined.WarningAmber
+import androidx.compose.material.icons.filled.CheckCircle
+import androidx.compose.material.icons.filled.Dns
+import androidx.compose.material.icons.filled.ErrorOutline
+import androidx.compose.material.icons.filled.Folder
+import androidx.compose.material.icons.filled.Info
+import androidx.compose.material.icons.filled.Memory
+import androidx.compose.material.icons.filled.NewReleases
+import androidx.compose.material.icons.filled.PowerSettingsNew
+import androidx.compose.material.icons.filled.RestartAlt
+import androidx.compose.material.icons.filled.Storage
+import androidx.compose.material.icons.filled.WarningAmber
 import androidx.compose.material3.LinearProgressIndicator
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.SnackbarHostState
@@ -205,7 +205,7 @@ private fun Server(
             BingeTextButton(
                 label = stringResource(R.string.server_restart),
                 onClick = { actions.onConfirm(true) },
-                leadingIcon = Icons.Outlined.RestartAlt,
+                leadingIcon = Icons.Filled.RestartAlt,
                 loading = state.restart == Restart.Restarting,
                 enabled = !state.down,
                 destructive = true,
@@ -217,7 +217,7 @@ private fun Server(
         BingeTextButton(
             label = stringResource(R.string.server_shutdown),
             onClick = { actions.onConfirmShutdown(true) },
-            leadingIcon = Icons.Outlined.PowerSettingsNew,
+            leadingIcon = Icons.Filled.PowerSettingsNew,
             loading = state.shutdown == Shutdown.ShuttingDown,
             enabled = !state.down && state.restart != Restart.Restarting,
             destructive = true,
@@ -230,19 +230,19 @@ private fun Server(
 private fun ServerInfo.rows(): List<ListItem> =
     listOfNotNull(
         ListItem(
-            icon = Icons.Outlined.Dns,
+            icon = Icons.Filled.Dns,
             label = name.ifBlank { stringResource(R.string.server_unnamed) },
             detail = address,
             clickable = false,
         ),
         ListItem(
-            icon = if (updateAvailable) Icons.Outlined.NewReleases else Icons.Outlined.Info,
+            icon = if (updateAvailable) Icons.Filled.NewReleases else Icons.Filled.Info,
             label = stringResource(R.string.server_version, version),
             note = if (updateAvailable) ListItemNote(stringResource(R.string.server_update)) else null,
             clickable = false,
         ),
         ListItem(
-            icon = Icons.Outlined.Memory,
+            icon = Icons.Filled.Memory,
             label =
                 listOf(operatingSystem, architecture)
                     .filter {
@@ -253,7 +253,7 @@ private fun ServerInfo.rows(): List<ListItem> =
         ),
         if (restartPending) {
             ListItem(
-                icon = Icons.Outlined.RestartAlt,
+                icon = Icons.Filled.RestartAlt,
                 label = stringResource(R.string.server_restart_pending),
                 detail = stringResource(R.string.server_restart_pending_detail),
                 clickable = false,
@@ -298,11 +298,11 @@ internal fun AlertsGroup(
         title = stringResource(R.string.server_alerts),
         rows =
             if (alerts.isEmpty()) {
-                listOf(ListItem(icon = Icons.Outlined.CheckCircle, label = stringResource(R.string.server_alerts_none), clickable = false))
+                listOf(ListItem(icon = Icons.Filled.CheckCircle, label = stringResource(R.string.server_alerts_none), clickable = false))
             } else {
                 alerts.map { entry ->
                     ListItem(
-                        icon = if (entry.severity == Severity.Error) Icons.Outlined.ErrorOutline else Icons.Outlined.WarningAmber,
+                        icon = if (entry.severity == Severity.Error) Icons.Filled.ErrorOutline else Icons.Filled.WarningAmber,
                         iconTint = entry.severity.tint(),
                         label = entry.name,
                         detail =
@@ -328,13 +328,13 @@ private fun StorageGroups(storage: ServerStorage) {
     if (storage.system.isNotEmpty()) {
         ItemGroup(
             title = stringResource(R.string.server_storage),
-            rows = storage.system.map { (kind, folder) -> folder.row(Icons.Outlined.Folder, stringResource(kind.label())) },
+            rows = storage.system.map { (kind, folder) -> folder.row(Icons.Filled.Folder, stringResource(kind.label())) },
         )
     }
     storage.libraries.filter { it.folders.isNotEmpty() }.forEach { library ->
         ItemGroup(
             title = library.name,
-            rows = library.folders.map { folder -> folder.row(Icons.Outlined.Storage, folder.path) },
+            rows = library.folders.map { folder -> folder.row(Icons.Filled.Storage, folder.path) },
         )
     }
 }
@@ -413,7 +413,7 @@ private fun PathsGroup(paths: ServerPaths) {
         rows =
             rows.map { (label, path) ->
                 ListItem(
-                    icon = Icons.Outlined.Folder,
+                    icon = Icons.Filled.Folder,
                     label = stringResource(label),
                     detail = path,
                     supportingMaxLines = DETAIL_LINES,

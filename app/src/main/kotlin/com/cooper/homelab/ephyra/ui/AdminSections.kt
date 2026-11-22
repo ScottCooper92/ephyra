@@ -3,23 +3,23 @@ package com.cooper.homelab.ephyra.ui
 import androidx.annotation.StringRes
 import androidx.compose.foundation.lazy.LazyListScope
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.outlined.Backup
-import androidx.compose.material.icons.outlined.Build
-import androidx.compose.material.icons.outlined.Category
-import androidx.compose.material.icons.outlined.Description
-import androidx.compose.material.icons.outlined.Devices
-import androidx.compose.material.icons.outlined.Extension
-import androidx.compose.material.icons.outlined.Folder
-import androidx.compose.material.icons.outlined.Group
-import androidx.compose.material.icons.outlined.History
-import androidx.compose.material.icons.outlined.Image
-import androidx.compose.material.icons.outlined.Key
-import androidx.compose.material.icons.outlined.Memory
-import androidx.compose.material.icons.outlined.Router
-import androidx.compose.material.icons.outlined.Schedule
-import androidx.compose.material.icons.outlined.SettingsApplications
-import androidx.compose.material.icons.outlined.Tune
-import androidx.compose.material.icons.outlined.ViewModule
+import androidx.compose.material.icons.filled.Backup
+import androidx.compose.material.icons.filled.Build
+import androidx.compose.material.icons.filled.Category
+import androidx.compose.material.icons.filled.Description
+import androidx.compose.material.icons.filled.Devices
+import androidx.compose.material.icons.filled.Extension
+import androidx.compose.material.icons.filled.Folder
+import androidx.compose.material.icons.filled.Group
+import androidx.compose.material.icons.filled.History
+import androidx.compose.material.icons.filled.Image
+import androidx.compose.material.icons.filled.Key
+import androidx.compose.material.icons.filled.Memory
+import androidx.compose.material.icons.filled.Router
+import androidx.compose.material.icons.filled.Schedule
+import androidx.compose.material.icons.filled.SettingsApplications
+import androidx.compose.material.icons.filled.Tune
+import androidx.compose.material.icons.filled.ViewModule
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.graphics.vector.ImageVector
@@ -53,39 +53,39 @@ private val adminSections =
         AdminSection(
             R.string.settings_server,
             listOf(
-                AdminPage(ConsolePage.Users, Icons.Outlined.Group, R.string.users_title, R.string.console_users_detail),
-                AdminPage(ConsolePage.Libraries, Icons.Outlined.Folder, R.string.libraries_title, R.string.console_libraries_detail),
-                AdminPage(ConsolePage.Transcoding, Icons.Outlined.Memory, R.string.transcoding_title, R.string.console_transcoding_detail),
+                AdminPage(ConsolePage.Users, Icons.Filled.Group, R.string.users_title, R.string.console_users_detail),
+                AdminPage(ConsolePage.Libraries, Icons.Filled.Folder, R.string.libraries_title, R.string.console_libraries_detail),
+                AdminPage(ConsolePage.Transcoding, Icons.Filled.Memory, R.string.transcoding_title, R.string.console_transcoding_detail),
                 AdminPage(
                     ConsolePage.ServerSettings,
-                    Icons.Outlined.Tune,
+                    Icons.Filled.Tune,
                     R.string.server_settings_title,
                     R.string.console_server_settings_detail,
                 ),
-                AdminPage(ConsolePage.LibraryDisplay, Icons.Outlined.ViewModule, R.string.display_title, R.string.console_display_detail),
-                AdminPage(ConsolePage.MetadataDefaults, Icons.Outlined.Category, R.string.metadata_title, R.string.console_metadata_detail),
-                AdminPage(ConsolePage.Nfo, Icons.Outlined.Description, R.string.nfo_title, R.string.console_nfo_detail),
-                AdminPage(ConsolePage.Trickplay, Icons.Outlined.Image, R.string.trickplay_title, R.string.console_trickplay_detail),
-                AdminPage(ConsolePage.Plugins, Icons.Outlined.Extension, R.string.plugins_title, R.string.console_plugins_detail),
+                AdminPage(ConsolePage.LibraryDisplay, Icons.Filled.ViewModule, R.string.display_title, R.string.console_display_detail),
+                AdminPage(ConsolePage.MetadataDefaults, Icons.Filled.Category, R.string.metadata_title, R.string.console_metadata_detail),
+                AdminPage(ConsolePage.Nfo, Icons.Filled.Description, R.string.nfo_title, R.string.console_nfo_detail),
+                AdminPage(ConsolePage.Trickplay, Icons.Filled.Image, R.string.trickplay_title, R.string.console_trickplay_detail),
+                AdminPage(ConsolePage.Plugins, Icons.Filled.Extension, R.string.plugins_title, R.string.console_plugins_detail),
             ),
         ),
         AdminSection(
             R.string.devices_title,
             listOf(
-                AdminPage(ConsolePage.Devices, Icons.Outlined.Devices, R.string.devices_title, R.string.console_devices_detail),
-                AdminPage(ConsolePage.Activity, Icons.Outlined.History, R.string.activity_title, R.string.console_activity_detail),
+                AdminPage(ConsolePage.Devices, Icons.Filled.Devices, R.string.devices_title, R.string.console_devices_detail),
+                AdminPage(ConsolePage.Activity, Icons.Filled.History, R.string.activity_title, R.string.console_activity_detail),
             ),
         ),
         AdminSection(
             R.string.advanced_title,
             listOf(
-                AdminPage(ConsolePage.Tasks, Icons.Outlined.Schedule, R.string.tasks_title, R.string.console_tasks_detail),
-                AdminPage(ConsolePage.Logs, Icons.Outlined.Description, R.string.logs_title, R.string.console_logs_detail),
-                AdminPage(ConsolePage.Network, Icons.Outlined.Router, R.string.network_title, R.string.console_network_detail),
-                AdminPage(ConsolePage.ApiKeys, Icons.Outlined.Key, R.string.api_keys_title, R.string.console_api_keys_detail),
-                AdminPage(ConsolePage.Backups, Icons.Outlined.Backup, R.string.backups_title, R.string.console_backups_detail),
-                AdminPage(ConsolePage.Advanced, Icons.Outlined.Build, R.string.advanced_title, R.string.console_advanced_detail),
-                AdminPage(ConsolePage.Server, Icons.Outlined.SettingsApplications, R.string.server_title, R.string.console_server_detail),
+                AdminPage(ConsolePage.Tasks, Icons.Filled.Schedule, R.string.tasks_title, R.string.console_tasks_detail),
+                AdminPage(ConsolePage.Logs, Icons.Filled.Description, R.string.logs_title, R.string.console_logs_detail),
+                AdminPage(ConsolePage.Network, Icons.Filled.Router, R.string.network_title, R.string.console_network_detail),
+                AdminPage(ConsolePage.ApiKeys, Icons.Filled.Key, R.string.api_keys_title, R.string.console_api_keys_detail),
+                AdminPage(ConsolePage.Backups, Icons.Filled.Backup, R.string.backups_title, R.string.console_backups_detail),
+                AdminPage(ConsolePage.Advanced, Icons.Filled.Build, R.string.advanced_title, R.string.console_advanced_detail),
+                AdminPage(ConsolePage.Server, Icons.Filled.SettingsApplications, R.string.server_title, R.string.console_server_detail),
             ),
         ),
     )

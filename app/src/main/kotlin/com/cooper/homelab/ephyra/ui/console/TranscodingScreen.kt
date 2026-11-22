@@ -4,8 +4,8 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.outlined.Memory
-import androidx.compose.material.icons.outlined.Warning
+import androidx.compose.material.icons.filled.Memory
+import androidx.compose.material.icons.filled.Warning
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -110,14 +110,14 @@ private fun TranscodingBody(
             rows =
                 listOf(
                     ListItem(
-                        icon = Icons.Outlined.Memory,
+                        icon = Icons.Filled.Memory,
                         label = stringResource(R.string.transcoding_acceleration),
                         key = SettingRows.TRANSCODING_ACCELERATION,
                         detail = accelerationLabel(type),
                         note =
                             ListItemNote(
                                 stringResource(R.string.transcoding_acceleration_warning),
-                                icon = Icons.Outlined.Warning,
+                                icon = Icons.Filled.Warning,
                                 warning = true,
                             ),
                         onClick = { picker = TranscodingPicker.Acceleration },

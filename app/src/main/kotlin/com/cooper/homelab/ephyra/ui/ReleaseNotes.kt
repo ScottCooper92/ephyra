@@ -3,7 +3,7 @@ package com.cooper.homelab.ephyra.ui
 import android.content.Context
 import android.content.Intent
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.outlined.NewReleases
+import androidx.compose.material.icons.filled.NewReleases
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.platform.LocalContext
@@ -50,7 +50,7 @@ internal fun releaseNotesItems(
     if (!openable || running.isEmpty()) return emptyList()
     return listOf(
         ListItem(
-            icon = Icons.Outlined.NewReleases,
+            icon = Icons.Filled.NewReleases,
             label = stringResource(R.string.release_notes),
             detail = running,
             destination = ListItemDestination.External,

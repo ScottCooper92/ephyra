@@ -9,12 +9,12 @@ import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.outlined.Bolt
-import androidx.compose.material.icons.outlined.Pause
-import androidx.compose.material.icons.outlined.PlayArrow
-import androidx.compose.material.icons.outlined.PlayCircle
-import androidx.compose.material.icons.outlined.SwapHoriz
-import androidx.compose.material.icons.outlined.Transform
+import androidx.compose.material.icons.filled.Bolt
+import androidx.compose.material.icons.filled.Pause
+import androidx.compose.material.icons.filled.PlayArrow
+import androidx.compose.material.icons.filled.PlayCircle
+import androidx.compose.material.icons.filled.SwapHoriz
+import androidx.compose.material.icons.filled.Transform
 import androidx.compose.material3.LinearProgressIndicator
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.runtime.Composable
@@ -140,7 +140,7 @@ internal fun NowPlayingPlaceholder() {
     EmptyScreen(
         message = stringResource(R.string.now_playing_select),
         title = stringResource(R.string.now_playing_select_title),
-        icon = Icons.Outlined.PlayCircle,
+        icon = Icons.Filled.PlayCircle,
     )
 }
 
@@ -170,7 +170,7 @@ private fun Streams(
             PageIntro(stringResource(nowPlayingBody(administrator)))
         }
         if (state.sessions.isEmpty()) {
-            item { ConsoleEmptyScreen(stringResource(R.string.now_playing_empty), Icons.Outlined.PlayCircle) }
+            item { ConsoleEmptyScreen(stringResource(R.string.now_playing_empty), Icons.Filled.PlayCircle) }
         }
         itemsIndexed(state.sessions, key = { _, session -> session.sessionId }) { index, session ->
             Stream(
@@ -217,7 +217,7 @@ private fun Stream(
         rows =
             listOf(
                 ListItem(
-                    icon = if (session.paused) Icons.Outlined.Pause else Icons.Outlined.PlayArrow,
+                    icon = if (session.paused) Icons.Filled.Pause else Icons.Filled.PlayArrow,
                     label = session.title,
                     detail = listOfNotNull(session.episode, who).joinToString("\n"),
                     supportingMaxLines = DETAIL_LINES,
@@ -249,9 +249,9 @@ private fun methodText(session: NowPlaying): String =
 private val PlayMethod.icon
     get() =
         when (this) {
-            PlayMethod.DirectPlay -> Icons.Outlined.Bolt
-            PlayMethod.DirectStream -> Icons.Outlined.SwapHoriz
-            PlayMethod.Transcode -> Icons.Outlined.Transform
+            PlayMethod.DirectPlay -> Icons.Filled.Bolt
+            PlayMethod.DirectStream -> Icons.Filled.SwapHoriz
+            PlayMethod.Transcode -> Icons.Filled.Transform
         }
 
 /**

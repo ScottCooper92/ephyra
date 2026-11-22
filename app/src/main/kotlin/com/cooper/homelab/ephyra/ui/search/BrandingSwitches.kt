@@ -2,7 +2,7 @@ package com.cooper.homelab.ephyra.ui.search
 
 import android.content.res.Resources
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.outlined.Wallpaper
+import androidx.compose.material.icons.filled.Wallpaper
 import com.cooper.homelab.core.presentation.search.SettingEntry
 import com.cooper.homelab.ephyra.R
 import com.cooper.homelab.ephyra.server.SPLASHSCREEN_ENABLED
@@ -31,7 +31,7 @@ internal fun Resources.indexBrandingSwitches(): List<SettingEntry<SearchTarget>>
         setting(
             ConsolePage.ServerSettings,
             R.string.server_settings_splashscreen,
-            Icons.Outlined.Wallpaper,
+            Icons.Filled.Wallpaper,
             R.string.settings_server,
             R.string.server_settings_title,
             shown = { profile, _ -> profile.hasSplashscreen },

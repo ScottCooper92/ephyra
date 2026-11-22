@@ -4,6 +4,7 @@ import android.content.Context
 import androidx.test.core.app.ApplicationProvider
 import androidx.work.ListenableWorker
 import androidx.work.testing.TestListenableWorkerBuilder
+import com.cooper.homelab.core.foundation.Logger
 import com.cooper.homelab.core.testing.InMemoryDataStore
 import com.cooper.homelab.ephyra.FakeJellyfin
 import com.cooper.homelab.ephyra.auth.ServerIdentity
@@ -16,6 +17,7 @@ import kotlinx.coroutines.runBlocking
 import okhttp3.OkHttpClient
 import org.junit.After
 import org.junit.Assert.assertEquals
+import org.junit.Assert.assertTrue
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.robolectric.RobolectricTestRunner
@@ -44,10 +46,13 @@ class NotificationWorkerTest {
         jellyfin.close()
     }
 
-    private fun run(): ListenableWorker.Result =
+    private fun run(
+        poll: PollRunner = runner,
+        logger: Logger = DiscardLogger,
+    ): ListenableWorker.Result =
         runBlocking {
             TestListenableWorkerBuilder<NotificationWorker>(context)
-                .setWorkerFactory(NotificationWorkerFactory { runner })
+                .setWorkerFactory(NotificationWorkerFactory({ poll }, { logger }))
                 .build()
                 .doWork()
         }
@@ -75,5 +80,27 @@ class NotificationWorkerTest {
         jellyfin.status["/Users/Me"] = 401
         assertEquals(ListenableWorker.Result.success(), run())
         assertEquals(1, notifier.connectionProblems)
+    }
+
+    @Test
+    fun `a poll that throws is retried and logged by its type, never its message`() {
+        runBlocking { sessions.save(jellyfin.session()) }
+        jellyfin.activityEntries = listOf(activityJson(1, "SessionStarted"))
+        assertEquals(ListenableWorker.Result.success(), run())
+        jellyfin.activityEntries = listOf(activityJson(2, "AuthenticationFailed"), activityJson(1, "SessionStarted"))
+        val exploding =
+            object : ActivityNotifier by notifier {
+                override suspend fun notifyActivity(summary: ActivitySummary): Unit = throw IllegalStateException("secret-message")
+            }
+        val poll =
+            PollRunner(
+                ActivityChecker(connection, testFeedCursors(), LegacyActivityCursor(prefs), serverIdentity, exploding, DiscardLogger),
+                pollReactor(exploding, scheduler, prefs) { false },
+                serverIdentity,
+            )
+        val thrown = mutableListOf<Throwable?>()
+        val logger = Logger { _, _, _, _, failure -> thrown += failure }
+        assertEquals(ListenableWorker.Result.retry(), run(poll, logger))
+        assertTrue(thrown.any { it is IllegalStateException })
     }
 }

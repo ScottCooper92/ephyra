@@ -229,6 +229,17 @@ jobs:
           if-no-files-found: ignore
           retention-days: 1
 
+      # `:app:packageDebug` has run out of heap in this job (#24). The JVM writes a dump when that happens
+      # (`HeapDumpOnOutOfMemoryError` in gradle.properties), but a dump is never uploaded: this repository
+      # is public, and a dump holds the debug classes of the private libraries it builds. This prints how
+      # much memory the runner had and whether a dump was written and how big, which says whether the heap
+      # filled or the runner killed the process.
+      - name: Say what memory the failure left
+        if: ${{ failure() }}
+        run: |
+          free -m
+          find . /home/runner/.gradle/daemon -name '*.hprof' -exec ls -lh {} + 2>/dev/null || true
+
   # The unit tests and the coverage floor read from them.
   tests:
     needs: changes

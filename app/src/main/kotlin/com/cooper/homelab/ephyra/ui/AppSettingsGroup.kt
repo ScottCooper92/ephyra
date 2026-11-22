@@ -30,6 +30,7 @@ import com.binge.designsystem.component.ItemGroup
 import com.binge.designsystem.component.ListItem
 import com.binge.designsystem.component.ListItemDestination
 import com.binge.designsystem.template.BingeScreenScaffold
+import com.binge.designsystem.template.ScreenBar
 import com.binge.designsystem.template.ScreenBody
 import com.binge.designsystem.template.screenListPadding
 import com.cooper.homelab.core.flags.NoPreferenceGate
@@ -213,6 +214,7 @@ internal fun ThisAppScreen(
     }
     BingeScreenScaffold(
         title = stringResource(R.string.settings_group_app),
+        bar = ScreenBar.Small,
         onBack = onBack,
         snackbarHostState = snackbarHostState,
     ) { padding ->

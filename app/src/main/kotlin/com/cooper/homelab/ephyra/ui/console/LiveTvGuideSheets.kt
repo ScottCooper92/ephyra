@@ -4,12 +4,12 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.outlined.Delete
-import androidx.compose.material.icons.outlined.Description
-import androidx.compose.material.icons.outlined.Dns
-import androidx.compose.material.icons.outlined.Key
-import androidx.compose.material.icons.outlined.LiveTv
-import androidx.compose.material.icons.outlined.PlaylistAdd
+import androidx.compose.material.icons.filled.Delete
+import androidx.compose.material.icons.filled.Description
+import androidx.compose.material.icons.filled.Dns
+import androidx.compose.material.icons.filled.Key
+import androidx.compose.material.icons.filled.LiveTv
+import androidx.compose.material.icons.filled.PlaylistAdd
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Text
@@ -90,14 +90,14 @@ internal fun ChooseGuideContent(actions: LiveTvGuideActions) {
             rows =
                 listOf(
                     ListItem(
-                        icon = Icons.Outlined.Description,
+                        icon = Icons.Filled.Description,
                         label = stringResource(R.string.live_tv_type_xmltv),
                         detail = stringResource(R.string.live_tv_guide_add_detail),
                         supportingMaxLines = CHOICE_LINES,
                         onClick = actions.onAddXmlTv,
                     ),
                     ListItem(
-                        icon = Icons.Outlined.Dns,
+                        icon = Icons.Filled.Dns,
                         label = stringResource(R.string.live_tv_type_schedules_direct),
                         detail = stringResource(R.string.live_tv_guide_sd_detail),
                         supportingMaxLines = CHOICE_LINES,
@@ -162,29 +162,29 @@ internal fun GuideFormContent(
                 rows =
                     listOfNotNull(
                         ListItem(
-                            icon = Icons.Outlined.PlaylistAdd,
+                            icon = Icons.Filled.PlaylistAdd,
                             label = stringResource(R.string.live_tv_guide_finish),
                             onClick = { actions.onFinishSetup(form.id) },
                         ).takeIf { finishable },
                         ListItem(
-                            icon = Icons.Outlined.Key,
+                            icon = Icons.Filled.Key,
                             label = stringResource(R.string.live_tv_guide_change_login),
                             onClick = { actions.onChangeLogin(form.id, form.name) },
                         ).takeIf { isSchedulesDirect },
                         ListItem(
-                            icon = Icons.Outlined.Dns,
+                            icon = Icons.Filled.Dns,
                             label = stringResource(R.string.live_tv_guide_change_lineup),
                             onClick = { actions.onChangeLineup(form.id) },
                         ).takeIf { changeable },
                         actions.onChannelMappings?.let { open ->
                             ListItem(
-                                icon = Icons.Outlined.LiveTv,
+                                icon = Icons.Filled.LiveTv,
                                 label = stringResource(R.string.live_tv_guide_channel_mappings),
                                 onClick = { open(form.id) },
                             ).takeIf { !form.lineupPending }
                         },
                         ListItem(
-                            icon = Icons.Outlined.Delete,
+                            icon = Icons.Filled.Delete,
                             iconTint = MaterialTheme.colorScheme.error,
                             label = stringResource(R.string.live_tv_guide_remove),
                             onClick = { actions.onAskRemove(form) },

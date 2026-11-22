@@ -5,12 +5,12 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.automirrored.outlined.Logout
-import androidx.compose.material.icons.outlined.AccountCircle
-import androidx.compose.material.icons.outlined.Dashboard
-import androidx.compose.material.icons.outlined.Password
-import androidx.compose.material.icons.outlined.QrCode2
-import androidx.compose.material.icons.outlined.Translate
+import androidx.compose.material.icons.automirrored.filled.Logout
+import androidx.compose.material.icons.filled.AccountCircle
+import androidx.compose.material.icons.filled.Dashboard
+import androidx.compose.material.icons.filled.Password
+import androidx.compose.material.icons.filled.QrCode2
+import androidx.compose.material.icons.filled.Translate
 import androidx.compose.material3.IconButton
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
@@ -63,7 +63,7 @@ internal fun SignOutButton(actions: Actions) {
     BingeTextButton(
         label = stringResource(R.string.settings_sign_out),
         onClick = actions.onAskSignOut,
-        leadingIcon = Icons.AutoMirrored.Outlined.Logout,
+        leadingIcon = Icons.AutoMirrored.Filled.Logout,
         destructive = true,
         modifier = Modifier.fillMaxWidth(),
     )
@@ -103,34 +103,34 @@ internal fun AccountGroup(
         rows =
             listOfNotNull(
                 ListItem(
-                    icon = Icons.Outlined.QrCode2,
+                    icon = Icons.Filled.QrCode2,
                     label = stringResource(R.string.approve_title),
                     detail = stringResource(R.string.console_approve_detail),
                     selected = actions.isOpenBeside(ConsolePage.ApproveCode),
                     onClick = { actions.onOpenPage(ConsolePage.ApproveCode) },
                 ).takeIf { ConsolePage.ApproveCode.available(state.profile, state.account) },
                 ListItem(
-                    icon = Icons.Outlined.Translate,
+                    icon = Icons.Filled.Translate,
                     label = stringResource(R.string.playback_title),
                     detail = stringResource(R.string.console_playback_detail),
                     selected = actions.isOpenBeside(ConsolePage.Playback),
                     onClick = { actions.onOpenPage(ConsolePage.Playback) },
                 ).takeIf { ConsolePage.Playback.available(state.profile, state.account) },
                 ListItem(
-                    icon = Icons.Outlined.Dashboard,
+                    icon = Icons.Filled.Dashboard,
                     label = stringResource(R.string.home_layout_title),
                     detail = stringResource(R.string.console_home_layout_detail),
                     selected = actions.isOpenBeside(ConsolePage.HomeLayout),
                     onClick = { actions.onOpenPage(ConsolePage.HomeLayout) },
                 ).takeIf { ConsolePage.HomeLayout.available(state.profile, state.account) },
                 ListItem(
-                    icon = Icons.Outlined.AccountCircle,
+                    icon = Icons.Filled.AccountCircle,
                     label = stringResource(R.string.profile_picture_title),
                     selected = actions.isOpenBeside(ConsolePage.ProfilePicture),
                     onClick = { actions.onOpenPage(ConsolePage.ProfilePicture) },
                 ).takeIf { ConsolePage.ProfilePicture.available(state.profile, state.account) },
                 ListItem(
-                    icon = Icons.Outlined.Password,
+                    icon = Icons.Filled.Password,
                     label = stringResource(R.string.password_title),
                     selected = actions.isOpenBeside(ConsolePage.Password),
                     onClick = { actions.onOpenPage(ConsolePage.Password) },

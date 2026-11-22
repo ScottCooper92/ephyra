@@ -4,15 +4,15 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.outlined.Audiotrack
-import androidx.compose.material.icons.outlined.CalendarMonth
-import androidx.compose.material.icons.outlined.Description
-import androidx.compose.material.icons.outlined.Folder
-import androidx.compose.material.icons.outlined.Image
-import androidx.compose.material.icons.outlined.Movie
-import androidx.compose.material.icons.outlined.Schedule
-import androidx.compose.material.icons.outlined.Tv
-import androidx.compose.material.icons.outlined.VideoLibrary
+import androidx.compose.material.icons.filled.Audiotrack
+import androidx.compose.material.icons.filled.CalendarMonth
+import androidx.compose.material.icons.filled.Description
+import androidx.compose.material.icons.filled.Folder
+import androidx.compose.material.icons.filled.Image
+import androidx.compose.material.icons.filled.Movie
+import androidx.compose.material.icons.filled.Schedule
+import androidx.compose.material.icons.filled.Tv
+import androidx.compose.material.icons.filled.VideoLibrary
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Text
@@ -115,8 +115,8 @@ private fun RecordingBody(
             title = stringResource(R.string.live_tv_recording_padding),
             rows =
                 listOfNotNull(
-                    numberRow(RecordingNumber.PrePadding, R.string.live_tv_recording_pre, Icons.Outlined.Schedule, config, actions),
-                    numberRow(RecordingNumber.PostPadding, R.string.live_tv_recording_post, Icons.Outlined.Schedule, config, actions),
+                    numberRow(RecordingNumber.PrePadding, R.string.live_tv_recording_pre, Icons.Filled.Schedule, config, actions),
+                    numberRow(RecordingNumber.PostPadding, R.string.live_tv_recording_post, Icons.Filled.Schedule, config, actions),
                 ),
         )
         ItemGroup(title = stringResource(R.string.live_tv_recording_files), rows = fileRows(config, actions))
@@ -133,9 +133,9 @@ private fun folderRow(
     ListItem(
         icon =
             when (folder) {
-                RecordingFolder.All -> Icons.Outlined.Folder
-                RecordingFolder.Movies -> Icons.Outlined.Movie
-                RecordingFolder.Series -> Icons.Outlined.Tv
+                RecordingFolder.All -> Icons.Filled.Folder
+                RecordingFolder.Movies -> Icons.Filled.Movie
+                RecordingFolder.Series -> Icons.Filled.Tv
             },
         label =
             stringResource(
@@ -192,7 +192,7 @@ private fun numberDetail(
 private fun guideRow(
     config: JsonObject,
     actions: LiveTvRecordingActions,
-): ListItem = numberItem(RecordingNumber.GuideDays, R.string.live_tv_recording_guide_days, Icons.Outlined.CalendarMonth, config, actions)
+): ListItem = numberItem(RecordingNumber.GuideDays, R.string.live_tv_recording_guide_days, Icons.Filled.CalendarMonth, config, actions)
 
 @Composable
 private fun fileRows(
@@ -200,12 +200,12 @@ private fun fileRows(
     actions: LiveTvRecordingActions,
 ): List<ListItem> =
     listOfNotNull(
-        switchRow(config, actions, LIVE_TV_SUBFOLDERS, Icons.Outlined.VideoLibrary, R.string.live_tv_recording_subfolders, null),
+        switchRow(config, actions, LIVE_TV_SUBFOLDERS, Icons.Filled.VideoLibrary, R.string.live_tv_recording_subfolders, null),
         switchRow(
             config,
             actions,
             LIVE_TV_ORIGINAL_AUDIO,
-            Icons.Outlined.Audiotrack,
+            Icons.Filled.Audiotrack,
             R.string.live_tv_recording_original_audio,
             R.string.live_tv_recording_original_audio_detail,
         ),
@@ -213,7 +213,7 @@ private fun fileRows(
             config,
             actions,
             LIVE_TV_SAVE_NFO,
-            Icons.Outlined.Description,
+            Icons.Filled.Description,
             R.string.live_tv_recording_nfo,
             R.string.live_tv_recording_nfo_detail,
         ),
@@ -221,7 +221,7 @@ private fun fileRows(
             config,
             actions,
             LIVE_TV_SAVE_IMAGES,
-            Icons.Outlined.Image,
+            Icons.Filled.Image,
             R.string.live_tv_recording_images,
             R.string.live_tv_recording_images_detail,
         ),

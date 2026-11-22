@@ -2,8 +2,8 @@ package com.cooper.homelab.ephyra.ui
 
 import androidx.compose.foundation.layout.Box
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.outlined.BugReport
-import androidx.compose.material.icons.outlined.MoreVert
+import androidx.compose.material.icons.filled.BugReport
+import androidx.compose.material.icons.filled.MoreVert
 import androidx.compose.material3.DropdownMenu
 import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.Icon
@@ -33,12 +33,12 @@ internal fun ReportProblemAction(open: (String) -> Unit = LocalContext.current::
     val more = stringResource(R.string.overflow_menu)
     Box {
         IconButton(onClick = { expanded = true }, modifier = Modifier.semantics { contentDescription = more }) {
-            Icon(Icons.Outlined.MoreVert, contentDescription = null)
+            Icon(Icons.Filled.MoreVert, contentDescription = null)
         }
         DropdownMenu(expanded = expanded, onDismissRequest = { expanded = false }) {
             DropdownMenuItem(
                 text = { Text(stringResource(R.string.report_problem)) },
-                leadingIcon = { Icon(Icons.Outlined.BugReport, contentDescription = null) },
+                leadingIcon = { Icon(Icons.Filled.BugReport, contentDescription = null) },
                 onClick = {
                     expanded = false
                     open(installBugReportUrl())

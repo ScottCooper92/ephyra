@@ -1,7 +1,7 @@
 package com.cooper.homelab.ephyra.ui.console
 
 import android.content.res.Resources
-import androidx.compose.material.icons.outlined.Schedule
+import androidx.compose.material.icons.filled.Schedule
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf

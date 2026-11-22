@@ -3,13 +3,13 @@ package com.cooper.homelab.ephyra.client.title
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Business
 import androidx.compose.material.icons.filled.CheckCircle
+import androidx.compose.material.icons.filled.CheckCircleOutline
 import androidx.compose.material.icons.filled.Event
 import androidx.compose.material.icons.filled.EventAvailable
 import androidx.compose.material.icons.filled.Person
 import androidx.compose.material.icons.filled.Translate
 import androidx.compose.material.icons.filled.Tv
 import androidx.compose.material.icons.filled.Videocam
-import androidx.compose.material.icons.outlined.CheckCircleOutline
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.runtime.Composable
@@ -196,7 +196,7 @@ internal fun EpisodeUi.row(
                 {
                     IconButton(onClick = { toggle(this) }) {
                         Icon(
-                            imageVector = if (watched) Icons.Filled.CheckCircle else Icons.Outlined.CheckCircleOutline,
+                            imageVector = if (watched) Icons.Filled.CheckCircle else Icons.Filled.CheckCircleOutline,
                             contentDescription = markWatched,
                         )
                     }

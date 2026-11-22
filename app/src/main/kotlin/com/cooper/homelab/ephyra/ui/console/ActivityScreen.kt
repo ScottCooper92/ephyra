@@ -16,20 +16,20 @@ import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.automirrored.outlined.Login
-import androidx.compose.material.icons.automirrored.outlined.Logout
-import androidx.compose.material.icons.outlined.Extension
-import androidx.compose.material.icons.outlined.FilterList
-import androidx.compose.material.icons.outlined.FilterListOff
-import androidx.compose.material.icons.outlined.GppBad
-import androidx.compose.material.icons.outlined.History
-import androidx.compose.material.icons.outlined.Info
-import androidx.compose.material.icons.outlined.Key
-import androidx.compose.material.icons.outlined.Person
-import androidx.compose.material.icons.outlined.PlayArrow
-import androidx.compose.material.icons.outlined.Schedule
-import androidx.compose.material.icons.outlined.Stop
-import androidx.compose.material.icons.outlined.Subtitles
+import androidx.compose.material.icons.automirrored.filled.Login
+import androidx.compose.material.icons.automirrored.filled.Logout
+import androidx.compose.material.icons.filled.Extension
+import androidx.compose.material.icons.filled.FilterList
+import androidx.compose.material.icons.filled.FilterListOff
+import androidx.compose.material.icons.filled.GppBad
+import androidx.compose.material.icons.filled.History
+import androidx.compose.material.icons.filled.Info
+import androidx.compose.material.icons.filled.Key
+import androidx.compose.material.icons.filled.Person
+import androidx.compose.material.icons.filled.PlayArrow
+import androidx.compose.material.icons.filled.Schedule
+import androidx.compose.material.icons.filled.Stop
+import androidx.compose.material.icons.filled.Subtitles
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -114,7 +114,7 @@ fun ActivityScreen(
             if (state is ActivityUiState.Ready || !filters.applied.isEmpty) {
                 ExpressiveIconButton(
                     onClick = filterActions.onOpen,
-                    icon = Icons.Outlined.FilterList,
+                    icon = Icons.Filled.FilterList,
                     contentDescription =
                         if (filters.applied.count == 0) {
                             stringResource(R.string.activity_filters)
@@ -236,14 +236,14 @@ private fun LazyItemScope.NothingToShow(
     filterActions: ActivityFilterActions,
 ) {
     if (filter.isEmpty) {
-        ConsoleEmptyScreen(stringResource(R.string.activity_empty), Icons.Outlined.History)
+        ConsoleEmptyScreen(stringResource(R.string.activity_empty), Icons.Filled.History)
         return
     }
     val searchOnly = filter.query != null && filter.copy(query = null).isEmpty
     EmptyScreen(
         message = stringResource(if (searchOnly) R.string.activity_search_empty_message else R.string.activity_filtered_empty_message),
         title = stringResource(if (searchOnly) R.string.activity_search_empty_title else R.string.activity_filtered_empty_title),
-        icon = Icons.Outlined.FilterListOff,
+        icon = Icons.Filled.FilterListOff,
         action =
             if (searchOnly) {
                 ScreenAction(
@@ -331,17 +331,17 @@ private fun dayTitle(
 /** An entry's icon, from its `Type`; an information mark for one this app doesn't know. */
 internal fun activityIcon(type: String): ImageVector =
     when {
-        type == "SessionStarted" -> Icons.AutoMirrored.Outlined.Login
-        type == "SessionEnded" -> Icons.AutoMirrored.Outlined.Logout
-        type == "AuthenticationFailed" || type == "UserLockedOut" -> Icons.Outlined.GppBad
-        type.startsWith("Authentication") -> Icons.Outlined.Key
-        type.endsWith("PlaybackStopped") -> Icons.Outlined.Stop
-        type.endsWith("Playback") -> Icons.Outlined.PlayArrow
-        type.startsWith("User") -> Icons.Outlined.Person
-        type.startsWith("Plugin") || type.startsWith("Package") -> Icons.Outlined.Extension
-        type.contains("Task") -> Icons.Outlined.Schedule
-        type.contains("Subtitle") -> Icons.Outlined.Subtitles
-        else -> Icons.Outlined.Info
+        type == "SessionStarted" -> Icons.AutoMirrored.Filled.Login
+        type == "SessionEnded" -> Icons.AutoMirrored.Filled.Logout
+        type == "AuthenticationFailed" || type == "UserLockedOut" -> Icons.Filled.GppBad
+        type.startsWith("Authentication") -> Icons.Filled.Key
+        type.endsWith("PlaybackStopped") -> Icons.Filled.Stop
+        type.endsWith("Playback") -> Icons.Filled.PlayArrow
+        type.startsWith("User") -> Icons.Filled.Person
+        type.startsWith("Plugin") || type.startsWith("Package") -> Icons.Filled.Extension
+        type.contains("Task") -> Icons.Filled.Schedule
+        type.contains("Subtitle") -> Icons.Filled.Subtitles
+        else -> Icons.Filled.Info
     }
 
 private const val LOADING_ROWS = 8

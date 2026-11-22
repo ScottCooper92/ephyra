@@ -1,34 +1,34 @@
 package com.cooper.homelab.ephyra.ui.console
 
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.outlined.Block
-import androidx.compose.material.icons.outlined.CallSplit
-import androidx.compose.material.icons.outlined.ClosedCaption
-import androidx.compose.material.icons.outlined.ClosedCaptionOff
-import androidx.compose.material.icons.outlined.CloudDownload
-import androidx.compose.material.icons.outlined.CollectionsBookmark
-import androidx.compose.material.icons.outlined.Description
-import androidx.compose.material.icons.outlined.GraphicEq
-import androidx.compose.material.icons.outlined.Hearing
-import androidx.compose.material.icons.outlined.Keyboard
-import androidx.compose.material.icons.outlined.ListAlt
-import androidx.compose.material.icons.outlined.Lyrics
-import androidx.compose.material.icons.outlined.MergeType
-import androidx.compose.material.icons.outlined.NoteAdd
-import androidx.compose.material.icons.outlined.Photo
-import androidx.compose.material.icons.outlined.Public
-import androidx.compose.material.icons.outlined.Save
-import androidx.compose.material.icons.outlined.SkipNext
-import androidx.compose.material.icons.outlined.Subtitles
-import androidx.compose.material.icons.outlined.Sync
-import androidx.compose.material.icons.outlined.Tag
-import androidx.compose.material.icons.outlined.Timeline
-import androidx.compose.material.icons.outlined.Title
-import androidx.compose.material.icons.outlined.Translate
-import androidx.compose.material.icons.outlined.Update
-import androidx.compose.material.icons.outlined.Verified
-import androidx.compose.material.icons.outlined.ViewTimeline
-import androidx.compose.material.icons.outlined.Visibility
+import androidx.compose.material.icons.filled.Block
+import androidx.compose.material.icons.filled.CallSplit
+import androidx.compose.material.icons.filled.ClosedCaption
+import androidx.compose.material.icons.filled.ClosedCaptionOff
+import androidx.compose.material.icons.filled.CloudDownload
+import androidx.compose.material.icons.filled.CollectionsBookmark
+import androidx.compose.material.icons.filled.Description
+import androidx.compose.material.icons.filled.GraphicEq
+import androidx.compose.material.icons.filled.Hearing
+import androidx.compose.material.icons.filled.Keyboard
+import androidx.compose.material.icons.filled.ListAlt
+import androidx.compose.material.icons.filled.Lyrics
+import androidx.compose.material.icons.filled.MergeType
+import androidx.compose.material.icons.filled.NoteAdd
+import androidx.compose.material.icons.filled.Photo
+import androidx.compose.material.icons.filled.Public
+import androidx.compose.material.icons.filled.Save
+import androidx.compose.material.icons.filled.SkipNext
+import androidx.compose.material.icons.filled.Subtitles
+import androidx.compose.material.icons.filled.Sync
+import androidx.compose.material.icons.filled.Tag
+import androidx.compose.material.icons.filled.Timeline
+import androidx.compose.material.icons.filled.Title
+import androidx.compose.material.icons.filled.Translate
+import androidx.compose.material.icons.filled.Update
+import androidx.compose.material.icons.filled.Verified
+import androidx.compose.material.icons.filled.ViewTimeline
+import androidx.compose.material.icons.filled.Visibility
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.graphics.vector.ImageVector
@@ -166,7 +166,7 @@ internal fun MetadataGroup(
         rows =
             listOfNotNull(
                 ListItem(
-                    icon = Icons.Outlined.Translate,
+                    icon = Icons.Filled.Translate,
                     label = stringResource(R.string.library_language),
                     detail =
                         state.cultures.firstOrNull { it.twoLetter.equals(options.string(LIBRARY_LANGUAGE), true) }?.displayName
@@ -174,7 +174,7 @@ internal fun MetadataGroup(
                     onClick = { onPick(LibraryPicker.Language) },
                 ),
                 ListItem(
-                    icon = Icons.Outlined.Public,
+                    icon = Icons.Filled.Public,
                     label = stringResource(R.string.library_country),
                     detail =
                         state.countries.firstOrNull { it.code.equals(options.string(LIBRARY_COUNTRY), true) }?.displayName
@@ -182,42 +182,42 @@ internal fun MetadataGroup(
                     onClick = { onPick(LibraryPicker.Country) },
                 ),
                 ListItem(
-                    icon = Icons.Outlined.Update,
+                    icon = Icons.Filled.Update,
                     label = stringResource(R.string.library_refresh),
                     detail = refreshLabel(days),
                     onClick = { onPick(LibraryPicker.Refresh) },
                 ),
                 state.switch(
                     LIBRARY_REALTIME,
-                    Icons.Outlined.Visibility,
+                    Icons.Filled.Visibility,
                     R.string.library_realtime,
                     actions,
                     R.string.library_realtime_detail,
                 ),
                 state.switch(
                     LIBRARY_SAVE_LOCAL,
-                    Icons.Outlined.Save,
+                    Icons.Filled.Save,
                     R.string.library_save_local,
                     actions,
                     R.string.library_save_local_detail,
                 ),
                 state
-                    .switch(LIBRARY_EMBEDDED_TITLES, Icons.Outlined.Title, R.string.library_embedded_titles, actions)
+                    .switch(LIBRARY_EMBEDDED_TITLES, Icons.Filled.Title, R.string.library_embedded_titles, actions)
                     .takeIf { libraryHasVideo(kind) },
                 state.embeddedExtrasRow(actions, profile),
                 state
-                    .switch(LIBRARY_EMBEDDED_EPISODES, Icons.Outlined.ListAlt, R.string.library_embedded_episodes, actions)
+                    .switch(LIBRARY_EMBEDDED_EPISODES, Icons.Filled.ListAlt, R.string.library_embedded_episodes, actions)
                     .takeIf { libraryHasShows(kind) },
                 state
                     .switch(
                         LIBRARY_SERIES_GROUPING,
-                        Icons.Outlined.MergeType,
+                        Icons.Filled.MergeType,
                         R.string.library_series_grouping,
                         actions,
                         R.string.library_series_grouping_detail,
                     ).takeIf { libraryHasShows(kind) },
                 ListItem(
-                    icon = Icons.Outlined.Tag,
+                    icon = Icons.Filled.Tag,
                     label = stringResource(R.string.library_season_zero),
                     detail = options.string(LIBRARY_SEASON_ZERO)?.ifBlank { null } ?: notSet,
                     onClick = { actions.onAsk(LibraryDialog.SeasonZero) },
@@ -225,15 +225,15 @@ internal fun MetadataGroup(
                 state
                     .switch(
                         LIBRARY_COLLECTIONS,
-                        Icons.Outlined.CollectionsBookmark,
+                        Icons.Filled.CollectionsBookmark,
                         R.string.library_collections,
                         actions,
                         R.string.library_collections_detail,
                     ).takeIf { libraryHasMovies(kind) },
-                state.switch(LIBRARY_PHOTOS, Icons.Outlined.Photo, R.string.library_photos, actions).takeIf { kind == "homevideos" },
-                state.providersRow(ProviderGroup.Readers, Icons.Outlined.Description, actions),
-                state.fetchersRow(FetcherKind.Metadata, Icons.Outlined.CloudDownload, actions),
-                state.fetchersRow(FetcherKind.Images, Icons.Outlined.Photo, actions),
+                state.switch(LIBRARY_PHOTOS, Icons.Filled.Photo, R.string.library_photos, actions).takeIf { kind == "homevideos" },
+                state.providersRow(ProviderGroup.Readers, Icons.Filled.Description, actions),
+                state.fetchersRow(FetcherKind.Metadata, Icons.Filled.CloudDownload, actions),
+                state.fetchersRow(FetcherKind.Images, Icons.Filled.Photo, actions),
             ) + state.saverRows(actions),
     )
 }
@@ -246,7 +246,7 @@ private fun LibraryUiState.Ready.embeddedExtrasRow(
 ): ListItem? =
     switch(
         LIBRARY_EMBEDDED_EXTRAS_TITLES,
-        Icons.Outlined.Title,
+        Icons.Filled.Title,
         R.string.library_embedded_extras,
         actions,
         R.string.library_embedded_extras_detail,
@@ -264,7 +264,7 @@ private fun LibraryUiState.Ready.saverRows(actions: LibraryActions): List<ListIt
     return available.metadataSavers.map { saver ->
         val enabled = on.any { it.equals(saver.name, ignoreCase = true) }
         ListItem(
-            icon = Icons.Outlined.NoteAdd,
+            icon = Icons.Filled.NoteAdd,
             label = saver.name,
             detail = stringResource(R.string.library_saver_detail),
             supportingMaxLines = LIBRARY_DETAIL_LINES,
@@ -287,20 +287,20 @@ internal fun VideoGroups(
         rows =
             listOfNotNull(
                 ListItem(
-                    icon = Icons.Outlined.ClosedCaption,
+                    icon = Icons.Filled.ClosedCaption,
                     label = stringResource(R.string.library_embedded_subtitles),
                     detail = embeddedSubtitlesLabel(state.options.string(LIBRARY_ALLOW_EMBEDDED_SUBTITLES) ?: "AllowAll"),
                     onClick = { onPick(LibraryPicker.EmbeddedSubtitles) },
                 ).takeIf {
                     libraryHasEmbeddedSubtitleChoice(state.library.type) && LIBRARY_ALLOW_EMBEDDED_SUBTITLES in state.options
                 },
-                state.switch(LIBRARY_SKIP_EMBEDDED_SUBTITLES, Icons.Outlined.ClosedCaptionOff, R.string.library_skip_embedded, actions),
-                state.switch(LIBRARY_SKIP_AUDIO_MATCH, Icons.Outlined.Hearing, R.string.library_skip_audio, actions),
-                state.switch(LIBRARY_PERFECT_MATCH, Icons.Outlined.Verified, R.string.library_perfect_match, actions),
-                state.switch(LIBRARY_SAVE_SUBTITLES, Icons.Outlined.Subtitles, R.string.library_save_subtitles, actions),
-                state.providersRow(ProviderGroup.Subtitles, Icons.Outlined.CloudDownload, actions),
+                state.switch(LIBRARY_SKIP_EMBEDDED_SUBTITLES, Icons.Filled.ClosedCaptionOff, R.string.library_skip_embedded, actions),
+                state.switch(LIBRARY_SKIP_AUDIO_MATCH, Icons.Filled.Hearing, R.string.library_skip_audio, actions),
+                state.switch(LIBRARY_PERFECT_MATCH, Icons.Filled.Verified, R.string.library_perfect_match, actions),
+                state.switch(LIBRARY_SAVE_SUBTITLES, Icons.Filled.Subtitles, R.string.library_save_subtitles, actions),
+                state.providersRow(ProviderGroup.Subtitles, Icons.Filled.CloudDownload, actions),
                 ListItem(
-                    icon = Icons.Outlined.Translate,
+                    icon = Icons.Filled.Translate,
                     label = stringResource(R.string.library_download_languages),
                     detail = downloadLanguagesSummary(state),
                     onClick = { actions.onPage(LibraryPage.Languages) },
@@ -311,8 +311,8 @@ internal fun VideoGroups(
         title = stringResource(R.string.library_images),
         rows =
             listOf(
-                state.switch(LIBRARY_CHAPTER_IMAGES, Icons.Outlined.ViewTimeline, R.string.library_chapter_images, actions),
-                state.switch(LIBRARY_CHAPTER_IMAGES_ON_SCAN, Icons.Outlined.Sync, R.string.library_on_scan, actions),
+                state.switch(LIBRARY_CHAPTER_IMAGES, Icons.Filled.ViewTimeline, R.string.library_chapter_images, actions),
+                state.switch(LIBRARY_CHAPTER_IMAGES_ON_SCAN, Icons.Filled.Sync, R.string.library_on_scan, actions),
             ),
     )
     if (profile.hasTrickplay) {
@@ -320,10 +320,10 @@ internal fun VideoGroups(
             title = stringResource(R.string.library_trickplay),
             rows =
                 listOfNotNull(
-                    state.switch(LIBRARY_TRICKPLAY, Icons.Outlined.Timeline, R.string.library_trickplay_extract, actions),
-                    state.switch(LIBRARY_TRICKPLAY_ON_SCAN, Icons.Outlined.Sync, R.string.library_on_scan, actions),
+                    state.switch(LIBRARY_TRICKPLAY, Icons.Filled.Timeline, R.string.library_trickplay_extract, actions),
+                    state.switch(LIBRARY_TRICKPLAY_ON_SCAN, Icons.Filled.Sync, R.string.library_on_scan, actions),
                     state
-                        .switch(LIBRARY_TRICKPLAY_WITH_MEDIA, Icons.Outlined.Save, R.string.library_trickplay_with_media, actions)
+                        .switch(LIBRARY_TRICKPLAY_WITH_MEDIA, Icons.Filled.Save, R.string.library_trickplay_with_media, actions)
                         .takeIf { profile.hasLibraryTrickplayWithMedia },
                 ),
         )
@@ -340,16 +340,16 @@ internal fun MusicGroups(
     val rows =
         listOfNotNull(
             state
-                .switch(LIBRARY_LOUDNESS, Icons.Outlined.GraphicEq, R.string.library_loudness, actions, R.string.library_loudness_detail)
+                .switch(LIBRARY_LOUDNESS, Icons.Filled.GraphicEq, R.string.library_loudness, actions, R.string.library_loudness_detail)
                 .takeIf { profile.hasLoudnessScan },
             state
                 .switch(
                     LIBRARY_LYRICS_WITH_MEDIA,
-                    Icons.Outlined.Lyrics,
+                    Icons.Filled.Lyrics,
                     R.string.library_lyrics_with_media,
                     actions,
                 ).takeIf { profile.hasLyrics },
-            state.providersRow(ProviderGroup.Lyrics, Icons.Outlined.CloudDownload, actions).takeIf { profile.hasLibraryLyricFetchers },
+            state.providersRow(ProviderGroup.Lyrics, Icons.Filled.CloudDownload, actions).takeIf { profile.hasLibraryLyricFetchers },
         )
     if (rows.isNotEmpty()) ItemGroup(title = stringResource(R.string.library_music), rows = rows)
 }
@@ -369,7 +369,7 @@ internal fun AudioTagsGroup(
             state
                 .switch(
                     LIBRARY_PREFER_ARTISTS_TAG,
-                    Icons.Outlined.Tag,
+                    Icons.Filled.Tag,
                     R.string.library_artists_tag,
                     actions,
                     R.string.library_artists_tag_detail,
@@ -377,19 +377,19 @@ internal fun AudioTagsGroup(
             state
                 .switch(
                     LIBRARY_CUSTOM_DELIMITERS,
-                    Icons.Outlined.CallSplit,
+                    Icons.Filled.CallSplit,
                     R.string.library_custom_delimiters,
                     actions,
                     R.string.library_custom_delimiters_detail,
                 ).takeIf { LIBRARY_CUSTOM_DELIMITERS in options },
             ListItem(
-                icon = Icons.Outlined.Keyboard,
+                icon = Icons.Filled.Keyboard,
                 label = stringResource(R.string.library_delimiters),
                 detail = options.tagDelimiters().ifEmpty { null } ?: stringResource(R.string.library_audio_tags_none),
                 onClick = { actions.onAsk(LibraryDialog.TagDelimiters) },
             ).takeIf { options.bool(LIBRARY_CUSTOM_DELIMITERS) == true && LIBRARY_TAG_DELIMITERS in options },
             ListItem(
-                icon = Icons.Outlined.Block,
+                icon = Icons.Filled.Block,
                 label = stringResource(R.string.library_whitelist),
                 detail =
                     if (whitelist.isEmpty()) {
@@ -410,7 +410,7 @@ internal fun SegmentsGroup(
     profile: JellyfinServerProfile,
 ) {
     if (!profile.hasLibrarySegmentProviders || !libraryHasVideo(state.library.type)) return
-    val row = state.providersRow(ProviderGroup.Segments, Icons.Outlined.SkipNext, actions) ?: return
+    val row = state.providersRow(ProviderGroup.Segments, Icons.Filled.SkipNext, actions) ?: return
     ItemGroup(title = stringResource(R.string.library_segments), rows = listOf(row))
 }
 
@@ -460,7 +460,7 @@ internal fun LibraryPickerSheet(
         LibraryPicker.Language -> {
             val choices =
                 remember(state.cultures, default) {
-                    listOf(BingeChoice("", default, icon = Icons.Outlined.Translate)) +
+                    listOf(BingeChoice("", default, icon = Icons.Filled.Translate)) +
                         state.cultures
                             .filter { it.twoLetter.isNotBlank() }
                             .distinctBy { it.twoLetter.lowercase() }
@@ -488,7 +488,7 @@ internal fun LibraryPickerSheet(
         LibraryPicker.Country -> {
             val choices =
                 remember(state.countries, default) {
-                    listOf(BingeChoice("", default, icon = Icons.Outlined.Public)) +
+                    listOf(BingeChoice("", default, icon = Icons.Filled.Public)) +
                         state.countries.map { BingeChoice(it.code, it.displayName, mark = it.code) }
                 }
             val suggested =

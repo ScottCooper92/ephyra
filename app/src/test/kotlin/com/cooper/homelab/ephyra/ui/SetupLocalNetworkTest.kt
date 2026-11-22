@@ -6,6 +6,7 @@ import androidx.compose.ui.test.onAllNodesWithText
 import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.performClick
 import com.binge.designsystem.testing.createTakeDownAndroidComposeRule
+import com.cooper.homelab.core.uiandroid.connect.AllowLocalNetwork
 import com.cooper.homelab.ephyra.server.PublicServerInfo
 import com.cooper.homelab.ephyra.theme.EphyraTheme
 import org.junit.Assert.assertEquals
@@ -13,6 +14,7 @@ import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.robolectric.RobolectricTestRunner
+import com.cooper.homelab.core.uiandroid.R as CoreR
 
 /** The setup steps name a missing local-network permission and offer the way to grant it, rather than blaming the server. */
 @RunWith(RobolectricTestRunner::class)
@@ -43,7 +45,13 @@ class SetupLocalNetworkTest {
             EphyraTheme {
                 EphyraRoot(
                     UiState.EnterServer(address = "192.168.1.20:8096", error = SetupError.LocalNetworkDenied),
-                    Actions(onAllowLocalNetwork = { calls += "allow" }),
+                    Actions(
+                        localNetwork =
+                            AllowLocalNetwork(CoreR.string.connect_local_network_allow, CoreR.string.connect_local_network_allow_short) {
+                                calls +=
+                                    "allow"
+                            },
+                    ),
                 )
             }
         }
@@ -58,11 +66,18 @@ class SetupLocalNetworkTest {
             EphyraTheme {
                 EphyraRoot(
                     UiState.EnterServer(address = "192.168.1.20:8096", error = SetupError.LocalNetworkDenied),
-                    Actions(localNetworkAsked = true),
+                    Actions(
+                        localNetwork =
+                            AllowLocalNetwork(
+                                CoreR.string.connect_local_network_open_settings,
+                                CoreR.string.connect_local_network_open_settings,
+                            ) {
+                            },
+                    ),
                 )
             }
         }
-        compose.onNodeWithText("Open app settings").assertExists()
+        compose.onNodeWithText("Open settings").assertExists()
         compose.onAllNodesWithText("Allow local network access").assertCountEquals(0)
     }
 
@@ -72,7 +87,7 @@ class SetupLocalNetworkTest {
             EphyraTheme { EphyraRoot(UiState.EnterServer(address = "192.168.1.20:8096", error = SetupError.Unreachable), Actions()) }
         }
         compose.onAllNodesWithText("Allow local network access").assertCountEquals(0)
-        compose.onAllNodesWithText("Open app settings").assertCountEquals(0)
+        compose.onAllNodesWithText("Open settings").assertCountEquals(0)
     }
 
     @Test
@@ -81,7 +96,10 @@ class SetupLocalNetworkTest {
             EphyraTheme {
                 EphyraRoot(
                     UiState.SignIn(baseUrl = "http://192.168.1.20:8096", server = server, passwordError = SetupError.LocalNetworkDenied),
-                    Actions(),
+                    Actions(
+                        localNetwork =
+                            AllowLocalNetwork(CoreR.string.connect_local_network_allow, CoreR.string.connect_local_network_allow_short) {},
+                    ),
                 )
             }
         }

@@ -54,7 +54,7 @@ class JellyfinScreenshotTest {
     @EphyraScreenStatePreview
     @EphyraSpanishPreviews
     @Composable
-    fun serverLocalNetworkDenied() = EphyraRoot(previewEnterServerLocalNetwork, Actions())
+    fun serverLocalNetworkDenied() = EphyraRoot(previewEnterServerLocalNetwork, Actions(localNetwork = previewAllowLocalNetwork))
 
     @PreviewTest
     @EphyraScreenStatePreview
@@ -281,7 +281,7 @@ class JellyfinScreenshotTest {
     @PreviewTest
     @EphyraScreenStatePreview
     @Composable
-    fun signInLocalNetworkDenied() = EphyraRoot(previewSignInLocalNetwork, Actions(localNetworkAsked = true))
+    fun signInLocalNetworkDenied() = EphyraRoot(previewSignInLocalNetwork, Actions(localNetwork = previewOpenSettings))
 
     // Signed in.
 
@@ -337,12 +337,12 @@ class JellyfinScreenshotTest {
     @EphyraScreenStatePreview
     @EphyraSpanishPreviews
     @Composable
-    fun signedInLocalNetworkDenied() = EphyraRoot(previewSignedInLocalNetworkDenied, Actions())
+    fun signedInLocalNetworkDenied() = EphyraRoot(previewSignedInLocalNetworkDenied, Actions(localNetwork = previewAllowLocalNetwork))
 
     @PreviewTest
     @EphyraScreenStatePreview
     @Composable
-    fun signedInLocalNetworkAsked() = EphyraRoot(previewSignedInLocalNetworkDenied, Actions(localNetworkAsked = true))
+    fun signedInLocalNetworkAsked() = EphyraRoot(previewSignedInLocalNetworkDenied, Actions(localNetwork = previewOpenSettings))
 
     @PreviewTest
     @EphyraScreenStatePreview

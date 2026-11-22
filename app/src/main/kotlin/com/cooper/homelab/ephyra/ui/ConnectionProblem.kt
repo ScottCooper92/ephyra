@@ -37,13 +37,11 @@ internal fun ConnectionProblem(
         body = stringResource(connectionBody(health)),
         icon = if (health == ConnectionHealth.CouldNotLoad) Icons.Filled.HourglassEmpty else Icons.Filled.CloudOff,
         actions = {
-            if (health == ConnectionHealth.LocalNetworkDenied) {
+            val allow = actions.localNetwork
+            if (health == ConnectionHealth.LocalNetworkDenied && allow != null) {
                 BingeFilledButton(
-                    label =
-                        stringResource(
-                            if (actions.localNetworkAsked) R.string.connection_open_settings else R.string.connection_allow_local_network,
-                        ),
-                    onClick = actions.onAllowLocalNetwork,
+                    label = stringResource(allow.label),
+                    onClick = allow.run,
                     modifier = Modifier.fillMaxWidth(),
                 )
             } else {

@@ -50,9 +50,7 @@ import mockwebserver3.MockWebServer
 import mockwebserver3.RecordedRequest
 import okhttp3.HttpUrl
 import okhttp3.HttpUrl.Companion.toHttpUrl
-import okhttp3.Interceptor
 import okhttp3.OkHttpClient
-import okhttp3.Response
 import org.junit.After
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertFalse
@@ -86,23 +84,9 @@ class JellyfinViewModelTest {
     /** The one teardown every view model test shares: the view models are stopped and finished, and the connections closed, before Main is reset. */
     private val teardown = ViewModelTeardown()
 
-    /**
-     * The calls to the fake server that have not been answered yet. The connection's own health interceptor sits inside this one,
-     * so a call is reported to the monitor before it stops counting here.
-     */
-    private val calls = CallsInFlight()
-
     private val connection =
         teardown.made(
-            Connection(
-                OkHttpClient.Builder().addInterceptor(calls).build(),
-                sessions,
-                "Jellyfin Companion",
-                "Test",
-                "1.0",
-                Dispatchers.IO,
-                DiscardLogger,
-            ),
+            Connection(OkHttpClient(), sessions, "Jellyfin Companion", "Test", "1.0", Dispatchers.IO, DiscardLogger),
         )
 
     @Before
@@ -175,6 +159,15 @@ class JellyfinViewModelTest {
                 e,
             )
         }
+
+    /**
+     * Waits until the server card has the three figures it reads for a user who is not an administrator, which is who these tests sign
+     * in as. The card starts its reads before the library is counted, as background work, and each answer is reported to the health
+     * monitor before its figure is shown, so once all three are shown no answer is left to land between calls a test reports itself.
+     * Counting the calls that have reached the server instead would miss a read the view model has launched but not yet sent.
+     */
+    private fun JellyfinViewModel.awaitCard() =
+        await<UiState.SignedIn> { it.card.playing != null && it.card.movies != null && it.card.tmdb != null }
 
     private fun JellyfinViewModel.toSignIn(): UiState.SignIn {
         await<UiState.EnterServer>()
@@ -1730,9 +1723,9 @@ class JellyfinViewModelTest {
         runBlocking { sessions.save(jellyfin.session()) }
         val vm = viewModel()
         assertEquals(ConnectionHealth.Healthy, vm.await<UiState.SignedIn> { it.titles != null }.health)
-        // The server card's reads start before the library is counted and may still be answering: an answer between the two failures
-        // below would start the run over, and the health would never turn into a problem.
-        calls.awaitNone()
+        // The server card's reads may still be answering: an answer between the two failures below would start the run over, and the
+        // health would never turn into a problem.
+        vm.awaitCard()
         connection.monitor.report(SAVED_SERVER, CallResult.TransportFailure())
         // One call without an answer is a blip, as binge-seerr counts it.
         assertEquals(ConnectionHealth.Healthy, vm.await<UiState.SignedIn>().health)
@@ -1752,8 +1745,7 @@ class JellyfinViewModelTest {
         held.awaitArrival()
         connection.monitor.report(SAVED_SERVER, CallResult.TransportFailure())
         held.release()
-        vm.await<UiState.SignedIn> { it.card.playing != null }
-        calls.awaitNone()
+        vm.awaitCard()
         connection.monitor.report(SAVED_SERVER, CallResult.TransportFailure())
         // The answer came between the two, so they are not a run of two: this is why a test that reports its own failures waits for
         // the calls the app makes to be answered first.
@@ -1770,7 +1762,7 @@ class JellyfinViewModelTest {
         held.awaitArrival()
         // Answered a moment after the wait begins: the failures are reported once it has been, so they are a run of two.
         val answering = Thread { Thread.sleep(ANSWER_AFTER_MILLIS).also { held.release() } }.also { it.start() }
-        calls.awaitNone()
+        vm.awaitCard()
         answering.join()
         connection.monitor.report(SAVED_SERVER, CallResult.TransportFailure())
         connection.monitor.report(SAVED_SERVER, CallResult.TransportFailure())
@@ -2087,29 +2079,4 @@ private const val DEAD_PORT = "http://127.0.0.1:1/"
 private const val CERTIFICATE_REQUIRED_ALERT =
     "Read error: ssl=0x0: error:1000045c:SSL routines:OPENSSL_internal:TLSV1_ALERT_CERTIFICATE_REQUIRED"
 
-private const val CALLS_WAIT_MILLIS = 10_000L
-private const val CALLS_POLL_MILLIS = 5L
 private const val ANSWER_AFTER_MILLIS = 400L
-
-/** Counts the calls that have been sent and not yet answered, so a test can wait for the server to go quiet. */
-private class CallsInFlight : Interceptor {
-    private val open = AtomicInteger()
-
-    override fun intercept(chain: Interceptor.Chain): Response {
-        open.incrementAndGet()
-        try {
-            return chain.proceed(chain.request())
-        } finally {
-            open.decrementAndGet()
-        }
-    }
-
-    /** Waits until no call is waiting for an answer. */
-    fun awaitNone() {
-        val until = System.nanoTime() + TimeUnit.MILLISECONDS.toNanos(CALLS_WAIT_MILLIS)
-        while (open.get() > 0) {
-            check(System.nanoTime() < until) { "${open.get()} calls still had no answer after $CALLS_WAIT_MILLIS ms" }
-            Thread.sleep(CALLS_POLL_MILLIS)
-        }
-    }
-}

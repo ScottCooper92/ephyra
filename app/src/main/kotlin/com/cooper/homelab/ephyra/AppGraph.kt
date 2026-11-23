@@ -342,7 +342,7 @@ class AppGraph(
                 ReviewSignalStore(
                     dataStore("review"),
                 ),
-            launcher = PlayReviewPromptLauncher(appContext, AppDispatchers.platform()),
+            launcher = PlayReviewPromptLauncher(appContext, AppDispatchers.platform().main),
             isEnabled = { flags.flags.value[SharedFlags.ReviewPrompt] },
             scope = scope,
             clock = Clock.system(),

@@ -13,7 +13,7 @@ import kotlinx.coroutines.async
 import kotlinx.coroutines.launch
 import kotlinx.serialization.json.JsonElement
 import kotlinx.serialization.json.JsonObject
-import com.cooper.homelab.core.presentation.editor.SaveStatus as EngineStatus
+import com.cooper.homelab.core.presentation.editor.WriteStatus as EngineStatus
 
 /** Where a page's saves stand, for [FormSaveStatus]: the last write's [status], and whether a change is [failed], unsent. */
 data class SaveProgress(

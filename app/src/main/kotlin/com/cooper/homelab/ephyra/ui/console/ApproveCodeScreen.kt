@@ -15,6 +15,8 @@ import com.binge.designsystem.template.FormAction
 import com.binge.designsystem.template.FormScreen
 import com.binge.designsystem.template.ScreenBar
 import com.cooper.homelab.ephyra.R
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.emptyFlow
 import com.binge.designsystem.R as DesR
 
 /** What the approval page can ask of its view model, and of the console. */
@@ -26,13 +28,14 @@ data class ApproveActions(
 
 /**
  * Approving a Quick Connect code: the six digits another device shows, and Approve in the footer. A code that is not waiting
- * shows on its field with what to do about it, and the rest of the outcome is a snackbar: approving is a form whose submit is
+ * shows on its field with what to do about it, and the rest of the outcome is a snackbar, once each from [events]: approving is a form whose submit is
  * the point, so there is nothing to save as made.
  */
 @Composable
 fun ApproveCodeScreen(
     state: ApproveUiState,
     actions: ApproveActions,
+    events: Flow<ApproveOutcome> = emptyFlow(),
 ) {
     val host = remember { SnackbarHostState() }
     FormScreen(
@@ -54,23 +57,21 @@ fun ApproveCodeScreen(
                 value = state.code,
                 onValueChange = actions.onCode,
                 label = stringResource(R.string.approve_field),
-                isError = state.result == ApproveResult.WrongCode,
-                supporting = if (state.result == ApproveResult.WrongCode) stringResource(R.string.approve_wrong) else null,
+                isError = state.wrongCode,
+                supporting = if (state.wrongCode) stringResource(R.string.approve_wrong) else null,
                 keyboardType = KeyboardType.NumberPassword,
                 onDone = actions.onApprove,
                 imeAction = ImeAction.Done,
             )
         }
     }
-    SnackbarMessage(state.result?.snackbar()?.let { stringResource(it) }, host)
+    SnackbarEvents(events, host) { it.sentence() }
 }
 
-/** The outcomes a snackbar reports: a code that is not waiting shows on its field instead. */
-private fun ApproveResult.snackbar(): Int? =
+private fun ApproveOutcome.sentence(): Int =
     when (this) {
-        ApproveResult.Approved -> R.string.approve_done
-        ApproveResult.QuickConnectOff -> R.string.error_quick_connect_off
-        ApproveResult.Unreachable -> R.string.error_unreachable
-        ApproveResult.Failed -> R.string.error_generic
-        ApproveResult.WrongCode -> null
+        ApproveOutcome.Approved -> R.string.approve_done
+        ApproveOutcome.QuickConnectOff -> R.string.error_quick_connect_off
+        ApproveOutcome.Unreachable -> R.string.error_unreachable
+        ApproveOutcome.Failed -> R.string.error_generic
     }

@@ -43,10 +43,10 @@ class ServerFailureTest {
     }
 
     @Test
-    fun `a certificate the device does not trust reads as unreachable and not as unknown`() {
-        assertEquals(ServerFailure.Unreachable(), failure(SSLPeerUnverifiedException("Hostname jf.lan not verified")))
+    fun `a certificate the device does not trust is told apart from a server that is down`() {
+        assertEquals(ServerFailure.CertificateRefused, failure(SSLPeerUnverifiedException("Hostname jf.lan not verified")))
         assertEquals(
-            ServerFailure.Unreachable(),
+            ServerFailure.CertificateRefused,
             failure(SSLHandshakeException("handshake failed").apply { initCause(CertificateException("path validation failed")) }),
         )
     }

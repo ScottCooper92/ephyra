@@ -21,6 +21,7 @@ import okhttp3.OkHttpClient
 import org.junit.After
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertFalse
+import org.junit.Assert.assertNull
 import org.junit.Assert.assertTrue
 import org.junit.Before
 import org.junit.Test
@@ -57,10 +58,21 @@ class ApproveCodeViewModelTest {
         teardown.close(jellyfin)
     }
 
-    private fun ApproveCodeViewModel.resultAfter(code: String): ApproveUiState {
+    /** What an approval left: the form, and the snackbar's one-shot outcome (none for a code the field says is not waiting). */
+    private data class Result(
+        val state: ApproveUiState,
+        val outcome: ApproveOutcome?,
+    )
+
+    private fun ApproveCodeViewModel.resultAfter(code: String): Result {
         onCode(code)
         approve()
-        return runBlocking { withTimeout(TIMEOUT_MILLIS) { state.first { it.result != null } } }
+        return runBlocking {
+            withTimeout(TIMEOUT_MILLIS) {
+                val done = state.first { !it.approving }
+                Result(done, if (done.wrongCode) null else events.first())
+            }
+        }
     }
 
     @Test
@@ -71,15 +83,15 @@ class ApproveCodeViewModelTest {
         vm.onCode("123")
         assertFalse(vm.state.value.complete)
         vm.approve()
-        assertEquals(null, vm.state.value.result)
+        assertFalse(vm.state.value.wrongCode)
         assertEquals(0, jellyfin.hits("/QuickConnect/Authorize"))
     }
 
     @Test
     fun `a waiting code is approved and the field empties for the next`() {
-        val state = made(ApproveCodeViewModel(connection)).resultAfter("654321")
-        assertEquals(ApproveResult.Approved, state.result)
-        assertEquals("", state.code)
+        val result = made(ApproveCodeViewModel(connection)).resultAfter("654321")
+        assertEquals(ApproveOutcome.Approved, result.outcome)
+        assertEquals("", result.state.code)
     }
 
     @Test
@@ -93,28 +105,29 @@ class ApproveCodeViewModelTest {
 
     @Test
     fun `a code the server is not waiting on says so and stays to be corrected`() {
-        val state = made(ApproveCodeViewModel(connection)).resultAfter("111111")
-        assertEquals(ApproveResult.WrongCode, state.result)
-        assertEquals("111111", state.code)
+        val result = made(ApproveCodeViewModel(connection)).resultAfter("111111")
+        assertTrue(result.state.wrongCode)
+        assertNull(result.outcome)
+        assertEquals("111111", result.state.code)
     }
 
     @Test
     fun `Quick Connect turned off, another failure, an unreachable server and no session each say so`() {
         jellyfin.status["/QuickConnect/Authorize"] = 401
-        assertEquals(ApproveResult.QuickConnectOff, made(ApproveCodeViewModel(connection)).resultAfter("654321").result)
+        assertEquals(ApproveOutcome.QuickConnectOff, made(ApproveCodeViewModel(connection)).resultAfter("654321").outcome)
         jellyfin.status["/QuickConnect/Authorize"] = 500
-        assertEquals(ApproveResult.Failed, made(ApproveCodeViewModel(connection)).resultAfter("654321").result)
+        assertEquals(ApproveOutcome.Failed, made(ApproveCodeViewModel(connection)).resultAfter("654321").outcome)
         jellyfin.close()
-        assertEquals(ApproveResult.Unreachable, made(ApproveCodeViewModel(connection)).resultAfter("654321").result)
+        assertEquals(ApproveOutcome.Unreachable, made(ApproveCodeViewModel(connection)).resultAfter("654321").outcome)
         runBlocking { sessions.clear() }
-        assertEquals(ApproveResult.Unreachable, made(ApproveCodeViewModel(connection)).resultAfter("654321").result)
+        assertEquals(ApproveOutcome.Unreachable, made(ApproveCodeViewModel(connection)).resultAfter("654321").outcome)
     }
 
     @Test
     fun `a 401 with the session still good is Quick Connect turned off, and nothing is reported`() {
         jellyfin.status["/QuickConnect/Authorize"] = 401
         val refused = refusals()
-        assertEquals(ApproveResult.QuickConnectOff, made(ApproveCodeViewModel(connection)).resultAfter("654321").result)
+        assertEquals(ApproveOutcome.QuickConnectOff, made(ApproveCodeViewModel(connection)).resultAfter("654321").outcome)
         assertEquals(1, jellyfin.hits("/Users/Me"))
         assertTrue(refused.isEmpty())
     }

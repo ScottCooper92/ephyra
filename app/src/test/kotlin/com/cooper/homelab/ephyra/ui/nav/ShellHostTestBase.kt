@@ -19,7 +19,7 @@ import androidx.navigation3.runtime.NavBackStack
 import androidx.navigation3.runtime.NavKey
 import androidx.navigation3.runtime.rememberNavBackStack
 import com.binge.designsystem.testing.createTakeDownAndroidComposeRule
-import com.cooper.homelab.core.uiandroid.shell.RestartOnGateChange
+import com.cooper.homelab.core.uiandroid.shell.KeepPlaceOnGateChange
 import com.cooper.homelab.core.uiandroid.shell.RestartOnSessionEnd
 import com.cooper.homelab.core.uiandroid.shell.TabShellState
 import com.cooper.homelab.ephyra.browse.ItemKind
@@ -57,7 +57,7 @@ abstract class ShellHostTestBase {
                 val shell = rememberEphyraTabs()
                 stack = backStack
                 tabs = shell
-                RestartOnGateChange(gate, shell, backStack, offTab = EphyraTab.Server)
+                KeepPlaceOnGateChange(gate, shell, offTab = EphyraTab.Server)
                 RestartOnSessionEnd(connected, shell, backStack)
                 EphyraNavHost(
                     backStack = backStack,

@@ -12,7 +12,7 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation3.runtime.NavBackStack
 import androidx.navigation3.runtime.NavKey
 import com.android.tools.screenshot.PreviewTest
-import com.cooper.homelab.core.uiandroid.shell.TabShellState
+import com.binge.designsystem.shell.TabShellState
 import com.cooper.homelab.ephyra.preview.EphyraScreenStatePreview
 import com.cooper.homelab.ephyra.preview.EphyraSpanishPreviews
 import com.cooper.homelab.ephyra.preview.EphyraWidePreview

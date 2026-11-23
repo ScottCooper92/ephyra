@@ -29,14 +29,14 @@ import androidx.navigation3.runtime.NavBackStack
 import androidx.navigation3.runtime.NavKey
 import androidx.navigation3.runtime.rememberNavBackStack
 import com.binge.companion.kit.isTelevision
+import com.binge.designsystem.shell.KeepPlaceOnGateChange
+import com.binge.designsystem.shell.RestartOnSessionEnd
 import com.cooper.homelab.core.server.network.AndroidLocalNetworkPermission
 import com.cooper.homelab.core.server.network.LOCAL_NETWORK_PERMISSION
 import com.cooper.homelab.core.uiandroid.connect.rememberAllowLocalNetwork
 import com.cooper.homelab.core.uiandroid.consent.ConsentGate
 import com.cooper.homelab.core.uiandroid.flags.LocalFlags
 import com.cooper.homelab.core.uiandroid.review.ReviewPromptOnReturnToRoot
-import com.cooper.homelab.core.uiandroid.shell.KeepPlaceOnGateChange
-import com.cooper.homelab.core.uiandroid.shell.RestartOnSessionEnd
 import com.cooper.homelab.ephyra.browse.ItemKind
 import com.cooper.homelab.ephyra.flags.LocalClientEnabled
 import com.cooper.homelab.ephyra.openitem.OpenRequestedItem

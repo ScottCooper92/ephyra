@@ -16,10 +16,10 @@ import androidx.navigation3.runtime.NavKey
 import androidx.navigation3.runtime.rememberNavBackStack
 import com.binge.designsystem.component.BingeNavSuiteItem
 import com.binge.designsystem.component.rememberBingeNavPresentation
+import com.binge.designsystem.shell.TabShell
+import com.binge.designsystem.shell.TabShellState
+import com.binge.designsystem.shell.rememberTabShellState
 import com.binge.designsystem.template.EmptyScreen
-import com.cooper.homelab.core.uiandroid.shell.TabShell
-import com.cooper.homelab.core.uiandroid.shell.TabShellState
-import com.cooper.homelab.core.uiandroid.shell.rememberTabShellState
 import com.cooper.homelab.ephyra.R
 import kotlinx.serialization.Serializable
 

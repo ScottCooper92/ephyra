@@ -18,10 +18,10 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation3.runtime.NavBackStack
 import androidx.navigation3.runtime.NavKey
 import androidx.navigation3.runtime.rememberNavBackStack
+import com.binge.designsystem.shell.KeepPlaceOnGateChange
+import com.binge.designsystem.shell.RestartOnSessionEnd
+import com.binge.designsystem.shell.TabShellState
 import com.binge.designsystem.testing.createTakeDownAndroidComposeRule
-import com.cooper.homelab.core.uiandroid.shell.KeepPlaceOnGateChange
-import com.cooper.homelab.core.uiandroid.shell.RestartOnSessionEnd
-import com.cooper.homelab.core.uiandroid.shell.TabShellState
 import com.cooper.homelab.ephyra.browse.ItemKind
 import com.cooper.homelab.ephyra.theme.EphyraTheme
 import com.cooper.homelab.ephyra.ui.console.ConsolePage

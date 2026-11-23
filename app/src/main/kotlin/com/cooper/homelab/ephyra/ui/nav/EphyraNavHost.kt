@@ -22,9 +22,9 @@ import com.binge.designsystem.LocalPaneDepth
 import com.binge.designsystem.PaneContent
 import com.binge.designsystem.PaneEdge
 import com.binge.designsystem.motion.rememberBingeNavMotion
-import com.cooper.homelab.core.uiandroid.shell.TabShellState
-import com.cooper.homelab.core.uiandroid.shell.nothingOpenBeside
-import com.cooper.homelab.core.uiandroid.shell.settleStash
+import com.binge.designsystem.shell.TabShellState
+import com.binge.designsystem.shell.nothingOpenBeside
+import com.binge.designsystem.shell.settleStash
 import com.cooper.homelab.ephyra.ui.console.ConsoleEntry
 import com.cooper.homelab.ephyra.ui.console.ConsolePageStores
 import com.cooper.homelab.ephyra.ui.console.ConsoleThreePaneStrategy

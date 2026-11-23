@@ -32,7 +32,7 @@ class SaveAsMadeStatusTest {
         compose.setContent {
             EphyraTheme { PlaybackScreen(ready.copy(save = SaveProgress(failed = true)), PlaybackActions(onRetrySave = { retries++ })) }
         }
-        compose.onNodeWithText("Retry").performClick()
+        compose.onNodeWithText("Try again").performClick()
         assertEquals(1, retries)
     }
 

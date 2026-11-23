@@ -45,6 +45,7 @@ import com.cooper.homelab.ephyra.ui.previewSignInUsers
 import com.cooper.homelab.ephyra.ui.previewSignInUsersPictures
 import com.cooper.homelab.ephyra.ui.previewSignInWrongPassword
 import com.cooper.homelab.ephyra.ui.previewSignedIn
+import com.cooper.homelab.ephyra.ui.previewSignedInCertificateRefused
 import com.cooper.homelab.ephyra.ui.previewSignedInChecking
 import com.cooper.homelab.ephyra.ui.previewSignedInClientCertificate
 import com.cooper.homelab.ephyra.ui.previewSignedInCouldNotLoad
@@ -279,6 +280,11 @@ class TvJellyfinScreenshotTest {
     @EphyraTvScreenPreviews
     @Composable
     fun signedInClientCertificate() = TvEphyraRoot(previewSignedInClientCertificate, Actions())
+
+    @PreviewTest
+    @EphyraTvScreenPreviews
+    @Composable
+    fun signedInCertificateRefused() = TvEphyraRoot(previewSignedInCertificateRefused, Actions())
 
     @PreviewTest
     @EphyraTvScreenPreviews

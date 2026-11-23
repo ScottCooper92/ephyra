@@ -15,6 +15,7 @@ import androidx.compose.ui.test.hasProgressBarRangeInfo
 import androidx.compose.ui.test.hasScrollAction
 import androidx.compose.ui.test.hasSetTextAction
 import androidx.compose.ui.test.hasText
+import androidx.compose.ui.test.junit4.StateRestorationTester
 import androidx.compose.ui.test.longClick
 import androidx.compose.ui.test.onAllNodesWithContentDescription
 import androidx.compose.ui.test.onAllNodesWithText
@@ -68,6 +69,8 @@ import com.cooper.homelab.ephyra.server.knownRelease
 import com.cooper.homelab.ephyra.server.parseLogEntries
 import com.cooper.homelab.ephyra.server.redactLog
 import com.cooper.homelab.ephyra.theme.EphyraTheme
+import kotlinx.coroutines.channels.Channel
+import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.serialization.json.JsonArray
 import kotlinx.serialization.json.JsonObject
 import kotlinx.serialization.json.JsonPrimitive
@@ -437,19 +440,70 @@ class ConsoleScreensTest {
     }
 
     @Test
-    fun `each password result reads as it should`() {
-        var state by mutableStateOf(PasswordUiState(result = PasswordResult.Changed))
-        compose.setContent { EphyraTheme { PasswordScreen(state, PasswordActions()) } }
+    fun `a password field says what is wrong, and each outcome is a snackbar`() {
+        var state by mutableStateOf(PasswordUiState())
+        val events = Channel<PasswordOutcome>(Channel.BUFFERED)
+        compose.setContent { EphyraTheme { PasswordScreen(state, PasswordActions(), events.receiveAsFlow()) } }
         mapOf(
-            PasswordResult.Changed to "Password changed.",
-            PasswordResult.WrongCurrent to "That isn't your current password.",
-            PasswordResult.Mismatch to "The new passwords don't match.",
-            PasswordResult.Refused to "Something went wrong. Try again.",
-            PasswordResult.Unreachable to "Couldn't reach your Jellyfin server",
-        ).forEach { (result, text) ->
-            state = PasswordUiState(result = result)
+            PasswordFieldError.WrongCurrent to "That isn't your current password.",
+            PasswordFieldError.Mismatch to "The new passwords don't match.",
+        ).forEach { (error, text) ->
+            state = PasswordUiState(fieldError = error)
             compose.onNodeWithText(text).assertExists()
         }
+        mapOf(
+            PasswordOutcome.Changed to "Password changed.",
+            PasswordOutcome.Refused to "Something went wrong. Try again.",
+            PasswordOutcome.Unreachable to "Couldn't reach your Jellyfin server",
+        ).forEach { (outcome, text) ->
+            events.trySend(outcome)
+            compose.waitUntil(SNACKBAR_TIMEOUT_MILLIS) { compose.onAllNodesWithText(text).fetchSemanticsNodes().isNotEmpty() }
+        }
+    }
+
+    @Test
+    fun `a recreated password page shows no result it has already shown`() {
+        val events = Channel<PasswordOutcome>(Channel.BUFFERED)
+        val restoration = StateRestorationTester(compose)
+        restoration.setContent { EphyraTheme { PasswordScreen(PasswordUiState(), PasswordActions(), events.receiveAsFlow()) } }
+        events.trySend(PasswordOutcome.Changed)
+        compose.waitUntil(SNACKBAR_TIMEOUT_MILLIS) { compose.onAllNodesWithText("Password changed.").fetchSemanticsNodes().isNotEmpty() }
+        restoration.emulateSavedInstanceStateRestore()
+        compose.waitForIdle()
+        compose.onAllNodesWithText("Password changed.").assertCountEquals(0)
+    }
+
+    @Test
+    fun `an unreadable picture is a snackbar, and a recreated page does not say it again`() {
+        val events = Channel<Unit>(Channel.BUFFERED)
+        val restoration = StateRestorationTester(compose)
+        restoration.setContent {
+            EphyraTheme {
+                ProfilePictureScreen(
+                    ProfilePictureUiState.Ready(),
+                    ProfilePictureActions(),
+                    unreadable = events.receiveAsFlow(),
+                )
+            }
+        }
+        events.trySend(Unit)
+        val text = "That file isn’t a picture this device can read."
+        compose.waitUntil(SNACKBAR_TIMEOUT_MILLIS) { compose.onAllNodesWithText(text).fetchSemanticsNodes().isNotEmpty() }
+        restoration.emulateSavedInstanceStateRestore()
+        compose.waitForIdle()
+        compose.onAllNodesWithText(text).assertCountEquals(0)
+    }
+
+    @Test
+    fun `a recreated approval page shows no result it has already shown`() {
+        val events = Channel<ApproveOutcome>(Channel.BUFFERED)
+        val restoration = StateRestorationTester(compose)
+        restoration.setContent { EphyraTheme { ApproveCodeScreen(ApproveUiState(), ApproveActions(), events.receiveAsFlow()) } }
+        events.trySend(ApproveOutcome.Approved)
+        compose.waitUntil(SNACKBAR_TIMEOUT_MILLIS) { compose.onAllNodesWithText("Code approved.").fetchSemanticsNodes().isNotEmpty() }
+        restoration.emulateSavedInstanceStateRestore()
+        compose.waitForIdle()
+        compose.onAllNodesWithText("Code approved.").assertCountEquals(0)
     }
 
     @Test
@@ -1359,3 +1413,6 @@ class ConsoleScreensTest {
 }
 
 private const val STAMP = "[2026-10-31 10:00:00.000 +00:00]"
+
+/** Long enough for one snackbar to show and go, so the next waits its turn. */
+private const val SNACKBAR_TIMEOUT_MILLIS = 15_000L

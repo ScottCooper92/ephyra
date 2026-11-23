@@ -35,6 +35,8 @@ import com.binge.designsystem.layout.layoutAnchor
 import com.binge.designsystem.template.FormScreen
 import com.binge.designsystem.template.ScreenBar
 import com.cooper.homelab.ephyra.R
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.emptyFlow
 import com.binge.designsystem.R as DesR
 
 /** What the profile picture page can ask of its view model, and of the console. */
@@ -59,8 +61,11 @@ fun ProfilePictureScreen(
     actions: ProfilePictureActions,
     /** The name of the user whose picture this is, for an administrator on another user's page; null is the signed-in user's own. */
     other: String? = null,
+    /** One item each time a picked file could not be read as an image. */
+    unreadable: Flow<Unit> = emptyFlow(),
 ) {
     val host = remember { SnackbarHostState() }
+    SnackbarEvents(unreadable, host) { R.string.profile_picture_unreadable }
     val ready = state as? ProfilePictureUiState.Ready
     FormScreen(
         title = stringResource(R.string.profile_picture_title),
@@ -107,7 +112,6 @@ fun ProfilePictureScreen(
                 }
             }
             RefusedMessage(ready.refused, host, R.string.profile_picture_not_changed)
-            SnackbarMessage(if (ready.unreadable) stringResource(R.string.profile_picture_unreadable) else null, host)
             if (ready.confirmingRemove) RemovePictureDialog(actions, other = other)
         }
     }

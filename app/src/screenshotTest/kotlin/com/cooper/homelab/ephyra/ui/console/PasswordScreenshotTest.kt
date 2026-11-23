@@ -26,10 +26,10 @@ class PasswordScreenshotTest {
     @EphyraScreenStatePreview
     @EphyraSpanishPreviews
     @Composable
-    fun wrongCurrent() = PasswordScreen(previewFilled.copy(result = PasswordResult.WrongCurrent), PasswordActions())
+    fun wrongCurrent() = PasswordScreen(previewFilled.copy(fieldError = PasswordFieldError.WrongCurrent), PasswordActions())
 
     @PreviewTest
     @EphyraScreenStatePreview
     @Composable
-    fun mismatch() = PasswordScreen(previewFilled.copy(confirm = "new-secert", result = PasswordResult.Mismatch), PasswordActions())
+    fun mismatch() = PasswordScreen(previewFilled.copy(confirm = "new-secert", fieldError = PasswordFieldError.Mismatch), PasswordActions())
 }

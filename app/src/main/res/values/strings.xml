@@ -1465,6 +1465,8 @@
     <string name="settings_group_app">This app</string>
     <string name="settings_client">Browse and play</string>
     <string name="settings_client_caption">Show your library and play it in this app</string>
+    <string name="settings_force_client">Force browse and play</string>
+    <string name="settings_force_client_caption">Debug build only. Turns it on whatever Remote Config says, from the next launch</string>
     <string name="settings_share_usage_data">Share usage data</string>
     <string name="settings_share_usage_data_caption">Sends which screens and actions you use</string>
     <string name="settings_send_crash_reports">Send crash reports</string>

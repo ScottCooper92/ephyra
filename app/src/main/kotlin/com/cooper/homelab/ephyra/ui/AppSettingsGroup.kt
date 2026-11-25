@@ -10,6 +10,7 @@ import androidx.compose.material.icons.filled.BarChart
 import androidx.compose.material.icons.filled.BugReport
 import androidx.compose.material.icons.filled.Coffee
 import androidx.compose.material.icons.filled.Description
+import androidx.compose.material.icons.filled.DeveloperMode
 import androidx.compose.material.icons.filled.Healing
 import androidx.compose.material.icons.filled.Info
 import androidx.compose.material.icons.filled.Science
@@ -68,9 +69,11 @@ data class AppSettings(
     val sendCrashReports: Boolean = false,
     /** Whether the user wants the app to browse and play; null while the remote flag does not offer it, so the row is not shown. */
     val client: Boolean? = null,
+    /** A debug build's switch that forces the client on at the next launch, whatever the remote says; null in a shipped build, so no row. */
+    val forceClient: Boolean? = null,
 )
 
-/** The "This app" group: Report a bug (with the connected server's [serverVersion], when known), then two switches that save as they are flipped. */
+/** The "This app" group: Report a bug (with the connected server's [serverVersion], when known), then the switches that save as they are flipped (the client and a debug build's force switch only where offered). */
 @Composable
 internal fun AppGroup(
     settings: AppSettings,
@@ -102,6 +105,17 @@ internal fun AppGroup(
                         supportingMaxLines = CAPTION_LINES,
                         toggled = on,
                         onClick = { actions.onClient(!on) },
+                    )
+                },
+                // A debug build only: the app reads the switch as it starts, so a change shows on the next launch.
+                settings.forceClient?.let { on ->
+                    ListItem(
+                        icon = Icons.Filled.DeveloperMode,
+                        label = stringResource(R.string.settings_force_client),
+                        detail = stringResource(R.string.settings_force_client_caption),
+                        supportingMaxLines = CAPTION_LINES,
+                        toggled = on,
+                        onClick = { actions.onForceClient(!on) },
                     )
                 },
                 ListItem(
@@ -277,10 +291,17 @@ class AppSettingsBinding(
     private val settings: AppSettings,
     private val setCrashReports: (Boolean) -> Unit,
     private val setClient: (Boolean) -> Unit,
+    private val setForceClient: (Boolean) -> Unit = {},
 ) {
     /** [actions] with the group's state and its two ways to change it. */
     fun applyTo(actions: Actions): Actions =
-        actions.copy(appSettings = settings, onShareUsageData = setUsageData, onSendCrashReports = setCrashReports, onClient = setClient)
+        actions.copy(
+            appSettings = settings,
+            onShareUsageData = setUsageData,
+            onSendCrashReports = setCrashReports,
+            onClient = setClient,
+            onForceClient = setForceClient,
+        )
 }
 
 /** Reads [prefs] for the life of the composition; the stored answer is null until it has been read. */
@@ -288,12 +309,15 @@ class AppSettingsBinding(
 fun rememberAppSettingsBinding(
     prefs: TelemetryPrefs,
     clientGate: PreferenceGate = NoPreferenceGate,
+    forceClient: Flow<Boolean>? = null,
+    setForceClient: suspend (Boolean) -> Unit = {},
 ): AppSettingsBinding {
     val consent by prefs.analyticsConsent.collectAsStateWithLifecycle(initialValue = null)
     val crashReports by prefs.crashReportingEnabled.collectAsStateWithLifecycle(initialValue = false)
     // Null while the flag does not offer the client, and so no row. The user's own answer shows once the flag does.
     val offered by clientGate.offered.collectAsStateWithLifecycle(initialValue = clientGate.fallback)
     val wanted by clientGate.preference.collectAsStateWithLifecycle(initialValue = true)
+    val forced by (forceClient ?: emptyFlow()).collectAsStateWithLifecycle(initialValue = false)
     val scope = rememberCoroutineScope()
     return AppSettingsBinding(
         consent = consent,
@@ -305,9 +329,11 @@ fun rememberAppSettingsBinding(
                 shareUsageData = consent == AnalyticsConsent.GRANTED,
                 sendCrashReports = crashReports,
                 client = wanted.takeIf { offered },
+                forceClient = forced.takeIf { forceClient != null },
             ),
         setCrashReports = { enabled -> scope.launch { prefs.setCrashReportingEnabled(enabled) } },
         setClient = { enabled -> scope.launch { clientGate.setPreference(enabled) } },
+        setForceClient = { enabled -> scope.launch { setForceClient(enabled) } },
     )
 }
 

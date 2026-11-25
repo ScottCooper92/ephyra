@@ -73,7 +73,7 @@ data class AppSettings(
     val forceClient: Boolean? = null,
 )
 
-/** The "This app" group: Report a bug (with the connected server's [serverVersion], when known), then two switches that save as they are flipped. */
+/** The "This app" group: Report a bug (with the connected server's [serverVersion], when known), then the switches that save as they are flipped (the client and a debug build's force switch only where offered). */
 @Composable
 internal fun AppGroup(
     settings: AppSettings,

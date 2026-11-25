@@ -38,4 +38,14 @@ class ConsentScreenshotTest {
     @EphyraScreenStatePreview
     @Composable
     fun appGroupClientOff() = AppGroup(AppSettings(client = false), Actions())
+
+    @PreviewTest
+    @EphyraScreenStatePreview
+    @Composable
+    fun appGroupForceClientOn() = AppGroup(AppSettings(forceClient = true), Actions())
+
+    @PreviewTest
+    @EphyraScreenStatePreview
+    @Composable
+    fun appGroupForceClientOff() = AppGroup(AppSettings(forceClient = false), Actions())
 }

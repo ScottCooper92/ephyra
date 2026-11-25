@@ -217,7 +217,7 @@ class MainActivity : ComponentActivity() {
                 )
             val flags by graph.flags.flags.collectAsStateWithLifecycle()
             // What the user has said about usage data and crash reports; the stored answer is null until it is read.
-            val telemetry = rememberAppSettingsBinding(graph.telemetryPrefs, graph.clientGate)
+            val telemetry = rememberAppSettingsBinding(graph.telemetryPrefs, graph.clientGate, graph.forceClient, graph::setForceClient)
             // The telemetry choices, and an administrator's notifications, which no one else is shown.
             val appActions = rememberNotificationBinding(graph, (state as? UiState.SignedIn)?.isAdministrator == true, telemetry::applyTo)
             val client by graph.clientGate.resolved.collectAsStateWithLifecycle()

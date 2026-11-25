@@ -8,6 +8,7 @@ import androidx.datastore.core.handlers.ReplaceFileCorruptionHandler
 import androidx.datastore.preferences.core.PreferenceDataStoreFactory
 import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.core.booleanPreferencesKey
+import androidx.datastore.preferences.core.edit
 import androidx.datastore.preferences.core.emptyPreferences
 import androidx.datastore.preferences.preferencesDataStoreFile
 import androidx.lifecycle.ViewModelProvider
@@ -113,6 +114,8 @@ import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.runBlocking
@@ -206,6 +209,27 @@ class AppGraph(
      */
     private val serverRegistryEnabled: Boolean by lazy { debugSwitch(SERVER_REGISTRY_SWITCH) }
 
+    /** Whether a debug build forces the client surfaces on, whatever the remote says: null in a shipped build, which has no such switch. */
+    val forceClient: Flow<Boolean>? by lazy {
+        if (BuildConfig.DEBUG) {
+            debugSwitches.data
+                .map {
+                    it[
+                        booleanPreferencesKey(
+                            CLIENT_FORCE_SWITCH,
+                        ),
+                    ] == true
+                }.distinctUntilChanged()
+        } else {
+            null
+        }
+    }
+
+    /** Sets the switch [forceClient] reads. It is read once, as the app starts, so a change takes effect on the next launch. */
+    suspend fun setForceClient(on: Boolean) {
+        if (BuildConfig.DEBUG) debugSwitches.edit { it[booleanPreferencesKey(CLIENT_FORCE_SWITCH)] = on }
+    }
+
     /** A debug switch: off in a shipped build, which never opens the file, and otherwise what the switch file holds. */
     private fun debugSwitch(name: String): Boolean =
         BuildConfig.DEBUG && runBlocking { debugSwitches.data.first()[booleanPreferencesKey(name)] } == true
@@ -237,7 +261,7 @@ class AppGraph(
         val fixed =
             buildMap {
                 if (BuildConfig.BINGE_PROMOTION) put(SharedFlags.BingePromotion.key, true)
-                if (BuildConfig.CLIENT_ENABLED) put(ClientEnabled.key, true)
+                if (BuildConfig.CLIENT_ENABLED || debugSwitch(CLIENT_FORCE_SWITCH)) put(ClientEnabled.key, true)
             }
         RemoteFeatureFlags(
             source = FirebaseRemoteFlagSource(appContext, RemoteFlagKeys),
@@ -489,6 +513,9 @@ internal const val CLIENT_NAME = "Ephyra"
 
 /** The debug switches' file and the key in it that turns the per-server stores on. A shipped build never reads either. */
 internal const val DEBUG_SWITCHES_FILE = "debug_switches"
+
+/** The debug switch that forces [ClientEnabled] on at launch. */
+internal const val CLIENT_FORCE_SWITCH = "force_client"
 
 /** The private file a pending Quick Connect wait is kept in. A debug build adds `.debug` to the package, so its path does too. */
 internal const val LINK_STASH_FILE = "quick_connect_pending"

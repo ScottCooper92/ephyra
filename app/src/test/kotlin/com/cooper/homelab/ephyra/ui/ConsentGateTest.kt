@@ -99,6 +99,19 @@ class ConsentGateTest {
     }
 
     @Test
+    fun `the force-client row shows only in a debug build, and reports the switch`() {
+        val calls = mutableListOf<String>()
+        var settings by mutableStateOf(AppSettings(forceClient = null))
+        compose.setContent {
+            EphyraTheme { Column { AppGroup(settings, Actions(onForceClient = { calls += "force:$it" })) } }
+        }
+        compose.onNodeWithText("Force browse and play").assertDoesNotExist()
+        settings = AppSettings(forceClient = false)
+        compose.onNodeWithText("Force browse and play").performClick()
+        assertEquals(listOf("force:true"), calls)
+    }
+
+    @Test
     fun `Report a bug opens the app-feedback bug form with the device filled in`() {
         compose.setContent { EphyraTheme { Column { AppGroup(AppSettings(), Actions()) } } }
         compose.onNodeWithText("Report a bug").performClick()
